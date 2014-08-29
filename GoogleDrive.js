@@ -24,7 +24,7 @@ function GoogleDrive() {
        *
        * @param {Object} authResult Authorization result.
        */
-      function handleAuthResult(authResult) {
+      function handleAuthResult(authResult, callback) {
         console.log("handleAuthResult(): called, typeof authResult = " + typeof authResult);
         console.log("handleAuthResult(): called, typeof callback = " + typeof callback);
         if (authResult) {
@@ -33,183 +33,40 @@ function GoogleDrive() {
         if (authResult && !authResult.error) {
           console.log("handleAuthResult(): authResult OK");
           // Access token has been successfully retrieved, requests can be sent to the API.
+          gapi.client.load('drive', 'v2', function() {
+             callback();
+          });
         } else {
           // No access token could be retrieved, show the button to start the authorization flow.
           console.log("handeAuthResult(): immediate auth fail, calling not immediate");
           gapi.auth.authorize(
               {'client_id': CLIENT_ID, 'scope': SCOPES, 'immediate': false},
-                handleAuthResult)
+                function(authResult) {
+                    handleAuthResult(authResult, callback);  
+                });
         }
       }
 
       this.authorize = function(callback) {
           gapi.auth.authorize(
               {'client_id': CLIENT_ID, 'scope': SCOPES, 'immediate': true},
-              handleAuthResult)
+              function(authResult) {
+                  handleAuthResult(authResult, callback);  
+              });
       }
 
-      /**
-       * Start the file upload.
-       *
-       * @param {Object} evt Arguments from the file selector.
-       */
-      function uploadFile(evt) {
-        gapi.client.load('drive', 'v2', function() {
-          var file = evt.target.files[0];
-          insertFile(file);
-        });
-      }
-
-      /**
-       * Insert new file.
-       *
-       * @param {File} fileData File object to read data from.
-       * @param {Function} callback Function to call when the request is complete.
-       */
-      function insertFile(fileData, callback) {
-        const boundary = '-------314159265358979323846';
-        const delimiter = "\r\n--" + boundary + "\r\n";
-        const close_delim = "\r\n--" + boundary + "--";
-
-        var reader = new FileReader();
-        reader.readAsBinaryString(fileData);
-        reader.onload = function(e) {
-          var contentType = fileData.type || 'application/octet-stream';
-          var metadata = {
-            'title': fileData.name,
-            'mimeType': contentType
-          };
-
-          var base64Data = btoa(reader.result);
-          var multipartRequestBody =
-              delimiter +
-              'Content-Type: application/json\r\n\r\n' +
-              JSON.stringify(metadata) +
-              delimiter +
-              'Content-Type: ' + contentType + '\r\n' +
-              'Content-Transfer-Encoding: base64\r\n' +
-              '\r\n' +
-              base64Data +
-              close_delim;
-
-          var request = gapi.client.request({
-              'path': '/upload/drive/v2/files',
-              'method': 'POST',
-              'params': {'uploadType': 'multipart'},
-              'headers': {
-                'Content-Type': 'multipart/mixed; boundary="' + boundary + '"'
-              },
-              'body': multipartRequestBody});
-          if (!callback) {
-            callback = function(file) {
-              console.log(file)
-            };
-          }
-          request.execute(callback);
-        }
-      }
 
     // WORKS :) creates a folder "/New Folder"
-    this.createFolder = function(folderTitle) {
+    this.createFolder = function(config, callback) {
       data = new Object();
-      data.title = folderTitle;
+      data.title = config.title;
+      data.parents = [{"id": config.parentId}]; 
       //data.parents = [{"id":jQuery('#parent').val()}];
       data.mimeType = "application/vnd.google-apps.folder";
-      gapi.auth.authorize(
-          {'client_id': CLIENT_ID, 'scope': SCOPES, 'immediate': false},
-          function() {
-              gapi.client.load('drive', 'v2', function() {
-                  console.log("createFoler(): typeof gapi = " + typeof gapi);
-                  console.log("createFoler(): typeof gapi.client = " + typeof gapi.client);
-                  console.log("createFoler(): typeof gapi.client.drive = " + typeof gapi.client.drive);
-                  gapi.client.drive.files.insert({'resource': data}).execute(function(fileList){
-                    console.log("gapi.client.drive.files.insert(): typeof fileList = " + typeof fileList); 
-                    for (file in fileList) {
-                      console.log("gapi.client.drive.files.insert(): fileList[" + file + "] = " + fileList[file]);
-                    }
-                  });
-              });
-        });
-    }
-
-    this.getFileList = function() {
-      console.log("getFileList(): called");
-      gapi.auth.authorize(
-          {'client_id': CLIENT_ID, 'scope': SCOPES, 'immediate': false},
-          function() {
-              gapi.client.load('drive', 'v2', function() {
-                  console.log("createFoler(): typeof gapi = " + typeof gapi);
-                  console.log("createFoler(): typeof gapi.client = " + typeof gapi.client);
-                  console.log("createFoler(): typeof gapi.client.drive = " + typeof gapi.client.drive);
-                  //gapi.client.drive.files.list().execute(function(fileList) {
-                  //  console.log("gapi.client.drive.files(): typeof fileList = " + typeof fileList); 
-                  //  for (file in fileList) {
-                  //    console.log("gapi.client.drive.files(): fileList[" + file + "] = " + fileList[file]);
-                  //  }
-                  //  for (item in fileList.items) {
-                  //      for (key in item) {
-                  //          document.write(key + ': ' + item[key] + '<br />');
-                  //      }
-                  //  }
-                  //});
-                  retrieveFiles(function(result) {
-                      console.log('getFileList(): typeof retrieveAllFiles result = ' + typeof result);
-                      for (var key in result.items) {
-                         console.log('result['+key+'] = '+result.items[key]);
-                         var item = result.items[key];
-                         var count = 0;
-                         console.log('file name = ' + item['title']);
-                         //for (var key in item) {
-                         //   console.log('item['+key+'] = '+item[key]);
-                         //   if (count > 10) break;
-                         //   count++;
-                         //}
-                      }
-                  });
-              });
-        });
-
-    }
-
-    //this.getFile
-
-    // function from google api docs
-    function retrieveAllFiles(callback) {
-      var pagesCount = 0;
-      var pagesToRetrieve = 1;
-      console.log("retrieveAllFiles(): called");
-      var retrievePageOfFiles = function(request, result) {
-        count++;
-        console.log("retrievePageOfFiles(): called");
-        request.execute(function(resp) {
-          console.log("request.execute(): typeof resp = " + typeof resp);
-          result = result.concat(resp.items);
-          var nextPageToken = resp.nextPageToken;
-          if (nextPageToken && pagesCount < pagesToRetrieve) {
-            request = gapi.client.drive.files.list({
-              'pageToken': nextPageToken
-            });
-            retrievePageOfFiles(request, result);
-          } else {
-            console.log("retrievePageOfFile(): calling back");
-            callback(result);
-          }
-        });
-      }
-      var initialRequest = gapi.client.drive.files.list();
-      retrievePageOfFiles(initialRequest, []);
-    }
-
-    // my attempt to write a retrieveFiles function
-    function retrieveFiles(callback) {
-        console.log('retrieveFiles(): called');
-        var request = gapi.client.drive.files.list();
-          request.execute(function(resp) {
-            callback(resp);
-            //console.log('Title: ' + resp.title);
-            //console.log('Description: ' + resp.description);
-            //console.log('MIME type: ' + resp.mimeType);
-          });
+      gapi.client.drive.files.insert({'resource': data}).execute(function(file) {
+        //console.log("gapi.client.drive.files.insert(): typeof file = " + typeof file); 
+        callback(file);
+      });
     }
 
     /**
@@ -217,15 +74,154 @@ function GoogleDrive() {
      * settings.
      */
     this.printAbout = function() {
-        gapi.client.load('drive', 'v2', function() {
-          var request = gapi.client.drive.about.get();
-          request.execute(function(resp) {
-            console.log('resp.error: ' + resp.error);
-            console.log('Current user name: ' + resp.name);
-            console.log('Root folder ID: ' + resp.rootFolderId);
-            console.log('Total quota (bytes): ' + resp.quotaBytesTotal);
-            console.log('Used quota (bytes): ' + resp.quotaBytesUsed);
-          });
+        var request = gapi.client.drive.about.get();
+        request.execute(function(resp) {
+          console.log('resp.error: ' + resp.error);
+          console.log('Current user name: ' + resp.name);
+          console.log('Root folder ID: ' + resp.rootFolderId);
+          console.log('Total quota (bytes): ' + resp.quotaBytesTotal);
+          console.log('Used quota (bytes): ' + resp.quotaBytesUsed);
         });
+    }
+
+    /**
+     * Print a file's metadata.
+     *
+     * @param {String} fileId ID of the file to print metadata for.
+     */
+    this.printFile = function(fileId) {
+      var request = gapi.client.drive.files.get({
+        'fileId': fileId
+      });
+      request.execute(function(resp) {
+        console.log('Title: ' + resp.title);
+        console.log('Description: ' + resp.description);
+        console.log('MIME type: ' + resp.mimeType);
+      });
+    }
+
+    /**
+     * 
+     */
+    this.retrieveRootDirectoryContents = function() {
+      var request = gapi.client.drive.about.get();
+      request.execute(function(resp) {
+        console.log('resp.error: ' + resp.error);
+        console.log('Current user name: ' + resp.name);
+        console.log('Root folder ID: ' + resp.rootFolderId);
+        console.log('Total quota (bytes): ' + resp.quotaBytesTotal);
+        console.log('Used quota (bytes): ' + resp.quotaBytesUsed);
+        rootFolderId = resp.rootFolderId;
+
+      });
+    }
+
+    /**
+     * Retrieve a list of files belonging to a folder.
+     *
+     * @param {String} folderId ID of the folder to retrieve files from.
+     * @param {Function} callback Function to call when the request is complete.
+     *
+     */      
+    this.retrieveAllFilesInFolder = function(folderId, callback) {
+      var retrievePageOfChildren = function(request, result) {
+        request.execute(function(resp) {
+          result = result.concat(resp.items);
+          var nextPageToken = resp.nextPageToken;
+          if (nextPageToken) {
+            request = gapi.client.drive.children.list({
+              'folderId' : folderId,
+              'pageToken': nextPageToken,
+              'q' : 'trashed = false'
+            });
+            retrievePageOfChildren(request, result);
+          } else {
+            callback(result);
+          }
+        });
+      }
+      var initialRequest = gapi.client.drive.children.list({
+          'folderId' : folderId,
+          'q' : 'trashed = false'
+        });
+      retrievePageOfChildren(initialRequest, []);
+    }
+
+    /**
+     * Find folder
+     *
+     * @param {String} config.title with title of folder to find.
+     * @param {String} config.folderId id of folder to look in.
+     * @param {Function} callback function to call when reqeust is complete.
+     * @return (as callback parameter) found item or null.
+     */
+    this.findFolder = function(config, callback) {
+        var title = config.title;
+        var folderId = config.folderId || 'root';
+
+        request = gapi.client.drive.children.list({
+            'folderId' : folderId,
+            'q' : 'title = "' + title + '"'
+            + ' and trashed = false'
+            + ' and mimeType = "application/vnd.google-apps.folder"'
+        });
+
+        request.execute(function(resp) {
+           if (resp.items) {
+               callback(resp.items);
+           } else {
+               callback(null);
+           }
+
+        });
+    }
+
+    /**
+     * Insert new txt file.
+     *
+     * @param {String} config.title Title of the file.
+     * @param {String} config.content Of the txt file.
+     * @param {String} config.parentId Id of parent folder, where the file should be inserted.
+     * @param {Function} callback Function to call when the request is complete.
+     */
+    this.insertTxtFile = function(config, callback) {
+      const boundary = '-------314159265358979323846';
+      const delimiter = "\r\n--" + boundary + "\r\n";
+      const close_delim = "\r\n--" + boundary + "--";
+
+        var contentType = 'application/octet-stream';
+        var parentId = config.parentId || 'root';
+        var metadata = {
+          'title': config.title + '.txt',
+          'mimeType': contentType,
+          'parents': [{'id' : parentId}]
+        };
+
+        var base64Data = btoa(config.content);
+        var multipartRequestBody =
+            delimiter +
+            'Content-Type: application/json\r\n\r\n' +
+            JSON.stringify(metadata) +
+            delimiter +
+            'Content-Type: ' + contentType + '\r\n' +
+            'Content-Transfer-Encoding: base64\r\n' +
+            '\r\n' +
+            base64Data +
+            close_delim;
+
+        var request = gapi.client.request({
+            'path': '/upload/drive/v2/files',
+            'method': 'POST',
+            'params': {'uploadType': 'multipart'},
+            'headers': {
+              'Content-Type': 'multipart/mixed; boundary="' + boundary + '"'
+            },
+            'body': multipartRequestBody});
+        if (!callback) {
+          callback = function(file) {
+            console.log(file)
+          };
+        }
+        request.execute(callback);
     }
 }

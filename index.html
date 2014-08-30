@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CloudDrive sources -->
+      <script type="text/javascript" src="app/js/main.js"></script>
+      <!-- Service -->
+      <script type="text/javascript" src="app/js/Service/GoogleDrive.js"></script>
+      <!-- Entity -->
+      <script type="text/javascript" src="app/js/Entity/Thought.js"></script>
+      <!-- Repository -->
+      <script type="text/javascript" src="app/js/Repository/ThoughtGoogleDriveRepository.js"></script>
+
+    <!-- GoogleDrive API -->
+    <script type="text/javascript" src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
+
+    <!-- Twitter Bootstrap -->
+    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- stylesheet (change from less to css in production version!) -->
+    <link rel="stylesheet/less" type="text/css" href="app/less/style.less" />
+
+    <!-- less compiler (remove in production version!) -->
+    <script src="node_modules/less/dist/less-1.7.4.min.js" type="text/javascript"></script>
+
+  </head>
+  <body>
+    <div id="site-container" class="container-fluid">
+      <br />
+      <div id="thought-editor">
+        <ul class="tabs">
+          <li class="selected">
+            <a href="javascript:void(0);">thought</a>
+          </li>
+          <li>
+            <a href="javascript:void(0);">links</a>
+          </li>
+          <li>
+            <a href="javascript:void(0);">files</a>
+          </li>
+        </ul>
+        <textarea></textarea>
+      </div> <!-- end #thought-editor -->
+    </div> <!-- end #site-container -->
+  </body>
+</html>

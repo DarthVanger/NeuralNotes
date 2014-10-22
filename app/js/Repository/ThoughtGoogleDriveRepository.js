@@ -2,11 +2,23 @@
  * Though Google Drive Repository.
  * Can store and get thoughts from Google Drive.
  */
-function ThoughtGoogleDriveRepository(config) {
+function ThoughtGoogleDriveRepository(parameterBag) {
+
     var CLIENT_ID = '1070074939556-h5pom84t5e0vkftqsvlhoe43erauak76.apps.googleusercontent.com';
     var SCOPES = 'https://www.googleapis.com/auth/drive';
-    var brainRootFolderId = config.brainRootFolderId;
-    var cloudDrive = new GoogleDrive();
+
+    /* constructor */
+      validateConstructorParameters(parameterBag);
+
+      /* resolve dependencies */
+      var dependencies = parameterBag.dependencies;
+      var cloudDrive = dependencies.cloudDrive;
+
+      /* resolve config */
+      var config = parameterBag.config;
+      var brainRootFolderId = config.brainRootFolderId;
+    /* end constructor */
+
     
     /**
      * Persist thought to repository.
@@ -21,7 +33,7 @@ function ThoughtGoogleDriveRepository(config) {
             'title': thought.getTitle(),
             'parentId': thought.getParentId() || brainRootFolderId
         }, function(file) {
-            console.log("thought folder creation success, file = " + file);
+            console.log('thought folder creation success, file = ' + file);
             // create thought file
             cloudDrive.insertTxtFile({
                 'title': 'thought',
@@ -36,4 +48,22 @@ function ThoughtGoogleDriveRepository(config) {
             });     
         });
     }
+
+    /**
+     * Validate input parameters of class consructor
+     */
+    function validateConstructorParameters() {
+
+      /* check dependencies */
+      if (!parameterBag.dependencies.cloudDrive) {
+        throw 'ThoughtGoogleDriveRepository: missing dependency exception';
+      }
+
+      /* validate config */
+      if (!parameterBag.config.brainRootFolderId) {
+        throw 'ThoughtGoogleDriveRepository: missing required config parameter exception';
+      }
+
+    }
 }
+

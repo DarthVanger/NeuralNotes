@@ -20,14 +20,22 @@ function handleClientLoad() {
                 // check if user doesn't have two brain folders mistakenly
                 if (foundFolders.length > 1) {
                     // user has more than 1 cloud brain folder!
-                    throw "User has more than 1 CloudBrain folder!";
+                    throw 'User has more than 1 CloudBrain folder!';
                 } else {
                     // user has one cloud brain folder
                     cloudBrainFolder = foundFolders[0];
                     //cloudDrive.printFile(cloudBrainFolder.id); 
                     console.log('Found CloudBrain folder, its id = ' + cloudBrainFolder.id);
+
+                    // init thought repository
+                    var cloudDrive = new GoogleDrive();
                     repository = new ThoughtGoogleDriveRepository({
-                        'brainRootFolderId': cloudBrainFolder.id
+                        'config': {
+                          'brainRootFolderId': cloudBrainFolder.id,
+                        },
+                        'dependencies': {
+                          'cloudDrive': cloudDrive
+                        }
                     });
                     
                     // testing creation of a new thought

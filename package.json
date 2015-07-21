@@ -2,7 +2,7 @@
   "name": "Brain",
   "version": "0.0.0",
   "description": "Thought managment tool",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "test": "test"
   },
@@ -11,5 +11,8 @@
   "dependencies": {
     "bootstrap": "^3.3.5",
     "jquery": "^2.1.4"
+  },
+  "devDependencies": {
+    "electron-prebuilt": "^0.30.0"
   }
 }

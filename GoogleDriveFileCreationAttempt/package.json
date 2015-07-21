@@ -1,0 +1,25 @@
+{
+  "name": "CloudBrain",
+  "version": "0.0.0",
+  "description": "Thought and file organizer",
+  "dependencies": {},
+  "devDependencies": {
+    "less": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DarthVanger/CloudBrain.git"
+  },
+  "author": "Darth Vanger darthvanger@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DarthVanger/CloudBrain/issues"
+  },
+  "scripts": {
+    "test": "karma start test/karma.conf.js",
+    "test-single-run": "karma start test/karma.conf.js  --single-run",
+    "preprotractor": "npm run update-webdriver",
+    "protractor": "protractor test/protractor-conf.js"
+  },
+  "homepage": "https://github.com/DarthVanger/CloudBrain"
+}

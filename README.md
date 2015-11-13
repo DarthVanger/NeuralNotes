@@ -5,7 +5,7 @@ Description
 -----------
 Tool for organizing thoughts (notes), storing them in tree structure.
 Instead of database, I use filesystem:
-Every note (thought) is represented by directory with "thought.txt" file inside. This is like a usual filesystem, but every directory has a thought (note, description). In Brain you can attach folders and files to your "thoughts", this done simply by putting files in the thought's directory.
+Every note (thought) is represented by directory with "thought.txt" file inside. This is like a usual filesystem, but every directory has a thought (or call it a note, a description). In Brain you can attach folders and files to your "thoughts", this done simply by putting files in the thought's directory.
 
 For example:  
 Brain (root folder)
@@ -33,6 +33,6 @@ Search engine will traverse the Brain graph, starting with highest score thought
 
 So the search would be not just the search results, but visualization of the search process, similar to how we, humans, trying to remember something by traveling in mind through some chain of associated memories.
 
-Brain uses Electron.io for multiplatform support.
+Brain is going to use Electron.io, PhoneGap, or something similar, to be multiplatform javascript app, storing it's data locally and syncing with cloud file storage like Google Drive.
 
-Project is having only it's first steps thought, alsmost nothing is developed yet.
+Project is having only it's first steps though, alsmost nothing is developed yet.

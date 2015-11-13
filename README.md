@@ -8,19 +8,19 @@ Instead of database, I use filesystem:
 Every note (thought) is represented by directory with "thought.txt" file inside. This is like a usual filesystem, but every directory has a thought (note, description). In Brain you can attach folders and files to your "thoughts", this done simply by putting files in the thought's directory.
 
 For example:
-Brain
- |..Projects
-   |..MyOwnBlog
-      |..thought.txt
-      |..TodoList
-        |..thought.txt
-      |__Articles
-        |__MyFavouriteCarsDesign
-          |__thought.txt
-          |__Pictures
-             |__thought.txt
-             |__lamborgidiMurchelago.jpg
-  |_.....
+Brain  
+ |..Projects  
+   |..MyOwnBlog  
+      |..thought.txt  
+      |..TodoList  
+        |..thought.txt  
+      |__Articles  
+        |__MyFavouriteCarsDesign  
+          |__thought.txt  
+          |__Pictures  
+             |__thought.txt  
+             |__lamborgidiMurchelago.jpg  
+  |_.....  
   
   This files are parsed and displayed as a mind map. You store the same files, but you organize them as mind map in Brain, and it takes care of creating the corresponding file tree, which is at the same time it's database.
 

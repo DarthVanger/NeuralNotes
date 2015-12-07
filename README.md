@@ -33,6 +33,6 @@ Search engine will traverse the Brain graph, starting with highest score thought
 
 So the search would be not just the search results, but visualization of the search process, similar to how we, humans, trying to remember something by traveling in mind through some chain of associated memories.
 
-Brain is going to use Electron.io, PhoneGap, or something similar, to be multiplatform javascript app, storing it's data locally and syncing with cloud file storage like Google Drive.
+Brain is going to use Ionic, Electron.io, PhoneGap, or something similar, to be multiplatform javascript app, storing it's data locally and syncing with cloud file storage like Google Drive.
 
 Project is having only it's first steps though, alsmost nothing is developed yet.

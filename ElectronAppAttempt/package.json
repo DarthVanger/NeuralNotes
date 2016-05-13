@@ -7,5 +7,12 @@
     "test": "test"
   },
   "author": "DarthVanger",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "^3.3.5",
+    "jquery": "^2.1.4"
+  },
+  "devDependencies": {
+    "electron-prebuilt": "^0.30.0"
+  }
 }

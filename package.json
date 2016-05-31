@@ -7,5 +7,9 @@
     "test": "test"
   },
   "author": "DarthVanger",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.13.4",
+    "socket.io": "^1.4.6"
+  }
 }

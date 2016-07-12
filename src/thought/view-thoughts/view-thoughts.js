@@ -1,5 +1,12 @@
 console.debug('view-htoughts.js');
-require(['https://apis.google.com/js/client.js?onload=checkAuth"'], function() {
+define([
+    'thought/view-thoughts/thoughts-graph-view',
+    'https://apis.google.com/js/client.js?onload=checkAuth"'
+], function(
+    thoughtsGraphView,
+    gapi_GLOBAL_VARIABLE_MODULE
+) {
+console.debug('thoughtsGraphView: ', thoughtsGraphView);
       // Your Client ID can be retrieved from your project in the Google
 console.debug('gapi: ', gapi);
       // Developer Console, https://console.developers.google.com
@@ -69,6 +76,9 @@ console.debug('gapi: ', gapi);
           });
 
           request.execute(function(resp) {
+            console.debug('resp: ', resp);
+            thoughtsGraphView.set(resp.files);
+            thoughtsGraphView.render();
             appendPre('Files:');
             var files = resp.files;
             if (files && files.length > 0) {
@@ -80,6 +90,7 @@ console.debug('gapi: ', gapi);
               appendPre('No files found.');
             }
           });
+
       }
 
       /**

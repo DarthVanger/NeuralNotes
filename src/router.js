@@ -1,13 +1,16 @@
 define([
     'text!thought/create-thought/create-thought.html',
     'text!thought/view-thoughts/view-thoughts.html',
+    'text!login.html'
 ], function(
     createThoughtTemplate,
-    viewThoughtsTemplate
+    viewThoughtsTemplate,
+    loginTemplate
 ) {
     var router = {
         init: init,
         goToRoute: goToRoute,
+        go: goToRoute,
         goToRouteInAdressBar: goToRouteInAdressBar
     };
 
@@ -20,10 +23,8 @@ define([
     }
 
     function goToRouteInAdressBar() {
-        var route = window.location.href.slice(1);
-        if (route.length > 0) {
-            goToRoute(route);
-        }
+        var route = window.location.hash.slice(1);
+        goToRoute(route);
     }
 
     function setRouterLinkListeners() {
@@ -41,18 +42,35 @@ define([
     }
 
     function goToRoute(route) {
-        $('.create-thought').empty();
-        $('.view-thoughts').empty();
+        console.debug('route: ', route);
+        var $siteContainer = $('.site-content');
+        var template;
+        var controllerPath;
         switch (route) {
+            case 'login':
+                template = loginTemplate;
+                controllerPath = 'login';
+                break;
             case 'create-thought':
-                $('.create-thought').append(createThoughtTemplate);
+                template = createThoughtTemplate;
                 break;
             case 'view-thoughts':
-                $('.view-thoughts').append(viewThoughtsTemplate);
+                template = viewThoughtsTemplate;
+                controllerPath = 'thought/view-thoughts/view-thoughts';
                 break;
             default: 
-                $('.view-thoughts').append(viewThoughtsTemplate);
+                template = loginTemplate;
+                controllerPath = 'login';
                 break;
+        }
+
+        $siteContainer.empty();
+        $siteContainer.append(template);
+        
+        if (controllerPath.length > 0) {
+            require([controllerPath], function(controller) {
+                controller.init();
+            });
         }
 
         window.location.hash = route;

@@ -15,10 +15,8 @@ define([
     $(document).ready(function() {
         console.debug('app start');
 
-        require(['src/thought/view-thoughts/view-thoughts.js'], function() {
-            console.debug('call router init');
-            router.init();
-        });
+        console.debug('call router init');
+        router.init();
 
     });
 

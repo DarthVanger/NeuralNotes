@@ -4,6 +4,7 @@
     <title>Brain</title>
 
     <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="src/login.css" rel="stylesheet" />
   </head>
   <body>
 
@@ -23,7 +24,11 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><a href="#create-thought" data-router-link>Create thought</a></li>
+        <li><a href="#login" data-router-link>Login</a></li>
+        <li><a href="#create-thought" data-router-link>Create Thought</a></li>
+        <!--
+        <li><a href="#view-thoughts" data-router-link>View Thoughts</a></li>
+        -->
         <li>
           <form class="navbar-form navbar-right" role="search">
             <div class="form-group">
@@ -38,11 +43,7 @@
             <span class="glyphicon glyphicon-cog"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>
+            <li><a href="#">Logout</a></li>
           </ul>
         </li>
       </ul>
@@ -55,9 +56,12 @@
 
 
     <div class="site-content container-fluid">
+    <!--
         <div class="create-thought"></div>
         <div class="view-thoughts"></div>
+        -->
     </div>
+
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 

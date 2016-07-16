@@ -53,6 +53,7 @@ define([
                 break;
             case 'create-thought':
                 template = createThoughtTemplate;
+                controllerPath = 'thought/create-thought/create-thought';
                 break;
             case 'view-thoughts':
                 template = viewThoughtsTemplate;
@@ -67,6 +68,7 @@ define([
         $siteContainer.empty();
         $siteContainer.append(template);
         
+        console.debug('controllerPath: ', controllerPath);
         if (controllerPath.length > 0) {
             require([controllerPath], function(controller) {
                 controller.init();

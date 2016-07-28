@@ -70,6 +70,8 @@ define([
         
         console.debug('controllerPath: ', controllerPath);
         if (controllerPath.length > 0) {
+            // dynamically load controller file, and
+            // call its init() function.
             require([controllerPath], function(controller) {
                 controller.init();
             });

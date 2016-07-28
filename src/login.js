@@ -1,38 +1,35 @@
 define([
     'https://apis.google.com/js/client.js?onload=checkAuth"',
     'storage',
-    'router'
+    'router',
+    'auth-service'
 ], function(
+    // google creates global 'gapi' variable,
+    // the one below is undefined.
     gapi_GLOBAL_VARIABLE_MODULE,
     storage,
-    router
+    router,
+    authService
 ) {
+      // Developer Console, https://console.developers.google.com
+      var CLIENT_ID = '586695064067-2k8v88rq1litcqj8v0ofnstj6t6qfhpa.apps.googleusercontent.com';
+
+      var SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly'];
+
+    //window.checkAuth = checkAuth;
+    //window.setTimeout(checkAuth, 3000);
 
     return {
         init: init,
     };
 
     function init() {
+         console.debug('login.init()');
           // Your Client ID can be retrieved from your project in the Google
          console.debug('gapi: ', gapi);
-          // Developer Console, https://console.developers.google.com
-          var CLIENT_ID = '586695064067-2k8v88rq1litcqj8v0ofnstj6t6qfhpa.apps.googleusercontent.com';
-
-          var SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly'];
 
             $('#authorize-button').on('click', handleAuthClick);
-
-          /**
-           * Check if current user has authorized this application.
-           */
-          function checkAuth() {
-            gapi.auth.authorize(
-              {
-                'client_id': CLIENT_ID,
-                'scope': SCOPES.join(' '),
-                'immediate': true
-              }, handleAuthResult);
-          }
+    }
 
           /**
            * Handle response from authorization server.
@@ -43,10 +40,12 @@ define([
             var authorizeDiv = document.getElementById('authorize-div');
             console.debug('authResult: ', authResult);
             if (authResult && !authResult.error) {
+              authService.authResult = authResult;
               // Hide auth UI, then load client library.
               authorizeDiv.style.display = 'none';
               loadDriveApi();
             } else {
+                console.debug('auth fail');
               // Show auth UI, allowing the user to initiate authorization by
               // clicking authorize button.
               authorizeDiv.style.display = 'inline';
@@ -89,5 +88,18 @@ define([
               });
 
           }
-    }
+
+      /**
+       * Check if current user has authorized this application.
+       */
+      function checkAuth() {
+        console.debug('checkAuth()');
+        gapi.auth.authorize(
+          {
+            'client_id': CLIENT_ID,
+            'scope': SCOPES.join(' '),
+            'immediate': true
+          }, handleAuthResult);
+      }
+
 });

@@ -12,6 +12,7 @@ define([
     router
 ) {
 
+
     $(document).ready(function() {
         console.debug('app start');
 

@@ -2,14 +2,16 @@ define([
     'https://apis.google.com/js/client.js?onload=checkAuth"',
     'storage',
     'router',
-    'auth-service'
+    'auth-service',
+    'google-drive-api'
 ], function(
     // google creates global 'gapi' variable,
     // the one below is undefined.
     gapi_GLOBAL_VARIABLE_MODULE,
     storage,
     router,
-    authService
+    authService,
+    googleDriveApi
 ) {
       // Developer Console, https://console.developers.google.com
       var CLIENT_ID = '586695064067-2k8v88rq1litcqj8v0ofnstj6t6qfhpa.apps.googleusercontent.com';
@@ -43,7 +45,11 @@ define([
               authService.authResult = authResult;
               // Hide auth UI, then load client library.
               authorizeDiv.style.display = 'none';
-              loadDriveApi();
+
+              googleDriveApi.loadDriveApi().then(function() {
+                  router.go('view-thoughts');
+              });
+
             } else {
                 console.debug('auth fail');
               // Show auth UI, allowing the user to initiate authorization by
@@ -63,30 +69,6 @@ define([
               {client_id: CLIENT_ID, scope: SCOPES, immediate: false},
               handleAuthResult);
             return false;
-          }
-
-          /**
-           * Load Drive API client library.
-           */
-          function loadDriveApi() {
-            gapi.client.load('drive', 'v3', listFiles);
-          }
-
-          /**
-           * Print files.
-           */
-          function listFiles() {
-            var request = gapi.client.drive.files.list({
-                'pageSize': 10,
-                'fields': "nextPageToken, files(id, name)"
-              });
-
-              request.execute(function(resp) {
-                console.debug('resp: ', resp);
-                storage.thoughts = resp.files;
-                router.go('view-thoughts');
-              });
-
           }
 
       /**

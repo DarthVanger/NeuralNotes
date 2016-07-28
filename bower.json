@@ -21,6 +21,7 @@
     "text": "requirejs/text#~2.0.15",
     "d3": "~4.1.1",
     "bootstrap-social": "~5.0.0",
-    "font-awesome": "~4.6.3"
+    "font-awesome": "~4.6.3",
+    "lodash": "~4.14.0"
   }
 }

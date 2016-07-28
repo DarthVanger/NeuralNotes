@@ -1,10 +1,18 @@
 console.debug('view-htoughts.js');
 define([
-    'thought/view-thoughts/thoughts-graph-view',
-    'storage'
+    //'thought/view-thoughts/thoughts-graph-view',
+    'storage',
+    'router',
+    'auth-service',
+    'text!thought/view-thoughts/thought.html',
+    'lodash'
 ], function(
-    thoughtsGraphView,
-    storage
+    //thoughtsGraphView,
+    storage,
+    router,
+    authService,
+    thoughtTemplate,
+    _
 ) {
 
     return {
@@ -12,23 +20,51 @@ define([
     };
 
     function init() {
+        if (!authService.authResult) {
+            router.go('/');
+            return;
+        }
+        
         getFiles().then(function() {
-            console.debug('thoughtsGraphView: ', thoughtsGraphView);
-            console.debug('storage: ', storage);
-            thoughtsGraphView.set(storage.thoughts);
-            thoughtsGraphView.render();
 
-            appendPre('Files:');
-            var files = storage.thoughts;
-            if (files && files.length > 0) {
-              for (var i = 0; i < files.length; i++) {
-                var file = files[i];
-                appendPre(file.name + ' (' + file.id + ')');
-              }
-            } else {
-              appendPre('No files found.');
-            }
+            //console.debug('thoughtsGraphView: ', thoughtsGraphView);
+            //thoughtsGraphView.set(storage.thoughts);
+            //thoughtsGraphView.render();
+
+            listThoughts();
         });
+    }
+
+    function listThoughts() {
+        console.debug('listThoughts()');
+        //console.debug('storage: ', storage);
+        var files = storage.thoughts;
+        console.debug('storage.thoughts: ', storage.thoughts);
+        //appendPre('Files:');
+        if (files && files.length > 0) {
+            files.forEach(function(file) {
+                var thought = {
+                    name: file.name,
+                    content: 'test content'
+                };
+                console.debug('thought: ', thought);
+
+                console.debug('thoughtTemplate: ', thoughtTemplate);
+
+                console.debug('_: ', _);
+
+                var thoughtHTML = _.template(thoughtTemplate, thought)();
+                console.debug('thoughtHTML: ', thoughtHTML);
+                var $thought = $(thoughtHTML);
+                console.debug('$thought: ', $thought);
+
+                var container = document.getElementById('output');
+                console.debug('container: ', container);
+                container.appendChild($thought.get(0));
+            });
+        } else {
+          appendPre('No files found.');
+        }
     }
 
 
@@ -48,7 +84,7 @@ define([
                 });
           });
 
-          return promise
+          return promise;
       }
 
       /**

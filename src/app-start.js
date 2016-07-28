@@ -2,7 +2,8 @@ require.config({
     baseUrl: 'src/',
     paths: {
         text: "../bower_components/text/text",
-        d3: "../bower_components/d3/d3"
+        d3: "../bower_components/d3/d3",
+        lodash: "../bower_components/lodash/lodash"
     }
 });
 
@@ -11,7 +12,6 @@ define([
 ], function(
     router
 ) {
-
 
     $(document).ready(function() {
         console.debug('app start');

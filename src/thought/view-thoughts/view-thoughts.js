@@ -4,15 +4,13 @@ define([
     'storage',
     'router',
     'auth-service',
-    'text!thought/view-thoughts/thought.html',
-    'lodash'
+    'text!thought/view-thoughts/thought.html'
 ], function(
     //thoughtsGraphView,
     storage,
     router,
     authService,
-    thoughtTemplate,
-    _
+    thoughtTemplate
 ) {
 
     return {
@@ -51,15 +49,15 @@ define([
 
                 console.debug('thoughtTemplate: ', thoughtTemplate);
 
-                console.debug('_: ', _);
+                //console.debug('_: ', _);
 
-                var thoughtHTML = _.template(thoughtTemplate, thought)();
-                console.debug('thoughtHTML: ', thoughtHTML);
+                var thoughtHTML = _.template(thoughtTemplate)(thought);
+                //console.debug('thoughtHTML: ', thoughtHTML);
                 var $thought = $(thoughtHTML);
-                console.debug('$thought: ', $thought);
+                //console.debug('$thought: ', $thought);
 
                 var container = document.getElementById('output');
-                console.debug('container: ', container);
+                //console.debug('container: ', container);
                 container.appendChild($thought.get(0));
             });
         } else {

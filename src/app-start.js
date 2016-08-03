@@ -3,14 +3,23 @@ require.config({
     paths: {
         text: "../bower_components/text/text",
         d3: "../bower_components/d3/d3",
-        lodash: "../bower_components/lodash/lodash"
+        //lodash: "../bower_components/lodash/lodash"
+        underscore: "../bower_components/underscore/underscore"
+
+    },
+    shim: {
+       underscore: {
+          exports: '_'
+       }
     }
 });
 
 define([
-    'router'
+    'router',
+    'underscore'
 ], function(
-    router
+    router,
+    _underscore_undefined_
 ) {
 
     $(document).ready(function() {

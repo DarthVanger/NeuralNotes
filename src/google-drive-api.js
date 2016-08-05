@@ -6,10 +6,12 @@ define([
 
     var client;
 
-    return {
+    var self = {
         loadDriveApi: loadDriveApi,
         client: client
     };
+
+    return self;
 
     /**
      * Load Drive API client library.
@@ -17,7 +19,7 @@ define([
     function loadDriveApi() {
         var promise = new Promise(function(resolve, reject) {
               gapi.client.load('drive', 'v3', function() {
-                  client = gapi.client.drive;
+                  self.client = gapi.client.drive;
                   console.debug('loadDriveApi: resolving promise');
                   resolve();
               });

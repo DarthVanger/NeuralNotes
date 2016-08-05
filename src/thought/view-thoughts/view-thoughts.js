@@ -34,10 +34,10 @@ define([
     }
 
     function listThoughts() {
-        console.debug('listThoughts()');
+        //console.debug('listThoughts()');
         //console.debug('storage: ', storage);
         var files = storage.thoughts;
-        console.debug('storage.thoughts: ', storage.thoughts);
+        //console.debug('storage.thoughts: ', storage.thoughts);
         //appendPre('Files:');
         if (files && files.length > 0) {
             files.forEach(function(file) {
@@ -45,9 +45,9 @@ define([
                     name: file.name,
                     content: 'test content'
                 };
-                console.debug('thought: ', thought);
+                //console.debug('thought: ', thought);
 
-                console.debug('thoughtTemplate: ', thoughtTemplate);
+                //console.debug('thoughtTemplate: ', thoughtTemplate);
 
                 //console.debug('_: ', _);
 
@@ -67,7 +67,7 @@ define([
 
 
       function getFiles() {
-          console.debug('getFiles()');
+          //console.debug('getFiles()');
           var request = gapi.client.drive.files.list({
             'pageSize': 10,
             'fields': "nextPageToken, files(id, name)"
@@ -75,7 +75,7 @@ define([
 
           var promise = new Promise(function(resolve, reject) {
                 request.execute(function(resp) {
-                  console.debug('resp: ', resp);
+                  //console.debug('resp: ', resp);
                   var thoughts = resp.files;
                   storage.thoughts = thoughts;
                   resolve(thoughts);

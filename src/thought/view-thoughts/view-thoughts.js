@@ -41,6 +41,7 @@ define([
         //appendPre('Files:');
         if (files && files.length > 0) {
             files.forEach(function(file) {
+                //console.debug('file: ', file);
                 var thought = {
                     name: file.name,
                     content: 'test content'

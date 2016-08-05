@@ -13,7 +13,12 @@ define([
     // Developer Console, https://console.developers.google.com
     var CLIENT_ID = '586695064067-2k8v88rq1litcqj8v0ofnstj6t6qfhpa.apps.googleusercontent.com';
 
-    var SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly'];
+    var SCOPES = [
+        // Per-file access to files created or opened by the app
+        'https://www.googleapis.com/auth/drive.file',
+        // Allows read-only access to file metadata and file content
+        'https://www.googleapis.com/auth/drive.readonly'
+    ];
 
     require(
       ['https://apis.google.com/js/client.js?onload=doNothing"'],

@@ -21,6 +21,7 @@ define([
               gapi.client.load('drive', 'v3', function() {
                   self.client = gapi.client.drive;
                   console.debug('loadDriveApi: resolving promise');
+                    console.debug('googleDriveApi.client.files: ', self.client.files);
                   resolve();
               });
         });

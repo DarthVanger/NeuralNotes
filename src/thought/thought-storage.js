@@ -29,7 +29,7 @@ define([
         function createEmptyFile() {
             console.debug('createEmptyFile()');
             var request = googleDriveApi.client.files.create({
-                "name": "test.txt",
+                "name": thought.name + '.txt',
                 "mimeType": "text/plain",
                 "description": "test file"
             });
@@ -43,24 +43,30 @@ define([
             return promise;
         };
 
-        function updateFile(newFile) {
+        function updateFile(createdFile) {
             console.debug('updateFile()');
-
-            console.debug('newFile: ', newFile);
-            var request = googleDriveApi.client.files.update(
-                {
-                    fileId: newFile.id,
-                    name: 'test-updated3.txt',
+            var request = gapi.client.request({
+                path: '/upload/drive/v3/files/' + createdFile.id,
+                method: 'PATCH',
+                params: {
                     uploadType: 'media'
                 },
-                btoa('content plzzzz ;))')
-            );
-            console.debug('request: ', request);
+                body: thought.content 
+            });
+
+            // this almost works but makes request to url
+            // without '/upload/' T_T
+            //var request = googleDriveApi.client.files.update(
+            //    {
+            //        fileId: createdFile.id,
+            //        name: 'test-updated3.txt',
+            //        uploadType: 'media'
+            //    },
+            //    btoa('content plzzzz ;))')
+            //);
 
             var promise = new Promise(function(resolve, reject) {
-                console.debug('executing request');
                 request.execute(function(resp) {
-                    console.debug('resolving resp');
                     resolve(resp);
                 });
             });

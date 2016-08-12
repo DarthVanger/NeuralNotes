@@ -1,13 +1,13 @@
 console.debug('view-htoughts.js');
 define([
     //'thought/view-thoughts/thoughts-graph-view',
-    'storage',
+    'thought/thought-storage',
     'router',
     'auth-service',
     'text!thought/view-thoughts/thought.html'
 ], function(
     //thoughtsGraphView,
-    storage,
+    thoughtStorage,
     router,
     authService,
     thoughtTemplate
@@ -23,20 +23,20 @@ define([
             return;
         }
         
-        getFiles().then(function() {
+        //getFiles().then(function() {
 
             //console.debug('thoughtsGraphView: ', thoughtsGraphView);
             //thoughtsGraphView.set(storage.thoughts);
             //thoughtsGraphView.render();
 
             listThoughts();
-        });
+        //});
     }
 
     function listThoughts() {
         //console.debug('listThoughts()');
         //console.debug('storage: ', storage);
-        var files = storage.thoughts;
+        var files = thoughtStorage.getThoughts();
         //console.debug('storage.thoughts: ', storage.thoughts);
         //appendPre('Files:');
         if (files && files.length > 0) {
@@ -44,7 +44,7 @@ define([
                 //console.debug('file: ', file);
                 var thought = {
                     name: file.name,
-                    content: 'test content'
+                    //content: 'test content'
                 };
                 //console.debug('thought: ', thought);
 
@@ -67,24 +67,6 @@ define([
     }
 
 
-      function getFiles() {
-          //console.debug('getFiles()');
-          var request = gapi.client.drive.files.list({
-            'pageSize': 10,
-            'fields': "nextPageToken, files(id, name)"
-          });
-
-          var promise = new Promise(function(resolve, reject) {
-                request.execute(function(resp) {
-                  //console.debug('resp: ', resp);
-                  var thoughts = resp.files;
-                  storage.thoughts = thoughts;
-                  resolve(thoughts);
-                });
-          });
-
-          return promise;
-      }
 
       /**
        * Append a pre element to the body containing the given message

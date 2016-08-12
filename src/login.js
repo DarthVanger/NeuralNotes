@@ -1,10 +1,10 @@
 define([
-    'storage',
+    'thought/thought-storage',
     'router',
     'auth-service',
     'google-drive-api'
 ], function(
-    storage,
+    thoughtStorage,
     router,
     authService,
     googleDriveApi
@@ -59,9 +59,11 @@ define([
         // Hide auth UI, then load client library.
         authorizeDiv.style.display = 'none';
 
-        googleDriveApi.loadDriveApi().then(function() {
-            router.go('view-thoughts');
-        });
+        googleDriveApi.loadDriveApi()
+            .then(thoughtStorage.scanDrive)
+            .then(function() {
+                router.go('view-thoughts');
+            });
 
       } else {
           console.debug('auth fail');

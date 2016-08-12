@@ -1,12 +1,14 @@
 console.debug('view-htoughts.js');
 define([
     //'thought/view-thoughts/thoughts-graph-view',
+    'thought/view-thoughts/thoughts-mind-map-view',
     'thought/thought-storage',
     'router',
     'auth-service',
     'text!thought/view-thoughts/thought.html'
 ], function(
     //thoughtsGraphView,
+    thoughtsMindMapView,
     thoughtStorage,
     router,
     authService,
@@ -22,6 +24,9 @@ define([
             router.go('/');
             return;
         }
+
+        thoughtsMindMapView.set(thoughtStorage.getThoughts());
+        thoughtsMindMapView.render();
         
         //getFiles().then(function() {
 
@@ -29,7 +34,7 @@ define([
             //thoughtsGraphView.set(storage.thoughts);
             //thoughtsGraphView.render();
 
-            listThoughts();
+            //listThoughts();
         //});
     }
 

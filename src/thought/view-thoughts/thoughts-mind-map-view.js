@@ -42,17 +42,55 @@ define([
         ]);
 
         // create a network
-        var container = document.getElementById('output');
+        var container = document.getElementById('thoughts-container');
 
         // provide the data in the vis format
         var data = {
             nodes: nodes,
             edges: edges
         };
-        var options = {};
+
+        var options = {
+          interaction: {
+            navigationButtons: true,
+            keyboard: true
+          }
+        };
 
         // initialize your network!
         var network = new vis.Network(container, data, options);
+
+        container.addEventListener('click', showContextMenu);
+
+        function showContextMenu(event) {
+            var x = event.clientX;
+            var y = event.clientY;
+            console.log('x: ', x, 'y: ', y);
+            var menu = document.createElement('div');
+            menu.innerHTML = '<div>asdfasdf<br /> asdfasdfa</div>';
+            menu.style.position = 'absolute';
+            menu.style.backgroundColor = 'red';
+            menu.style.left = x + 'px';
+            menu.style.top = y + 'px';
+
+            container.appendChild(menu);
+        }
+
+        network.on('click', function(event) {
+            var targetThought = getTargetThought(event);
+        });
+
+        function getTargetThought(networkEvent) {
+            console.log('network click event: ', networkEvent);
+            var targetNodeId = networkEvent.nodes[0];
+            console.log('targetNodeId: ', targetNodeId);
+            var targetNode = nodes.get(targetNodeId);
+            console.log('targetNode: ', targetNode);
+            var targetThoughtName = targetNode.label;
+            console.log('targetThoughtName: ', targetThoughtName);
+            var targetThought = _.findWhere(thoughts, { name: targetThoughtName });
+            console.log('targetThought: ', targetThought);
+        }
 
     }
 

@@ -27,19 +27,29 @@ define([
         //]);
 
         console.debug('thoughts: ', thoughts);
+
         var visDataSet = thoughts.map(function(thought, index) {
-            return { id: index, label: thought.name };
+            return { id: thought.id, label: thought.name };
         });
+        var visEdges = [];
+        _.each(thoughts, function(thought) {
+            console.log('thought.children: ', thought.children);
+            _.each(thought.children, function(childThought) {
+                console.log('pushing children');
+                visDataSet.push({ id: childThought.id, label: childThought.name });
+                visEdges.push({
+                    from: thought.id,
+                    to: childThought.id
+                });
+            });
+        });
+
         console.debug('visDataSet: ', visDataSet);
+        console.debug('visEdges: ', visEdges);
         var nodes = new vis.DataSet(visDataSet);
 
         // create an array with edges
-        var edges = new vis.DataSet([
-            {from: 0, to: 1},
-            //{from: 1, to: 2},
-            //{from: 2, to: 4},
-            //{from: 2, to: 5}
-        ]);
+        var edges = new vis.DataSet(visEdges);
 
         // create a network
         var container = document.getElementById('thoughts-container');

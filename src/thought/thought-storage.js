@@ -17,10 +17,23 @@ define([
         getThoughts: getThoughts
     };
 
-    function save(thought) {
+    function save(thought, parentThought) {
+        if (!parentThought) {
+            parentThought = brainFolder;
+        }
+
         console.debug('thoughtStorage.save(). Thought: ', thought);
         console.debug('googleDriveApi: ', googleDriveApi);
-        return createFile(thought.name + '.txt', thought.content);
+        return createDirectory({
+            name: thought.name,
+            parents: [parentThought.id]
+        }).then(function(createdDirectory) {
+            return createFile({
+                name: thought.name + '.txt',
+                content: thought.content,
+                parents: [createdDirectory.id],
+            });
+        });
     }
 
     function scanDrive() {
@@ -42,14 +55,37 @@ define([
     }
 
     function readBrain() {
-        console.debug('readBrain()');
-        return getFiles(brainFolder.id).then(function(files) {
-            console.debug('files inside the brain folder: ', files);
-            console.debug('files saved to thoughts storage');
-            thoughts = files;
+        return new Promise(function(resolve, reject) {
+            console.debug('readBrain()');
+            getFiles(brainFolder.id).then(function(files) {
+                console.debug('files inside the brain folder: ', files);
+                console.debug('files saved to thoughts storage');
+                // want to have "Brain" thought as a root for all thoughts,
+                // but for some reason if i add brain folder here to thoughts array,
+                // it ends up having duplicate ids...
+                //thoughts.push(brainFolder);
+                _.each(files, function(file) {
+                    if (file.mimeType == 'application/vnd.google-apps.folder') {
+                        thoughts.push(file);
+                    }
+                });
+                console.debug('readBrain() thoughts: ', thoughts);
+                return thoughts;
+            }).then(function(thoughts) {
+                var promises = [];
+                thoughts.forEach(function(thought) {
+                    var promise = getFiles(thought.id).then(function(files) {
+                        thought.children = files;
+                    });
+                    promises.push(promise);
+                });
+
+                Promise.all(promises).then(resolve);
+            });
         });
+
     }
-    
+
     function getFiles(folderId) {
         //var request = gapi.client.request({
         //    path: '/drive/v3/files/' + folderId,
@@ -63,8 +99,8 @@ define([
         console.debug('getFiles()');
         var request = gapi.client.drive.files.list({
           'pageSize': 10,
-          'fields': "nextPageToken, files(id, name)",
-          'q': '"' + brainFolder.id + '" in parents'
+          'fields': "nextPageToken, files(id, name, mimeType)",
+          'q': '"' + folderId + '" in parents'
         });
   
         var promise = new Promise(function(resolve, reject) {
@@ -74,7 +110,7 @@ define([
                 //storage.thoughts = thoughts;
                 if (!resp.files) throw new Error('getFiles() received response without "files" property');
                 resolve(resp.files);
-              });
+              })
         });
   
         return promise;
@@ -82,7 +118,9 @@ define([
 
     function createBrainFolder() {
         console.debug('createBrainFolder!');
-        return createDirectory(BRAIN_FOLDER_NAME).then(function(response) {
+        return createDirectory({
+            name: BRAIN_FOLDER_NAME
+        }).then(function(response) {
             console.debug('createBrainFolder successs!!, response: ', response);
         });
     }
@@ -109,11 +147,14 @@ define([
 
     // this guy from stackoverflow is a GOD! :)
     // http://stackoverflow.com/a/10323612/1657101
-    function createFile(name, content) {
-        return createEmptyFile(name)
+    function createFile(options) {
+        return createEmptyFile({
+            name: options.name,
+            parents: options.parents
+        })
             .then(function(newFile) {
                 console.debug('created new file! :) ', newFile);
-                return updateFile(newFile, content); 
+                return updateFile(newFile, options.content); 
             })
             .then(function(updatedFile) {
                 console.debug('updated file: ', updatedFile);
@@ -122,12 +163,18 @@ define([
 
     }
 
-    function createDirectory(name) {
-        var request = googleDriveApi.client.files.create({
-            "name": name,
+    function createDirectory(options) {
+        var requestParams = {
+            "name": options.name,
             "mimeType": "application/vnd.google-apps.folder",
             //"description": "test file"
-        });
+        };
+
+        if (options.parents) {
+            requestParams.parents = options.parents;
+        }
+
+        var request = googleDriveApi.client.files.create(requestParams);
 
         var promise = new Promise(function(resolve, reject) {
             request.execute(function(newFile) {
@@ -138,12 +185,12 @@ define([
         return promise;
     }
 
-    function createEmptyFile(filename) {
+    function createEmptyFile(options) {
         console.debug('createEmptyFile()');
         var request = googleDriveApi.client.files.create({
-            name: filename,
+            name: options.name,
             mimeType: "text/plain",
-            parents: [brainFolder.id]
+            parents: options.parents
             //"description": "test file"
         });
 

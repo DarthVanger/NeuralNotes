@@ -31,11 +31,11 @@ define([
             var thought = {
                 name: thoughtName,
                 content: thoughtContent
-            }
+            };
 
-            thoughtStorage.save(thought);
-
-            router.go('view-thoughts');
+            thoughtStorage.save(thought).then(function() {
+                router.go('view-thoughts');
+            });
 
             return false;
         });

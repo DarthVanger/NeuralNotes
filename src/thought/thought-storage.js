@@ -60,20 +60,17 @@ define([
             getFiles(brainFolder.id).then(function(files) {
                 console.debug('files inside the brain folder: ', files);
                 console.debug('files saved to thoughts storage');
-                // want to have "Brain" thought as a root for all thoughts,
-                // but for some reason if i add brain folder here to thoughts array,
-                // it ends up having duplicate ids...
-                //thoughts.push(brainFolder);
+                thoughts.push(brainFolder);
+                brainFolder.children = [];
                 _.each(files, function(file) {
                     if (file.mimeType == 'application/vnd.google-apps.folder') {
-                        thoughts.push(file);
+                        brainFolder.children.push(file);
                     }
                 });
                 console.debug('readBrain() thoughts: ', thoughts);
-                return thoughts;
-            }).then(function(thoughts) {
+            }).then(function() {
                 var promises = [];
-                thoughts.forEach(function(thought) {
+                brainFolder.children.forEach(function(thought) {
                     var promise = getFiles(thought.id).then(function(files) {
                         thought.children = files;
                     });

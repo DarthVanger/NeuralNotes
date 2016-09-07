@@ -1,7 +1,11 @@
 define([
-    'thought/thought-storage'
+    'thought/thought-storage',
+    'router',
+    'auth-service'
 ], function(
-    thoughtStorage
+    thoughtStorage,
+    router,
+    authService
 ) {
 
     return {
@@ -9,6 +13,11 @@ define([
     };
 
     function init() {
+        if (!authService.authResult) {
+            router.go('/');
+            return;
+        }
+
         var $form = $('.create-thought-form');
         var $thoughtContent = $form.find('[name="thoughtContent"]');
         var $thoughtName = $form.find('[name="thoughtName"]');
@@ -25,6 +34,8 @@ define([
             }
 
             thoughtStorage.save(thought);
+
+            router.go('view-thoughts');
 
             return false;
         });

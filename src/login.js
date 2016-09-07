@@ -42,8 +42,12 @@ define([
 
 
     function init() {
-         console.debug('login.init()');
-         $('#authorize-button').on('click', handleAuthClick);
+        if (authService.authResult) {
+            router.go('view-thoughts');
+        }
+           
+        console.debug('login.init()');
+        $('#authorize-button').on('click', handleAuthClick);
     }
 
     /**

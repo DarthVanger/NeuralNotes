@@ -16,7 +16,6 @@ define([
 
     return router;
     
-    
     function init() {
         goToRouteInAdressBar();
         setRouterLinkListeners();
@@ -41,7 +40,7 @@ define([
         });
     }
 
-    function goToRoute(route) {
+    function goToRoute(route, options) {
         console.debug('route: ', route);
         var $siteContainer = $('.site-content');
         var template;
@@ -73,7 +72,7 @@ define([
             // dynamically load controller file, and
             // call its init() function.
             require([controllerPath], function(controller) {
-                controller.init();
+                controller.init(options);
             });
         }
 

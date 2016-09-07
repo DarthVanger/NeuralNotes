@@ -18,6 +18,7 @@ define([
     };
 
     function save(thought, parentThought) {
+        console.debug('save(). parentThought: ', parentThought);
         if (!parentThought) {
             parentThought = brainFolder;
         }

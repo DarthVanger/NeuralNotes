@@ -12,11 +12,13 @@ define([
         init: init
     };
 
-    function init() {
+    function init(options) {
         if (!authService.authResult) {
             router.go('/');
             return;
         }
+
+        console.log('create-thought.init(). options: ', options);
 
         var $form = $('.create-thought-form');
         var $thoughtContent = $form.find('[name="thoughtContent"]');
@@ -33,7 +35,7 @@ define([
                 content: thoughtContent
             };
 
-            thoughtStorage.save(thought).then(function() {
+            thoughtStorage.save(thought, options.parentThought).then(function() {
                 router.go('view-thoughts');
             });
 

@@ -1,6 +1,8 @@
 console.debug('thoughts-mind-map-view.js');
 define([
+    'router'
 ], function(
+    router
 ) {
     console.debug('vis.js: ', vis);
 
@@ -70,24 +72,53 @@ define([
         // initialize your network!
         var network = new vis.Network(container, data, options);
 
-        container.addEventListener('click', showContextMenu);
+        var menu = document.createElement('div');
+        menu.innerHTML = '<div><i class="fa fa-plus-circle fa-big"></i> add thought</div>';
+        menu.style.fontSize = '16px';
+        menu.style.border = '1px solid black';
+        menu.style.cursor = 'pointer';
+        menu.style.padding= '5px';
+        menu.style.backgroundColor = '#fff';
+        menu.style.position = 'absolute';
+        menu.style.display = 'none';
+        container.appendChild(menu);
+        //container.addEventListener('click', showContextMenu);
+        
+        menu.addEventListener('click', createThought);
 
-        function showContextMenu(event) {
-            var x = event.clientX;
-            var y = event.clientY;
+        function showContextMenu(x, y) {
             console.log('x: ', x, 'y: ', y);
-            var menu = document.createElement('div');
-            menu.innerHTML = '<div>asdfasdf<br /> asdfasdfa</div>';
-            menu.style.position = 'absolute';
-            menu.style.backgroundColor = 'red';
             menu.style.left = x + 'px';
             menu.style.top = y + 'px';
-
-            container.appendChild(menu);
+            menu.style.display = 'block';
+            //document.addEventListener('click', removeMenu);
         }
 
+        function removeContextMenu() {
+            console.log('removing menu');
+            menu.style.display = 'none';
+            //menu.style.display = 'none';
+            //menu.parentNode.removeChild(menu);
+            //document.removeEventListener('click', removeMenu);
+        }
+
+        var menuIsShown;
+        var targetThought;
         network.on('click', function(event) {
-            var targetThought = getTargetThought(event);
+            var x = event.event.center.x;
+            var y = event.event.center.y;
+            console.log('x: ', x, 'y: ', y);
+            if (menuIsShown) {
+                removeContextMenu();
+                menuIsShown = false;
+            } else {
+                if (event.nodes.length > 0) {
+                    targetThought = getTargetThought(event);
+                    showContextMenu(x, y);
+                    menuIsShown = true;
+                }
+            }
+
         });
 
         function getTargetThought(networkEvent) {
@@ -98,8 +129,17 @@ define([
             console.log('targetNode: ', targetNode);
             var targetThoughtName = targetNode.label;
             console.log('targetThoughtName: ', targetThoughtName);
-            var targetThought = _.findWhere(thoughts, { name: targetThoughtName });
+            targetThought = { id: targetNodeId };
+            //var targetThought = _.findWhere(thoughts, { name: targetThoughtName });
             console.log('targetThought: ', targetThought);
+            return targetThought;
+        }
+
+        function createThought() {
+            console.log('redirecting to create-thought. TargetThought: ', targetThought);
+            router.go('create-thought', {
+                parentThought: targetThought
+            });
         }
 
     }

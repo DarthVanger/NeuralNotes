@@ -72,6 +72,13 @@ define([
         // initialize your network!
         var network = new vis.Network(container, data, options);
 
+        initializeContextMenu(container, network, nodes);
+    }
+
+    /**
+     * Initialize context menu, that appears when clicking on thought.
+     */
+    function initializeContextMenu(container, network, nodes) {
         var menu = document.createElement('div');
         menu.innerHTML = '<div><i class="fa fa-plus-circle fa-big"></i> add thought</div>';
         menu.style.fontSize = '16px';
@@ -141,7 +148,6 @@ define([
                 parentThought: targetThought
             });
         }
-
     }
 
 });

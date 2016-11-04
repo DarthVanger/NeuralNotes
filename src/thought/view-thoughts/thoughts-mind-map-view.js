@@ -23,7 +23,13 @@ define([
         console.debug('redner!');
         console.debug('thoughts: ', thoughts);
 
-        renderVisNetwork();
+        var visNetwork = renderVisNetwork();
+        visNetwork.on('click', changeThought);
+    }
+
+    function changeThought() {
+        console.log('change thought!');
+        
     }
 
     function renderVisNetwork() {
@@ -34,8 +40,8 @@ define([
 
         // TODO: call function only ones.
         // Now it creates two pairs of edges for every node xD.
-        visDataSet = mapThoughtsToVisNetwork().visDataSet;
-        visEdges = mapThoughtsToVisNetwork().visEdges;
+        visDataSet = mapThoughtsToVisNetwork(thoughts[0]).visDataSet;
+        visEdges = mapThoughtsToVisNetwork(thoughts[0]).visEdges;
 
         /**
          * Create vis data set from structure
@@ -84,14 +90,19 @@ define([
         });
         contextMenu.init();
 
+        return network;
+
         /**
          * Map thought and its children into a vis data set structure
          */
-        function mapThoughtsToVisNetwork() {
-            var visDataSet = thoughts.map(function(thought, index) {
-                return { id: thought.id, label: thought.name };
-            });
-            _.each(thoughts, function(thought) {
+        function mapThoughtsToVisNetwork(thought) {
+            var visDataSet = [];
+            var visEdges = [];
+
+            visDataSet.push({ id: thought.id, label: thought.name });
+            //var visDataSet = thoughts.map(function(thought, index) {
+            //    return { id: thought.id, label: thought.name };
+            //});
                 console.log('thought.children: ', thought.children);
                 _.each(thought.children, function(childThought) {
                     console.log('pushing childThought: ', childThought);
@@ -101,7 +112,7 @@ define([
                         to: childThought.id
                     });
                 });
-            });
+            //});
 
             return {
                 visDataSet: visDataSet,

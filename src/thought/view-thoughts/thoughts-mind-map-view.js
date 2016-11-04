@@ -1,8 +1,10 @@
 console.debug('thoughts-mind-map-view.js');
 define([
-    'router'
+    'router',
+    'thought/view-thoughts/context-menu'
 ], function(
-    router
+    router,
+    ContextMenu
 ) {
     console.debug('vis.js: ', vis);
 
@@ -24,12 +26,12 @@ define([
         /**
          * Initialize vis data set
          **/
-        var visDataSet = thoughts.map(function(thought, index) {
-            return { id: thought.id, label: thought.name };
-        });
         var visEdges = [];
 
-        mapThoughtsToVisNetwork();
+        // TODO: call function only ones.
+        // Now it creates two pairs of edges for every node xD.
+        visDataSet = mapThoughtsToVisNetwork().visDataSet;
+        visEdges = mapThoughtsToVisNetwork().visEdges;
 
         /**
          * Create vis data set from structure
@@ -66,17 +68,25 @@ define([
         };
 
         // initialize your network!
+        console.log('initilizing vis network');
+        console.log('container: ', container);
+        console.log('data: ', data);
         var network = new vis.Network(container, data, options);
 
-        /**
-         * Initialize context menu that appears on click on thought.
-         */
-        initializeContextMenu(container, network, nodes);
+        var contextMenu = new ContextMenu({
+            container: container,
+            network: network,
+            nodes: nodes
+        });
+        contextMenu.init();
 
         /**
          * Map thought and its children into a vis data set structure
          */
         function mapThoughtsToVisNetwork() {
+            var visDataSet = thoughts.map(function(thought, index) {
+                return { id: thought.id, label: thought.name };
+            });
             _.each(thoughts, function(thought) {
                 console.log('thought.children: ', thought.children);
                 _.each(thought.children, function(childThought) {
@@ -88,97 +98,16 @@ define([
                     });
                 });
             });
+
+            return {
+                visDataSet: visDataSet,
+                visEdges: visEdges
+            };
         }
 
     }
 
-    /**
-     * TODO: move to seprate file.
-     * Initialize context menu, that appears when clicking on thought.
-     */
-    function initializeContextMenu(container, network, nodes) {
-        var menu = document.createElement('div');
-        menu.innerHTML = '<div><i class="fa fa-plus-circle fa-big"></i> add thought</div>';
-        menu.style.fontSize = '16px';
-        menu.style.border = '1px solid black';
-        menu.style.cursor = 'pointer';
-        menu.style.padding= '5px';
-        menu.style.backgroundColor = '#fff';
-        menu.style.position = 'absolute';
-        menu.style.display = 'none';
-        container.appendChild(menu);
-        //container.addEventListener('click', showContextMenu);
-        
-        /**
-         * Stores currently selected thought -- the one which user clicked last time.
-         */
-        var currentSelectedThought;
-
-        menu.addEventListener('click', createThought);
-
-        network.on('click', showContextMenuHandler);
-
-        function showContextMenuHandler(event) {
-            var menuIsShown;
-
-            handleClick();
-
-            function handleClick() {
-                var x = event.event.center.x;
-                var y = event.event.center.y;
-                console.log('x: ', x, 'y: ', y);
-                if (menuIsShown) {
-                    removeContextMenu();
-                    menuIsShown = false;
-                } else {
-                    if (event.nodes.length > 0) {
-                        currentSelectedThought = getTargetThought(event);
-                        showContextMenu(x, y);
-                        menuIsShown = true;
-                    }
-                }
-            }
-
-            function showContextMenu(x, y) {
-                console.log('x: ', x, 'y: ', y);
-                menu.style.left = x + 'px';
-                menu.style.top = y + 'px';
-                menu.style.display = 'block';
-                //document.addEventListener('click', removeMenu);
-            }
-
-            function removeContextMenu() {
-                console.log('removing menu');
-                menu.style.display = 'none';
-                //menu.style.display = 'none';
-                //menu.parentNode.removeChild(menu);
-                //document.removeEventListener('click', removeMenu);
-            }
-
-            function getTargetThought(networkEvent) {
-                console.log('network click event: ', networkEvent);
-                var targetNodeId = networkEvent.nodes[0];
-                console.log('targetNodeId: ', targetNodeId);
-                var targetNode = nodes.get(targetNodeId);
-                console.log('targetNode: ', targetNode);
-                var targetThoughtName = targetNode.label;
-                console.log('targetThoughtName: ', targetThoughtName);
-                targetThought = { id: targetNodeId };
-                //var targetThought = _.findWhere(thoughts, { name: targetThoughtName });
-                console.log('targetThought: ', targetThought);
-                return targetThought;
-            }
-
-        }
-
-        function createThought(currentSelectedThought) {
-            console.log('redirecting to create-thought. TargetThought: ', currentSelectedThought);
-            router.go('create-thought', {
-                parentThought: currentSelectedThought
-            });
-        }
 
 
-    }
 
 });

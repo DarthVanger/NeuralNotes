@@ -21,13 +21,20 @@ define([
         console.debug('redner!');
         console.debug('thoughts: ', thoughts);
 
+        /**
+         * Initialize vis data set
+         **/
         var visDataSet = thoughts.map(function(thought, index) {
             return { id: thought.id, label: thought.name };
         });
         var visEdges = [];
 
-        renderVisDataSet();
+        mapThoughtsToVisNetwork();
 
+        /**
+         * Create vis data set from structure
+         * generated from thoughts
+         */
         console.debug('visDataSet: ', visDataSet);
         console.debug('visEdges: ', visEdges);
         var nodes = new vis.DataSet(visDataSet);
@@ -35,8 +42,15 @@ define([
         // create an array with edges
         var edges = new vis.DataSet(visEdges);
 
-        // create a network
+        /**
+         * Container for the vis network visualization
+         */
         var container = document.getElementById('thoughts-container');
+
+        /**
+         * Collect options and initialize the vis network
+         * visualization (render).
+         */
 
         // provide the data in the vis format
         var data = {
@@ -54,9 +68,15 @@ define([
         // initialize your network!
         var network = new vis.Network(container, data, options);
 
+        /**
+         * Initialize context menu that appears on click on thought.
+         */
         initializeContextMenu(container, network, nodes);
 
-        function renderVisDataSet() {
+        /**
+         * Map thought and its children into a vis data set structure
+         */
+        function mapThoughtsToVisNetwork() {
             _.each(thoughts, function(thought) {
                 console.log('thought.children: ', thought.children);
                 _.each(thought.children, function(childThought) {
@@ -73,6 +93,7 @@ define([
     }
 
     /**
+     * TODO: move to seprate file.
      * Initialize context menu, that appears when clicking on thought.
      */
     function initializeContextMenu(container, network, nodes) {

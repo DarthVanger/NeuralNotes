@@ -2,7 +2,7 @@
   "name": "Brain",
   "version": "0.0.0",
   "description": "Thought managment tool",
-  "main": "main.js",
+  "main": "server.js",
   "scripts": {
     "test": "test"
   },

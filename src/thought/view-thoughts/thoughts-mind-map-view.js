@@ -19,32 +19,14 @@ define([
     
     function render() {
         console.debug('redner!');
-     // create an array with nodes
-        //var nodes = new vis.DataSet([
-        //    {id: 1, label: 'Node 1'},
-        //    {id: 2, label: 'Node 2'},
-        //    {id: 3, label: 'Node 3'},
-        //    {id: 4, label: 'Node 4'},
-        //    {id: 5, label: 'Node 5'}
-        //]);
-
         console.debug('thoughts: ', thoughts);
 
         var visDataSet = thoughts.map(function(thought, index) {
             return { id: thought.id, label: thought.name };
         });
         var visEdges = [];
-        _.each(thoughts, function(thought) {
-            console.log('thought.children: ', thought.children);
-            _.each(thought.children, function(childThought) {
-                console.log('pushing children');
-                visDataSet.push({ id: childThought.id, label: childThought.name });
-                visEdges.push({
-                    from: thought.id,
-                    to: childThought.id
-                });
-            });
-        });
+
+        renderVisDataSet();
 
         console.debug('visDataSet: ', visDataSet);
         console.debug('visEdges: ', visEdges);
@@ -73,6 +55,21 @@ define([
         var network = new vis.Network(container, data, options);
 
         initializeContextMenu(container, network, nodes);
+
+        function renderVisDataSet() {
+            _.each(thoughts, function(thought) {
+                console.log('thought.children: ', thought.children);
+                _.each(thought.children, function(childThought) {
+                    console.log('pushing childThought: ', childThought);
+                    visDataSet.push({ id: childThought.id, label: childThought.name });
+                    visEdges.push({
+                        from: thought.id,
+                        to: childThought.id
+                    });
+                });
+            });
+        }
+
     }
 
     /**

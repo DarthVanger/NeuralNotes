@@ -23,6 +23,10 @@ define([
         console.debug('redner!');
         console.debug('thoughts: ', thoughts);
 
+        renderVisNetwork();
+    }
+
+    function renderVisNetwork() {
         /**
          * Initialize vis data set
          **/
@@ -104,7 +108,6 @@ define([
                 visEdges: visEdges
             };
         }
-
     }
 
 

@@ -88,63 +88,76 @@ define([
         container.appendChild(menu);
         //container.addEventListener('click', showContextMenu);
         
+        /**
+         * Stores currently selected thought -- the one which user clicked last time.
+         */
+        var currentSelectedThought;
+
         menu.addEventListener('click', createThought);
 
-        function showContextMenu(x, y) {
-            console.log('x: ', x, 'y: ', y);
-            menu.style.left = x + 'px';
-            menu.style.top = y + 'px';
-            menu.style.display = 'block';
-            //document.addEventListener('click', removeMenu);
-        }
+        network.on('click', showContextMenuHandler);
 
-        function removeContextMenu() {
-            console.log('removing menu');
-            menu.style.display = 'none';
-            //menu.style.display = 'none';
-            //menu.parentNode.removeChild(menu);
-            //document.removeEventListener('click', removeMenu);
-        }
+        function showContextMenuHandler(event) {
+            var menuIsShown;
 
-        var menuIsShown;
-        var targetThought;
-        network.on('click', function(event) {
-            var x = event.event.center.x;
-            var y = event.event.center.y;
-            console.log('x: ', x, 'y: ', y);
-            if (menuIsShown) {
-                removeContextMenu();
-                menuIsShown = false;
-            } else {
-                if (event.nodes.length > 0) {
-                    targetThought = getTargetThought(event);
-                    showContextMenu(x, y);
-                    menuIsShown = true;
+            handleClick();
+
+            function handleClick() {
+                var x = event.event.center.x;
+                var y = event.event.center.y;
+                console.log('x: ', x, 'y: ', y);
+                if (menuIsShown) {
+                    removeContextMenu();
+                    menuIsShown = false;
+                } else {
+                    if (event.nodes.length > 0) {
+                        currentSelectedThought = getTargetThought(event);
+                        showContextMenu(x, y);
+                        menuIsShown = true;
+                    }
                 }
             }
 
-        });
+            function showContextMenu(x, y) {
+                console.log('x: ', x, 'y: ', y);
+                menu.style.left = x + 'px';
+                menu.style.top = y + 'px';
+                menu.style.display = 'block';
+                //document.addEventListener('click', removeMenu);
+            }
 
-        function getTargetThought(networkEvent) {
-            console.log('network click event: ', networkEvent);
-            var targetNodeId = networkEvent.nodes[0];
-            console.log('targetNodeId: ', targetNodeId);
-            var targetNode = nodes.get(targetNodeId);
-            console.log('targetNode: ', targetNode);
-            var targetThoughtName = targetNode.label;
-            console.log('targetThoughtName: ', targetThoughtName);
-            targetThought = { id: targetNodeId };
-            //var targetThought = _.findWhere(thoughts, { name: targetThoughtName });
-            console.log('targetThought: ', targetThought);
-            return targetThought;
+            function removeContextMenu() {
+                console.log('removing menu');
+                menu.style.display = 'none';
+                //menu.style.display = 'none';
+                //menu.parentNode.removeChild(menu);
+                //document.removeEventListener('click', removeMenu);
+            }
+
+            function getTargetThought(networkEvent) {
+                console.log('network click event: ', networkEvent);
+                var targetNodeId = networkEvent.nodes[0];
+                console.log('targetNodeId: ', targetNodeId);
+                var targetNode = nodes.get(targetNodeId);
+                console.log('targetNode: ', targetNode);
+                var targetThoughtName = targetNode.label;
+                console.log('targetThoughtName: ', targetThoughtName);
+                targetThought = { id: targetNodeId };
+                //var targetThought = _.findWhere(thoughts, { name: targetThoughtName });
+                console.log('targetThought: ', targetThought);
+                return targetThought;
+            }
+
         }
 
-        function createThought() {
-            console.log('redirecting to create-thought. TargetThought: ', targetThought);
+        function createThought(currentSelectedThought) {
+            console.log('redirecting to create-thought. TargetThought: ', currentSelectedThought);
             router.go('create-thought', {
-                parentThought: targetThought
+                parentThought: currentSelectedThought
             });
         }
+
+
     }
 
 });

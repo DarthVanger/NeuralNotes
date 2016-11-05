@@ -31,8 +31,8 @@ define([], function() {
             network.on('click', showContextMenuHandler);
         }
 
+        var menuIsShown;
         function showContextMenuHandler(event) {
-            var menuIsShown;
 
             handleClick();
 

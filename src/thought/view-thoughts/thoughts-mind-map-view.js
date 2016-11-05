@@ -36,6 +36,10 @@ define([
         visNetwork.on('click', changeThought);
     }
 
+    /**
+     * Load child thoughts for clicked thought, 
+     * and redraw the network for new thoughts.
+     */
     function changeThought(event) {
         if (visNetworkHelper.clickedOnThought(event)) {
             console.log('change thought!');

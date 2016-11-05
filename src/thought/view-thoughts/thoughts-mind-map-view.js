@@ -2,11 +2,13 @@ console.debug('thoughts-mind-map-view.js');
 define([
     'router',
     'thought/view-thoughts/context-menu',
-    'thought/view-thoughts/vis-network-helper'
+    'thought/view-thoughts/vis-network-helper',
+    'thought/thought-storage'
 ], function(
     router,
     ContextMenu,
-    VisNetworkHelper
+    VisNetworkHelper,
+    thoughtStorage
 ) {
     console.debug('vis.js: ', vis);
 
@@ -38,13 +40,26 @@ define([
         if (visNetworkHelper.clickedOnThought(event)) {
             console.log('change thought!');
             var targetThoughtId = visNetworkHelper.getTargetThoughtId(event);
-            var targetThought = _.findWhere(currentViewedThought.children, { id: targetThoughtId });
+            var visibleThoughts = currentViewedThought.children.concat([currentViewedThought.parent]);
+            var targetThought = _.findWhere(visibleThoughts, { id: targetThoughtId });
             console.log('targetThoughtId: ', targetThoughtId);
             console.log('targetThought: ', targetThought);
+
+            if (!targetThought) throw new Error('Target thought not found');
+
+            thoughtStorage.fetchChildThoughts(targetThoughtId)
+                .then(function(children) {
+                    console.log('fetched child thoughts: ', children);
+                    targetThought.children = children;
+                    currentViewedThought = targetThought;
+                    render();
+                    //renderVisNetworkForOneThought(targetThought);
+                });
         }
     }
 
     function renderVisNetworkForOneThought(thought) {
+        console.log('renderVisNetworkForOneThought(): ', thought);
         /**
          * Initialize vis data set
          **/
@@ -54,6 +69,13 @@ define([
         // Now it creates two pairs of edges for every node xD.
         visDataSet = mapThoughtsToVisNetwork(thought).visDataSet;
         visEdges = mapThoughtsToVisNetwork(thought).visEdges;
+
+        // make edges be arrows.
+        _.each(visEdges, function(visEdge) {
+            visEdge.arrows = {
+                to: true
+            };
+        });
 
         /**
          * Create vis data set from structure
@@ -70,6 +92,7 @@ define([
          * Container for the vis network visualization
          */
         var container = document.getElementById('thoughts-container');
+        container.innerHTML = '';
 
         /**
          * Collect options and initialize the vis network
@@ -86,7 +109,21 @@ define([
           interaction: {
             navigationButtons: true,
             keyboard: true
+          },
+          groups: {
+             children: {
+                 color: {
+                     background:'#eef',
+                     borderWidth:3
+                 }
+             },
+             parent: {
+                 color: {
+                     background:'#faa'
+                 }
+             }
           }
+
         };
 
         // initialize your network!
@@ -112,13 +149,32 @@ define([
             var visEdges = [];
 
             visDataSet.push({ id: thought.id, label: thought.name });
+
+            // draw a parent thought if it's not the root node.
+            if (thought.parent) {
+                visDataSet.push({
+                    id: thought.parent.id,
+                    label: thought.parent.name,
+                    group: 'parent'
+                });
+                visEdges.push({
+                    from: thought.parent.id,
+                    to: thought.id
+                });
+            }
+
             //var visDataSet = thoughts.map(function(thought, index) {
             //    return { id: thought.id, label: thought.name };
             //});
                 console.log('thought.children: ', thought.children);
                 _.each(thought.children, function(childThought) {
                     console.log('pushing childThought: ', childThought);
-                    visDataSet.push({ id: childThought.id, label: childThought.name });
+                    childThought.parent = thought;
+                    visDataSet.push({
+                        id: childThought.id,
+                        label: childThought.name,
+                        group: 'children'
+                    });
                     visEdges.push({
                         from: thought.id,
                         to: childThought.id

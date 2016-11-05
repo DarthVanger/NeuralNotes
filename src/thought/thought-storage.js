@@ -14,7 +14,8 @@ define([
     return {
         scanDrive: scanDrive,
         save: save,
-        getThoughts: getThoughts
+        getThoughts: getThoughts,
+        fetchChildThoughts: fetchChildThoughts
     };
 
     /**
@@ -95,6 +96,24 @@ define([
             });
         });
 
+    }
+
+    function fetchChildThoughts(thoughtId) {
+        return new Promise(function(resolve, reject) {
+            console.debug('fetchChildThoughts() for thoughtId: ', thoughtId);
+            getFiles(thoughtId).then(function(files) {
+                console.debug('files inside the thought folder: ', files);
+                //thoughts.push(brainFolder);
+                var children = [];
+                _.each(files, function(file) {
+                    if (file.mimeType == 'application/vnd.google-apps.folder') {
+                        children.push(file);
+                    }
+                });
+                console.debug('fetchChildThoughts() thoughts: ', children);
+                resolve(children);
+            });
+        });
     }
 
     /**

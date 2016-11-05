@@ -12,6 +12,7 @@ define([
 
     var visNetworkHelper;
     var thoughts = [];
+    var currentViewedThought;
 
     return {
         set: set,
@@ -20,13 +21,14 @@ define([
 
     function set(p_thoughts) {
         thoughts = p_thoughts;
+        currentViewedThought = thoughts[0];
     }
     
     function render() {
         console.debug('redner!');
         console.debug('thoughts: ', thoughts);
 
-        var visNetwork = renderVisNetwork();
+        var visNetwork = renderVisNetworkForOneThought(currentViewedThought);
         console.log('visNetwork: ', visNetwork);
         visNetworkHelper = new VisNetworkHelper(visNetwork);
         visNetwork.on('click', changeThought);
@@ -36,11 +38,13 @@ define([
         if (visNetworkHelper.clickedOnThought(event)) {
             console.log('change thought!');
             var targetThoughtId = visNetworkHelper.getTargetThoughtId(event);
+            var targetThought = _.findWhere(currentViewedThought.children, { id: targetThoughtId });
             console.log('targetThoughtId: ', targetThoughtId);
+            console.log('targetThought: ', targetThought);
         }
     }
 
-    function renderVisNetwork() {
+    function renderVisNetworkForOneThought(thought) {
         /**
          * Initialize vis data set
          **/
@@ -48,8 +52,8 @@ define([
 
         // TODO: call function only ones.
         // Now it creates two pairs of edges for every node xD.
-        visDataSet = mapThoughtsToVisNetwork(thoughts[0]).visDataSet;
-        visEdges = mapThoughtsToVisNetwork(thoughts[0]).visEdges;
+        visDataSet = mapThoughtsToVisNetwork(thought).visDataSet;
+        visEdges = mapThoughtsToVisNetwork(thought).visEdges;
 
         /**
          * Create vis data set from structure

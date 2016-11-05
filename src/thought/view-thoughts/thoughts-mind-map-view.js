@@ -1,13 +1,16 @@
 console.debug('thoughts-mind-map-view.js');
 define([
     'router',
-    'thought/view-thoughts/context-menu'
+    'thought/view-thoughts/context-menu',
+    'thought/view-thoughts/vis-network-helper'
 ], function(
     router,
-    ContextMenu
+    ContextMenu,
+    VisNetworkHelper
 ) {
     console.debug('vis.js: ', vis);
 
+    var visNetworkHelper;
     var thoughts = [];
 
     return {
@@ -24,12 +27,17 @@ define([
         console.debug('thoughts: ', thoughts);
 
         var visNetwork = renderVisNetwork();
+        console.log('visNetwork: ', visNetwork);
+        visNetworkHelper = new VisNetworkHelper(visNetwork);
         visNetwork.on('click', changeThought);
     }
 
-    function changeThought() {
-        console.log('change thought!');
-        
+    function changeThought(event) {
+        if (visNetworkHelper.clickedOnThought(event)) {
+            console.log('change thought!');
+            var targetThoughtId = visNetworkHelper.getTargetThoughtId(event);
+            console.log('targetThoughtId: ', targetThoughtId);
+        }
     }
 
     function renderVisNetwork() {

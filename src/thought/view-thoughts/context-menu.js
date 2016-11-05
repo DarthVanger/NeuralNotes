@@ -1,4 +1,8 @@
-define([], function() {
+define([
+    'router'
+], function(
+    router
+) {
     /**
      * Initialize context menu, that appears when clicking on thought.
      */
@@ -46,6 +50,7 @@ define([], function() {
                 } else {
                     if (event.nodes.length > 0) {
                         currentSelectedThought = getTargetThought(event);
+                        console.log('currentSelectedThought: ', JSON.stringify(currentSelectedThought));
                         showContextMenu(x, y);
                         menuIsShown = true;
                     }
@@ -84,7 +89,7 @@ define([], function() {
 
         }
 
-        function createThought(currentSelectedThought) {
+        function createThought() {
             console.log('redirecting to create-thought. TargetThought: ', currentSelectedThought);
             router.go('create-thought', {
                 parentThought: currentSelectedThought

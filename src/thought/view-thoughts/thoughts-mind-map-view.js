@@ -40,6 +40,12 @@ define([
         if (visNetworkHelper.clickedOnThought(event)) {
             console.log('change thought!');
             var targetThoughtId = visNetworkHelper.getTargetThoughtId(event);
+
+            // if clicking on the current thought, do nothing.
+            if (targetThoughtId === currentViewedThought.id) {
+                return;
+            }
+
             var visibleThoughts = currentViewedThought.children.concat([currentViewedThought.parent]);
             var targetThought = _.findWhere(visibleThoughts, { id: targetThoughtId });
             console.log('targetThoughtId: ', targetThoughtId);

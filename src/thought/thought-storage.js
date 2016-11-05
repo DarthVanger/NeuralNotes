@@ -17,6 +17,10 @@ define([
         getThoughts: getThoughts
     };
 
+    /**
+     * Create a thought: a directory and a file with thought
+     * contents inside.
+     */
     function save(thought, parentThought) {
         console.debug('save(). parentThought: ', parentThought);
         if (!parentThought) {
@@ -37,6 +41,11 @@ define([
         });
     }
 
+    /**
+     * Try to find "Brain" folder on google drive,
+     * then read its contents,
+     * OR create the "Brain" folder, if it's not found.
+     */
     function scanDrive() {
         return new Promise(function(resolve, reject) {
             findBrainFolder().then(function(result) {
@@ -55,6 +64,10 @@ define([
         return thoughts;
     }
 
+    /**
+     * Get files from brain folder, which are childs
+     * of the root "Brain" node.
+     */
     function readBrain() {
         return new Promise(function(resolve, reject) {
             console.debug('readBrain()');
@@ -84,6 +97,9 @@ define([
 
     }
 
+    /**
+     * Get files from a folder.
+     */
     function getFiles(folderId) {
         //var request = gapi.client.request({
         //    path: '/drive/v3/files/' + folderId,
@@ -114,6 +130,9 @@ define([
         return promise;
     }
 
+    /**
+     * Create "Brain" directory in the root of google drive.
+     */
     function createBrainFolder() {
         console.debug('createBrainFolder!');
         return createDirectory({
@@ -123,6 +142,9 @@ define([
         });
     }
 
+    /**
+     * Try to find "Brain" folder in google drive root.
+     */
     function findBrainFolder() {
         //console.debug('getFiles()');
         var request = gapi.client.drive.files.list({
@@ -143,8 +165,18 @@ define([
         return promise;
     }
 
-    // this guy from stackoverflow is a GOD! :)
-    // http://stackoverflow.com/a/10323612/1657101
+    /**
+     * Create a file with text content on google drive.
+     *
+     * @param {String} options.name - File name.
+     * @param {Array} options.parents - Parent directories for the file
+     * (goolge drive allows many parents).
+     * @param {String} options.content - Text content of the file.
+     *
+     * src of code:
+     * this guy from stackoverflow is a GOD! :)
+     * http://stackoverflow.com/a/10323612/1657101
+     */
     function createFile(options) {
         return createEmptyFile({
             name: options.name,
@@ -161,28 +193,10 @@ define([
 
     }
 
-    function createDirectory(options) {
-        var requestParams = {
-            "name": options.name,
-            "mimeType": "application/vnd.google-apps.folder",
-            //"description": "test file"
-        };
-
-        if (options.parents) {
-            requestParams.parents = options.parents;
-        }
-
-        var request = googleDriveApi.client.files.create(requestParams);
-
-        var promise = new Promise(function(resolve, reject) {
-            request.execute(function(newFile) {
-                resolve(newFile);
-            });
-        });
-
-        return promise;
-    }
-
+    /**
+     * Create empty file, which may be filled with content later,
+     * (in a separate request) to avoid making the multipart request.
+     */
     function createEmptyFile(options) {
         console.debug('createEmptyFile()');
         var request = googleDriveApi.client.files.create({
@@ -201,6 +215,9 @@ define([
         return promise;
     };
 
+    /**
+     * Update empty file with text content.
+     */
     function updateFile(createdFile, content) {
         console.debug('updateFile()');
         var request = gapi.client.request({
@@ -226,6 +243,35 @@ define([
         var promise = new Promise(function(resolve, reject) {
             request.execute(function(resp) {
                 resolve(resp);
+            });
+        });
+
+        return promise;
+    }
+
+    /**
+     * Create a directory.
+     *
+     * @param {String} options.name - Directory name.
+     * @param {Array} options.parents - Parent directories for the created
+     * directory (goolge drive allows many parents).
+     */
+    function createDirectory(options) {
+        var requestParams = {
+            "name": options.name,
+            "mimeType": "application/vnd.google-apps.folder",
+            //"description": "test file"
+        };
+
+        if (options.parents) {
+            requestParams.parents = options.parents;
+        }
+
+        var request = googleDriveApi.client.files.create(requestParams);
+
+        var promise = new Promise(function(resolve, reject) {
+            request.execute(function(newFile) {
+                resolve(newFile);
             });
         });
 

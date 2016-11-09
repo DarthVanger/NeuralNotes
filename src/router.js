@@ -63,16 +63,26 @@ define([
                 controllerPath = 'login';
                 break;
         }
-
-        $siteContainer.empty();
-        $siteContainer.append(template);
         
         console.debug('controllerPath: ', controllerPath);
         if (controllerPath.length > 0) {
             // dynamically load controller file, and
             // call its init() function.
             require([controllerPath], function(controller) {
+                console.log('router: calling controller init');
                 controller.init(options);
+                controller.templateData = controller.templateData || { };
+                console.log('controllerTemplateData: ', controller.templateData);
+                compiledTemplate = _.template(template)(controller.templateData);
+
+                // TODO: do something with this :P
+                $siteContainer.empty();
+                $siteContainer.append(compiledTemplate);
+
+                if (controller.onRender) {
+                    controller.onRender();
+                }
+
             });
         }
 

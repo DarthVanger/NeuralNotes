@@ -8,9 +8,15 @@ define([
     authService
 ) {
 
-    return {
-        init: init
+    var controller = {
+        init: init,
+        templateData: {},
+        onRender: onRender
     };
+
+    var self = controller;
+
+    return controller;
 
     function init(options) {
         if (!authService.authResult) {
@@ -18,8 +24,14 @@ define([
             return;
         }
 
-        console.log('create-thought.init(). options: ', options);
+        self.templateData.parentThought = options.parentThought;
 
+        console.log('create-thought.init(). options: ', options);
+        self.options = options;
+    }
+
+    function onRender() {
+        console.log('create-thought.onRender()');
         var $form = $('.create-thought-form');
         var $thoughtContent = $form.find('[name="thoughtContent"]');
         var $thoughtName = $form.find('[name="thoughtName"]');
@@ -35,7 +47,7 @@ define([
                 content: thoughtContent
             };
 
-            thoughtStorage.save(thought, options.parentThought).then(function() {
+            thoughtStorage.save(thought, self.options.parentThought).then(function() {
                 router.go('view-thoughts');
             });
 

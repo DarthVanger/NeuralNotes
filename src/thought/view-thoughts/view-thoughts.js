@@ -16,7 +16,8 @@ define([
 ) {
 
     return {
-        init: init
+        init: init,
+        onRender: onRender
     };
 
     function init() {
@@ -24,9 +25,6 @@ define([
             router.go('/');
             return;
         }
-
-        thoughtsMindMapView.set(thoughtStorage.getThoughts());
-        thoughtsMindMapView.render();
         
         //getFiles().then(function() {
 
@@ -36,6 +34,11 @@ define([
 
             //listThoughts();
         //});
+    }
+
+    function onRender() {
+        thoughtsMindMapView.set(thoughtStorage.getThoughts());
+        thoughtsMindMapView.render();
     }
 
     function listThoughts() {

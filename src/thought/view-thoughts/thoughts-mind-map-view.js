@@ -34,6 +34,8 @@ define([
         console.log('visNetwork: ', visNetwork);
         visNetworkHelper = new VisNetworkHelper(visNetwork);
         visNetwork.on('click', changeThought);
+
+        initializeAddThoughtButton(visNetwork);
     }
 
     /**
@@ -66,6 +68,44 @@ define([
                     //renderVisNetworkForOneThought(targetThought);
                 });
         }
+    }
+
+    function initializeAddThoughtButton(network) {
+        /**
+         * Stores currently selected thought -- the one which user clicked last time.
+         */
+        var currentSelectedThought = currentViewedThought;
+
+        var addChildButton = document.querySelector('[data-action="addChild"');
+        console.log('addChildButton: ', addChildButton);
+        console.log('adding click listener for addChildButton');
+        addChildButton.addEventListener('click', createThought);
+    //    network.on('click', networkClickHandler);
+
+        function createThought() {
+            console.log('redirecting to create-thought. TargetThought: ', currentSelectedThought);
+            router.go('create-thought', {
+                parentThought: currentSelectedThought
+            });
+            return false;
+        }
+    }
+
+
+
+    /**
+     * Initializes context menu.
+     * Currently not used anymore.
+     */
+    function initializeContextMenu() {
+        console.log('thoughts mind map view: initializing context menu');
+        var contextMenu = new ContextMenu({
+            container: container,
+            network: network,
+            nodes: nodes
+        });
+        contextMenu.init();
+
     }
 
     function renderVisNetworkForOneThought(thought) {
@@ -142,13 +182,6 @@ define([
         console.log('data: ', data);
         var network = new vis.Network(container, data, options);
 
-        var contextMenu = new ContextMenu({
-            container: container,
-            network: network,
-            nodes: nodes
-        });
-        contextMenu.init();
-
         return network;
 
         /**
@@ -178,7 +211,7 @@ define([
             //});
                 console.log('thought.children: ', thought.children);
                 _.each(thought.children, function(childThought) {
-                    console.log('pushing childThought: ', childThought);
+                    //console.log('pushing childThought: ', childThought);
                     childThought.parent = thought;
                     visDataSet.push({
                         id: childThought.id,

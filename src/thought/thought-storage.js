@@ -84,15 +84,17 @@ define([
                 });
                 console.debug('readBrain() thoughts: ', thoughts);
             }).then(function() {
-                var promises = [];
-                brainFolder.children.forEach(function(thought) {
-                    var promise = getFiles(thought.id).then(function(files) {
-                        thought.children = files;
-                    });
-                    promises.push(promise);
-                });
+                // code for getting children of all children of Brain folder.
+                // (currently displaying only one level for better performance)
+                //var promises = [];
+                //brainFolder.children.forEach(function(thought) {
+                //    var promise = getFiles(thought.id).then(function(files) {
+                //        thought.children = files;
+                //    });
+                //    promises.push(promise);
+                //});
 
-                Promise.all(promises).then(resolve);
+                //Promise.all(promises).then(resolve);
             });
         });
 

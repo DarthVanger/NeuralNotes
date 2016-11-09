@@ -64,9 +64,12 @@ define([
                     console.log('fetched child thoughts: ', children);
                     targetThought.children = children;
                     currentViewedThought = targetThought;
+                    $('[date-text="currentViewedThought"]').html(currentViewedThought.name);
                     render();
                     //renderVisNetworkForOneThought(targetThought);
                 });
+
+           
         }
     }
 
@@ -75,6 +78,7 @@ define([
          * Stores currently selected thought -- the one which user clicked last time.
          */
         var currentSelectedThought = currentViewedThought;
+        $('[data-text="currentViewedThought"]').html(currentViewedThought.name);
 
         var addChildButton = document.querySelector('[data-action="addChild"');
         console.log('addChildButton: ', addChildButton);

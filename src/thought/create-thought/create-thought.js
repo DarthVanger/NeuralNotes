@@ -7,7 +7,6 @@ define([
     router,
     authService
 ) {
-
     var controller = {
         init: init,
         templateData: {},
@@ -48,7 +47,7 @@ define([
             };
 
             thoughtStorage.save(thought, self.options.parentThought).then(function() {
-                router.go('view-thoughts');
+                router.go('view-thoughts', { thought: self.options.parentThought });
             });
 
             return false;

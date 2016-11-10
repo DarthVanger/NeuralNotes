@@ -7,6 +7,8 @@ define([
     viewThoughtsTemplate,
     loginTemplate
 ) {
+    var routeWithOptions;
+
     var router = {
         init: init,
         goToRoute: goToRoute,
@@ -23,7 +25,9 @@ define([
 
     function goToRouteInAdressBar() {
         var route = window.location.hash.slice(1);
-        goToRoute(route);
+        var routeName = route.split('/')[0];
+        var urlOptions = route.split('/').slice(1);
+        goToRoute(route, null, urlOptions);
     }
 
     function setRouterLinkListeners() {
@@ -40,7 +44,7 @@ define([
         });
     }
 
-    function goToRoute(route, options) {
+    function goToRoute(route, options, urlOptions) {
         console.debug('route: ', route);
         var $siteContainer = $('.site-content');
         var template;
@@ -57,13 +61,25 @@ define([
             case 'view-thoughts':
                 template = viewThoughtsTemplate;
                 controllerPath = 'thought/view-thoughts/view-thoughts';
+
+                if (urlOptions && urlOptions.length > 0) {
+                    console.log('urlOptions: ', urlOptions);
+                    options.thoughtId = urlOptions[0];
+                }
+
+                if (options && options.thought) {
+                    console.log('window.location.hash: ', window.location.hash);
+                    routeWithOptions = route + '/' + options.thought.id;
+                    console.log('window.location.hash: ', window.location.hash);
+                }
+
                 break;
             default: 
                 template = loginTemplate;
                 controllerPath = 'login';
                 break;
         }
-        
+
         console.debug('controllerPath: ', controllerPath);
         if (controllerPath.length > 0) {
             // dynamically load controller file, and
@@ -86,7 +102,7 @@ define([
             });
         }
 
-        window.location.hash = route;
+        window.location.hash = routeWithOptions;
     }
 
 });

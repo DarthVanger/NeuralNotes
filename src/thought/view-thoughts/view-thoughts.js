@@ -14,18 +14,25 @@ define([
     authService,
     thoughtTemplate
 ) {
+    var selectedThought;
+    var selectedThoughtId;
 
     return {
         init: init,
         onRender: onRender
     };
 
-    function init() {
+    function init(options) {
         if (!authService.authResult) {
             router.go('/');
             return;
         }
-        
+
+        if (options) {
+            selectedThought = options.thought;
+            selectedThoughtId = options.thoughtId;
+        }
+
         //getFiles().then(function() {
 
             //console.debug('thoughtsGraphView: ', thoughtsGraphView);
@@ -37,7 +44,11 @@ define([
     }
 
     function onRender() {
-        thoughtsMindMapView.set(thoughtStorage.getThoughts());
+        thoughtsMindMapView.set({
+            thoughts: thoughtStorage.getThoughts(),
+            selectedThought: selectedThought,
+            selectedThoughtId: selectedThoughtId
+        });
         thoughtsMindMapView.render();
     }
 

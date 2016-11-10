@@ -21,9 +21,11 @@ define([
         render: render
     };
 
-    function set(p_thoughts) {
-        thoughts = p_thoughts;
-        currentViewedThought = thoughts[0];
+    function set(options) {
+        thoughts = options.thoughts;
+        console.log('options.selectedThoughtId: ', options.selectedThoughtId);
+        currentViewedThought = options.selectedThought || thoughts[0];
+        console.log('currentViewedThought: ', currentViewedThought);
     }
     
     function render() {

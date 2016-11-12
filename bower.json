@@ -23,6 +23,7 @@
     "bootstrap-social": "~5.0.0",
     "font-awesome": "~4.5",
     "underscore": "~1.8.3",
-    "vis": "~4.16.1"
+    "vis": "~4.16.1",
+    "minilog": "^3.0.0"
   }
 }

@@ -23,6 +23,12 @@ define([
 ) {
 
     $(document).ready(function() {
+        var debug = false;
+
+        if (!debug) {
+            console.debug = function() { };
+        }
+
         console.debug('app start');
 
         console.debug('call router init');

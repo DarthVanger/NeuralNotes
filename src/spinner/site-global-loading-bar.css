@@ -1,7 +1,7 @@
-#brn-global-loading-bar {
+#site-global-loading-bar {
   position: absolute;
   z-index: 10;
-  display: none; /* hidden by default */
+  display: block; /* hidden by default */
   top: 0;
   width: 100%;
   height: 3px;

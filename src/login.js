@@ -2,12 +2,14 @@ define([
     'thought/thought-storage',
     'router',
     'auth-service',
-    'google-drive-api'
+    'google-drive-api',
+    'spinner/site-global-loading-bar'
 ], function(
     thoughtStorage,
     router,
     authService,
-    googleDriveApi
+    googleDriveApi,
+    siteGlobalLoadingBar
 ) {
 
     // Developer Console, https://console.developers.google.com
@@ -33,7 +35,9 @@ define([
 
     // Poll until gapi is ready
     function checkGAPI() {
+        siteGlobalLoadingBar.show();
         if (gapi && gapi.client) {
+            siteGlobalLoadingBar.hide();
             checkAuth();
         } else {
             setTimeout(checkGAPI, 100);

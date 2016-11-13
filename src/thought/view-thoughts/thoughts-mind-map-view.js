@@ -138,8 +138,6 @@ define([
          **/
         var visEdges = [];
 
-        // TODO: call function only ones.
-        // Now it creates two pairs of edges for every node xD.
         visDataSet = mapThoughtsToVisNetwork(thought).visDataSet;
         visEdges = mapThoughtsToVisNetwork(thought).visEdges;
 

@@ -66,6 +66,7 @@ define([
         googleDriveApi.loadDriveApi()
             .then(thoughtStorage.scanDrive)
             .then(function() {
+                console.debug('login: drive scanned, redirecting to /view-thoughts');
                 router.go('view-thoughts');
             });
 

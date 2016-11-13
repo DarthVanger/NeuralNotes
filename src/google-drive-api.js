@@ -18,11 +18,15 @@ define([
      */
     function loadDriveApi() {
         var promise = new Promise(function(resolve, reject) {
-              gapi.client.load('drive', 'v3', function() {
+              //gapi.client.load('drive', 'v3', function() {
+              gapi.client.load('drive', 'v3').then(function() {
                   self.client = gapi.client.drive;
-                  console.debug('loadDriveApi: resolving promise');
-                    console.debug('googleDriveApi.client.files: ', self.client.files);
+                  console.debug('loadDriveApi(): load API success');
+                  console.debug('loadDriveApi(): googleDriveApi.client.files: ', self.client.files);
                   resolve();
+              }, function onError(error) {
+                  //TODO: show user a notification that drive API failed.
+                  throw error;
               });
         });
 

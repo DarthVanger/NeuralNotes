@@ -24,10 +24,11 @@ define([
     }
 
     function goToRouteInAdressBar() {
+        console.debug('router.goToRouteInAdressBar()');
         var route = window.location.hash.slice(1);
         var routeName = route.split('/')[0];
-        var urlOptions = route.split('/').slice(1);
-        goToRoute(route, null, urlOptions);
+        console.debug('router: going to url "' + route + '"');
+        goToRoute(route);
     }
 
     /**
@@ -58,53 +59,51 @@ define([
      * They will be passed to controller.init(options) method.
      * @param {Array} urlOptions - Options for the route, read from url.
      */
-    function goToRoute(route, options, urlOptions) {
-        console.debug('route: ', route);
+    function goToRoute(route, options) {
+        console.debug('router.goToRoute(). Arguments: ', arguments);
         var $siteContainer = $('.site-content');
         var template;
         var controllerPath;
-        switch (route) {
-            case 'login':
-                template = loginTemplate;
-                controllerPath = 'login';
-                break;
-            case 'create-thought':
-                template = createThoughtTemplate;
-                controllerPath = 'thought/create-thought/create-thought';
-                break;
-            case 'view-thoughts':
-                template = viewThoughtsTemplate;
-                controllerPath = 'thought/view-thoughts/view-thoughts';
+        var routes = [
+            {
+                url: 'login',
+                template: loginTemplate,
+                controllerPath: 'login'
+            },
+            {
+                url: 'create-thought',
+                template: createThoughtTemplate,
+                controllerPath: 'thought/create-thought/create-thought'
+            },
+            {
+                url: 'view-thoughts',
+                template: viewThoughtsTemplate,
+                controllerPath: 'thought/view-thoughts/view-thoughts',
+            }
+        ];
 
-                if (urlOptions && urlOptions.length > 0) {
-                    console.log('urlOptions: ', urlOptions);
-                    options.thoughtId = urlOptions[0];
-                }
+        console.debug('router: routes config: ', routes);
 
-                if (options && options.thought) {
-                    console.log('window.location.hash: ', window.location.hash);
-                    routeWithOptions = route + '/' + options.thought.id;
-                    console.log('window.location.hash: ', window.location.hash);
-                }
+        var routeConfig = _.find(routes, { url: route });
 
-                break;
-            default: 
-                template = loginTemplate;
-                controllerPath = 'login';
-                break;
+        if (!routeConfig) {
+            var defaultRoute = 'login';
+            console.debug('router: route config for "' + route + '" not found, using default route "' + defaultRoute + '"');
+            routeConfig = _.find(routes, { url: defaultRoute });
         }
 
-        console.debug('controllerPath: ', controllerPath);
-        if (controllerPath.length > 0) {
+        console.debug('router: using route config: ', routeConfig);
+
+        if (routeConfig.controllerPath.length > 0) {
             // dynamically load controller file, and
             // call its init() function,
             // passing `options` param to it.
-            require([controllerPath], function(controller) {
+            require([routeConfig.controllerPath], function(controller) {
                 console.debug('router: calling init for controller: ', controller);
                 controller.init(options);
                 controller.templateData = controller.templateData || { };
                 console.debug('controllerTemplateData: ', controller.templateData);
-                compiledTemplate = _.template(template)(controller.templateData);
+                compiledTemplate = _.template(routeConfig.template)(controller.templateData);
 
                 // TODO: do something with this :P
                 $siteContainer.empty();
@@ -117,7 +116,21 @@ define([
             });
         }
 
-        window.location.hash = routeWithOptions;
+        // Tried to develop reading options from url from address bar
+        // -------------------- 
+        //
+        //window.location.hash = routeWithOptions;
+        //
+        //if (urlOptions && urlOptions.length > 0) {
+        //    console.log('urlOptions: ', urlOptions);
+        //    options.thoughtId = urlOptions[0];
+        //}
+
+        //if (options && options.thought) {
+        //    console.log('window.location.hash: ', window.location.hash);
+        //    routeWithOptions = route + '/' + options.thought.id;
+        //    console.log('window.location.hash: ', window.location.hash);
+        //}
     }
 
 });

@@ -48,12 +48,15 @@ define([
      * OR create the "Brain" folder, if it's not found.
      */
     function scanDrive() {
+        console.debug('thoughtStorage.scanDrive()');
         return new Promise(function(resolve, reject) {
             findBrainFolder().then(function(result) {
                 console.debug('findBrainFolder result: ', result);
                 if (result.length == 0) {
+                    console.info('thoughtStorage: Brain folder on Google Drive not found, create a new one.');
                     createBrainFolder().then(resolve);
                 } else {
+                    console.debug('thoughtStorage: Brain folder found, reading it');
                     brainFolder = result[0];
                     readBrain().then(resolve);
                 }
@@ -70,21 +73,24 @@ define([
      * of the root "Brain" node.
      */
     function readBrain() {
+        console.debug('thoughtStorege.readBrain()');
         return new Promise(function(resolve, reject) {
-            console.debug('readBrain()');
             getFiles(brainFolder.id).then(function(files) {
                 console.debug('files inside the brain folder: ', files);
-                console.debug('files saved to thoughts storage');
                 thoughts.push(brainFolder);
+                console.debug('files saved to thoughts storage');
                 brainFolder.children = [];
                 _.each(files, function(file) {
                     if (file.mimeType == 'application/vnd.google-apps.folder') {
                         brainFolder.children.push(file);
                     }
                 });
-                console.debug('readBrain() thoughts: ', thoughts);
-            }).then(function() {
-                // code for getting children of all children of Brain folder.
+                console.debug('thoughtStorage.readBrain(), stored thoughts: ', thoughts);
+            }).then(resolve);
+            //
+            // code for getting children of all children of Brain folder.
+            // -------------------------------
+            //}).then(function() {
                 // (currently displaying only one level for better performance)
                 //var promises = [];
                 //brainFolder.children.forEach(function(thought) {
@@ -95,7 +101,7 @@ define([
                 //});
 
                 //Promise.all(promises).then(resolve);
-            });
+            //});
         });
 
     }

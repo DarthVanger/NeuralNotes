@@ -243,6 +243,7 @@ define([
             .then(function(updatedFile) {
                 console.debug('updated file: ', updatedFile);
                 console.debug('Thought create success!');
+                return updatedFile;
             })
             .finally(function() {
                 spinner.hide();

@@ -100,10 +100,10 @@ define([
             // call its init() function,
             // passing `options` param to it.
             require([controllerPath], function(controller) {
-                console.log('router: calling controller init');
+                console.debug('router: calling init for controller: ', controller);
                 controller.init(options);
                 controller.templateData = controller.templateData || { };
-                console.log('controllerTemplateData: ', controller.templateData);
+                console.debug('controllerTemplateData: ', controller.templateData);
                 compiledTemplate = _.template(template)(controller.templateData);
 
                 // TODO: do something with this :P

@@ -23,7 +23,7 @@ define([
 ) {
 
     $(document).ready(function() {
-        var debug = false;
+        var debug = true;
 
         if (!debug) {
             console.debug = function() { };

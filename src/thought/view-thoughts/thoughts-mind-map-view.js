@@ -18,6 +18,8 @@ define([
     var thoughts = [];
     var currentViewedThought;
 
+    var spinner = siteGlobalLoadingBar.create('thoughts-view');
+
     return {
         set: set,
         render: render
@@ -71,8 +73,8 @@ define([
             console.log('targetThought: ', targetThought);
 
             if (!targetThought) throw new Error('Target thought not found');
-            var spinnerName = 'loading child thoughts';
-            siteGlobalLoadingBar.show(spinnerName);
+            var fetchingThoughtsSpinner = spinner.create('loading child thoughts');
+            fetchingThoughtsSpinner.show();
             thoughtStorage.fetchChildThoughts(targetThoughtId)
                 .then(function(children) {
                     console.log('fetched child thoughts: ', children);
@@ -83,7 +85,7 @@ define([
                     //renderVisNetworkForOneThought(targetThought);
                 })
                 .finally(function() {
-                    siteGlobalLoadingBar.hide(spinnerName);
+                    fetchingThoughtsSpinner.hide();
                 });
 
            

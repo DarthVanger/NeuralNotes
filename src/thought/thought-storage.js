@@ -1,13 +1,17 @@
 define([
-    'google-drive-api'
+    'google-drive-api',
+    'spinner/site-global-loading-bar'
 ], function(
-    googleDriveApi
+    googleDriveApi,
+    siteGlobalLoadingBar
 ) {
     'use strict';
 
     var BRAIN_FOLDER_NAME = 'Brain';
     var brainFolder;
     var thoughts = [];
+
+    var spinner = siteGlobalLoadingBar.create('thought-storage');
 
     var self = this;
 
@@ -30,6 +34,8 @@ define([
 
         console.debug('thoughtStorage.save(). Thought: ', thought);
         console.debug('googleDriveApi: ', googleDriveApi);
+
+        spinner.show();
         return createDirectory({
             name: thought.name,
             parents: [parentThought.id]
@@ -39,6 +45,9 @@ define([
                 content: thought.content,
                 parents: [createdDirectory.id],
             });
+        })
+        .finally(function() {
+            spinner.hide();
         });
     }
 
@@ -49,6 +58,7 @@ define([
      */
     function scanDrive() {
         console.debug('thoughtStorage.scanDrive()');
+        spinner.show();
         return new Promise(function(resolve, reject) {
             findBrainFolder().then(function(result) {
                 console.debug('findBrainFolder result: ', result);
@@ -60,6 +70,9 @@ define([
                     brainFolder = result[0];
                     readBrain().then(resolve);
                 }
+            })
+            .finally(function() {
+                spinner.hide();
             });
         });
     }
@@ -107,6 +120,7 @@ define([
     }
 
     function fetchChildThoughts(thoughtId) {
+        spinner.show();
         return new Promise(function(resolve, reject) {
             console.debug('fetchChildThoughts() for thoughtId: ', thoughtId);
             getFiles(thoughtId).then(function(files) {
@@ -120,6 +134,9 @@ define([
                 });
                 console.debug('fetchChildThoughts() thoughts: ', children);
                 resolve(children);
+            })
+            .finally(function() {
+                spinner.hide();
             });
         });
     }
@@ -144,12 +161,15 @@ define([
           'q': '"' + folderId + '" in parents'
         });
   
+        spinner.show();
         var promise = new Promise(function(resolve, reject) {
               request.execute(function(resp) {
                 //console.debug('resp: ', resp);
                 //var thoughts = resp.files;
                 //storage.thoughts = thoughts;
                 if (!resp.files) throw new Error('getFiles() received response without "files" property');
+
+                spinner.hide();
                 resolve(resp.files);
               })
         });
@@ -162,10 +182,14 @@ define([
      */
     function createBrainFolder() {
         console.debug('createBrainFolder!');
+        spinner.show();
         return createDirectory({
             name: BRAIN_FOLDER_NAME
         }).then(function(response) {
             console.debug('createBrainFolder successs!!, response: ', response);
+        })
+        .finally(function() {
+            spinner.hide();
         });
     }
 
@@ -180,12 +204,14 @@ define([
           'q': 'name = "' + BRAIN_FOLDER_NAME + '"'
         });
   
+        spinner.show();
         var promise = new Promise(function(resolve, reject) {
               request.execute(function(resp) {
                 //console.debug('resp: ', resp);
                 //var thoughts = resp.files;
                 //storage.thoughts = thoughts;
                 resolve(resp.files);
+                spinner.hide();
               });
         });
   
@@ -205,6 +231,7 @@ define([
      * http://stackoverflow.com/a/10323612/1657101
      */
     function createFile(options) {
+        spinner.show();
         return createEmptyFile({
             name: options.name,
             parents: options.parents
@@ -216,6 +243,9 @@ define([
             .then(function(updatedFile) {
                 console.debug('updated file: ', updatedFile);
                 console.debug('Thought create success!');
+            })
+            .finally(function() {
+                spinner.hide();
             });
 
     }
@@ -233,10 +263,14 @@ define([
             //"description": "test file"
         });
 
+        spinner.show();
         var promise = new Promise(function(resolve, reject) {
             request.execute(function(newFile) {
                 resolve(newFile);
             });
+        })
+        .finally(function() {
+            spinner.hide();
         });
 
         return promise;
@@ -247,6 +281,7 @@ define([
      */
     function updateFile(createdFile, content) {
         console.debug('updateFile()');
+        spinner.show();
         var request = gapi.client.request({
             path: '/upload/drive/v3/files/' + createdFile.id,
             method: 'PATCH',
@@ -271,6 +306,9 @@ define([
             request.execute(function(resp) {
                 resolve(resp);
             });
+        })
+        .finally(function() {
+            spinner.hide();
         });
 
         return promise;
@@ -296,10 +334,14 @@ define([
 
         var request = googleDriveApi.client.files.create(requestParams);
 
+        spinner.show();
         var promise = new Promise(function(resolve, reject) {
             request.execute(function(newFile) {
                 resolve(newFile);
             });
+        })
+        .finally(function() {
+            spinner.hide();
         });
 
         return promise;

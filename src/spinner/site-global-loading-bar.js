@@ -21,9 +21,10 @@ define([], function() {
     return loadingBarService;
 
     function create(name) {
+        console.debug('site-global-loading-bar: creating loader for name: ', name);
         var $msgEl = $loadingMessageElement.clone();
-        $msgEl.append($('<div>waiting for ' + name + '</div>'));
-        //$msgEl.addClass('visible');
+        $msgEl.append($('<div>' + name + '</div>'));
+        $msgEl.addClass('hidden-message');
         var isShown = false;
         var loaderInstance = {
             name: name,
@@ -31,13 +32,13 @@ define([], function() {
                 return loadingBarService.create(name + ' | ' + subName);
             },
             show: function() {
-                console.debug('site-global-loading-bar: appending message element for message: ', name);
+                console.debug('site-global-loading-bar: showing message element for message: ', name);
 
                 if (!isShown) {
+                    console.debug('site-global-loading-bar: appending message element for message: ', name);
                     $loadersContainer.append($msgEl);
-                } else {
-                    $msgEl.removeClass('hidden-message');
                 }
+                $msgEl.removeClass('hidden-message');
 
                 show(name);
                 isShown = true;

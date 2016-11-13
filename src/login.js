@@ -11,7 +11,6 @@ define([
     googleDriveApi,
     siteGlobalLoadingBar
 ) {
-
     // Developer Console, https://console.developers.google.com
     var CLIENT_ID = '586695064067-2k8v88rq1litcqj8v0ofnstj6t6qfhpa.apps.googleusercontent.com';
 
@@ -21,6 +20,9 @@ define([
         // Allows read-only access to file metadata and file content
         'https://www.googleapis.com/auth/drive.readonly'
     ];
+
+    var spinner = siteGlobalLoadingBar.create('login');
+    var checkGapiSpinner = spinner.create('checking google login');
 
     require(
       ['https://apis.google.com/js/client.js?onload=doNothing"'],
@@ -35,10 +37,10 @@ define([
 
     // Poll until gapi is ready
     function checkGAPI() {
-        var loaderMessage = 'checking google login';
-        siteGlobalLoadingBar.show(loaderMessage);
+        checkGapiSpinner.show();
         if (gapi && gapi.client) {
-            siteGlobalLoadingBar.hide(loaderMessage);
+            console.debug('checkGapiSpinner.hide()');
+            checkGapiSpinner.hide();
             checkAuth();
         } else {
             setTimeout(checkGAPI, 100);

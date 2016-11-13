@@ -21,6 +21,11 @@ define([
         render: render
     };
 
+    /**
+     * Set thoughts and selectedThought.
+     * @param {Array} options.thoughts - Array of thoughts to render.
+     * @param {String} options.selectedThoughtId - Id of thought that should be in focus (center).
+     */
     function set(options) {
         thoughts = options.thoughts;
         console.log('options.selectedThoughtId: ', options.selectedThoughtId);
@@ -28,6 +33,10 @@ define([
         console.log('currentViewedThought: ', currentViewedThought);
     }
     
+    /**
+     * Create new vis network for thoughts.
+     * (Erases the old one).
+     */
     function render() {
         console.debug('redner!');
         console.debug('thoughts: ', thoughts);

@@ -16,10 +16,13 @@ require.config({
 
 define([
     'router',
-    'underscore'
+    'underscore',
+    // add additional functionality to javascript native Promise.
+    'utils/promise-patch'
 ], function(
     router,
-    _underscore_undefined_
+    _underscore_undefined_,
+    _promise_patch_undefined
 ) {
 
     $(document).ready(function() {

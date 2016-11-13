@@ -3,12 +3,14 @@ define([
     'router',
     'thought/view-thoughts/context-menu',
     'thought/view-thoughts/vis-network-helper',
-    'thought/thought-storage'
+    'thought/thought-storage',
+    'spinner/site-global-loading-bar'
 ], function(
     router,
     ContextMenu,
     VisNetworkHelper,
-    thoughtStorage
+    thoughtStorage,
+    siteGlobalLoadingBar
 ) {
     console.debug('vis.js: ', vis);
 
@@ -69,7 +71,8 @@ define([
             console.log('targetThought: ', targetThought);
 
             if (!targetThought) throw new Error('Target thought not found');
-
+            var spinnerName = 'loading child thoughts';
+            siteGlobalLoadingBar.show(spinnerName);
             thoughtStorage.fetchChildThoughts(targetThoughtId)
                 .then(function(children) {
                     console.log('fetched child thoughts: ', children);
@@ -78,6 +81,9 @@ define([
                     $('[date-text="currentViewedThought"]').html(currentViewedThought.name);
                     render();
                     //renderVisNetworkForOneThought(targetThought);
+                })
+                .finally(function() {
+                    siteGlobalLoadingBar.hide(spinnerName);
                 });
 
            

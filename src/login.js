@@ -35,9 +35,10 @@ define([
 
     // Poll until gapi is ready
     function checkGAPI() {
-        siteGlobalLoadingBar.show();
+        var loaderMessage = 'checking google login';
+        siteGlobalLoadingBar.show(loaderMessage);
         if (gapi && gapi.client) {
-            siteGlobalLoadingBar.hide();
+            siteGlobalLoadingBar.hide(loaderMessage);
             checkAuth();
         } else {
             setTimeout(checkGAPI, 100);
@@ -88,11 +89,19 @@ define([
        * @param {Event} event Button click event.
        */
       function handleAuthClick(event) {
-          console.debug('handleAuthClick()');
-        gapi.auth.authorize(
-          {client_id: CLIENT_ID, scope: SCOPES, immediate: false},
-          handleAuthResult);
-        return false;
+          console.debug('login.handleAuthClick()');
+
+          var spinnerName = 'loading google drive login';
+          siteGlobalLoadingBar.show(spinnerName);
+          gapi.auth.authorize({
+              client_id: CLIENT_ID,
+              scope: SCOPES,
+              immediate: false
+          }, function(authResult) {
+              siteGlobalLoadingBar.hide(spinnerName);
+              handleAuthResult(authResult);
+          });
+          return false;
       }
 
       /**

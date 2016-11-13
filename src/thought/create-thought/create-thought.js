@@ -47,10 +47,19 @@ define([
             };
 
             thoughtStorage.save(thought, self.options.parentThought).then(function() {
-                router.go('view-thoughts', { thought: self.options.parentThought });
+                goBack();
             });
 
             return false;
         });
+
+        var $backButton = $('[data-action="goBack"]').on('click', function() {
+            goBack();
+        });
     }
+
+    function goBack() {
+        router.go('view-thoughts', { thought: self.options.parentThought });
+    }
+
 });

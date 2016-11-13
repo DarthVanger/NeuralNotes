@@ -30,6 +30,11 @@ define([
         goToRoute(route, null, urlOptions);
     }
 
+    /**
+     * Adds click listeners to elemtns with [data-router-link]
+     * attribute.
+     * Reads the `href` attribute as a route.
+     */
     function setRouterLinkListeners() {
         $('[data-router-link]').on('click', function(event) {
             event.preventDefault();
@@ -44,6 +49,15 @@ define([
         });
     }
 
+    /**
+     * Loads controller and view for a route,
+     * calls controller.init(options) method.
+     * @param {String} route - Route, one of defined below.
+     * @param {Object} options - Options that might be passed for the route,
+     * when going to a route pragrammaitcally.
+     * They will be passed to controller.init(options) method.
+     * @param {Array} urlOptions - Options for the route, read from url.
+     */
     function goToRoute(route, options, urlOptions) {
         console.debug('route: ', route);
         var $siteContainer = $('.site-content');
@@ -83,7 +97,8 @@ define([
         console.debug('controllerPath: ', controllerPath);
         if (controllerPath.length > 0) {
             // dynamically load controller file, and
-            // call its init() function.
+            // call its init() function,
+            // passing `options` param to it.
             require([controllerPath], function(controller) {
                 console.log('router: calling controller init');
                 controller.init(options);

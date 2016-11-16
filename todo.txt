@@ -1,0 +1,5 @@
+0) Repair creating child thought for currently selected one (now it always creates child of Brain).
+1) show thought content! :)
+2) Store thoughts in localStorage. Don't make request to google login before displaying cached thoughts.
+3) Hide thoughts that are far from currently viewed (mb 2-3 nodes away).
+4) save selected thought in url.

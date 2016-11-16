@@ -45,13 +45,6 @@ define([], function() {
             });
         });
 
-        // make edges be arrows.
-        _.each(visEdgesArray, function(visEdge) {
-            visEdge.arrows = {
-                to: true
-            };
-        });
-
         /**
          * Create vis data set from structure
          * generated from thoughts
@@ -75,9 +68,16 @@ define([], function() {
          */
         var options = {
           interaction: {
-            navigationButtons: true,
+            //navigationButtons: true,
             keyboard: true
           },
+          edges: {
+            arrows: {to : true },
+            smooth: true
+          },
+          // set different color for children and parent
+          // (not rly needed now when displaying all thoughts on same
+          // network).
           groups: {
              children: {
                  color: {

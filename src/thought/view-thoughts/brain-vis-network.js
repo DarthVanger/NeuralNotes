@@ -107,5 +107,21 @@ define([], function() {
         this.visNetwork = new vis.Network(this.container, data, options);
     };
 
+    BrainVisNetwork.prototype.addChildThoughts = function(options) {
+        var self = this;
+        console.debug('BrainVisNetwork.addChildThoughts(). Options: ', options);
+        _.each(options.children, function(childThought) {
+            self.visNodes.add({
+                id: childThought.id,
+                label: childThought.name,
+                group: 'children'
+            });
+            self.visEdges.add({
+                from: options.parentThoughtId,
+                to: childThought.id
+            });
+        });
+    };
+
     return BrainVisNetwork;
 });

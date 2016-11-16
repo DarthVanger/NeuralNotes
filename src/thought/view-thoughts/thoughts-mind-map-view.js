@@ -14,6 +14,7 @@ define([
     thoughtStorage,
     siteGlobalLoadingBar
 ) {
+    var brainVisNetwork;
     var visNetworkHelper;
     var thoughts = [];
     var currentViewedThought;
@@ -46,7 +47,7 @@ define([
         console.debug('thoughts: ', thoughts);
 
         console.debug('thoughts-mind-map-view: initializing brainVisNetwork');
-        var brainVisNetwork = new BrainVisNetwork();
+        brainVisNetwork = new BrainVisNetwork();
         console.debug('thoughts-mind-map-view: brainVisNetwork instance: ', brainVisNetwork);
         brainVisNetwork.renderInitialThought(currentViewedThought);
         //var visNetwork = renderVisNetworkForOneThought(currentViewedThought);
@@ -71,21 +72,26 @@ define([
                 return;
             }
 
-            var visibleThoughts = currentViewedThought.children.concat([currentViewedThought.parent]);
-            var targetThought = _.findWhere(visibleThoughts, { id: targetThoughtId });
+   //         var visibleThoughts = currentViewedThought.children.concat([currentViewedThought.parent]);
+  //          var targetThought = _.findWhere(visibleThoughts, { id: targetThoughtId });
             console.log('targetThoughtId: ', targetThoughtId);
-            console.log('targetThought: ', targetThought);
+ //           console.log('targetThought: ', targetThought);
+            console.log('brainVisNetwork.visNodes: ', brainVisNetwork.visNodes);
 
-            if (!targetThought) throw new Error('Target thought not found');
+//            if (!targetThought) throw new Error('Target thought not found');
             var fetchingThoughtsSpinner = spinner.create('loading child thoughts');
             fetchingThoughtsSpinner.show();
             thoughtStorage.fetchChildThoughts(targetThoughtId)
                 .then(function(children) {
                     console.log('fetched child thoughts: ', children);
-                    targetThought.children = children;
-                    currentViewedThought = targetThought;
+                    //currentViewedThought = targetThought;
                     $('[date-text="currentViewedThought"]').html(currentViewedThought.name);
-                    render();
+                    console.debug('thoughts-mind-map-view: adding child thoughts to brainVisNetwork');
+                    brainVisNetwork.addChildThoughts({
+                        children: children,
+                        parentThoughtId: targetThoughtId
+                    });
+                    //render();
                     //renderVisNetworkForOneThought(targetThought);
                 })
                 .finally(function() {

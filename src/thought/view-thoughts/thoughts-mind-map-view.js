@@ -18,6 +18,8 @@ define([
     var visNetworkHelper;
     var thoughts = [];
     var currentViewedThought;
+    var currentViewedThoughtId;
+    var initialThought;
 
     var spinner = siteGlobalLoadingBar.create('thoughts-view');
 
@@ -34,8 +36,10 @@ define([
     function set(options) {
         thoughts = options.thoughts;
         console.log('options.selectedThoughtId: ', options.selectedThoughtId);
-        currentViewedThought = options.selectedThought || thoughts[0];
-        console.log('currentViewedThought: ', currentViewedThought);
+        initialThought = options.selectedThought || thoughts[0];
+        currentViewedThought = initialThought;
+        currentViewedThoughtId = initialThought.id;
+        console.log('currentViewedThoughtId: ', currentViewedThoughtId);
     }
     
     /**
@@ -49,7 +53,7 @@ define([
         console.debug('thoughts-mind-map-view: initializing brainVisNetwork');
         brainVisNetwork = new BrainVisNetwork();
         console.debug('thoughts-mind-map-view: brainVisNetwork instance: ', brainVisNetwork);
-        brainVisNetwork.renderInitialThought(currentViewedThought);
+        brainVisNetwork.renderInitialThought(initialThought);
         //var visNetwork = renderVisNetworkForOneThought(currentViewedThought);
         console.log('brainVisNetwork: ', brainVisNetwork);
         visNetworkHelper = new VisNetworkHelper(brainVisNetwork.visNetwork);
@@ -65,12 +69,33 @@ define([
     function changeThought(event) {
         if (visNetworkHelper.clickedOnThought(event)) {
             console.log('change thought!');
+            console.log('event: ', event);
             var targetThoughtId = visNetworkHelper.getTargetThoughtId(event);
 
             // if clicking on the current thought, do nothing.
-            if (targetThoughtId === currentViewedThought.id) {
+            if (targetThoughtId === currentViewedThoughtId) {
                 return;
             }
+
+            console.log('brainVisNetwork.visNodes.getIds(): ', brainVisNetwork.visNodes.getIds());
+
+            var currentViewedThoughtId_temp = _.find(brainVisNetwork.visNodes.getIds(),
+                function(nodeId) {
+                    return nodeId == targetThoughtId;
+                }
+            );
+
+            console.log('currentViewedThoughtId from visNodes: ', currentViewedThoughtId_temp);
+
+            var node = brainVisNetwork.visNodes.get(currentViewedThoughtId_temp);
+            console.log('node from visNodes: ', node);
+
+            currentViewedThought = {
+                id: node.id,
+                name: node.label
+            };
+
+            console.log('currentViewedThought from visNodes: ', currentViewedThought);
 
    //         var visibleThoughts = currentViewedThought.children.concat([currentViewedThought.parent]);
   //          var targetThought = _.findWhere(visibleThoughts, { id: targetThoughtId });
@@ -80,12 +105,13 @@ define([
 
 //            if (!targetThought) throw new Error('Target thought not found');
             var fetchingThoughtsSpinner = spinner.create('loading child thoughts');
+            console.log('brainVisNetwork.visNodes: ', brainVisNetwork.visNodes);
             fetchingThoughtsSpinner.show();
+            currentViewedThoughtId = targetThoughtId;
             thoughtStorage.fetchChildThoughts(targetThoughtId)
                 .then(function(children) {
                     console.log('fetched child thoughts: ', children);
-                    //currentViewedThought = targetThought;
-                    $('[date-text="currentViewedThought"]').html(currentViewedThought.name);
+                    $('[data-text="currentViewedThought"]').html(currentViewedThought.name);
                     console.debug('thoughts-mind-map-view: adding child thoughts to brainVisNetwork');
                     brainVisNetwork.addChildThoughts({
                         children: children,
@@ -103,10 +129,6 @@ define([
     }
 
     function initializeAddThoughtButton(network) {
-        /**
-         * Stores currently selected thought -- the one which user clicked last time.
-         */
-        var currentSelectedThought = currentViewedThought;
         $('[data-text="currentViewedThought"]').html(currentViewedThought.name);
 
         var addChildButton = document.querySelector('[data-action="addChild"');
@@ -116,9 +138,9 @@ define([
     //    network.on('click', networkClickHandler);
 
         function createThought() {
-            console.log('redirecting to create-thought. TargetThought: ', currentSelectedThought);
+            console.log('redirecting to create-thought. Passing thought as parent: ', currentViewedThought);
             router.go('create-thought', {
-                parentThought: currentSelectedThought
+                parentThought: currentViewedThought
             });
             return false;
         }

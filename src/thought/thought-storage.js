@@ -9,7 +9,7 @@ define([
 
     var BRAIN_FOLDER_NAME = 'Brain';
     var brainFolder;
-    var thoughts = [];
+    var thoughtsTree = {};
 
     var spinner = siteGlobalLoadingBar.create('thought-storage');
 
@@ -21,6 +21,46 @@ define([
         getThoughts: getThoughts,
         fetchChildThoughts: fetchChildThoughts
     };
+
+    function findThoughtById(id) {
+        console.debug('thought-storage.findThoughtById(). id: ', id);
+        console.debug('thoughtsTree: ', thoughtsTree);
+        var depthLimit = 4;
+        var nodesLimit = 50;
+        var nodesCount = 0;
+        return findInNode(thoughtsTree.root);
+
+        function findInNode(node, currentDepth) {
+            console.debug('findInNode() called. Node: ', node);
+            nodesCount++;
+            if (!currentDepth) currentDepth = 0;
+            console.debug('findInNode(): currentDepth: ', currentDepth);
+            var foundNode = _.findWhere(node.children.concat(node), {id: id});
+            if (foundNode) {
+                console.debug('findInNode(): found the node! :', foundNode);
+                return foundNode;
+            } else if (currentDepth < depthLimit && nodesCount < nodesLimit) {
+                console.debug('Traversing tree, currentDepth: ', currentDepth);
+                    _.each(node.children, function(childNode) {
+                        findInNode(node, currentDepth + 1);
+                    });
+
+            } else {
+                console.warn('Traversing tree: reached depth/nodes limit, exiting');
+                console.warn('Traversing tree: currentDepth: ', currentDepth);
+                console.warn('Traversing tree: nodesCount: ', nodesCount);
+                return;
+            }
+        }
+    }
+
+    function addChildrenToTree(options) {
+        console.debug('addChildrenToTree() called, options: ', options);
+        console.debug('thought-storage.addChildrenToTree()');
+        var parentThought = findThoughtById(options.parentId);
+        console.debug('addChildrenToTree(): found parentThought by id: ', parentThought);
+        parentThought.children = options.children;
+    }
 
     /**
      * Create a thought: a directory and a file with thought
@@ -78,7 +118,7 @@ define([
     }
 
     function getThoughts() {
-        return thoughts;
+        return thoughtsTree;
     }
 
     /**
@@ -90,7 +130,7 @@ define([
         return new Promise(function(resolve, reject) {
             getFiles(brainFolder.id).then(function(files) {
                 console.debug('files inside the brain folder: ', files);
-                thoughts.push(brainFolder);
+                thoughtsTree.root = brainFolder;
                 console.debug('files saved to thoughts storage');
                 brainFolder.children = [];
                 _.each(files, function(file) {
@@ -98,7 +138,7 @@ define([
                         brainFolder.children.push(file);
                     }
                 });
-                console.debug('thoughtStorage.readBrain(), stored thoughts: ', thoughts);
+                console.debug('thoughtStorage.readBrain(), stored thoughtsTree: ', thoughtsTree);
             }).then(resolve);
             //
             // code for getting children of all children of Brain folder.
@@ -133,6 +173,10 @@ define([
                     }
                 });
                 console.debug('fetchChildThoughts() thoughts: ', children);
+                addChildrenToTree({
+                    parentId: thoughtId,
+                    children: children
+                });
                 resolve(children);
             })
             .finally(function() {

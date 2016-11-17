@@ -36,7 +36,7 @@ define([
     function set(options) {
         thoughts = options.thoughts;
         console.log('options.selectedThoughtId: ', options.selectedThoughtId);
-        initialThought = options.selectedThought || thoughts[0];
+        initialThought = options.selectedThought || thoughts.root;
         currentViewedThought = initialThought;
         currentViewedThoughtId = initialThought.id;
         console.log('currentViewedThoughtId: ', currentViewedThoughtId);

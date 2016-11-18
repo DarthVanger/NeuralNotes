@@ -27,8 +27,21 @@ define([
         save: save,
         getThoughts: getThoughts,
         fetchChildThoughts: fetchChildThoughts,
-        restoreFromCache: restoreFromCache
+        restoreFromCache: restoreFromCache,
+        findThoughtById: findThoughtById,
+        logTree: logTree
     };
+
+    function logTree() {
+        console.debug('==============\n Thoughts Tree\n===========');
+        forEachNode(function(node, depth) {
+            var msg = node.name;
+            for (var i = 0; i <= depth; i++) {
+                msg = '>> ' + msg;
+            }
+            console.debug(msg);
+        });
+    }
 
     function findThoughtById(id) {
         console.debug('thought-storage.findThoughtById(). id: ', id);
@@ -36,27 +49,33 @@ define([
        var depthLimit = 4;
        var nodesLimit = 50;
        var nodesCount = 0;
+       var iterationLimitReached = false;
+
         return findInNode(thoughtsTree.root);
 
         function findInNode(node, currentDepth) {
+            if (iterationLimitReached) return;
             console.debug('findInNode() called. Node: ', node);
             nodesCount++;
             if (!currentDepth) currentDepth = 0;
             console.debug('findInNode(): currentDepth: ', currentDepth);
-            var foundNode = _.findWhere(node.children.concat(node), {id: id});
-            if (foundNode) {
-                console.debug('findInNode(): found the node! :', foundNode);
-                return foundNode;
+            if (node.id == id) {
+                console.debug('findInNode(): found the node! :', node);
+                return node;
             } else if (currentDepth < depthLimit && nodesCount < nodesLimit) {
                 console.debug('Traversing tree, currentDepth: ', currentDepth);
+                    var foundNode;
                     _.each(node.children, function(childNode) {
-                        findInNode(node, currentDepth + 1);
+                        foundNode = foundNode || findInNode(childNode, currentDepth + 1);
                     });
+                    console.debug('foundNode: ', foundNode);
+                    return foundNode;
 
             } else {
                 console.warn('Traversing tree: reached depth/nodes limit, exiting');
                 console.warn('Traversing tree: currentDepth: ', currentDepth);
                 console.warn('Traversing tree: nodesCount: ', nodesCount);
+                iterationLimitReached = true;
                 return;
             }
         }
@@ -112,7 +131,7 @@ define([
     }
 
     function forEachNode(func) {
-       console.debug('forEachNode() called! func: ', func.toString());
+       console.debug('forEachNode() called!');
        var depthLimit = 4;
        var nodesLimit = 50;
        var nodesCount = 0;
@@ -126,7 +145,7 @@ define([
 
            if (isRecursionLimitReached(currentDepth, nodesCount)) return;
 
-           func(node);
+           func(node, currentDepth);
            if (node.children) {
                _.each(node.children, function(node) {
                    executeForNode(node, func, currentDepth + 1);

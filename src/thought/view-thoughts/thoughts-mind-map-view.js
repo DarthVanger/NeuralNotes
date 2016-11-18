@@ -97,33 +97,45 @@ define([
 
             console.log('currentViewedThought from visNodes: ', currentViewedThought);
 
-   //         var visibleThoughts = currentViewedThought.children.concat([currentViewedThought.parent]);
-  //          var targetThought = _.findWhere(visibleThoughts, { id: targetThoughtId });
             console.log('targetThoughtId: ', targetThoughtId);
- //           console.log('targetThought: ', targetThought);
             console.log('brainVisNetwork.visNodes: ', brainVisNetwork.visNodes);
 
-//            if (!targetThought) throw new Error('Target thought not found');
-            var fetchingThoughtsSpinner = spinner.create('loading child thoughts');
             console.log('brainVisNetwork.visNodes: ', brainVisNetwork.visNodes);
-            fetchingThoughtsSpinner.show();
             currentViewedThoughtId = targetThoughtId;
-            thoughtStorage.fetchChildThoughts(targetThoughtId)
-                .then(function(children) {
-                    console.log('fetched child thoughts: ', children);
-                    $('[data-text="currentViewedThought"]').html(currentViewedThought.name);
-                    console.debug('thoughts-mind-map-view: adding child thoughts to brainVisNetwork');
-                    brainVisNetwork.addChildThoughts({
-                        children: children,
-                        parentThoughtId: targetThoughtId
-                    });
-                    //render();
-                    //renderVisNetworkForOneThought(targetThought);
-                })
-                .finally(function() {
-                    fetchingThoughtsSpinner.hide();
-                });
+            thoughtStorage.logTree();
+            var targetThought = thoughtStorage.findThoughtById(targetThoughtId);
 
+            if (!targetThought) {
+                throw new Error('changeThought(): couldn\'t find targetThought in thoughtStorage by id: ', targetThoughtId);
+            }
+
+            console.log('thoughts-mind-map-view.changeThought(): targetThought: ', targetThought);
+            if (!_.isEmpty(targetThought.children)) {
+                renderChildren();
+            } else {
+                //var fetchingThoughtsSpinner = spinner.create('loading child thoughts');
+                //fetchingThoughtsSpinner.show();
+                //thoughtStorage.fetchChildThoughts(targetThoughtId)
+                //    .then(function(children) {
+                //        targetThought.children = children;
+                //        console.log('fetched child thoughts: ', children);
+                //        renderChildren();
+                //    })
+                //    .finally(function() {
+                //        fetchingThoughtsSpinner.hide();
+                //    });
+            }
+
+
+           function renderChildren() {
+               var children = targetThought.children;
+               $('[data-text="currentViewedThought"]').html(currentViewedThought.name);
+               console.debug('thoughts-mind-map-view: adding child thoughts to brainVisNetwork');
+               brainVisNetwork.addChildThoughts({
+                   children: children,
+                   parentThoughtId: targetThoughtId
+               });
+           }
            
         }
     }

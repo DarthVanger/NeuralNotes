@@ -24,19 +24,42 @@ define([
     var spinner = siteGlobalLoadingBar.create('login');
     var checkGapiSpinner = spinner.create('checking google login');
 
-    require(
-      ['https://apis.google.com/js/client.js?onload=doNothing"'],
-      // checkGAPI makes polling: calls itself until gapi is ready,
-      // and then calls init().
-      checkGAPI
-    );
 
     return {
         init: init,
     };
 
+    function init() {
+        console.debug('login.init()');
+        if (thoughtStorage.restoreFromCache()) {
+            console.debug('login.init(): cache restored, redirecting to "view-thoughts"');
+            router.go('view-thoughts');
+        } else {
+            console.debug('login.init(): no cache found, loading google client');
+            loadGoogleClient();
+        }
+
+        if (authService.authResult) {
+            router.go('view-thoughts');
+        }
+           
+        console.debug('login.init()');
+        $('#authorize-button').on('click', handleAuthClick);
+    }
+
+
+    function loadGoogleClient() {
+        require(
+          ['https://apis.google.com/js/client.js?onload=doNothing"'],
+          // checkGAPI makes polling: calls itself until gapi is ready,
+          // and then calls init().
+          checkGAPI
+        );
+    }
+
     // Poll until gapi is ready
     function checkGAPI() {
+        console.debug('checkGAPI()');
         checkGapiSpinner.show();
         if (gapi && gapi.client) {
             console.debug('checkGapiSpinner.hide()');
@@ -45,16 +68,6 @@ define([
         } else {
             setTimeout(checkGAPI, 100);
         }
-    }
-
-
-    function init() {
-        if (authService.authResult) {
-            router.go('view-thoughts');
-        }
-           
-        console.debug('login.init()');
-        $('#authorize-button').on('click', handleAuthClick);
     }
 
     /**
@@ -66,16 +79,17 @@ define([
       var authorizeDiv = document.getElementById('authorize-div');
       console.debug('authResult: ', authResult);
       if (authResult && !authResult.error) {
-        authService.authResult = authResult;
-        // Hide auth UI, then load client library.
-        authorizeDiv.style.display = 'none';
+          authService.authResult = authResult;
+          // Hide auth UI, then load client library.
+          authorizeDiv.style.display = 'none';
 
-        googleDriveApi.loadDriveApi()
-            .then(thoughtStorage.scanDrive)
-            .then(function() {
-                console.debug('login: drive scanned, redirecting to /view-thoughts');
-                router.go('view-thoughts');
-            });
+          googleDriveApi.loadDriveApi()
+              .then(thoughtStorage.scanDrive)
+              .then(function() {
+                  console.debug('login: drive scanned');
+                  console.debug('login: redirecting to /view-thoughts');
+                  router.go('view-thoughts');
+              });
 
       } else {
           console.debug('auth fail');

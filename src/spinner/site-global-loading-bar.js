@@ -2,15 +2,19 @@ define([], function() {
     var loading = [];
     var $loadersContainer =  $('#site-global-loading-bar-messages-container');
     var $loadingBar = $('#site-global-loading-bar');
+
+    // loading bar is hidden by default, obviously :)
+    $loadingBar.hide();
+
     var $loadingMessageElement = $('<div class="site-global-loading-bar__message"></div>');
     console.debug('site-global-loading-bar: $loadingMessageElement: ', $loadingMessageElement);
 
     var loaderInstances = [];
 
     var loadingBarService = {
-        // easy show/hide
-        show: show,
-        hide: hide,
+        // easy show/hide, without creating named instance
+        show: showLoadingBar,
+        hide: hideLoadingBar,
         // create named instance of a loader
         create: create,
     };
@@ -40,13 +44,13 @@ define([], function() {
                 }
                 $msgEl.removeClass('hidden-message');
 
-                show(name);
+                showLoadingBar();
                 isShown = true;
             },
             hide: function() {
                 console.debug('site-global-loading-bar: removing message element for message:', name);
                 $msgEl.addClass('hidden-message');
-                hide(name);
+                hideLoadingBar(name);
                 // remove element after css animation.
                 var REMOVE_ANIMATION_DURATION = 2000;
                 setTimeout(function() {
@@ -60,11 +64,13 @@ define([], function() {
         return loaderInstance;
     }
 
-    function show(name) {
+    function showLoadingBar() {
+        console.debug('site-global-loading-bar: showLoadingBar()');
         $loadingBar.show();
     }
 
-    function hide(name) {
+    function hideLoadingBar(name) {
+        console.debug('site-global-loading-bar: hideLoadingBar()');
         $loadingBar.hide();
     }
 

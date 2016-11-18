@@ -23,10 +23,10 @@ define([
     };
 
     function init(options) {
-        if (!authService.authResult) {
-            router.go('/');
-            return;
-        }
+        //if (!authService.authResult) {
+        //    router.go('/');
+        //    return;
+        //}
 
         if (options) {
             selectedThought = options.thought;

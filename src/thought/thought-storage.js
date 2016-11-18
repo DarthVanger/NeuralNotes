@@ -10,6 +10,7 @@ define([
     var BRAIN_FOLDER_NAME = 'Brain';
     var brainFolder;
     var thoughtsTree = {};
+    var THOUGHTS_TREE_CACHE_KEY = 'thoughtStorage.thoughtsTree';
 
     var spinner = siteGlobalLoadingBar.create('thought-storage');
 
@@ -19,15 +20,16 @@ define([
         scanDrive: scanDrive,
         save: save,
         getThoughts: getThoughts,
-        fetchChildThoughts: fetchChildThoughts
+        fetchChildThoughts: fetchChildThoughts,
+        restoreFromCache: restoreFromCache
     };
 
     function findThoughtById(id) {
         console.debug('thought-storage.findThoughtById(). id: ', id);
         console.debug('thoughtsTree: ', thoughtsTree);
-        var depthLimit = 4;
-        var nodesLimit = 50;
-        var nodesCount = 0;
+       var depthLimit = 4;
+       var nodesLimit = 50;
+       var nodesCount = 0;
         return findInNode(thoughtsTree.root);
 
         function findInNode(node, currentDepth) {
@@ -54,12 +56,131 @@ define([
         }
     }
 
+    function mapTree(func) {
+       console.debug('mapTree() called! func: ', func.toString());
+       var depthLimit = 4;
+       var nodesLimit = 50;
+       var nodesCount = 0;
+
+       var mappedTree = {};
+       executeForNode(thoughtsTree.root, func); 
+       return mappedTree;
+
+       function executeForNode(node, func,  parentNode, currentDepth) {
+           nodesCount++;
+
+           var clonedNode = _.clone(node);
+           var mappedNode = func(clonedNode);
+
+           if (!currentDepth) currentDepth = 0;
+           if (!parentNode) {
+               mappedTree.root = mappedNode;
+           } else {
+               parentNode.children.push(mappedNode);
+               //console.debug('mapTree.executeForNode() called. CurrentDepth: ', currentDepth, 'nodesCount: ', nodesCount);
+               //console.debug('mapTree.executeForNode(): node: ', node);
+
+               if (isRecursionLimitReached(currentDepth, nodesCount)) return;
+           }
+
+           if (node.children) {
+               clonedNode.children = [];
+               _.each(node.children, function(childNode) {
+                   executeForNode(childNode, func, clonedNode, currentDepth + 1);
+               });
+           } else {
+               //console.debug('mapTree(): reached leaf node: ', node);
+           }
+       }
+
+       function isRecursionLimitReached(currentDepth, nodesCount) {
+           var limitReached = (nodesCount > nodesLimit || currentDepth > depthLimit);
+           if (limitReached) {
+                console.warn('Traversing tree: reached depth/nodes limit, exiting');
+                console.warn('Traversing tree: currentDepth: ', currentDepth);
+                console.warn('Traversing tree: nodesCount: ', nodesCount);
+           } 
+
+           return limitReached;
+       }
+    }
+
+    function forEachNode(func) {
+       console.debug('forEachNode() called! func: ', func.toString());
+       var depthLimit = 4;
+       var nodesLimit = 50;
+       var nodesCount = 0;
+
+       executeForNode(thoughtsTree.root, func); 
+
+       function executeForNode(node, func, currentDepth) {
+           //console.debug('executeForNode() called. CurrentDepth: ', currentDepth, 'nodesCount: ', nodesCount);
+           if (!currentDepth) currentDepth = 0;
+           //console.debug('executeForNode(): node: ', node);
+
+           if (isRecursionLimitReached(currentDepth, nodesCount)) return;
+
+           func(node);
+           if (node.children) {
+               _.each(node.children, function(node) {
+                   executeForNode(node, func, currentDepth + 1);
+               });
+           }
+       }
+
+       function isRecursionLimitReached(currentDepth, nodesCount) {
+           var limitReached = (nodesCount > nodesLimit || currentDepth > depthLimit);
+           if (limitReached) {
+                console.warn('Traversing tree: reached depth/nodes limit, exiting');
+                console.warn('Traversing tree: currentDepth: ', currentDepth);
+                console.warn('Traversing tree: nodesCount: ', nodesCount);
+           } 
+
+           return limitReached;
+       }
+    }
+
     function addChildrenToTree(options) {
         console.debug('addChildrenToTree() called, options: ', options);
         console.debug('thought-storage.addChildrenToTree()');
         var parentThought = findThoughtById(options.parentId);
         console.debug('addChildrenToTree(): found parentThought by id: ', parentThought);
         parentThought.children = options.children;
+        saveTreeToCache();
+    }
+
+    function saveTreeToCache() {
+        console.debug('saveTreeToCache(): thoughtsTree: ', thoughtsTree);
+        //var decycled = deleteLinksToParents(thoughtsTree.map(deleteLinkToParent);
+        //window.localStorage.setItem(THOUGHTS_TREE_CACHE_KEY, JSON.stringify(thoughtsTree));
+        //var decycledTree = {};
+        //forEachNode(function(node) {
+        //    console.debug('forEachNode(): node.name: ', node.name);
+        //});
+        
+        var decycledTree = mapTree(function(node) {
+            //console.debug('mapTree(): node.name: ', node.name);
+            //console.debug('mapTree(): node.parent: ', node.parent);
+            delete node.parent;
+            return node;
+        });
+
+        console.debug('saveTreeToCache(): decycledTree: ', decycledTree);
+
+        window.localStorage.setItem(THOUGHTS_TREE_CACHE_KEY, JSON.stringify(decycledTree));
+    }
+
+    function loadTreeFromCache() {
+        console.debug('loadTreeFromCache()');
+        var cachedTreeString = window.localStorage.getItem(THOUGHTS_TREE_CACHE_KEY);
+
+        if (cachedTreeString) {
+            console.debug('loadTreeFromCache(): cache found, cache string: ', cachedTreeString);
+            return JSON.parse(cachedTreeString);
+        } else {
+            console.debug('loadTreeFromCache(): cache not found');
+            return undefined;
+        }
     }
 
     /**
@@ -91,6 +212,18 @@ define([
         });
     }
 
+    function restoreFromCache() {
+        var cachedThoughtsTree = loadTreeFromCache();
+        if (cachedThoughtsTree) {
+            console.debug('restoreFromCache(): cachedThoughtsTree: ', cachedThoughtsTree);
+            thoughtsTree = cachedThoughtsTree;
+            return cachedThoughtsTree;
+        } else {
+            console.debug('restoreFromCache(): thoughts cache is empty');
+            return false;
+        }
+    }
+
     /**
      * Try to find "Brain" folder on google drive,
      * then read its contents,
@@ -98,8 +231,8 @@ define([
      */
     function scanDrive() {
         console.debug('thoughtStorage.scanDrive()');
-        spinner.show();
         return new Promise(function(resolve, reject) {
+            spinner.show();
             findBrainFolder().then(function(result) {
                 console.debug('findBrainFolder result: ', result);
                 if (result.length == 0) {

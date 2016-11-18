@@ -1,11 +1,17 @@
 define([
     'google-drive-api',
-    'spinner/site-global-loading-bar'
+    'spinner/site-global-loading-bar',
+    //TODO: thinking of using tree model for traversing brain tree
+    './../../lib/TreeModel'
 ], function(
     googleDriveApi,
-    siteGlobalLoadingBar
+    siteGlobalLoadingBar,
+    TreeModel
 ) {
     'use strict';
+
+    //TODO: thinking of using tree model for traversing brain tree
+    console.debug('TreeModel: ', TreeModel);
 
     var BRAIN_FOLDER_NAME = 'Brain';
     var brainFolder;
@@ -140,6 +146,10 @@ define([
        }
     }
 
+    /**
+     * @param {String} options.parentId
+     * @param {Array} options.children
+     */
     function addChildrenToTree(options) {
         console.debug('addChildrenToTree() called, options: ', options);
         console.debug('thought-storage.addChildrenToTree()');

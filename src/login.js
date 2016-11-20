@@ -52,34 +52,6 @@ define([
     }
 
 
-    /**
-     * Handle response from authorization server.
-     *
-     * @param {Object} authResult Authorization result.
-     */
-    function handleAuthResult(authResult) {
-      var authorizeDiv = document.getElementById('authorize-div');
-      console.debug('authResult: ', authResult);
-      if (authResult && !authResult.error) {
-          authService.authResult = authResult;
-          // Hide auth UI, then load client library.
-          authorizeDiv.style.display = 'none';
-
-          googleDriveApi.loadDriveApi()
-              .then(thoughtStorage.scanDrive)
-              .then(function() {
-                  console.debug('login: drive scanned');
-                  console.debug('login: redirecting to /view-thoughts');
-                  router.go('view-thoughts');
-              });
-
-      } else {
-          console.debug('auth fail');
-          // Show auth UI, allowing the user to initiate authorization by
-          // clicking authorize button.
-          authorizeDiv.style.display = 'inline';
-        }
-      }
 
       /**
        * Initiate auth flow in response to user clicking authorize button.
@@ -97,7 +69,13 @@ define([
               immediate: false
           }, function(authResult) {
               siteGlobalLoadingBar.hide(spinnerName);
-              handleAuthResult(authResult);
+              googleLogin.handleAuthResult(authResult)
+                  .then(thoughtStorage.scanDrive)
+                  .then(function() {
+                      console.debug('login: drive scanned');
+                      console.debug('login: redirecting to /view-thoughts');
+                      router.go('view-thoughts');
+                  });
           });
           return false;
       }

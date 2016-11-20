@@ -55,20 +55,20 @@ define([
 
         function findInNode(node, currentDepth) {
             if (iterationLimitReached) return;
-            console.debug('findInNode() called. Node: ', node);
+            //console.debug('findInNode() called. Node: ', node);
             nodesCount++;
             if (!currentDepth) currentDepth = 0;
-            console.debug('findInNode(): currentDepth: ', currentDepth);
+            //console.debug('findInNode(): currentDepth: ', currentDepth);
             if (node.id == id) {
                 console.debug('findInNode(): found the node! :', node);
                 return node;
             } else if (currentDepth < depthLimit && nodesCount < nodesLimit) {
-                console.debug('Traversing tree, currentDepth: ', currentDepth);
+                //console.debug('Traversing tree, currentDepth: ', currentDepth);
                     var foundNode;
                     _.each(node.children, function(childNode) {
                         foundNode = foundNode || findInNode(childNode, currentDepth + 1);
                     });
-                    console.debug('foundNode: ', foundNode);
+                    //console.debug('foundNode: ', foundNode);
                     return foundNode;
 
             } else {

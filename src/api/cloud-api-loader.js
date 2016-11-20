@@ -27,7 +27,7 @@ define([
             .then(driveApiLoadSuccess, driveApiLoadFail);
 
         function driveApiLoadSuccess() {
-            console.debug('cloudApiLoader.driveApiLoadSuccess()');
+            console.info('cloudApiLoader.driveApiLoadSuccess()');
         }
 
         function driveApiLoadFail() {

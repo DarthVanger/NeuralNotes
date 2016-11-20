@@ -1,14 +1,14 @@
 console.debug('cloid-api-loader.js');
 define([
     //'thought/thought-storage',
-    //'router',
+    'router',
     //'auth-service',
     'google-drive-api',
     'spinner/site-global-loading-bar',
     'api/google-login'
 ], function(
     //thoughtStorage,
-    //router,
+    router,
     //authService,
     googleDriveApi,
     siteGlobalLoadingBar,
@@ -22,7 +22,7 @@ define([
 
     function loadInBackground() {
         loadGoogleClient()
-            .then(googleLogin.checkLogin)
+            .then(googleLogin.checkAuth)
             .then(googleDriveApi.loadDriveApi, loginFail) 
             .then(driveApiLoadSuccess, driveApiLoadFail);
 
@@ -35,6 +35,7 @@ define([
         }
 
         function loginFail() {
+            router.go('login');
             console.info('cloudApiLoader: auto-login failed, user needs to relogin');
         }
     }

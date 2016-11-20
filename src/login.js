@@ -14,16 +14,6 @@ define([
     siteGlobalLoadingBar,
     cloudApiLoader
 ) {
-    // Developer Console, https://console.developers.google.com
-    var CLIENT_ID = '586695064067-2k8v88rq1litcqj8v0ofnstj6t6qfhpa.apps.googleusercontent.com';
-
-    var SCOPES = [
-        // Per-file access to files created or opened by the app
-        'https://www.googleapis.com/auth/drive.file',
-        // Allows read-only access to file metadata and file content
-        'https://www.googleapis.com/auth/drive.readonly'
-    ];
-
     var spinner = siteGlobalLoadingBar.create('login');
 
 
@@ -63,20 +53,17 @@ define([
 
           var spinnerName = 'loading google drive login';
           siteGlobalLoadingBar.show(spinnerName);
-          gapi.auth.authorize({
-              client_id: CLIENT_ID,
-              scope: SCOPES,
-              immediate: false
-          }, function(authResult) {
-              siteGlobalLoadingBar.hide(spinnerName);
-              googleLogin.handleAuthResult(authResult)
-                  .then(thoughtStorage.scanDrive)
-                  .then(function() {
-                      console.debug('login: drive scanned');
-                      console.debug('login: redirecting to /view-thoughts');
-                      router.go('view-thoughts');
-                  });
-          });
+          googleLogin.gapiAuthorize()
+              .then(function(authResult) {
+                  siteGlobalLoadingBar.hide(spinnerName);
+                  return googleLogin.handleAuthResult(authResult);
+              })
+              .then(thoughtStorage.scanDrive)
+              .then(function() {
+                  console.debug('login: drive scanned');
+                  console.debug('login: redirecting to /view-thoughts');
+                  router.go('view-thoughts');
+              });
           return false;
       }
 

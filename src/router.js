@@ -66,6 +66,11 @@ define([
         var controllerPath;
         var routes = [
             {
+                url: ''
+                //template: loginTemplate,
+                //controllerPath: 'login'
+            },
+            {
                 url: 'login',
                 template: loginTemplate,
                 controllerPath: 'login'
@@ -87,8 +92,8 @@ define([
         var routeConfig = _.find(routes, { url: route });
 
         if (!routeConfig) {
-            var defaultRoute = 'login';
-            console.debug('router: route config for "' + route + '" not found, using default route "' + defaultRoute + '"');
+            var defaultRoute = '';
+            console.warn('router: route config for "' + route + '" not found, using default route "' + defaultRoute + '"');
             routeConfig = _.find(routes, { url: defaultRoute });
         }
 

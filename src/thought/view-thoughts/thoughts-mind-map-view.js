@@ -113,18 +113,17 @@ define([
             if (!_.isEmpty(targetThought.children)) {
                 renderChildren();
             } else {
-                // TODO: Uncomment when loading drive api is repaired
-                //var fetchingThoughtsSpinner = spinner.create('loading child thoughts');
-                //fetchingThoughtsSpinner.show();
-                //thoughtStorage.fetchChildThoughts(targetThoughtId)
-                //    .then(function(children) {
-                //        targetThought.children = children;
-                //        console.debug('fetched child thoughts: ', children);
-                //        renderChildren();
-                //    })
-                //    .finally(function() {
-                //        fetchingThoughtsSpinner.hide();
-                //    });
+                var fetchingThoughtsSpinner = spinner.create('loading child thoughts');
+                fetchingThoughtsSpinner.show();
+                thoughtStorage.fetchChildThoughts(targetThoughtId)
+                    .then(function(children) {
+                        targetThought.children = children;
+                        console.debug('fetched child thoughts: ', children);
+                        renderChildren();
+                    })
+                    .finally(function() {
+                        fetchingThoughtsSpinner.hide();
+                    });
             }
 
 

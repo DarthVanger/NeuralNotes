@@ -12,6 +12,16 @@ define([
     googleDriveApi,
     siteGlobalLoadingBar
 ) {
+    // Developer Console, https://console.developers.google.com
+    var CLIENT_ID = '586695064067-2k8v88rq1litcqj8v0ofnstj6t6qfhpa.apps.googleusercontent.com';
+
+    var SCOPES = [
+        // Per-file access to files created or opened by the app
+        'https://www.googleapis.com/auth/drive.file',
+        // Allows read-only access to file metadata and file content
+        'https://www.googleapis.com/auth/drive.readonly'
+    ];
+
     var service = {
         checkAuth: checkAuth
     };
@@ -24,16 +34,26 @@ define([
     function checkAuth() {
       console.debug('googlLogin.checkAuth()');
       console.debug('checkAuth()');
-      return new Promise(function(resolve, reject) {
-          gapi.auth.authorize(
-            {
-              'client_id': CLIENT_ID,
-              'scope': SCOPES.join(' '),
-              'immediate': true
-            }, function() {
-                handleAuthResult.then(resolve);
+      return garpiAuthorize.then(handleAuthResult);
+    }
+
+    function gapiAuthorize() {
+        console.debug('googleLogin.gapiAuthorize(): CLIENT_ID: ', CLIENT_ID);
+        console.debug('googleLogin.gapiAuthorize(): SCOPES: ', SCOPES);
+        return new Promise(function(resolve, rejct) {
+            gapi.auth.authorize({
+                client_id: CLIENT_ID,
+                scope: SCOPES.join(' '),
+                //scope: SCOPES,
+                immediate: false
+            }, function(authResult) {
+                if (authResult.error) {
+                    reject(authResult);
+                } else {
+                    resolve(authResult);
+                }
             });
-      });
+        });
     }
 
     /**

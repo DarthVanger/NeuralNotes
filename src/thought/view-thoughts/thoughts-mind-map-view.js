@@ -35,11 +35,11 @@ define([
      */
     function set(options) {
         thoughts = options.thoughts;
-        console.log('options.selectedThoughtId: ', options.selectedThoughtId);
+        console.debug('options.selectedThoughtId: ', options.selectedThoughtId);
         initialThought = options.selectedThought || thoughts.root;
         currentViewedThought = initialThought;
         currentViewedThoughtId = initialThought.id;
-        console.log('currentViewedThoughtId: ', currentViewedThoughtId);
+        console.debug('currentViewedThoughtId: ', currentViewedThoughtId);
     }
     
     /**
@@ -55,7 +55,7 @@ define([
         console.debug('thoughts-mind-map-view: brainVisNetwork instance: ', brainVisNetwork);
         brainVisNetwork.renderInitialThought(initialThought);
         //var visNetwork = renderVisNetworkForOneThought(currentViewedThought);
-        console.log('brainVisNetwork: ', brainVisNetwork);
+        console.debug('brainVisNetwork: ', brainVisNetwork);
         visNetworkHelper = new VisNetworkHelper(brainVisNetwork.visNetwork);
         brainVisNetwork.visNetwork.on('click', changeThought);
 
@@ -68,8 +68,8 @@ define([
      */
     function changeThought(event) {
         if (visNetworkHelper.clickedOnThought(event)) {
-            console.log('change thought!');
-            console.log('event: ', event);
+            console.debug('change thought!');
+            console.debug('event: ', event);
             var targetThoughtId = visNetworkHelper.getTargetThoughtId(event);
 
             // if clicking on the current thought, do nothing.
@@ -77,7 +77,7 @@ define([
                 return;
             }
 
-            console.log('brainVisNetwork.visNodes.getIds(): ', brainVisNetwork.visNodes.getIds());
+            console.debug('brainVisNetwork.visNodes.getIds(): ', brainVisNetwork.visNodes.getIds());
 
             var currentViewedThoughtId_temp = _.find(brainVisNetwork.visNodes.getIds(),
                 function(nodeId) {
@@ -85,22 +85,22 @@ define([
                 }
             );
 
-            console.log('currentViewedThoughtId from visNodes: ', currentViewedThoughtId_temp);
+            console.debug('currentViewedThoughtId from visNodes: ', currentViewedThoughtId_temp);
 
             var node = brainVisNetwork.visNodes.get(currentViewedThoughtId_temp);
-            console.log('node from visNodes: ', node);
+            console.debug('node from visNodes: ', node);
 
             currentViewedThought = {
                 id: node.id,
                 name: node.label
             };
 
-            console.log('currentViewedThought from visNodes: ', currentViewedThought);
+            console.debug('currentViewedThought from visNodes: ', currentViewedThought);
 
-            console.log('targetThoughtId: ', targetThoughtId);
-            console.log('brainVisNetwork.visNodes: ', brainVisNetwork.visNodes);
+            console.debug('targetThoughtId: ', targetThoughtId);
+            console.debug('brainVisNetwork.visNodes: ', brainVisNetwork.visNodes);
 
-            console.log('brainVisNetwork.visNodes: ', brainVisNetwork.visNodes);
+            console.debug('brainVisNetwork.visNodes: ', brainVisNetwork.visNodes);
             currentViewedThoughtId = targetThoughtId;
             thoughtStorage.logTree();
             var targetThought = thoughtStorage.findThoughtById(targetThoughtId);
@@ -109,16 +109,17 @@ define([
                 throw new Error('changeThought(): couldn\'t find targetThought in thoughtStorage by id: ', targetThoughtId);
             }
 
-            console.log('thoughts-mind-map-view.changeThought(): targetThought: ', targetThought);
+            console.debug('thoughts-mind-map-view.changeThought(): targetThought: ', targetThought);
             if (!_.isEmpty(targetThought.children)) {
                 renderChildren();
             } else {
+                // TODO: Uncomment when loading drive api is repaired
                 //var fetchingThoughtsSpinner = spinner.create('loading child thoughts');
                 //fetchingThoughtsSpinner.show();
                 //thoughtStorage.fetchChildThoughts(targetThoughtId)
                 //    .then(function(children) {
                 //        targetThought.children = children;
-                //        console.log('fetched child thoughts: ', children);
+                //        console.debug('fetched child thoughts: ', children);
                 //        renderChildren();
                 //    })
                 //    .finally(function() {
@@ -144,13 +145,13 @@ define([
         $('[data-text="currentViewedThought"]').html(currentViewedThought.name);
 
         var addChildButton = document.querySelector('[data-action="addChild"');
-        console.log('addChildButton: ', addChildButton);
-        console.log('adding click listener for addChildButton');
+        console.debug('addChildButton: ', addChildButton);
+        console.debug('adding click listener for addChildButton');
         addChildButton.addEventListener('click', createThought);
     //    network.on('click', networkClickHandler);
 
         function createThought() {
-            console.log('redirecting to create-thought. Passing thought as parent: ', currentViewedThought);
+            console.debug('redirecting to create-thought. Passing thought as parent: ', currentViewedThought);
             router.go('create-thought', {
                 parentThought: currentViewedThought
             });
@@ -165,7 +166,7 @@ define([
      * Currently not used anymore.
      */
     function initializeContextMenu() {
-        console.log('thoughts mind map view: initializing context menu');
+        console.debug('thoughts mind map view: initializing context menu');
         var contextMenu = new ContextMenu({
             container: container,
             network: network,

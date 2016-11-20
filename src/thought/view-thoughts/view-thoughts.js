@@ -52,38 +52,38 @@ define([
         thoughtsMindMapView.render();
     }
 
-    function listThoughts() {
-        //console.debug('listThoughts()');
-        //console.debug('storage: ', storage);
-        var files = thoughtStorage.getThoughts();
-        //console.debug('storage.thoughts: ', storage.thoughts);
-        //appendPre('Files:');
-        if (files && files.length > 0) {
-            files.forEach(function(file) {
-                //console.debug('file: ', file);
-                var thought = {
-                    name: file.name,
-                    //content: 'test content'
-                };
-                //console.debug('thought: ', thought);
+    //function listThoughts() {
+    //    //console.debug('listThoughts()');
+    //    //console.debug('storage: ', storage);
+    //    var files = thoughtStorage.getThoughts();
+    //    //console.debug('storage.thoughts: ', storage.thoughts);
+    //    //appendPre('Files:');
+    //    if (files && files.length > 0) {
+    //        files.forEach(function(file) {
+    //            //console.debug('file: ', file);
+    //            var thought = {
+    //                name: file.name,
+    //                //content: 'test content'
+    //            };
+    //            //console.debug('thought: ', thought);
 
-                //console.debug('thoughtTemplate: ', thoughtTemplate);
+    //            //console.debug('thoughtTemplate: ', thoughtTemplate);
 
-                //console.debug('_: ', _);
+    //            //console.debug('_: ', _);
 
-                var thoughtHTML = _.template(thoughtTemplate)(thought);
-                //console.debug('thoughtHTML: ', thoughtHTML);
-                var $thought = $(thoughtHTML);
-                //console.debug('$thought: ', $thought);
+    //            var thoughtHTML = _.template(thoughtTemplate)(thought);
+    //            //console.debug('thoughtHTML: ', thoughtHTML);
+    //            var $thought = $(thoughtHTML);
+    //            //console.debug('$thought: ', $thought);
 
-                var container = document.getElementById('output');
-                //console.debug('container: ', container);
-                container.appendChild($thought.get(0));
-            });
-        } else {
-          appendPre('No files found.');
-        }
-    }
+    //            var container = document.getElementById('output');
+    //            //console.debug('container: ', container);
+    //            container.appendChild($thought.get(0));
+    //        });
+    //    } else {
+    //      appendPre('No files found.');
+    //    }
+    //}
 
 
 

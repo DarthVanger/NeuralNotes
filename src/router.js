@@ -66,11 +66,6 @@ define([
         var controllerPath;
         var routes = [
             {
-                url: ''
-                //template: loginTemplate,
-                //controllerPath: 'login'
-            },
-            {
                 url: 'login',
                 template: loginTemplate,
                 controllerPath: 'login'
@@ -92,12 +87,18 @@ define([
         var routeConfig = _.find(routes, { url: route });
 
         if (!routeConfig) {
-            var defaultRoute = '';
+            var defaultRoute = 'view-thoughts';
             console.warn('router: route config for "' + route + '" not found, using default route "' + defaultRoute + '"');
             routeConfig = _.find(routes, { url: defaultRoute });
         }
 
         console.debug('router: using route config: ', routeConfig);
+
+        console.debug('routeConfig.controllerPath: ', routeConfig.controllerPath);
+
+        if (!routeConfig.controllerPath) {
+            throw new Error('Router: controllerPath is empty');
+        }
 
         if (routeConfig.controllerPath.length > 0) {
             // dynamically load controller file, and

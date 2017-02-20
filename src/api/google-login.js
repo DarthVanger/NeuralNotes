@@ -23,7 +23,8 @@ define([
     ];
 
     var service = {
-        checkAuth: checkAuth
+        checkAuth: checkAuth,
+        gapiAuthorize: gapiAuthorize
     };
 
     return service;
@@ -32,9 +33,8 @@ define([
      * Check if current user has authorized this application.
      */
     function checkAuth() {
-      console.debug('googlLogin.checkAuth()');
-      console.debug('checkAuth()');
-      return garpiAuthorize.then(handleAuthResult);
+      console.debug('googleLogin.checkAuth()');
+      return gapiAuthorize().then(handleAuthResult);
     }
 
     function gapiAuthorize() {
@@ -48,6 +48,7 @@ define([
                 immediate: false
             }, function(authResult) {
                 if (authResult.error) {
+                    console.debug('googleLogin.gapiAuthorize(): authError: ', authResult.error);
                     reject(authResult);
                 } else {
                     resolve(authResult);
@@ -62,6 +63,7 @@ define([
      * @param {Object} authResult Authorization result.
      */
     function handleAuthResult(authResult) {
+      console.debug('googleLogin.handleAuthResult()');
       return new Promise(function(resolve, reject) {
           var authorizeDiv = document.getElementById('authorize-div');
           console.debug('authResult: ', authResult);

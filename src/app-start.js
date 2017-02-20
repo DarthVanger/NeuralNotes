@@ -16,11 +16,19 @@ require.config({
 
 define([
     'router',
+    'thought/thought-storage',
+    'spinner/site-global-loading-bar',
+    'api/cloud-api-loader',
+
+    // non-amd libs:
     'underscore',
     // add additional functionality to javascript native Promise.
     'utils/promise-patch'
 ], function(
     router,
+    thoughtStorage,
+    siteGlobalLoadingBar,
+    cloudApiLoader,
     _underscore_undefined_,
     _promise_patch_undefined
 ) {
@@ -35,7 +43,21 @@ define([
         console.debug('app start');
 
         console.debug('call router init');
+
         router.init();
+
+        var spinner = siteGlobalLoadingBar.create('app-start');
+
+        if (thoughtStorage.restoreFromCache()) {
+            console.debug('appStart(): cache restored, calling router.goToRouteInAddressBar()');
+            cloudApiLoader.loadInBackground();
+            router.goToRouteInAdressBar();
+            //router.go('view-thoughts');
+
+        } else {
+            console.debug('appStart(): no cache found, loading google client');
+            //loadGoogleClient();
+        }
 
     });
 

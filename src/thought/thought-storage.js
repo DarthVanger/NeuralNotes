@@ -11,7 +11,7 @@ define([
     'use strict';
 
     //TODO: thinking of using tree model for traversing brain tree
-    console.debug('TreeModel: ', TreeModel);
+    //console.debug('TreeModel: ', TreeModel);
 
     var BRAIN_FOLDER_NAME = 'Brain';
     var brainFolder;
@@ -280,6 +280,7 @@ define([
     }
 
     function getThoughts() {
+        console.debug('thoughtStorage.getThoughts(). Returning thoughts: ', thoughtsTree);
         return thoughtsTree;
     }
 

@@ -21,6 +21,7 @@ define([
     return service;
 
     function loadInBackground() {
+        console.debug('cloudApiLoader.loadInBackground()');
         loadGoogleClient()
             .then(googleLogin.checkAuth)
             .then(googleDriveApi.loadDriveApi, loginFail) 

@@ -28,6 +28,7 @@ define([
         //    return;
         //}
 
+        console.debug('viewThoughtsController.init()');
         if (options) {
             selectedThought = options.thought;
             selectedThoughtId = options.thoughtId;

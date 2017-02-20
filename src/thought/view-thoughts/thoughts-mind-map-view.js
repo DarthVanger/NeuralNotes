@@ -34,6 +34,7 @@ define([
      * @param {String} options.selectedThoughtId - Id of thought that should be in focus (center).
      */
     function set(options) {
+        console.debug('thoughtsMindMapView.set(), options: ', options);
         thoughts = options.thoughts;
         console.debug('options.selectedThoughtId: ', options.selectedThoughtId);
         initialThought = options.selectedThought || thoughts.root;

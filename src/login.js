@@ -5,42 +5,52 @@ define([
     'auth-service',
     'google-drive-api',
     'spinner/site-global-loading-bar',
-    'api/cloud-api-loader'
+    'api/cloud-api-loader',
+    'api/google-login'
 ], function(
     thoughtStorage,
     router,
     authService,
     googleDriveApi,
     siteGlobalLoadingBar,
-    cloudApiLoader
+    cloudApiLoader,
+    googleLogin
 ) {
     var spinner = siteGlobalLoadingBar.create('login');
 
 
     return {
         init: init,
+        onRender: onRender
     };
 
     function init() {
         console.debug('login.init()');
-        if (thoughtStorage.restoreFromCache()) {
-            console.debug('login.init(): cache restored, redirecting to "view-thoughts"');
-            cloudApiLoader.loadInBackground();
-            router.go('view-thoughts');
+        //if (thoughtStorage.restoreFromCache()) {
+        //    console.debug('login.init(): cache restored, redirecting to "view-thoughts"');
+        //    cloudApiLoader.loadInBackground();
+        //    router.go('view-thoughts');
 
-        } else {
-            console.debug('login.init(): no cache found, loading google client');
-            //loadGoogleClient();
-        }
+        //} else {
+        //    console.debug('login.init(): no cache found, loading google client');
+        //    //loadGoogleClient();
+        //}
 
+        //if (authService.authResult) {
+        //    router.go('view-thoughts');
+        //}
+        //
         if (authService.authResult) {
+            console.debug('login.init(): user already authorized, redirecting to "view-thoughts"');
             router.go('view-thoughts');
         }
-           
-        console.debug('login.init()');
-        $('#authorize-button').on('click', handleAuthClick);
+
     }
 
+    function onRender() {
+        console.debug('login.onRender(): adding click listener to authorizeButton');
+        $('#authorize-button').on('click', handleAuthClick);
+    }
 
 
       /**
@@ -56,7 +66,7 @@ define([
           googleLogin.gapiAuthorize()
               .then(function(authResult) {
                   siteGlobalLoadingBar.hide(spinnerName);
-                  return googleLogin.handleAuthResult(authResult);
+                  //return googleLogin.handleAuthResult(authResult);
               })
               .then(thoughtStorage.scanDrive)
               .then(function() {

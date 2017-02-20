@@ -17,6 +17,7 @@ define([
      * Load Drive API client library.
      */
     function loadDriveApi() {
+        console.debug('googleDriveApi.loadDriveApi()');
         var promise = new Promise(function(resolve, reject) {
               //gapi.client.load('drive', 'v3', function() {
               gapi.client.load('drive', 'v3').then(function() {

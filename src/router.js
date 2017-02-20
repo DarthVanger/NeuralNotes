@@ -13,20 +13,24 @@ define([
         init: init,
         goToRoute: goToRoute,
         go: goToRoute,
-        goToRouteInAdressBar: goToRouteInAdressBar
+        goToRouteInAdressBar: goToRouteInAdressBar,
+        currentRoute: undefined
     };
 
     return router;
     
     function init() {
-        goToRouteInAdressBar();
         setRouterLinkListeners();
+    }
+
+    function readRouteFromAddressBar() {
+        return window.location.hash.slice(1);
+        //var routeName = route.split('/')[0];
     }
 
     function goToRouteInAdressBar() {
         console.debug('router.goToRouteInAdressBar()');
-        var route = window.location.hash.slice(1);
-        var routeName = route.split('/')[0];
+        var route = readRouteFromAddressBar();
         console.debug('router: going to url "' + route + '"');
         goToRoute(route);
     }
@@ -60,7 +64,7 @@ define([
      * @param {Array} urlOptions - Options for the route, read from url.
      */
     function goToRoute(route, options) {
-        console.debug('router.goToRoute(). Arguments: ', arguments);
+        console.debug('router.goToRoute(). route: ', route);
         var $siteContainer = $('.site-content');
         var template;
         var controllerPath;
@@ -88,7 +92,7 @@ define([
 
         if (!routeConfig) {
             var defaultRoute = 'view-thoughts';
-            console.warn('router: route config for "' + route + '" not found, using default route "' + defaultRoute + '"');
+            console.debug('router: route config for "' + route + '" not found, using default route "' + defaultRoute + '"');
             routeConfig = _.find(routes, { url: defaultRoute });
         }
 

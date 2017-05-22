@@ -28,7 +28,7 @@ define([
         //    return;
         //}
 
-        console.debug('viewThoughtsController.init()');
+        console.debug('viewThoughtsController.init(), options: ', options);
         if (options) {
             selectedThought = options.thought;
             selectedThoughtId = options.thoughtId;
@@ -45,6 +45,10 @@ define([
     }
 
     function onRender() {
+        console.debug('viewThoughtsController.onRender()');
+
+        console.debug('viewThoughtsController.onRender(), calling thoughtsMindMapView.set()');
+
         thoughtsMindMapView.set({
             thoughts: thoughtStorage.getThoughts(),
             selectedThought: selectedThought,

@@ -48,15 +48,14 @@ define([
      * (Erases the old one).
      */
     function render() {
-        console.debug('redner!');
+        console.debug('thoughtsMindMapView.render()');
         console.debug('thoughts: ', thoughts);
 
-        console.debug('thoughts-mind-map-view: initializing brainVisNetwork');
+        console.debug('thoughtsMindMapView: initializing brainVisNetwork');
         brainVisNetwork = new BrainVisNetwork();
-        console.debug('thoughts-mind-map-view: brainVisNetwork instance: ', brainVisNetwork);
+        console.debug('thoughtsMindMapView: brainVisNetwork instance: ', brainVisNetwork);
         brainVisNetwork.renderInitialThought(initialThought);
         //var visNetwork = renderVisNetworkForOneThought(currentViewedThought);
-        console.debug('brainVisNetwork: ', brainVisNetwork);
         visNetworkHelper = new VisNetworkHelper(brainVisNetwork.visNetwork);
         brainVisNetwork.visNetwork.on('click', changeThought);
 

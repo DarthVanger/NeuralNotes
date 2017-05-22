@@ -19,6 +19,7 @@ define([
     'thought/thought-storage',
     'spinner/site-global-loading-bar',
     'api/cloud-api-loader',
+    'auth-service',
 
     // non-amd libs:
     'underscore',
@@ -29,6 +30,7 @@ define([
     thoughtStorage,
     siteGlobalLoadingBar,
     cloudApiLoader,
+    authService,
     _underscore_undefined_,
     _promise_patch_undefined
 ) {
@@ -50,13 +52,28 @@ define([
 
         if (thoughtStorage.restoreFromCache()) {
             console.debug('appStart(): cache restored, calling router.goToRouteInAddressBar()');
-            cloudApiLoader.loadInBackground();
+            cloudApiLoader.load();
             router.goToRouteInAdressBar();
             //router.go('view-thoughts');
 
         } else {
-            console.debug('appStart(): no cache found, loading google client');
-            //loadGoogleClient();
+            console.debug('appStart(): no cache found, loading google client...');
+            cloudApiLoader.load()
+                .then(function() {
+                    console.debug('appStart(): google client loaded, checking auth');
+                    if (authService.isAuthorized()) {
+                        console.debug('appStart(): user is authorized, reading thoughts from google drive');    
+                        
+                        thoughtStorage.scanDrive()
+                            .then(function() {
+                                console.debug('appStart(): thoughts loaded from google drive, going to route in address bar');
+
+                                router.goToRouteInAdressBar();
+                            });
+                    } else {
+                        console.debug('appStart(): user is NOT authorized');    
+                    }
+                });
         }
 
     });

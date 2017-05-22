@@ -15,20 +15,24 @@ define([
     googleLogin
 ) {
     var service = {
-        loadInBackground: loadInBackground
+        load: load
     };
 
     return service;
 
-    function loadInBackground() {
-        console.debug('cloudApiLoader.loadInBackground()');
-        loadGoogleClient()
-            .then(googleLogin.checkAuth)
+    function load() {
+        console.debug('cloudApiLoader.load()');
+        return loadGoogleClient()
+            .then(googleLogin.checkAuth, checkAuthFail)
             .then(googleDriveApi.loadDriveApi, loginFail) 
             .then(driveApiLoadSuccess, driveApiLoadFail);
 
         function driveApiLoadSuccess() {
             console.info('cloudApiLoader.driveApiLoadSuccess()');
+        }
+
+        function checkAuthFail() {
+            console.error('cloudApiLoader: googleLogin.checkAuth() failed!');
         }
 
         function driveApiLoadFail() {
@@ -61,9 +65,10 @@ define([
 
             // Poll until gapi is ready
             function checkGAPI() {
-                console.debug('checkGAPI()');
+                console.debug('cloudApiLoader.checkGAPI()');
                 checkGapiSpinner.show();
                 if (gapi && gapi.client) {
+                    console.debug('cloudApiLoader.loadGoogleClient.checkGAPI(): gapi loaded! gapi.client: ', gapi.client);
                     console.debug('checkGapiSpinner.hide()');
                     checkGapiSpinner.hide();
                     resolve();

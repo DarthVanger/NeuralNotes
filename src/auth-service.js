@@ -2,9 +2,16 @@ define([
 ], function(
 ) {
 
-    return {
+	var service = {
         // google api auth result
-        authResult: undefined
+        authResult: undefined,
+		isAuthorized: isAuthorized
     };
+
+	return service;
+
+	function isAuthorized() {
+		return Boolean(service.authResult);
+	}
 
 });

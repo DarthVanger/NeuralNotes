@@ -65,6 +65,7 @@ define([
           siteGlobalLoadingBar.show(spinnerName);
           googleLogin.gapiAuthorize()
               .then(function(authResult) {
+                  console.debug('login.js: auth success! calling thoughtStorage.scanDrive()');
                   siteGlobalLoadingBar.hide(spinnerName);
                   //return googleLogin.handleAuthResult(authResult);
               })

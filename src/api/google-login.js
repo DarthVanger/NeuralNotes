@@ -33,7 +33,7 @@ define([
      * Check if current user has authorized this application.
      */
     function checkAuth() {
-      console.debug('googleLogin.checkAuth()');
+      console.debug('googleLogin.checkAuth() (calling gapiAuthorize())');
       return gapiAuthorize().then(handleAuthResult);
     }
 
@@ -51,6 +51,7 @@ define([
                     console.debug('googleLogin.gapiAuthorize(): authError: ', authResult.error);
                     reject(authResult);
                 } else {
+                    console.debug('googleLogin.gapiAuthorize(): auth sucess! authResult: ', authResult);
                     resolve(authResult);
                 }
             });

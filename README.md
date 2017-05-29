@@ -5,7 +5,7 @@ Description
 -----------
 Tool for organizing thoughts (notes), storing them in tree structure.
 Instead of database, I use filesystem:
-Every note (thought) is represented by directory with "thought.txt" file inside. This is like a usual filesystem, but every directory has a thought (or call it a note, a description). In Brain you can attach folders and files to your "thoughts", this done simply by putting files in the thought's directory.
+Every note (thought) is represented by directory with "thought.txt" file inside. This is like a usual filesystem, but every directory has a thought (or call it a note, a description). In NeuralNotes you can attach folders and files to your "thoughts", this done simply by putting files in the thought's directory.
 
 For example:  
 NeuralNotes (root folder)

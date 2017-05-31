@@ -57,87 +57,98 @@ define([
         brainVisNetwork.renderInitialThought(initialThought);
         //var visNetwork = renderVisNetworkForOneThought(currentViewedThought);
         visNetworkHelper = new VisNetworkHelper(brainVisNetwork.visNetwork);
-        brainVisNetwork.visNetwork.on('click', changeThought);
+
+        brainVisNetwork.visNetwork.on('click', visNetworkClickHandler);
 
         initializeAddThoughtButton(brainVisNetwork.visNetwork);
     }
 
-    /**
-     * Load child thoughts for clicked thought, 
-     * and redraw the network for new thoughts.
-     */
-    function changeThought(event) {
+    function visNetworkClickHandler(event) {
         if (visNetworkHelper.clickedOnThought(event)) {
             console.debug('change thought!');
             console.debug('event: ', event);
             var targetThoughtId = visNetworkHelper.getTargetThoughtId(event);
-
-            // if clicking on the current thought, do nothing.
-            if (targetThoughtId === currentViewedThoughtId) {
-                return;
-            }
-
-            console.debug('brainVisNetwork.visNodes.getIds(): ', brainVisNetwork.visNodes.getIds());
-
-            var currentViewedThoughtId_temp = _.find(brainVisNetwork.visNodes.getIds(),
-                function(nodeId) {
-                    return nodeId == targetThoughtId;
-                }
-            );
-
-            console.debug('currentViewedThoughtId from visNodes: ', currentViewedThoughtId_temp);
-
-            var node = brainVisNetwork.visNodes.get(currentViewedThoughtId_temp);
-            console.debug('node from visNodes: ', node);
-
-            currentViewedThought = {
-                id: node.id,
-                name: node.label
-            };
-
-            console.debug('currentViewedThought from visNodes: ', currentViewedThought);
-
-            console.debug('targetThoughtId: ', targetThoughtId);
-            console.debug('brainVisNetwork.visNodes: ', brainVisNetwork.visNodes);
-
-            console.debug('brainVisNetwork.visNodes: ', brainVisNetwork.visNodes);
-            currentViewedThoughtId = targetThoughtId;
-            thoughtStorage.logTree();
-            var targetThought = thoughtStorage.findThoughtById(targetThoughtId);
-
-            if (!targetThought) {
-                throw new Error('changeThought(): couldn\'t find targetThought in thoughtStorage by id: ', targetThoughtId);
-            }
-
-            console.debug('thoughts-mind-map-view.changeThought(): targetThought: ', targetThought);
-            if (!_.isEmpty(targetThought.children)) {
-                renderChildren();
-            } else {
-                var fetchingThoughtsSpinner = spinner.create('loading child thoughts');
-                fetchingThoughtsSpinner.show();
-                thoughtStorage.fetchChildThoughts(targetThoughtId)
-                    .then(function(children) {
-                        targetThought.children = children;
-                        console.debug('fetched child thoughts: ', children);
-                        renderChildren();
-                    })
-                    .finally(function() {
-                        fetchingThoughtsSpinner.hide();
-                    });
-            }
-
-
-           function renderChildren() {
-               var children = targetThought.children;
-               $('[data-text="currentViewedThought"]').html(currentViewedThought.name);
-               console.debug('thoughts-mind-map-view: adding child thoughts to brainVisNetwork');
-               brainVisNetwork.addChildThoughts({
-                   children: children,
-                   parentThoughtId: targetThoughtId
-               });
-           }
-           
+            thoughtClickHandler(targetThoughtId);
         }
+    }
+
+    function thoughtClickHandler(targetThoughtId) {
+        // if clicking on the current thought, do nothing.
+        if (targetThoughtId === currentViewedThoughtId) {
+            return;
+        }
+
+        console.debug('brainVisNetwork.visNodes.getIds(): ', brainVisNetwork.visNodes.getIds());
+
+        var currentViewedThoughtId_temp = _.find(brainVisNetwork.visNodes.getIds(),
+            function(nodeId) {
+                return nodeId == targetThoughtId;
+            }
+        );
+
+        console.debug('currentViewedThoughtId from visNodes: ', currentViewedThoughtId_temp);
+
+        var node = brainVisNetwork.visNodes.get(currentViewedThoughtId_temp);
+        console.debug('node from visNodes: ', node);
+
+        currentViewedThought = {
+            id: node.id,
+            name: node.label
+        };
+
+        console.debug('currentViewedThought from visNodes: ', currentViewedThought);
+
+        console.debug('targetThoughtId: ', targetThoughtId);
+        console.debug('brainVisNetwork.visNodes: ', brainVisNetwork.visNodes);
+
+        console.debug('brainVisNetwork.visNodes: ', brainVisNetwork.visNodes);
+        changeThought(targetThoughtId);
+    }
+
+    /**
+     * Load child thoughts for clicked thought, 
+     * alnd redraw the network for new thoughts.
+     */
+    function changeThought(targetThoughtId) {
+        currentViewedThoughtId = targetThoughtId;
+        thoughtStorage.logTree();
+        var targetThought = thoughtStorage.findThoughtById(targetThoughtId);
+
+        if (!targetThought) {
+            throw new Error('changeThought(): couldn\'t find targetThought in thoughtStorage by id: ', targetThoughtId);
+        }
+
+        console.debug('thoughts-mind-map-view.changeThought(): targetThought: ', targetThought);
+        if (!_.isEmpty(targetThought.children)) {
+            renderChildren();
+        } else {
+            fetchChildThoughts(targetThoughtId)
+                .then(function(children) {
+                    targetThought.children = children;
+                    console.debug('fetched child thoughts: ', children);
+                    renderChildren();
+                });
+        }
+
+        function fetchChildThoughts() {
+            var fetchingThoughtsSpinner = spinner.create('loading child thoughts');
+            fetchingThoughtsSpinner.show();
+            return thoughtStorage.fetchChildThoughts(targetThoughtId)
+                .finally(function() {
+                    fetchingThoughtsSpinner.hide();
+                });
+        }
+
+
+       function renderChildren() {
+           var children = targetThought.children;
+           $('[data-text="currentViewedThought"]').html(currentViewedThought.name);
+           console.debug('thoughts-mind-map-view: adding child thoughts to brainVisNetwork');
+           brainVisNetwork.addChildThoughts({
+               children: children,
+               parentThoughtId: targetThoughtId
+           });
+       }
     }
 
     function initializeAddThoughtButton(network) {

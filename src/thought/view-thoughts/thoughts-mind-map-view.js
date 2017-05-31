@@ -52,7 +52,10 @@ define([
         console.debug('thoughts: ', thoughts);
 
         console.debug('thoughtsMindMapView: initializing brainVisNetwork');
-        brainVisNetwork = new BrainVisNetwork();
+        var visNetworkContainer = document.getElementById('thoughts-container');
+        brainVisNetwork = new BrainVisNetwork({
+            containerDomElement: visNetworkContainer
+        });
         console.debug('thoughtsMindMapView: brainVisNetwork instance: ', brainVisNetwork);
         brainVisNetwork.renderInitialThought(initialThought);
         //var visNetwork = renderVisNetworkForOneThought(currentViewedThought);
@@ -68,6 +71,7 @@ define([
             console.debug('change thought!');
             console.debug('event: ', event);
             var targetThoughtId = visNetworkHelper.getTargetThoughtId(event);
+
             thoughtClickHandler(targetThoughtId);
         }
     }
@@ -102,6 +106,7 @@ define([
         console.debug('brainVisNetwork.visNodes: ', brainVisNetwork.visNodes);
 
         console.debug('brainVisNetwork.visNodes: ', brainVisNetwork.visNodes);
+
         changeThought(targetThoughtId);
     }
 

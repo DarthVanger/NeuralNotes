@@ -1,7 +1,8 @@
 define([], function() {
 
-    var BrainVisNetwork = function() {
+    var BrainVisNetwork = function(options) {
         console.debug('vis.js: ', vis);
+        this.containerDomElement = options.containerDomElement;
         this.visNetwork;
         this.visEdges;
         this.visNodes;
@@ -59,7 +60,7 @@ define([], function() {
         /**
          * Container for the vis network visualization
          */
-        this.container = document.getElementById('thoughts-container');
+        this.container = this.containerDomElement;
         this.container.innerHTML = '';
 
         /**

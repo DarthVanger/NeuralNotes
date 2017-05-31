@@ -23,6 +23,8 @@ define([
 
     var spinner = siteGlobalLoadingBar.create('thoughts-view');
 
+    var thoughtContentController;
+
     return {
         set: set,
         render: render
@@ -53,6 +55,8 @@ define([
 
         console.debug('thoughtsMindMapView: initializing brainVisNetwork');
         var visNetworkContainer = document.getElementById('thoughts-container');
+
+        
         brainVisNetwork = new BrainVisNetwork({
             containerDomElement: visNetworkContainer
         });
@@ -64,6 +68,10 @@ define([
         brainVisNetwork.visNetwork.on('click', visNetworkClickHandler);
 
         initializeAddThoughtButton(brainVisNetwork.visNetwork);
+
+        // init thought content controller
+        thoughtContentController = new ThoughtContentController();
+        thoughtContentController.loadThought(initialThought);
     }
 
     function visNetworkClickHandler(event) {
@@ -107,14 +115,6 @@ define([
 
         console.debug('brainVisNetwork.visNodes: ', brainVisNetwork.visNodes);
 
-        changeThought(targetThoughtId);
-    }
-
-    /**
-     * Load child thoughts for clicked thought, 
-     * alnd redraw the network for new thoughts.
-     */
-    function changeThought(targetThoughtId) {
         currentViewedThoughtId = targetThoughtId;
         thoughtStorage.logTree();
         var targetThought = thoughtStorage.findThoughtById(targetThoughtId);
@@ -122,12 +122,22 @@ define([
         if (!targetThought) {
             throw new Error('changeThought(): couldn\'t find targetThought in thoughtStorage by id: ', targetThoughtId);
         }
-
         console.debug('thoughts-mind-map-view.changeThought(): targetThought: ', targetThought);
+
+        changeThought(targetThought);
+        thoughtContentController.loadThought(targetThought);
+    }
+
+    /**
+     * Load child thoughts for clicked thought, 
+     * alnd redraw the network for new thoughts.
+     */
+    function changeThought(targetThought) {
+
         if (!_.isEmpty(targetThought.children)) {
             renderChildren();
         } else {
-            fetchChildThoughts(targetThoughtId)
+            fetchChildThoughts(targetThought.id)
                 .then(function(children) {
                     targetThought.children = children;
                     console.debug('fetched child thoughts: ', children);
@@ -138,7 +148,7 @@ define([
         function fetchChildThoughts() {
             var fetchingThoughtsSpinner = spinner.create('loading child thoughts');
             fetchingThoughtsSpinner.show();
-            return thoughtStorage.fetchChildThoughts(targetThoughtId)
+            return thoughtStorage.fetchChildThoughts(targetThought.id)
                 .finally(function() {
                     fetchingThoughtsSpinner.hide();
                 });
@@ -151,7 +161,7 @@ define([
            console.debug('thoughts-mind-map-view: adding child thoughts to brainVisNetwork');
            brainVisNetwork.addChildThoughts({
                children: children,
-               parentThoughtId: targetThoughtId
+               parentThoughtId: targetThought.id
            });
        }
     }
@@ -189,6 +199,25 @@ define([
         });
         contextMenu.init();
 
+    }
+
+    function ThoughtContentController() {
+        var selectedThoughtContentContainer = document.querySelector('.selected-thought-content');
+
+        console.debug('thoughtsMindMapView: selectedThoughtContentContainer: ', selectedThoughtContentContainer);
+
+
+        this.loadThought = function(thought) {
+            selectedThoughtContentContainer.innerHTML = 'loading thought contents...';
+            
+            console.debug('ThoughtContentController.loadThought(), passed thought: ', thought);
+            thoughtStorage.getThoughtContent(thought)
+                .then(function(thoughtContent) {
+                   console.debug('ThoughtContentController.loadThought(), loaded thought content: ', thoughtContent);
+                    selectedThoughtContentContainer.innerHTML = thoughtContent;
+                });
+
+        }
     }
 
 });

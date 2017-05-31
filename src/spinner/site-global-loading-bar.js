@@ -7,7 +7,7 @@ define([], function() {
     $loadingBar.hide();
 
     var $loadingMessageElement = $('<div class="site-global-loading-bar__message"></div>');
-    console.debug('site-global-loading-bar: $loadingMessageElement: ', $loadingMessageElement);
+    //console.debug('site-global-loading-bar: $loadingMessageElement: ', $loadingMessageElement);
 
     var loaderInstances = [];
 
@@ -25,7 +25,7 @@ define([], function() {
     return loadingBarService;
 
     function create(name) {
-        console.debug('site-global-loading-bar: creating loader for name: ', name);
+        //console.debug('site-global-loading-bar: creating loader for name: ', name);
         var $msgEl = $loadingMessageElement.clone();
         $msgEl.append($('<div>' + name + '</div>'));
         $msgEl.addClass('hidden-message');
@@ -36,10 +36,10 @@ define([], function() {
                 return loadingBarService.create(name + ' | ' + subName);
             },
             show: function() {
-                console.debug('site-global-loading-bar: showing message element for message: ', name);
+                //console.debug('site-global-loading-bar: showing message element for message: ', name);
 
                 if (!isShown) {
-                    console.debug('site-global-loading-bar: appending message element for message: ', name);
+                    //console.debug('site-global-loading-bar: appending message element for message: ', name);
                     $loadersContainer.append($msgEl);
                 }
                 $msgEl.removeClass('hidden-message');
@@ -48,7 +48,7 @@ define([], function() {
                 isShown = true;
             },
             hide: function() {
-                console.debug('site-global-loading-bar: removing message element for message:', name);
+                //console.debug('site-global-loading-bar: removing message element for message:', name);
                 $msgEl.addClass('hidden-message');
                 hideLoadingBar(name);
                 // remove element after css animation.
@@ -60,17 +60,17 @@ define([], function() {
             }
         }
         loaderInstances.push(loaderInstance);
-        console.debug('loadingBar: loader intances: ', loaderInstances);
+        //console.debug('loadingBar: loader intances: ', loaderInstances);
         return loaderInstance;
     }
 
     function showLoadingBar() {
-        console.debug('site-global-loading-bar: showLoadingBar()');
+        //console.debug('site-global-loading-bar: showLoadingBar()');
         $loadingBar.show();
     }
 
     function hideLoadingBar(name) {
-        console.debug('site-global-loading-bar: hideLoadingBar()');
+        //console.debug('site-global-loading-bar: hideLoadingBar()');
         $loadingBar.hide();
     }
 

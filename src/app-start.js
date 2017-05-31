@@ -50,7 +50,16 @@ define([
 
         var spinner = siteGlobalLoadingBar.create('app-start');
 
-        if (thoughtStorage.restoreFromCache()) {
+        // Temporary disabled restoring from cache,
+        // because getting thought contents requires
+        // gapi to be already loaded (it's not cahced yet),
+        // so it throws undefined,
+        // if we restore from cache and call it before
+        // gapi was loaded
+        // TODO: store thought contents in cache also
+        // (or make getting thought contents wait for gapi
+        // to be loaded, and make requests only after that)
+        if (false && thoughtStorage.restoreFromCache()) {
             console.debug('appStart(): cache restored, calling router.goToRouteInAddressBar()');
             cloudApiLoader.load();
             router.goToRouteInAdressBar();

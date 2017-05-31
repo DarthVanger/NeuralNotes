@@ -1,14 +1,19 @@
 define([
-    'auth-service'
+    'auth-service',
+    'spinner/site-global-loading-bar'
 ], function(
-    authService
+    authService,
+    siteGlobalLoadingBar
 ) {
 
     var client;
 
+    var spinner = siteGlobalLoadingBar.create('google-drive-api');
+
     var self = {
         loadDriveApi: loadDriveApi,
-        client: client
+        client: client,
+        findByName: findByName
     };
 
     return self;
@@ -31,6 +36,54 @@ define([
               });
         });
 
+        return promise;
+    }
+
+    /**
+     * Find a file on google drive by name.
+     */
+    function findByName(options) {
+        var query;
+
+        if (options.name) {
+            query = 'name = "' + options.name + '"';
+        } else {
+            throw new Error('googleDriveApi.findByName: no filename passed!');
+        }
+
+        var request;
+
+        //TODO: allow search inside of a specified folder?
+
+        //if (options.folderId) {
+        //    request = gapi.client.request({
+        //        path: '/drive/v3/files/' + options.folderId + '/list',
+        //        method: 'GET',
+        //        params: {
+        //          'pageSize': 10,
+        //          'fields': "nextPageToken, files(id, name)",
+        //          'q': query
+        //        }
+        //    });
+        //} else {
+
+            request = gapi.client.drive.files.list({
+              'pageSize': 10,
+              'fields': "nextPageToken, files(id, name)",
+              'q': query
+            });
+
+        //}
+
+        spinner.show();
+        var promise = new Promise(function(resolve, reject) {
+              request.execute(function(resp) {
+                console.debug('googleDriveApi.findByname: Files found by query "' + query + '": ', resp);
+                resolve(resp.files);
+                spinner.hide();
+              });
+        });
+  
         return promise;
     }
 

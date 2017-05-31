@@ -29,6 +29,7 @@ define([
         fetchChildThoughts: fetchChildThoughts,
         restoreFromCache: restoreFromCache,
         findThoughtById: findThoughtById,
+        getThoughtContent: getThoughtContent,
         logTree: logTree
     };
 
@@ -404,25 +405,9 @@ define([
      * Try to find "Brain" folder in google drive root.
      */
     function findBrainFolder() {
-        //console.debug('getFiles()');
-        var request = gapi.client.drive.files.list({
-          'pageSize': 10,
-          'fields': "nextPageToken, files(id, name)",
-          'q': 'name = "' + BRAIN_FOLDER_NAME + '"'
+        return googleDriveApi.findByName({
+            name: BRAIN_FOLDER_NAME
         });
-  
-        spinner.show();
-        var promise = new Promise(function(resolve, reject) {
-              request.execute(function(resp) {
-                //console.debug('resp: ', resp);
-                //var thoughts = resp.files;
-                //storage.thoughts = thoughts;
-                resolve(resp.files);
-                spinner.hide();
-              });
-        });
-  
-        return promise;
     }
 
     /**
@@ -546,6 +531,63 @@ define([
         var promise = new Promise(function(resolve, reject) {
             request.execute(function(newFile) {
                 resolve(newFile);
+            });
+        })
+        .finally(function() {
+            spinner.hide();
+        });
+
+        return promise;
+    }
+
+    function getThoughtContent(thought) {
+
+        return googleDriveApi.findByName({
+            name: thought.name + '.txt',
+            folderId: thought.id
+        }).then(function(foundFiles) {
+            if (!foundFiles) {
+                throw new Error('thoughtStorage.getThoughtContent(): no thought content file found for thought: "' + thought.name + '"');
+            }
+
+            var thoughtContentFile = foundFiles[0];
+            console.debug('thoughtStorage.getThoughtContent(), thoughtContentFile: ', thoughtContentFile);
+
+            return getTextFileContents({
+                fileId: thoughtContentFile.id
+            });
+        });
+
+    }
+    
+    function getTextFileContents(options) {
+        var requestParams = {
+            fileId: options.fileId,
+            alt: 'media'
+        };
+
+        var request = gapi.client.request({
+            path: '/drive/v3/files/' + requestParams.fileId,
+            method: 'GET',
+            params: {
+                alt: 'media'
+            }
+        });
+
+        //var request = googleDriveApi.client.files.get(requestParams);
+
+        spinner.show();
+        var promise = new Promise(function(resolve, reject) {
+            request.execute(function(gapiReturnsFalseHereForBlobs, responsePlain) {
+                console.debug('thoughtStorage.getTextFileContents(), responsePlain: ', responsePlain);
+                var responseObject = JSON.parse(responsePlain);
+                console.debug('thoughtStorage.getTextFileContents(), responseObject: ', responseObject);
+                var responseBody = responseObject.gapiRequest.data.body;
+                console.debug('thoughtStorage.getTextFileContents(), responseBody: ', responseBody);
+
+                var fileText = responseBody;
+
+                resolve(fileText);
             });
         })
         .finally(function() {

@@ -25,6 +25,7 @@ define([
     return {
         scanDrive: scanDrive,
         save: save,
+        update: update,
         getThoughts: getThoughts,
         fetchChildThoughts: fetchChildThoughts,
         restoreFromCache: restoreFromCache,
@@ -240,6 +241,28 @@ define([
         .finally(function() {
             spinner.hide();
         });
+    }
+
+    function update(thought) {
+        console.debug('thoughtStorage.update(), thought: ', thought);
+
+        var updateSpinner = spinner.create('updating thought');
+        updateSpinner.show();
+
+        return findThoughtContentFile(thought)
+            .then(function (thoughtContentFile) {
+                return googleDriveApi.updateFile({
+                    fileId: thoughtContentFile.id,
+                    text: thought.content
+                });
+            })
+            .then(function(response) {
+                console.debug('thoughtStorage.update() sucess! Response: ', response);
+            })
+            .finally(function() {
+                updateSpinner.hide();
+            });
+
     }
 
     function restoreFromCache() {
@@ -541,7 +564,15 @@ define([
     }
 
     function getThoughtContent(thought) {
+        return findThoughtContentFile(thought)
+            .then(function (thoughtContentFile) {
+                return getTextFileContents({
+                    fileId: thoughtContentFile.id
+                });
+            });
+    }
 
+    function findThoughtContentFile(thought) {
         return googleDriveApi.findByName({
             name: thought.name + '.txt',
             folderId: thought.id
@@ -553,11 +584,8 @@ define([
             var thoughtContentFile = foundFiles[0];
             console.debug('thoughtStorage.getThoughtContent(), thoughtContentFile: ', thoughtContentFile);
 
-            return getTextFileContents({
-                fileId: thoughtContentFile.id
-            });
+            return thoughtContentFile;
         });
-
     }
     
     function getTextFileContents(options) {

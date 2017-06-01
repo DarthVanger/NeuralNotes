@@ -201,22 +201,60 @@ define([
 
     }
 
+    /**
+     * Controller for the panel showing though contents
+     */
     function ThoughtContentController() {
         var selectedThoughtContentContainer = document.querySelector('.selected-thought-content');
 
         console.debug('thoughtsMindMapView: selectedThoughtContentContainer: ', selectedThoughtContentContainer);
 
+        var textarea = selectedThoughtContentContainer.querySelector('textarea');
+
+        initRealtimeSaving();
+
+        console.debug('thoughtsMindMapView: textarea: ', textarea);
+
 
         this.loadThought = function(thought) {
-            selectedThoughtContentContainer.innerHTML = 'loading thought contents...';
+            setThoughtContent('loading thought contents...');
             
             console.debug('ThoughtContentController.loadThought(), passed thought: ', thought);
             thoughtStorage.getThoughtContent(thought)
                 .then(function(thoughtContent) {
                    console.debug('ThoughtContentController.loadThought(), loaded thought content: ', thoughtContent);
-                    selectedThoughtContentContainer.innerHTML = thoughtContent;
+                   setThoughtContent(thoughtContent);
                 });
 
+        }
+
+        function setThoughtContent(text){
+            textarea.value = text;
+        }
+
+        function initRealtimeSaving() {
+            var REAL_TIME_SAVING_INTERVAL_MS = 5000;
+            console.debug('ThoughtContentController.initRealtimeSaving()');
+            var debouncedUpdate = _.debounce(updateThoughtContent, REAL_TIME_SAVING_INTERVAL_MS);
+
+            textarea.addEventListener('input', function(event) {
+                debouncedUpdate(event);
+            });
+        }
+
+        function updateThoughtContent() {
+            console.debug('ThoughtContentController.updateThoughtContent()');
+            var savingThoughtContentSpinner = spinner.create('saving thought');
+            savingThoughtContentSpinner.show();
+
+            currentViewedThought.content = textarea.value;
+
+            console.debug('RealtimeSaving: Save thought content: currentViewedThought: ', currentViewedThought);
+
+            return thoughtStorage.update(currentViewedThought)
+                .finally(function() {
+                    savingThoughtContentSpinner.hide();
+                });
         }
     }
 

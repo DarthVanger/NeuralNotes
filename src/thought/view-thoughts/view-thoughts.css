@@ -5,6 +5,10 @@
 .selected-thought-content {
     height: 100px;
     margin: -15px -15px 0 -15px;
-    padding: 5px;
+    padding: 0;
     border: solid 1px rgba(50, 50, 100, 0.5);
+}
+.thought-content__textarea {
+    height: 100%;
+    width: 100%;
 }

@@ -13,7 +13,8 @@ define([
     var self = {
         loadDriveApi: loadDriveApi,
         client: client,
-        findByName: findByName
+        findByName: findByName,
+        updateFile: updateFile
     };
 
     return self;
@@ -84,6 +85,26 @@ define([
               });
         });
   
+        return promise;
+    }
+
+    function updateFile(options) {
+         var request = gapi.client.request({
+            'path': '/upload/drive/v2/files/' + options.fileId,
+            'method': 'PUT',
+            'params': {'uploadType': 'media'},
+            'headers': {
+              'Content-Type': 'text/plain'
+            },
+            'body': options.text 
+        });
+
+        var promise = new Promise(function(resolve, reject) {
+            request.execute(function(response) {
+                resolve(response);
+            });
+        });
+
         return promise;
     }
 

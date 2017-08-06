@@ -112,6 +112,11 @@ define([], function() {
         var self = this;
         console.debug('BrainVisNetwork.addChildThoughts(). Options: ', options);
         _.each(options.children, function(childThought) {
+            if (self.visNodes.get(childThought.id)) {
+                // don't try to add existing nodes, because vis DataSet will throw an error
+                return;
+            }
+
             self.visNodes.add({
                 id: childThought.id,
                 label: childThought.name,

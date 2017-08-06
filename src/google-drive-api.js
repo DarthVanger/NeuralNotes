@@ -54,6 +54,20 @@ define([
 
         var request;
 
+        if (options.folderId) {
+            query += ' and "' + options.folderId + '" in parents';
+        }
+
+        query += ' and trashed = false';
+
+        var params = {
+            'pageSize': 10,
+            'fields': "nextPageToken, files(id, name)",
+            'q': query
+        };
+
+        request = gapi.client.drive.files.list(params);
+
         //TODO: allow search inside of a specified folder?
 
         //if (options.folderId) {
@@ -68,18 +82,14 @@ define([
         //    });
         //} else {
 
-            request = gapi.client.drive.files.list({
-              'pageSize': 10,
-              'fields': "nextPageToken, files(id, name)",
-              'q': query
-            });
 
         //}
 
         spinner.show();
         var promise = new Promise(function(resolve, reject) {
               request.execute(function(resp) {
-                console.debug('googleDriveApi.findByname: Files found by query "' + query + '": ', resp);
+                console.debug('googleDriveApi.findByname(): us params: ', params);
+                console.debug('googleDriveApi.findByname(): Files found by query "' + query + '": ', resp);
                 resolve(resp.files);
                 spinner.hide();
               });

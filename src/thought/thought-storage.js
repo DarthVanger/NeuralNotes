@@ -286,14 +286,18 @@ define([
         console.debug('thoughtStorage.scanDrive()');
         return new Promise(function(resolve, reject) {
             spinner.show();
-            findBrainFolder().then(function(result) {
-                console.debug('findBrainFolder result: ', result);
-                if (result.length == 0) {
+            findBrainFolder().then(function(searchResult) {
+                console.debug('findBrainFolder searchResult: ', searchResult);
+                if (searchResult.length == 0) {
                     console.info('thoughtStorage: Brain folder on Google Drive not found, create a new one.');
-                    createBrainFolder().then(resolve);
+                    createBrainFolder().then(function(createdBrainFolder) {
+                        brainFolder = createdBrainFolder;
+                        resolve(createdBrainFolder);
+                    });
                 } else {
                     console.debug('thoughtStorage: Brain folder found, reading it');
-                    brainFolder = result[0];
+                    console.info('thoughtStorage.scanDrive(): found Brain folder named "' + BRAIN_FOLDER_NAME + '"');
+                    brainFolder = searchResult[0];
                     readBrain().then(resolve);
                 }
             })
@@ -417,7 +421,25 @@ define([
         return createDirectory({
             name: BRAIN_FOLDER_NAME
         }).then(function(response) {
+            if (response.code && response.code === -1) {
+                throw new Error('createBrainFolder error (code = -1)! Response: response');
+            }
+
             console.debug('createBrainFolder successs!!, response: ', response);
+            console.info('thoughtStorage.createBrainFolder(): created brain folder named: "' + BRAIN_FOLDER_NAME + '"');
+
+            var createdFolder = response;
+            thoughtsTree.root = createdFolder;
+            thoughtsTree.root.children = [];
+
+            return createFile({
+                name: BRAIN_FOLDER_NAME + '.txt',
+                content: 'The root of your thoughts :)',
+                parents: [createdFolder.id]
+            });
+        }).then(function(response) {
+            console.debug('createBrainFolder(): create brain txt file success!, response: ', response);
+            console.info('thoughtStorage.createBrainFolder(): created brain txt file named: "' + BRAIN_FOLDER_NAME + '.txt"');
         })
         .finally(function() {
             spinner.hide();
@@ -429,7 +451,8 @@ define([
      */
     function findBrainFolder() {
         return googleDriveApi.findByName({
-            name: BRAIN_FOLDER_NAME
+            name: BRAIN_FOLDER_NAME,
+            folderId: 'root'
         });
     }
 

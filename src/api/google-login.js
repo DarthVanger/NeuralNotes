@@ -47,6 +47,7 @@ define([
                 //scope: SCOPES,
                 immediate: false
             }, function(authResult) {
+                console.debug('googleLogin.gapiAuthorize(): authResult: ', authResult);
                 if (authResult.error) {
                     console.debug('googleLogin.gapiAuthorize(): authError: ', authResult.error);
                     reject(authResult);

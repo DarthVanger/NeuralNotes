@@ -29,7 +29,8 @@ define([
         restoreFromCache: restoreFromCache,
         findThoughtById: findThoughtById,
         getThoughtContent: getThoughtContent,
-        logTree: logTree
+        logTree: logTree,
+        getRoot: getRoot
     };
 
     function logTree() {
@@ -321,12 +322,16 @@ define([
         return thoughtsTree;
     }
 
+    function getRoot() {
+        return thoughtsTree.root;
+    }
+
     /**
      * Get files from brain folder, which are childs
      * of the root "Brain" node.
      */
     function readBrain() {
-        console.debug('thoughtStorege.readBrain()');
+        console.debug('thoughtStorage.readBrain()');
         return new Promise(function(resolve, reject) {
             getFiles(brainFolder.id).then(function(files) {
                 console.debug('files inside the brain folder: ', files);

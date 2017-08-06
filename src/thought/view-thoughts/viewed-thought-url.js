@@ -1,7 +1,5 @@
 define([
-    'URI'
 ], function(
-    URI 
 ) {
     var service = {
         get: get,
@@ -11,14 +9,11 @@ define([
     return service;
 
     function update(thoughtId) {
-        var uri = new URI(window.location);
-        uri.search({ thoughtId: thoughtId });
-        window.location.search = uri.search();
+        window.location.hash = thoughtId;
     }
 
     function get() {
-        var uri = new URI(window.location);
-        return uri.search(true).thoughtId;
+        return window.location.hash.substr(1);
     }
 
 });

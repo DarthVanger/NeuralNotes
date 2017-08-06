@@ -66,6 +66,7 @@ define([
         });
         console.debug('thoughtsMindMapView: brainVisNetwork instance: ', brainVisNetwork);
         brainVisNetwork.renderInitialThought(initialThought);
+        changeThought(initialThought);;
         //var visNetwork = renderVisNetworkForOneThought(currentViewedThought);
         visNetworkHelper = new VisNetworkHelper(brainVisNetwork.visNetwork);
 

@@ -34,17 +34,21 @@ define([
         console.debug('viewThoughtsController.init(), options: ', options);
         if (options) {
             selectedThoughtId = options.thought ? options.thought.id : options.thoughtId;
-            if (!selectedThoughtId) {
-                selectedThoughtId = viewedThoughtUrl.get();
-            }
-
-            if (!selectedThoughtId) {
-                selectedThoughtId = thoughtStorage.thoughtsTree.root.id;
-            }
-
-            selectedThought = thoughtStorage.findThoughtById(selectedThoughtId);
-            viewedThoughtUrl.update(selectedThought.id);
+            console.debug('viewThoughtsController.init(): selectedThoughtId from options: ', selectedThoughtId);
         }
+
+        if (!selectedThoughtId) {
+            selectedThoughtId = viewedThoughtUrl.get();
+            console.debug('viewThoughtsController.init(): selectedThoughtId from url: ', selectedThoughtId);
+        }
+
+        if (!selectedThoughtId) {
+            selectedThoughtId = thoughtStorage.getRoot().id;
+            console.info('viewThoughtsController.init(): selectedThoughtId was not passed neither in options nor is present in URL, using root as selected thought.');
+        }
+
+        selectedThought = thoughtStorage.findThoughtById(selectedThoughtId);
+        viewedThoughtUrl.update(selectedThought.id);
 
         //getFiles().then(function() {
 

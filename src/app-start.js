@@ -4,15 +4,7 @@ require.config({
         text: "../bower_components/text/text",
         d3: "../bower_components/d3/d3",
         //lodash: "../bower_components/lodash/lodash"
-        underscore: "../bower_components/underscore/underscore",
-
-        // uri.js and its dependencies:
-        URI: "../bower_components/urijs/src/URI",
-        punycode: "../bower_components/urijs/src/punycode",
-        IPv6: "../bower_components/urijs/src/IPv6",
-        SecondLevelDomains: "../bower_components/urijs/src/SecondLevelDomains"
-
-        //
+        underscore: "../bower_components/underscore/underscore"
     },
     shim: {
        underscore: {

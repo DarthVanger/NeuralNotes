@@ -5,14 +5,17 @@ define([
     'thought/thought-storage',
     'router',
     'auth-service',
-    'text!thought/view-thoughts/thought.html'
+    'text!thought/view-thoughts/thought.html',
+    'thought/view-thoughts/viewed-thought-url'
+
 ], function(
     //thoughtsGraphView,
     thoughtsMindMapView,
     thoughtStorage,
     router,
     authService,
-    thoughtTemplate
+    thoughtTemplate,
+    viewedThoughtUrl
 ) {
     var selectedThought;
     var selectedThoughtId;
@@ -32,9 +35,15 @@ define([
         if (options) {
             selectedThoughtId = options.thought ? options.thought.id : options.thoughtId;
             if (!selectedThoughtId) {
+                selectedThoughtId = viewedThoughtUrl.get();
+            }
+
+            if (!selectedThoughtId) {
                 selectedThoughtId = thoughtStorage.thoughtsTree.root.id;
             }
+
             selectedThought = thoughtStorage.findThoughtById(selectedThoughtId);
+            viewedThoughtUrl.update(selectedThought.id);
         }
 
         //getFiles().then(function() {
@@ -101,11 +110,11 @@ define([
        *
        * @param {string} message Text to be placed in pre element.
        */
-      function appendPre(message) {
-        var pre = document.getElementById('output');
-        var textContent = document.createTextNode(message + '\n');
-        pre.appendChild(textContent);
-      }
+      //function appendPre(message) {
+      //  var pre = document.getElementById('output');
+      //  var textContent = document.createTextNode(message + '\n');
+      //  pre.appendChild(textContent);
+      //}
 
 
 });

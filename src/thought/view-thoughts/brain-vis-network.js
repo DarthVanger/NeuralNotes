@@ -18,17 +18,18 @@ define([], function() {
         visNodesArray.push({ id: thought.id, label: thought.name });
 
         // draw a parent thought if it's not the root node.
-        //if (thought.parent) {
-        //    visNodesArray.push({
-        //        id: thought.parent.id,
-        //        label: thought.parent.name,
-        //        group: 'parent'
-        //    });
-        //    visEdgesArray.push({
-        //        from: thought.parent.id,
-        //        to: thought.id
-        //    });
-        //}
+        if (thought.parent) {
+            console.debug('BrainVisNetwork.renderInitialThought(): drawing parent thought: ', thought);
+            visNodesArray.push({
+                id: thought.parent.id,
+                label: thought.parent.name,
+                group: 'parent'
+            });
+            visEdgesArray.push({
+                from: thought.parent.id,
+                to: thought.id
+            });
+        }
 
         // add thought children
         console.debug('BrainVisNetwork: thought.children: ', thought.children);

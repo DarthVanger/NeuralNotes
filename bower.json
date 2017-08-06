@@ -24,6 +24,7 @@
     "font-awesome": "~4.5",
     "underscore": "~1.8.3",
     "vis": "~4.16.1",
-    "minilog": "^3.0.0"
+    "minilog": "^3.0.0",
+    "urijs": "uri.js#^1.18.10"
   }
 }

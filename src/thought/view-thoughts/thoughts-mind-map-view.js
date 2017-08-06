@@ -1,18 +1,22 @@
 console.debug('thoughts-mind-map-view.js');
 define([
     'router',
+    'thought/view-thoughts/view-thoughts',
     'thought/view-thoughts/context-menu',
     'thought/view-thoughts/brain-vis-network',
     'thought/view-thoughts/vis-network-helper',
     'thought/thought-storage',
     'spinner/site-global-loading-bar',
+    'thought/view-thoughts/viewed-thought-url'
 ], function(
     router,
+    viewThoughts,
     ContextMenu,
     BrainVisNetwork,
     VisNetworkHelper,
     thoughtStorage,
-    siteGlobalLoadingBar
+    siteGlobalLoadingBar,
+    viewedThoughtUrl
 ) {
     var brainVisNetwork;
     var visNetworkHelper;
@@ -133,6 +137,7 @@ define([
      * alnd redraw the network for new thoughts.
      */
     function changeThought(targetThought) {
+        viewedThoughtUrl.update(targetThought.id);
 
         if (!_.isEmpty(targetThought.children)) {
             renderChildren();

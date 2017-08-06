@@ -62,7 +62,7 @@ define([
 
         var params = {
             'pageSize': 10,
-            'fields': "nextPageToken, files(id, name)",
+            'fields': "nextPageToken, files(id, name, mimeType, parents)",
             'q': query
         };
 
@@ -90,6 +90,15 @@ define([
               request.execute(function(resp) {
                 console.debug('googleDriveApi.findByname(): us params: ', params);
                 console.debug('googleDriveApi.findByname(): Files found by query "' + query + '": ', resp);
+
+                //TODO: same code is duplicated in thought-storage.js - Refactor!
+                resp.files.forEach(function(file) {
+                    if (file.parents.length > 1) {
+                        throw new Error('Files shouldn\'t have more than one parent. File with more than one parent: ', file);
+                    }
+                    file.parent = { id: file.parents[0] };
+                });
+                
                 resolve(resp.files);
                 spinner.hide();
               });

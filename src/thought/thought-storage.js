@@ -406,7 +406,7 @@ define([
         console.debug('getFiles()');
         var request = gapi.client.drive.files.list({
           'pageSize': 10,
-          'fields': "nextPageToken, files(id, name, mimeType)",
+          'fields': "nextPageToken, files(id, name, mimeType, parents)",
           'q': '"' + folderId + '" in parents'
         });
   
@@ -417,6 +417,14 @@ define([
                 //var thoughts = resp.files;
                 //storage.thoughts = thoughts;
                 if (!resp.files) throw new Error('getFiles() received response without "files" property');
+
+                //TODO: same code is duplicated in google-drive-api.js - Refactor!
+                resp.files.forEach(function(file) {
+                    if (file.parents.length > 1) {
+                        throw new Error('Files shouldn\'t have more than one parent. File with more than one parent: ', file);
+                    }
+                    file.parent = { id: file.parents[0] };
+                });
 
                 spinner.hide();
                 resolve(resp.files);

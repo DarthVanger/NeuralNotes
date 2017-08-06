@@ -10,11 +10,17 @@ define([
 
     var spinner = siteGlobalLoadingBar.create('google-drive-api');
 
+    var FILE_FIELDS = 'id, name, mimeType, parents';
+    var FILE_LIST_FIELDS = 'nextPageToken, files(' + FILE_FIELDS + ')';
+
     var self = {
+        FILE_FIELDS: FILE_FIELDS,
+        FILE_LIST_FIELDS: FILE_LIST_FIELDS,
         loadDriveApi: loadDriveApi,
         client: client,
         findByName: findByName,
-        updateFile: updateFile
+        updateFile: updateFile,
+        parseParents: parseParents
     };
 
     return self;
@@ -62,7 +68,7 @@ define([
 
         var params = {
             'pageSize': 10,
-            'fields': "nextPageToken, files(id, name, mimeType, parents)",
+            'fields': FILE_LIST_FIELDS,
             'q': query
         };
 
@@ -92,12 +98,7 @@ define([
                 console.debug('googleDriveApi.findByname(): Files found by query "' + query + '": ', resp);
 
                 //TODO: same code is duplicated in thought-storage.js - Refactor!
-                resp.files.forEach(function(file) {
-                    if (file.parents.length > 1) {
-                        throw new Error('Files shouldn\'t have more than one parent. File with more than one parent: ', file);
-                    }
-                    file.parent = { id: file.parents[0] };
-                });
+                resp.files.forEach(parseParents);
                 
                 resolve(resp.files);
                 spinner.hide();
@@ -126,5 +127,21 @@ define([
 
         return promise;
     }
+
+    /**
+     * We don't want file to have multiple parents
+     * (but google drive allows that).
+     * So copy parents[0] to parent.
+     */
+    function parseParents(file) {
+        if (file.parents) {
+            if (file.parents && file.parents.length > 1) {
+                throw new Error('Files shouldn\'t have more than one parent. File with more than one parent: ', file);
+            }
+            file.parent = { id: file.parents[0] };
+        } else {
+            console.debug('googleDriveApi.parseParents(): skipping file with name "' + file.name + '", because it has no "parents" property');
+        }
+    };
 
 });

@@ -8,6 +8,30 @@ define([], function() {
         this.visNodes;
     }
 
+    BrainVisNetwork.prototype.renderParentThought = function(thought) {
+        console.debug('BrainVisNetwork.renderParentThought(): thought: ', thought);
+        if (!thought.parent) {
+            // don't render parent for root thought
+            // TODO: refactor to use function to check for root thought
+            return;
+        }
+
+        if (this.visNodes.get(thought.parent.id)) {
+            // don't try to add existing nodes, because vis DataSet will throw an error
+            return;
+        }
+
+        this.visNodes.add({
+            id: thought.parent.id,
+            label: thought.parent.name,
+            group: 'parent'
+        });
+        this.visEdges.add({
+            from: thought.parent.id,
+            to: thought.id
+        });
+    };
+
     BrainVisNetwork.prototype.renderInitialThought = function(thought) {
         console.debug('BrainVisNetwork.renderInitialThought(): ', thought);
 
@@ -16,20 +40,6 @@ define([], function() {
 
         // draw the passed thought first
         visNodesArray.push({ id: thought.id, label: thought.name });
-
-        // draw a parent thought if it's not the root node.
-        if (thought.parent) {
-            console.debug('BrainVisNetwork.renderInitialThought(): drawing parent thought: ', thought);
-            visNodesArray.push({
-                id: thought.parent.id,
-                label: thought.parent.name,
-                group: 'parent'
-            });
-            visEdgesArray.push({
-                from: thought.parent.id,
-                to: thought.id
-            });
-        }
 
         // add thought children
         console.debug('BrainVisNetwork: thought.children: ', thought.children);

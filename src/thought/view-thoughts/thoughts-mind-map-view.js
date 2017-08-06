@@ -66,7 +66,7 @@ define([
         });
         console.debug('thoughtsMindMapView: brainVisNetwork instance: ', brainVisNetwork);
         brainVisNetwork.renderInitialThought(initialThought);
-        changeThought(initialThought);;
+        changeThought(initialThought);
         //var visNetwork = renderVisNetworkForOneThought(currentViewedThought);
         visNetworkHelper = new VisNetworkHelper(brainVisNetwork.visNetwork);
 
@@ -135,7 +135,7 @@ define([
 
     /**
      * Load child thoughts for clicked thought, 
-     * alnd redraw the network for new thoughts.
+     * and redraw the network for new thoughts.
      */
     function changeThought(targetThought) {
         viewedThoughtUrl.update(targetThought.id);
@@ -151,12 +151,33 @@ define([
                 });
         }
 
+        if (targetThought.parent) {
+            if (!_.isEmpty(targetThought.parent.name)) {
+                renderParent();
+            } else {
+                fetchParentThought(targetThought.parent.id)
+                    .then(function(thought) {
+                        targetThought.parent = thought;
+                        console.debug('thoughtsMindMapView: fetched parent thought: ', thought);
+                        renderParent();
+                    });
+            }
+        }
+
         function fetchChildThoughts() {
             var fetchingThoughtsSpinner = spinner.create('loading child thoughts');
             fetchingThoughtsSpinner.show();
             return thoughtStorage.fetchChildThoughts(targetThought.id)
                 .finally(function() {
                     fetchingThoughtsSpinner.hide();
+                });
+        }
+
+        function fetchParentThought(thoughtId) {
+            var fetchingParentThought = spinner.create('loading parent thought');
+            return thoughtStorage.fetchParentThought(thoughtId)
+                .finally(function() {
+                    fetchingParentThought.hide();
                 });
         }
 
@@ -169,6 +190,10 @@ define([
                children: children,
                parentThoughtId: targetThought.id
            });
+       }
+
+       function renderParent() {
+           brainVisNetwork.renderParentThought(targetThought);
        }
     }
 

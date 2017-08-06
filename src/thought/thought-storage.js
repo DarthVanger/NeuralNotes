@@ -21,10 +21,12 @@ define([
     var spinner = siteGlobalLoadingBar.create('thought-storage');
 
     return {
+        //TODO: move fetching methods to a separate file.
         scanDrive: scanDrive,
         create: create,
         update: update,
         getThoughts: getThoughts,
+        fetchParentThought: fetchParentThought,
         fetchChildThoughts: fetchChildThoughts,
         restoreFromCache: restoreFromCache,
         findThoughtById: findThoughtById,
@@ -390,6 +392,48 @@ define([
         });
     }
 
+    function fetchParentThought(thoughtId) {
+        return fetchThoughtById(thoughtId).then(function(parentThought) {
+            var thought = findThoughtById(thoughtId);
+            if (thought) { // root folder has no parent
+                thought.parent = parentThought;
+            }
+            return thought;
+        });
+    }
+
+    function fetchThoughtById(thoughtId) {
+        console.debug('thoughtStorage.fetchThoughtById(): thoughtId: ', thoughtId);
+        spinner.show();
+        //var request = gapi.client.request({
+        //    path: '/upload/drive/v3/files/' + thoughtId,
+        //    method: 'GET',
+        //    params: {
+        //        uploadType: 'media'
+        //    },
+        //    body: content
+        //});
+
+        var request = googleDriveApi.client.files.get({
+            fileId: thoughtId,
+            fields: googleDriveApi.FILE_FIELDS
+        });
+
+        var promise = new Promise(function(resolve, reject) {
+            request.execute(function(resp) {
+                console.debug('thoughtStorage.fetchThoughtById(): response: ', resp);
+                var file = resp;
+                file = googleDriveApi.parseParents(file);
+                resolve(file);
+            });
+        })
+        .finally(function() {
+            spinner.hide();
+        });
+
+        return promise;
+    }
+
     /**
      * Get files from a folder.
      */
@@ -406,7 +450,7 @@ define([
         console.debug('getFiles()');
         var request = gapi.client.drive.files.list({
           'pageSize': 10,
-          'fields': "nextPageToken, files(id, name, mimeType, parents)",
+          'fields': googleDriveApi.FILE_LIST_FIELDS,
           'q': '"' + folderId + '" in parents'
         });
   
@@ -419,12 +463,7 @@ define([
                 if (!resp.files) throw new Error('getFiles() received response without "files" property');
 
                 //TODO: same code is duplicated in google-drive-api.js - Refactor!
-                resp.files.forEach(function(file) {
-                    if (file.parents.length > 1) {
-                        throw new Error('Files shouldn\'t have more than one parent. File with more than one parent: ', file);
-                    }
-                    file.parent = { id: file.parents[0] };
-                });
+                resp.files.forEach(googleDriveApi.parseParents);
 
                 spinner.hide();
                 resolve(resp.files);

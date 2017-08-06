@@ -30,8 +30,11 @@ define([
 
         console.debug('viewThoughtsController.init(), options: ', options);
         if (options) {
-            selectedThought = options.thought;
-            selectedThoughtId = options.thoughtId;
+            selectedThoughtId = options.thought ? options.thought.id : options.thoughtId;
+            if (!selectedThoughtId) {
+                selectedThoughtId = thoughtStorage.thoughtsTree.root.id;
+            }
+            selectedThought = thoughtStorage.findThoughtById(selectedThoughtId);
         }
 
         //getFiles().then(function() {

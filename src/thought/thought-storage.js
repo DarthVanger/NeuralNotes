@@ -20,11 +20,9 @@ define([
 
     var spinner = siteGlobalLoadingBar.create('thought-storage');
 
-    var self = this;
-
     return {
         scanDrive: scanDrive,
-        save: save,
+        create: create,
         update: update,
         getThoughts: getThoughts,
         fetchChildThoughts: fetchChildThoughts,
@@ -218,25 +216,36 @@ define([
      * Create a thought: a directory and a file with thought
      * contents inside.
      */
-    function save(thought, parentThought) {
-        console.debug('save(). parentThought: ', parentThought);
+    function create(thought, parentThought) {
+        console.debug('create(). parentThought: ', parentThought);
         if (!parentThought) {
             parentThought = brainFolder;
         }
 
-        console.debug('thoughtStorage.save(). Thought: ', thought);
+        console.debug('thoughtStorage.create(). Thought: ', thought);
         console.debug('googleDriveApi: ', googleDriveApi);
+
+        var parentThoughtInTree;
 
         spinner.show();
         return createDirectory({
             name: thought.name,
             parents: [parentThought.id]
         }).then(function(createdDirectory) {
+            parentThoughtInTree = findThoughtById(parentThought.id);
+            if (!parentThoughtInTree.children) {
+                parentThoughtInTree.children = [];
+            }
+            parentThoughtInTree.children.push(createdDirectory);
+            console.debug('thoughtStore.create(): thoughtsTree after creating thought: ', thoughtsTree);  
             return createFile({
                 name: thought.name + '.txt',
                 content: thought.content,
                 parents: [createdDirectory.id],
             });
+        })
+        .then(function(createdTxtFile) {
+            return parentThoughtInTree;
         })
         .finally(function() {
             spinner.hide();

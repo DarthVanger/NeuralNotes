@@ -46,12 +46,8 @@ define([
                 content: thoughtContent
             };
 
-            thoughtStorage.save(thought, self.options.parentThought).then(function(newThought) {
-                if (!self.options.parentThought.children) {
-                    self.options.parentThought.children = [];
-                }
+            thoughtStorage.create(thought, self.options.parentThought).then(function(newThought) {
                 thought.id = newThought.id;
-                self.options.parentThought.children.push(thought);
                 goBack();
             });
 
@@ -64,7 +60,9 @@ define([
     }
 
     function goBack() {
-        router.go('view-thoughts', { thought: self.options.parentThought });
+        var thoughtId = self.options.parentThought.id;
+        console.info('createThought.goBack(): Going back to view-thoughts, passing thought id: ', thoughtId);
+        router.go('view-thoughts', { thoughtId: thoughtId});
     }
 
 });

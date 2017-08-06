@@ -47,7 +47,7 @@ define([
             };
 
             thoughtStorage.save(thought, self.options.parentThought).then(function(newThought) {
-                if (self.options.parentThought.children) {
+                if (!self.options.parentThought.children) {
                     self.options.parentThought.children = [];
                 }
                 thought.id = newThought.id;

@@ -7,7 +7,8 @@ define([
     'thought/view-thoughts/vis-network-helper',
     'thought/thought-storage',
     'spinner/site-global-loading-bar',
-    'thought/view-thoughts/viewed-thought-url'
+    'thought/view-thoughts/viewed-thought-url',
+    'underscore'
 ], function(
     router,
     viewThoughts,
@@ -16,7 +17,8 @@ define([
     VisNetworkHelper,
     thoughtStorage,
     siteGlobalLoadingBar,
-    viewedThoughtUrl
+    viewedThoughtUrl,
+    _
 ) {
     var brainVisNetwork;
     var visNetworkHelper;
@@ -127,7 +129,7 @@ define([
         if (!targetThought) {
             throw new Error('changeThought(): couldn\'t find targetThought in thoughtStorage by id: ', targetThoughtId);
         }
-        console.debug('thoughts-mind-map-view.changeThought(): targetThought: ', targetThought);
+        console.debug('thoughts-mind-map-view.thoughtClickHandler(): targetThought: ', targetThought);
 
         changeThought(targetThought);
         thoughtContentController.loadThought(targetThought);
@@ -138,27 +140,38 @@ define([
      * and redraw the network for new thoughts.
      */
     function changeThought(targetThought) {
+        console.debug('thoughts-mind-map-view.changeThought()');
         viewedThoughtUrl.update(targetThought.id);
 
+        console.debug('thoughts-mind-map-view.changeThought(): targetThought.children: ', targetThought.children);
         if (!_.isEmpty(targetThought.children)) {
+            console.info('thoughts-mind-map-view.changeThought(): targetThought has children in cache, rendering them: ', targetThought.children);
             renderChildren();
         } else {
+            console.info('thoughts-mind-map-view.changeThought(): targetThought has no children in cache, trying to fetch from server');
             fetchChildThoughts(targetThought.id)
                 .then(function(children) {
-                    targetThought.children = children;
-                    console.debug('fetched child thoughts: ', children);
-                    renderChildren();
+                    console.debug('thoughts-mind-map-view.changeThought(): fetched child thoughts for target thought: ', children);
+                    if (!_.isEmpty(children)) {
+                        console.info('thoughts-mind-map-view.changeThought(): got child thoughts from server, going to render them. Children thoughts: ', children);
+                        targetThought.children = children;
+                        renderChildren();
+                    } else {
+                        console.info('thoughts-mind-map-view.changeThought(): thought has no children on server, not rendering anything');
+                    }
                 });
         }
 
         if (targetThought.parent) {
             if (!_.isEmpty(targetThought.parent.name)) {
+                console.info('thoughts-mind-map-view.changeThought(): thought has a parent in cache, going to render it');
                 renderParent();
             } else {
+                console.info('thoughts-mind-map-view.changeThought(): thought has no parent in cache, going to fetch it from server');
                 fetchParentThought(targetThought.parent.id)
                     .then(function(thought) {
                         targetThought.parent = thought;
-                        console.debug('thoughtsMindMapView: fetched parent thought: ', thought);
+                        console.info('thoughts-mind-map-view.changeThought(): fetched parent thought, going to render it. Parent thought: ', thought);
                         renderParent();
                     });
             }

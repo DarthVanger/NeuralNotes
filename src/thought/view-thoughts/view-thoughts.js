@@ -43,8 +43,8 @@ define([
         }
 
         if (!selectedThoughtId) {
-            selectedThoughtId = thoughtStorage.getRoot().id;
             console.info('viewThoughtsController.init(): selectedThoughtId was not passed neither in options nor is present in URL, using root as selected thought.');
+            selectedThoughtId = thoughtStorage.getRoot().id;
         }
 
         selectedThought = thoughtStorage.findThoughtById(selectedThoughtId);

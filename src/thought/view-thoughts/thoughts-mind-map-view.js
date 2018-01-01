@@ -168,7 +168,7 @@ define([
                 renderParent();
             } else {
                 console.info('thoughts-mind-map-view.changeThought(): thought has no parent in cache, going to fetch it from server');
-                fetchParentThought(targetThought.parent.id)
+                fetchParentThought(targetThought.id)
                     .then(function(thought) {
                         targetThought.parent = thought;
                         console.info('thoughts-mind-map-view.changeThought(): fetched parent thought, going to render it. Parent thought: ', thought);

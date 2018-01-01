@@ -2,7 +2,7 @@ console.debug('view-htoughts.js');
 define([
     //'thought/view-thoughts/thoughts-graph-view',
     'thought/view-thoughts/thoughts-mind-map-view',
-    'thought/thought-storage',
+    'thought/thought-storage/thought-storage',
     'router',
     'auth-service',
     'text!thought/view-thoughts/thought.html',

@@ -1,16 +1,16 @@
 define([
     'google-drive-api',
     'spinner/site-global-loading-bar',
+    'thought/thought-storage/thought-storage-api',
+    'thought/thought-storage/thought-tree',
     //TODO: thinking of using tree model for traversing brain tree
-    './../../lib/TreeModel',
-    'api/thought-storage-api',
-    'thought/thought-storage/thought-tree'
+    //'./../../lib/TreeModel',
 ], function(
     googleDriveApi,
     siteGlobalLoadingBar,
-    TreeModel,
     thoughtStorageApi,
-    thoughtStorageTree
+    thoughtStorageTree,
+    //TreeModel,
 ) {
     'use strict';
 

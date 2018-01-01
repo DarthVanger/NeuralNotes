@@ -1,17 +1,11 @@
 define([
     'google-drive-api',
     'spinner/site-global-loading-bar',
-    //TODO: thinking of using tree model for traversing brain tree
-    './../../lib/TreeModel'
 ], function(
     googleDriveApi,
-    siteGlobalLoadingBar,
-    TreeModel
+    siteGlobalLoadingBar
 ) {
     'use strict';
-
-    //TODO: thinking of using tree model for traversing brain tree
-    //console.debug('TreeModel: ', TreeModel);
 
     var BRAIN_FOLDER_NAME = 'Brain';
     var THOUGHTS_TREE_CACHE_KEY = 'thoughtStorage.thoughtsTree';

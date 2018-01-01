@@ -1,6 +1,5 @@
 console.debug('cloid-api-loader.js');
 define([
-    //'thought/thought-storage',
     'router',
     //'auth-service',
     'google-drive-api',

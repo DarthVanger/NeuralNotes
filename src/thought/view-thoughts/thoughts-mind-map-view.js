@@ -5,7 +5,7 @@ define([
     'thought/view-thoughts/context-menu',
     'thought/view-thoughts/brain-vis-network',
     'thought/view-thoughts/vis-network-helper',
-    'thought/thought-storage',
+    'thought/thought-storage/thought-storage',
     'spinner/site-global-loading-bar',
     'thought/view-thoughts/viewed-thought-url',
     'underscore'

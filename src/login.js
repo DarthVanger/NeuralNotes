@@ -1,6 +1,6 @@
 console.debug('login.js');
 define([
-    'thought/thought-storage',
+    'thought/thought-storage/thought-storage',
     'router',
     'auth-service',
     'google-drive-api',

@@ -1,5 +1,5 @@
 define([
-    'thought/thought-storage',
+    'thought/thought-storage/thought-storage',
     'router',
     'auth-service'
 ], function(

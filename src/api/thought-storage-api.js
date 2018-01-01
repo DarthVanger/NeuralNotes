@@ -379,6 +379,9 @@ define([
     }
 
     function getThoughtContent(thought) {
+        if (!thought) {
+            throw new Error('thoughtStorageApi.getThoughtContent(): passed thought is undefined');
+        }
         return findThoughtContentFile(thought)
             .then(function (thoughtContentFile) {
                 return getTextFileContents({

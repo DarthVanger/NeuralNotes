@@ -19,6 +19,7 @@ define([
     'spinner/site-global-loading-bar',
     'api/cloud-api-loader',
     'auth-service',
+    'thought/thought-storage/thought-storage',
 
     // non-amd libs:
     'underscore',
@@ -30,6 +31,7 @@ define([
     siteGlobalLoadingBar,
     cloudApiLoader,
     authService,
+    thoughtStorage,
     _underscore_undefined_,
     _promise_patch_undefined
 ) {
@@ -44,46 +46,12 @@ define([
         console.debug('app start');
 
         console.debug('call router init');
-
         router.init();
 
         var spinner = siteGlobalLoadingBar.create('app-start');
-
-        // Temporary disabled restoring from cache,
-        // because getting thought contents requires
-        // gapi to be already loaded (it's not cahced yet),
-        // so it throws undefined,
-        // if we restore from cache and call it before
-        // gapi was loaded
-        // TODO: store thought contents in cache also
-        // (or make getting thought contents wait for gapi
-        // to be loaded, and make requests only after that)
-        if (false && thoughtStorage.restoreFromCache()) {
-            console.debug('appStart(): cache restored, calling router.goToRouteInAddressBar()');
-            cloudApiLoader.load();
-            router.goToRouteInAdressBar();
-            //router.go('view-thoughts');
-
-        } else {
-            console.debug('appStart(): no cache found, loading google client...');
             cloudApiLoader.load()
-                .then(function() {
-                    console.debug('appStart(): google client loaded, checking auth');
-                    if (authService.isAuthorized()) {
-                        console.debug('appStart(): user is authorized, reading thoughts from google drive');    
-                        
-                        thoughtStorage.scanDrive()
-                            .then(function() {
-                                console.debug('appStart(): thoughts loaded from google drive, going to route in address bar');
-
-                                router.goToRouteInAdressBar();
-                            });
-                    } else {
-                        console.debug('appStart(): user is NOT authorized');    
-                    }
-                });
-        }
-
+                .then(thoughtStorage.scanDrive)
+                .then(router.goToRouteInAdressBar);
     });
 
 });

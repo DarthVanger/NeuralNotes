@@ -1,14 +1,11 @@
 console.debug('cloid-api-loader.js');
 define([
     'router',
-    //'auth-service',
     'google-drive-api',
     'spinner/site-global-loading-bar',
     'api/google-login'
 ], function(
-    //thoughtStorage,
     router,
-    //authService,
     googleDriveApi,
     siteGlobalLoadingBar,
     googleLogin

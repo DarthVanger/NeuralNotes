@@ -2,20 +2,14 @@ define([
     'google-drive-api',
     'spinner/site-global-loading-bar',
     'thought/thought-storage/thought-storage-api',
-    'thought/thought-storage/thought-tree',
-    //TODO: thinking of using tree model for traversing brain tree
-    //'./../../lib/TreeModel',
+    'thought/thought-storage/thought-tree'
 ], function(
     googleDriveApi,
     siteGlobalLoadingBar,
     thoughtStorageApi,
-    thoughtStorageTree,
-    //TreeModel,
+    thoughtStorageTree
 ) {
     'use strict';
-
-    //TODO: thinking of using tree model for traversing brain tree
-    //console.debug('TreeModel: ', TreeModel);
 
     var BRAIN_FOLDER_NAME = 'Brain';
     var brainFolder = thoughtStorageApi.brainFolder;
@@ -66,9 +60,11 @@ define([
     }
 
     function scanDrive() {
+        console.debug('thoughtStorage.scanDrive()');
         return thoughtStorageApi.scanDrive()
             .then(function() {
                 thoughtStorageTree.setRoot(thoughtStorageApi.brainFolder);
+                console.info('thoughtStorage.scanDrive(): thoughtStorage tree root set to Brain folder');
                 console.debug('thoughtStorage.scanDrive(), stored thoughtsTree: ', thoughtsTree);
             });
     }

@@ -14,8 +14,7 @@ define([
     thoughtStorage,
     router,
     authService,
-    thoughtTemplate,
-    viewedThoughtUrl
+    thoughtTemplate
 ) {
     var selectedThought;
     var selectedThoughtId;
@@ -38,26 +37,11 @@ define([
         }
 
         if (!selectedThoughtId) {
-            selectedThoughtId = viewedThoughtUrl.get();
-            console.debug('viewThoughtsController.init(): selectedThoughtId from url: ', selectedThoughtId);
-        }
-
-        if (!selectedThoughtId) {
-            console.info('viewThoughtsController.init(): selectedThoughtId was not passed neither in options nor is present in URL, using root as selected thought.');
+            console.info('viewThoughtsController.init(): selectedThoughtId was not passed neither in options, using root as selected thought.');
             selectedThoughtId = thoughtStorage.getRoot().id;
         }
 
         selectedThought = thoughtStorage.findThoughtById(selectedThoughtId);
-        viewedThoughtUrl.update(selectedThought.id);
-
-        //getFiles().then(function() {
-
-            //console.debug('thoughtsGraphView: ', thoughtsGraphView);
-            //thoughtsGraphView.set(storage.thoughts);
-            //thoughtsGraphView.render();
-
-            //listThoughts();
-        //});
     }
 
     function onRender() {

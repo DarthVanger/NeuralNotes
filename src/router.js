@@ -104,43 +104,25 @@ define([
             throw new Error('Router: controllerPath is empty');
         }
 
-        if (routeConfig.controllerPath.length > 0) {
-            // dynamically load controller file, and
-            // call its init() function,
-            // passing `options` param to it.
-            require([routeConfig.controllerPath], function(controller) {
-                console.debug('router: calling init for controller: ', controller);
-                controller.init(options);
-                controller.templateData = controller.templateData || { };
-                console.debug('controllerTemplateData: ', controller.templateData);
-                compiledTemplate = _.template(routeConfig.template)(controller.templateData);
+        // dynamically load controller file, and
+        // call its init() function,
+        // passing `options` param to it.
+        require([routeConfig.controllerPath], function(controller) {
+            console.debug('router: calling init for controller: ', controller);
+            controller.init(options);
+            controller.templateData = controller.templateData || { };
+            console.debug('controllerTemplateData: ', controller.templateData);
+            compiledTemplate = _.template(routeConfig.template)(controller.templateData);
 
-                // TODO: do something with this :P
-                $siteContainer.empty();
-                $siteContainer.append(compiledTemplate);
+            // TODO: do something with this :P
+            $siteContainer.empty();
+            $siteContainer.append(compiledTemplate);
 
-                if (controller.onRender) {
-                    controller.onRender();
-                }
+            if (controller.onRender) {
+                controller.onRender();
+            }
 
-            });
-        }
-
-        // Tried to develop reading options from url from address bar
-        // -------------------- 
-        //
-        //window.location.hash = routeWithOptions;
-        //
-        //if (urlOptions && urlOptions.length > 0) {
-        //    console.log('urlOptions: ', urlOptions);
-        //    options.thoughtId = urlOptions[0];
-        //}
-
-        //if (options && options.thought) {
-        //    console.log('window.location.hash: ', window.location.hash);
-        //    routeWithOptions = route + '/' + options.thought.id;
-        //    console.log('window.location.hash: ', window.location.hash);
-        //}
+        });
     }
 
 });

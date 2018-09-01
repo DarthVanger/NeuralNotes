@@ -1,13 +1,7 @@
 define([
-    //TODO: thinking of using tree model for traversing brain tree
-    //'./../../lib/TreeModel'
 ], function(
-    //TreeModel
 ) {
     'use strict';
-
-    //TODO: thinking of using tree model for traversing brain tree
-    //console.debug('TreeModel: ', TreeModel);
 
     var BRAIN_FOLDER_NAME = 'Brain';
     var thoughtsTree = {};
@@ -15,7 +9,6 @@ define([
 
     return {
         getThoughts: getThoughts,
-        restoreFromCache: restoreFromCache,
         findThoughtById: findThoughtById,
         logTree: logTree,
         getRoot: getRoot,
@@ -123,6 +116,9 @@ define([
        }
     }
 
+    /**
+     * Execute func for each node of the thoughts tree
+     */
     function forEachNode(func) {
        console.debug('forEachNode() called!');
        var depthLimit = 4;
@@ -168,53 +164,6 @@ define([
         var parentThought = findThoughtById(options.parentId);
         console.debug('addChildrenToTree(): found parentThought by id: ', parentThought);
         parentThought.children = options.children;
-        saveTreeToCache();
-    }
-
-    function saveTreeToCache() {
-        console.debug('saveTreeToCache(): thoughtsTree: ', thoughtsTree);
-        //var decycled = deleteLinksToParents(thoughtsTree.map(deleteLinkToParent);
-        //window.localStorage.setItem(THOUGHTS_TREE_CACHE_KEY, JSON.stringify(thoughtsTree));
-        //var decycledTree = {};
-        //forEachNode(function(node) {
-        //    console.debug('forEachNode(): node.name: ', node.name);
-        //});
-        
-        var decycledTree = mapTree(function(node) {
-            //console.debug('mapTree(): node.name: ', node.name);
-            //console.debug('mapTree(): node.parent: ', node.parent);
-            delete node.parent;
-            return node;
-        });
-
-        console.debug('saveTreeToCache(): decycledTree: ', decycledTree);
-
-        window.localStorage.setItem(THOUGHTS_TREE_CACHE_KEY, JSON.stringify(decycledTree));
-    }
-
-    function loadTreeFromCache() {
-        console.debug('loadTreeFromCache()');
-        var cachedTreeString = window.localStorage.getItem(THOUGHTS_TREE_CACHE_KEY);
-
-        if (cachedTreeString) {
-            console.debug('loadTreeFromCache(): cache found, cache string: ', cachedTreeString);
-            return JSON.parse(cachedTreeString);
-        } else {
-            console.debug('loadTreeFromCache(): cache not found');
-            return undefined;
-        }
-    }
-
-    function restoreFromCache() {
-        var cachedThoughtsTree = loadTreeFromCache();
-        if (cachedThoughtsTree) {
-            console.debug('restoreFromCache(): cachedThoughtsTree: ', cachedThoughtsTree);
-            thoughtsTree = cachedThoughtsTree;
-            return cachedThoughtsTree;
-        } else {
-            console.debug('restoreFromCache(): thoughts cache is empty');
-            return false;
-        }
     }
 
     function getThoughts() {

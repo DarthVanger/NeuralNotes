@@ -10,7 +10,13 @@ define([
 
     var spinner = siteGlobalLoadingBar.create('google-drive-api');
 
+    /*
+     * Fields to get from Google Drive when requesting a file.
+     */
     var FILE_FIELDS = 'id, name, mimeType, parents';
+    /*
+     * Fields to get from Google Drive when requestin a list of files.
+     */
     var FILE_LIST_FIELDS = 'nextPageToken, files(' + FILE_FIELDS + ')';
 
     var self = {

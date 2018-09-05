@@ -1,6 +1,5 @@
 console.debug('thoughts-mind-map-view.js');
 define([
-    'thought/view-thoughts/context-menu',
     'thought/view-thoughts/brain-vis-network',
     'thought/view-thoughts/vis-network-helper',
     'thought/thought-storage/thought-storage',
@@ -8,7 +7,6 @@ define([
     'thought/view-thoughts/viewed-thought-url',
     'underscore'
 ], function(
-    ContextMenu,
     BrainVisNetwork,
     VisNetworkHelper,
     thoughtStorage,
@@ -141,21 +139,12 @@ define([
 
         console.debug('thoughts-mind-map-view.changeThought(): targetThought.children: ', targetThought.children);
         if (!_.isEmpty(targetThought.children)) {
-            console.info('thoughts-mind-map-view.changeThought(): targetThought has children in cache, rendering them: ', targetThought.children);
-            renderChildren();
+            console.debug('thoughts-mind-map-view.changeThought(): targetThought has children in cache, rendering them: ', targetThought.children);
+            renderChildren(targetThought.children);
         } else {
             console.info('thoughts-mind-map-view.changeThought(): targetThought has no children in cache, trying to fetch from server');
             fetchChildThoughts(targetThought.id)
-                .then(function(children) {
-                    console.debug('thoughts-mind-map-view.changeThought(): fetched child thoughts for target thought: ', children);
-                    if (!_.isEmpty(children)) {
-                        console.info('thoughts-mind-map-view.changeThought(): got child thoughts from server, going to render them. Children thoughts: ', children);
-                        targetThought.children = children;
-                        renderChildren();
-                    } else {
-                        console.info('thoughts-mind-map-view.changeThought(): thought has no children on server, not rendering anything');
-                    }
-                });
+                .then(renderChildren);
         }
 
         if (targetThought.parent) {
@@ -190,9 +179,7 @@ define([
                 });
         }
 
-
-       function renderChildren() {
-           var children = targetThought.children;
+       function renderChildren(children) {
            $('[data-text="currentViewedThought"]').html(currentViewedThought.name);
            console.debug('thoughts-mind-map-view: adding child thoughts to brainVisNetwork');
            brainVisNetwork.addChildThoughts({
@@ -225,24 +212,8 @@ define([
     }
 
 
-
     /**
-     * Initializes context menu.
-     * Currently not used anymore.
-     */
-    function initializeContextMenu() {
-        console.debug('thoughts mind map view: initializing context menu');
-        var contextMenu = new ContextMenu({
-            container: container,
-            network: network,
-            nodes: nodes
-        });
-        contextMenu.init();
-
-    }
-
-    /**
-     * Controller for the panel showing though contents
+     * Controller for the panel showing thought contents
      */
     function ThoughtContentController() {
         var selectedThoughtContentContainer = document.querySelector('.selected-thought-content');

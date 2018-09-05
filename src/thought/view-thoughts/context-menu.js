@@ -1,7 +1,5 @@
 define([
-    'router'
 ], function(
-    router
 ) {
     /**
      * Initialize context menu, that appears when clicking on thought.
@@ -90,10 +88,10 @@ define([
         }
 
         function createThought() {
-            console.log('redirecting to create-thought. TargetThought: ', currentSelectedThought);
-            router.go('create-thought', {
-                parentThought: currentSelectedThought
-            });
+            console.error('Create thought redirect is not implemented. TargetThought: ', currentSelectedThought);
+            //router.go('create-thought', {
+            //    parentThought: currentSelectedThought
+            //});
         }
 
     }

@@ -1,7 +1,5 @@
 console.debug('thoughts-mind-map-view.js');
 define([
-    'router',
-    'thought/view-thoughts/view-thoughts',
     'thought/view-thoughts/context-menu',
     'thought/view-thoughts/brain-vis-network',
     'thought/view-thoughts/vis-network-helper',
@@ -10,8 +8,6 @@ define([
     'thought/view-thoughts/viewed-thought-url',
     'underscore'
 ], function(
-    router,
-    viewThoughts,
     ContextMenu,
     BrainVisNetwork,
     VisNetworkHelper,
@@ -220,10 +216,10 @@ define([
     //    network.on('click', networkClickHandler);
 
         function createThought() {
-            console.debug('redirecting to create-thought. Passing thought as parent: ', currentViewedThought);
-            router.go('create-thought', {
-                parentThought: currentViewedThought
-            });
+            console.error('create thought is not implemented');
+            //router.go('create-thought', {
+            //    parentThought: currentViewedThought
+            //});
             return false;
         }
     }

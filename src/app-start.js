@@ -14,44 +14,50 @@ require.config({
 });
 
 define([
-    'router',
     'thought/thought-storage/thought-storage',
     'spinner/site-global-loading-bar',
     'api/cloud-api-loader',
     'auth-service',
     'thought/thought-storage/thought-storage',
+    './app-root',
 
     // non-amd libs:
     'underscore',
     // add additional functionality to javascript native Promise.
     'utils/promise-patch'
 ], function(
-    router,
     thoughtStorage,
     siteGlobalLoadingBar,
     cloudApiLoader,
     authService,
     thoughtStorage,
+    appRootComponent,
     _underscore_undefined_,
     _promise_patch_undefined
 ) {
 
     $(document).ready(function() {
-        var debug = true;
+        console.info('document is ready');
 
-        if (!debug) {
-            console.debug = function() { };
-        }
+        var apiLoadSpinner = siteGlobalLoadingBar.create('cloud-api');
+        var cloudDriveSpinner = siteGlobalLoadingBar.create('cloud-drive');
 
-        console.debug('app start');
-
-        console.debug('call router init');
-        router.init();
-
-        var spinner = siteGlobalLoadingBar.create('app-start');
-            cloudApiLoader.load()
-                .then(thoughtStorage.scanDrive)
-                .then(router.goToRouteInAdressBar);
+        apiLoadSpinner.show();
+        cloudApiLoader
+            .load()
+            .finally(function() {
+                apiLoadSpinner.hide();
+            })
+            .then(function() {
+                cloudDriveSpinner.show();
+                return thoughtStorage.scanDrive();
+            })
+            .finally(function() {
+                cloudDriveSpinner.hide();
+            })
+            .then(function() {
+                appRootComponent.render();
+            });
     });
 
 });

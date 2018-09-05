@@ -1,7 +1,6 @@
 console.debug('login.js');
 define([
     'thought/thought-storage/thought-storage',
-    'router',
     'auth-service',
     'google-drive-api',
     'spinner/site-global-loading-bar',
@@ -9,7 +8,6 @@ define([
     'api/google-login'
 ], function(
     thoughtStorage,
-    router,
     authService,
     googleDriveApi,
     siteGlobalLoadingBar,
@@ -26,23 +24,16 @@ define([
 
     function init() {
         console.debug('login.init()');
-        //if (thoughtStorage.restoreFromCache()) {
-        //    console.debug('login.init(): cache restored, redirecting to "view-thoughts"');
-        //    cloudApiLoader.loadInBackground();
-        //    router.go('view-thoughts');
-
-        //} else {
-        //    console.debug('login.init(): no cache found, loading google client');
-        //    //loadGoogleClient();
-        //}
 
         //if (authService.authResult) {
         //    router.go('view-thoughts');
         //}
         //
+        
         if (authService.authResult) {
-            console.debug('login.init(): user already authorized, redirecting to "view-thoughts"');
-            router.go('view-thoughts');
+            console.info('login.init(): user is already authorized');
+            console.error('login.init(): redirecting to the main page is not implemented');
+            //router.go('view-thoughts');
         }
 
     }
@@ -71,9 +62,9 @@ define([
               })
               .then(thoughtStorage.scanDrive)
               .then(function() {
-                  console.debug('login: drive scanned');
-                  console.debug('login: redirecting to /view-thoughts');
-                  router.go('view-thoughts');
+                  console.info('login: drive scanned');
+                  console.error('login.init(): redirecting to the main page is not implemented');
+                  //router.go('view-thoughts');
               });
           return false;
       }

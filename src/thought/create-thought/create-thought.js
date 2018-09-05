@@ -1,10 +1,8 @@
 define([
     'thought/thought-storage/thought-storage',
-    'router',
     'auth-service'
 ], function(
     thoughtStorage,
-    router,
     authService
 ) {
     var controller = {
@@ -18,10 +16,6 @@ define([
     return controller;
 
     function init(options) {
-        if (!authService.authResult) {
-            router.go('/');
-            return;
-        }
 
         self.templateData.parentThought = options.parentThought;
 
@@ -61,8 +55,8 @@ define([
 
     function goBack() {
         var thoughtId = self.options.parentThought.id;
-        console.info('createThought.goBack(): Going back to view-thoughts, passing thought id: ', thoughtId);
-        router.go('view-thoughts', { thoughtId: thoughtId});
+        console.error('createThought.goBack(): Go back is not implemented');
+        //router.go('view-thoughts', { thoughtId: thoughtId});
     }
 
 });

@@ -1,13 +1,11 @@
 
 define([
     'thought/thought-storage/thought-storage',
-    'router',
     'auth-service',
     'google-drive-api',
     'spinner/site-global-loading-bar'
 ], function(
     thoughtStorage,
-    router,
     authService,
     googleDriveApi,
     siteGlobalLoadingBar

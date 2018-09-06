@@ -376,7 +376,7 @@ define([
         if (!thought) {
             throw new Error('thoughtStorageApi.getThoughtContent(): passed thought is undefined');
         }
-        console.info('[=Get=] thought content for "' + thought.name + '"...');
+        console.info('[Get] thought content for "' + thought.name + '"...');
         return findThoughtContentFile(thought)
             .then(function (thoughtContentFile) {
                 if (!thoughtContentFile) throw 'thoughtStorageApi.getThoughtContent(): thoughtContentFile is undefined';

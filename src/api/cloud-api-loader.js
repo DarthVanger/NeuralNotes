@@ -22,7 +22,8 @@ define([
             .then(driveApiLoadSuccess, driveApiLoadFail);
 
         function driveApiLoadSuccess() {
-            console.info('cloudApiLoader.driveApiLoadSuccess()');
+            console.info('Google Drive API load success');
+            console.debug('cloudApiLoader.driveApiLoadSuccess()');
         }
 
         function checkAuthFail() {

@@ -37,7 +37,7 @@ define([
 ) {
 
     $(document).ready(function() {
-        console.info('document is ready');
+        console.info('Loading...');
 
         var apiLoadSpinner = siteGlobalLoadingBar.create('cloud-api');
         var cloudDriveSpinner = siteGlobalLoadingBar.create('cloud-drive');

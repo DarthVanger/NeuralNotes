@@ -134,6 +134,7 @@ define([
      * and redraw the network for new thoughts.
      */
     function changeThought(targetThought) {
+        console.info('[=Event=] Change thought');
         console.debug('thoughts-mind-map-view.changeThought()');
         viewedThoughtUrl.update(targetThought.id);
 
@@ -142,7 +143,7 @@ define([
             console.debug('thoughts-mind-map-view.changeThought(): targetThought has children in cache, rendering them: ', targetThought.children);
             renderChildren(targetThought.children);
         } else {
-            console.info('thoughts-mind-map-view.changeThought(): targetThought has no children in cache, trying to fetch from server');
+            console.info('[=Get=] child thoughts for "' + targetThought.name + '"...');
             fetchChildThoughts(targetThought.id)
                 .then(renderChildren);
         }
@@ -152,11 +153,11 @@ define([
                 console.info('thoughts-mind-map-view.changeThought(): thought has a parent in cache, going to render it');
                 renderParent();
             } else {
-                console.info('thoughts-mind-map-view.changeThought(): thought has no parent in cache, going to fetch it from server');
+                console.info('[=Get=] parent for "' + targetThought.name + '"...');
                 fetchParentThought(targetThought.id)
                     .then(function(thought) {
                         targetThought.parent = thought;
-                        console.info('thoughts-mind-map-view.changeThought(): fetched parent thought, going to render it. Parent thought: ', thought);
+                        console.info('[=Loaded=] parent "' + thought.name + '"' + ' for thought "' + targetThought.name + '"');
                         renderParent();
                     });
             }

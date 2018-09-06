@@ -113,10 +113,11 @@ define([], function() {
         };
 
         // initialize your network!
-        console.log('initilizing vis network');
-        console.log('this.container: ', this.container);
-        console.log('data: ', data);
+        console.debug('initilizing vis network');
+        console.debug('this.container: ', this.container);
+        console.debug('data: ', data);
         this.visNetwork = new vis.Network(this.container, data, options);
+        console.info('Visual Network initialized');
     };
 
     BrainVisNetwork.prototype.addChildThoughts = function(options) {

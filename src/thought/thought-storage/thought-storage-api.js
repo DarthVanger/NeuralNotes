@@ -43,7 +43,7 @@ define([
                     });
                 } else {
                     console.debug('thoughtStorage: Brain folder found, reading it');
-                    console.info('thoughtStorage.scanDrive(): found Brain folder named "' + BRAIN_FOLDER_NAME + '"');
+                    console.info('Brain folder found on Google Drive');
                     service.brainFolder = searchResult[0];
                     readBrain().then(resolve);
                 }
@@ -376,7 +376,7 @@ define([
         if (!thought) {
             throw new Error('thoughtStorageApi.getThoughtContent(): passed thought is undefined');
         }
-        console.info('Api: getting thought content for thought: ', thought);
+        console.info('[=Get=] thought content for "' + thought.name + '"...');
         return findThoughtContentFile(thought)
             .then(function (thoughtContentFile) {
                 if (!thoughtContentFile) throw 'thoughtStorageApi.getThoughtContent(): thoughtContentFile is undefined';

@@ -64,7 +64,7 @@ define([
         return thoughtStorageApi.scanDrive()
             .then(function() {
                 thoughtStorageTree.setRoot(thoughtStorageApi.brainFolder);
-                console.info('thoughtStorage.scanDrive(): thoughtStorage tree root set to Brain folder');
+                console.info('Thought tree root set to Brain folder');
                 console.debug('thoughtStorage.scanDrive(), stored thoughtsTree: ', thoughtsTree);
             });
     }

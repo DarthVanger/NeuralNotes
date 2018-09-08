@@ -47,7 +47,7 @@ define([
             }, function(authResult) {
                 console.debug('googleLogin.gapiAuthorize(): authResult: ', authResult);
                 if (authResult.error) {
-                    console.debug('googleLogin.gapiAuthorize(): authError: ', authResult.error);
+                    console.error('googleLogin.gapiAuthorize(): authError: ', authResult.error);
                     reject(authResult);
                 } else {
                     console.debug('googleLogin.gapiAuthorize(): auth sucess! authResult: ', authResult);

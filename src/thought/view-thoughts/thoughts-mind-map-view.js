@@ -5,14 +5,16 @@ define([
     'thought/thought-storage/thought-storage',
     'spinner/site-global-loading-bar',
     'thought/view-thoughts/viewed-thought-url',
-    'underscore'
+    'underscore',
+    'utils/ui-error-notification'
 ], function(
     BrainVisNetwork,
     VisNetworkHelper,
     thoughtStorage,
     siteGlobalLoadingBar,
     viewedThoughtUrl,
-    _
+    _,
+    uiErrorNotification
 ) {
     var brainVisNetwork;
     var visNetworkHelper;
@@ -134,7 +136,7 @@ define([
      * and redraw the network for new thoughts.
      */
     function changeThought(targetThought) {
-        console.info('[Event] Change thought');
+        console.info('===Event=== Change thought ===Event===');
         console.debug('thoughts-mind-map-view.changeThought()');
         viewedThoughtUrl.update(targetThought.id);
 
@@ -245,7 +247,7 @@ define([
         }
 
         function initRealtimeSaving() {
-            var REAL_TIME_SAVING_INTERVAL_MS = 5000;
+            var REAL_TIME_SAVING_INTERVAL_MS = 1000;
             console.debug('ThoughtContentController.initRealtimeSaving()');
             var debouncedUpdate = _.debounce(updateThoughtContent, REAL_TIME_SAVING_INTERVAL_MS);
 
@@ -264,6 +266,10 @@ define([
             console.debug('RealtimeSaving: Save thought content: currentViewedThought: ', currentViewedThought);
 
             return thoughtStorage.update(currentViewedThought)
+                .catch(function() {
+                  uiErrorNotification.show('Failed to save thought content');
+
+                })
                 .finally(function() {
                     savingThoughtContentSpinner.hide();
                 });

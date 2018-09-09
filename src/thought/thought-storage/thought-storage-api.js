@@ -491,7 +491,10 @@ define([
                 });
             })
             .then(function(response) {
-                console.debug('thoughtStorage.update() sucess! Response: ', response);
+                if (response.error) {
+                    console.error('Failed to update file content! Response: ', response);
+                    throw response;
+                }
             })
             .finally(function() {
                 updateSpinner.hide();

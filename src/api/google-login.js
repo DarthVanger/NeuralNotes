@@ -3,12 +3,14 @@ define([
     'thought/thought-storage/thought-storage',
     'auth-service',
     'google-drive-api',
-    'spinner/site-global-loading-bar'
+    'spinner/site-global-loading-bar',
+    'utils/ui-error-notification'
 ], function(
     thoughtStorage,
     authService,
     googleDriveApi,
-    siteGlobalLoadingBar
+    siteGlobalLoadingBar,
+    uiErrorNotification
 ) {
     // Developer Console, https://console.developers.google.com
     var CLIENT_ID = '586695064067-2k8v88rq1litcqj8v0ofnstj6t6qfhpa.apps.googleusercontent.com';
@@ -47,6 +49,7 @@ define([
             }, function(authResult) {
                 console.debug('googleLogin.gapiAuthorize(): authResult: ', authResult);
                 if (authResult.error) {
+                    uiErrorNotification.show('Google Authentification failed: ' +  authResult.error);
                     console.error('googleLogin.gapiAuthorize(): authError: ', authResult.error);
                     reject(authResult);
                 } else {

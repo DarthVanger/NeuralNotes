@@ -1,9 +1,11 @@
 define([
     'google-drive-api',
     'spinner/site-global-loading-bar',
+    'utils/ui-error-notification'
 ], function(
     googleDriveApi,
-    siteGlobalLoadingBar
+    siteGlobalLoadingBar,
+    uiErrorNotification
 ) {
     'use strict';
 
@@ -182,10 +184,12 @@ define([
         spinner.show();
         var promise = new Promise(function(resolve, reject) {
               request.execute(function(resp) {
-                //console.debug('resp: ', resp);
-                //var thoughts = resp.files;
-                //storage.thoughts = thoughts;
-                if (!resp.files) throw new Error('getFiles() received response without "files" property');
+                console.debug('[API] [Loaded] Files: ', resp);
+                if (!resp.files) {
+                    var errorMessage = 'Remote Storage API: Failed to get files';
+                    uiErrorNotification.show('Connection with Google Drive failed.\n Can not get files.');
+                    throw new Error(errorMessage);
+                }
 
                 //TODO: same code is duplicated in google-drive-api.js - Refactor!
                 resp.files.forEach(googleDriveApi.parseParents);

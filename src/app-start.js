@@ -14,11 +14,10 @@ require.config({
 });
 
 define([
-    'thought/thought-storage/thought-storage',
+    'storage/thought-storage',
     'spinner/site-global-loading-bar',
     'api/cloud-api-loader',
     'auth-service',
-    'thought/thought-storage/thought-storage',
     './app-root',
 
     // non-amd libs:
@@ -30,7 +29,6 @@ define([
     siteGlobalLoadingBar,
     cloudApiLoader,
     authService,
-    thoughtStorage,
     appRootComponent,
     _underscore_undefined_,
     _promise_patch_undefined

@@ -2,7 +2,7 @@ console.debug('thoughts-mind-map-view.js');
 define([
     'thought/view-thoughts/brain-vis-network',
     'thought/view-thoughts/vis-network-helper',
-    'thought/thought-storage/thought-storage',
+    'storage/thought-storage',
     'spinner/site-global-loading-bar',
     'thought/view-thoughts/viewed-thought-url',
     'underscore',

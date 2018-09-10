@@ -28,7 +28,7 @@ define([
     }
 
     function findThoughtById(id) {
-        console.debug('thought-storage.findThoughtById(). id: ', id);
+        console.debug('thought-storage-api.findThoughtById(). id: ', id);
         console.debug('thoughtsTree: ', thoughtsTree);
        var depthLimit = 4;
        var nodesLimit = 50;
@@ -160,7 +160,7 @@ define([
      */
     function addChildrenToTree(options) {
         console.debug('addChildrenToTree() called, options: ', options);
-        console.debug('thought-storage.addChildrenToTree()');
+        console.debug('thought-tree.addChildrenToTree()');
         var parentThought = findThoughtById(options.parentId);
         console.debug('addChildrenToTree(): found parentThought by id: ', parentThought);
         parentThought.children = options.children;

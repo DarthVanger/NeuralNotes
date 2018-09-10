@@ -12,7 +12,7 @@ define([
     var BRAIN_FOLDER_NAME = 'Brain';
     var THOUGHTS_TREE_CACHE_KEY = 'thoughtStorage.thoughtsTree';
 
-    var spinner = siteGlobalLoadingBar.create('thought-storage');
+    var spinner = siteGlobalLoadingBar.create('thought-storage-api');
 
     var service = {
         barinFolder: undefined,

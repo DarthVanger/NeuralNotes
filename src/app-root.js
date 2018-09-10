@@ -1,7 +1,7 @@
 define([
     'text!thought/view-thoughts/view-thoughts.html',
     'thought/view-thoughts/thoughts-mind-map-view',
-    'thought/thought-storage/thought-storage'
+    'storage/thought-storage'
 ], function(
     template,
     thoughtsMindMapView,

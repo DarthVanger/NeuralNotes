@@ -2,7 +2,7 @@ console.debug('login.js');
 define([
     'storage/thought-storage',
     'auth-service',
-    'google-drive-api',
+    'api/google-drive-api',
     'ui/spinner/site-global-loading-bar',
     'api/cloud-api-loader',
     'api/google-login'

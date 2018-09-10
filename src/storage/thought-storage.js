@@ -1,5 +1,5 @@
 define([
-    'google-drive-api',
+    'api/google-drive-api',
     'ui/spinner/site-global-loading-bar',
     'storage/thought-storage-api',
     'storage/thought-tree'

@@ -2,7 +2,7 @@
 define([
     'storage/thought-storage',
     'auth-service',
-    'google-drive-api',
+    'api/google-drive-api',
     'ui/spinner/site-global-loading-bar',
     'utils/ui-error-notification'
 ], function(

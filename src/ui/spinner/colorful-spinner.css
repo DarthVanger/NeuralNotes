@@ -28,13 +28,13 @@ body {
 }
 
 .colorful-spinner {
+    --spinner-size: calc(40vmin - 50px);
     display: block;
     position: relative;
-    left: 50%;
-    top: 50%;
-    width: 150px;
-    height: 150px;
-    margin: -75px 0 0 -75px;
+    width: var(--spinner-size);
+    height: var(--spinner-size);
+    left: calc(50% - var(--spinner-size) / 2);
+    top: calc(50% - var(--spinner-size) / 2);
     border-radius: 50%;
     border: 3px solid transparent;
     border-top-color: #9370DB;

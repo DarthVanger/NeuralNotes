@@ -70,8 +70,6 @@ define([
 
         brainVisNetwork.visNetwork.on('click', visNetworkClickHandler);
 
-        initializeAddThoughtButton(brainVisNetwork.visNetwork);
-
         // init thought content controller
         thoughtContentController = new ThoughtContentController();
         thoughtContentController.loadThought(initialThought);
@@ -194,24 +192,6 @@ define([
        function renderParent() {
            brainVisNetwork.renderParentThought(targetThought);
        }
-    }
-
-    function initializeAddThoughtButton(network) {
-        $('[data-text="currentViewedThought"]').html(currentViewedThought.name);
-
-        var addChildButton = document.querySelector('[data-action="addChild"');
-        console.debug('addChildButton: ', addChildButton);
-        console.debug('adding click listener for addChildButton');
-        addChildButton.addEventListener('click', createThought);
-    //    network.on('click', networkClickHandler);
-
-        function createThought() {
-            console.error('create thought is not implemented');
-            //router.go('create-thought', {
-            //    parentThought: currentViewedThought
-            //});
-            return false;
-        }
     }
 
 

@@ -18,7 +18,7 @@ define([
     'spinner/site-global-loading-bar',
     'api/cloud-api-loader',
     'auth-service',
-    './app-root',
+    'ui/app-root',
 
     // non-amd libs:
     'underscore',

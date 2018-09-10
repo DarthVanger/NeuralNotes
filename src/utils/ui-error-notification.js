@@ -10,8 +10,8 @@ define([
 
         element.style.position = 'absolute';
         element.style.zIndex = '100';
-        element.style.top = '0';
-        element.style.left = 'calc(50% - 160px)';
+        element.style.bottom = '0';
+        element.style.left = '0';
 
         element.style.backgroundColor = 'pink';
         element.style.height = '4em';
@@ -19,7 +19,7 @@ define([
         element.style.padding = '10px';
         element.style.borderRadius = '2px';
 
-        element.innerText = 'ERROR: ' + messageText;
+        element.innerText = 'ERROR: ' + messageText + '.\n Reload the browser tab please.';
 
         mount();
 

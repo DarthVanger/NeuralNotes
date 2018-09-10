@@ -27,7 +27,7 @@ define([], function() {
     function create(name) {
         //console.debug('site-global-loading-bar: creating loader for name: ', name);
         var $msgEl = $loadingMessageElement.clone();
-        $msgEl.append($('<div>' + name + '</div>'));
+        $msgEl.append($('<div>Loading: ' + name + '</div>'));
         $msgEl.addClass('hidden-message');
         var isShown = false;
         var loaderInstance = {

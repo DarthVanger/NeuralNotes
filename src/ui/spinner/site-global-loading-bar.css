@@ -4,13 +4,13 @@
 .site-global-loading-bar__message {
   position: absolute;
   z-index: 1;
-  top: 6px;
-  right: 50px;
+  bottom: 5px;
+  left: 5px;
 
   padding: 5px;
   background-color: white;
   border-radius: 10px;
-  width: 250px;
+  width: auto;
 
   border: solid white 2px;
 

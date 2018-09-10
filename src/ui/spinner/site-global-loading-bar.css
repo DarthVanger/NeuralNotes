@@ -4,18 +4,14 @@
 .site-global-loading-bar__message {
   position: absolute;
   z-index: 1;
-  bottom: 5px;
-  left: 5px;
+  bottom: 0;
+  right: 0;
 
   padding: 5px;
   background-color: white;
-  border-radius: 10px;
-  width: auto;
+  width: 50%;
 
-  border: solid white 2px;
-
-  opacity: 1;
-  transition: opacity 2s;
+  opacity: 0.7;
 
   /*
 	-webkit-animation:rainbow_border 5s infinite;
@@ -26,9 +22,9 @@
 }
 
 .site-global-loading-bar__message.hidden-message {
+  transition: all 0.5s;
   border-color: white;
-  animation: none;
-  opacity: 0;
+  bottom: -50px;
 }
 
 /*

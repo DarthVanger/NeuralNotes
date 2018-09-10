@@ -1,5 +1,7 @@
-define([], function() {
+define([ ], function() {
     var loading = [];
+
+    var $backgroundSpinner = $('#background-spinner');
     var $loadersContainer =  $('#site-global-loading-bar-messages-container');
     var $loadingBar = $('#site-global-loading-bar');
 
@@ -67,11 +69,13 @@ define([], function() {
     function showLoadingBar() {
         //console.debug('site-global-loading-bar: showLoadingBar()');
         $loadingBar.show();
+        $backgroundSpinner.addClass('show');
     }
 
     function hideLoadingBar(name) {
         //console.debug('site-global-loading-bar: hideLoadingBar()');
         $loadingBar.hide();
+        $backgroundSpinner.removeClass('show');
     }
 
 });

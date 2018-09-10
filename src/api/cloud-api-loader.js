@@ -1,7 +1,7 @@
 console.debug('cloid-api-loader.js');
 define([
     'google-drive-api',
-    'spinner/site-global-loading-bar',
+    'ui/spinner/site-global-loading-bar',
     'api/google-login'
 ], function(
     googleDriveApi,

@@ -3,7 +3,7 @@ define([
     'storage/thought-storage',
     'auth-service',
     'google-drive-api',
-    'spinner/site-global-loading-bar',
+    'ui/spinner/site-global-loading-bar',
     'utils/ui-error-notification'
 ], function(
     thoughtStorage,

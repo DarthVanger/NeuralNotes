@@ -3,7 +3,7 @@ define([
     'thought/view-thoughts/brain-vis-network',
     'thought/view-thoughts/vis-network-helper',
     'storage/thought-storage',
-    'spinner/site-global-loading-bar',
+    'ui/spinner/site-global-loading-bar',
     'thought/view-thoughts/viewed-thought-url',
     'underscore',
     'utils/ui-error-notification'

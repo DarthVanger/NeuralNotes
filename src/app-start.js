@@ -15,7 +15,7 @@ require.config({
 
 define([
     'storage/thought-storage',
-    'spinner/site-global-loading-bar',
+    'ui/spinner/site-global-loading-bar',
     'api/cloud-api-loader',
     'auth-service',
     'ui/app-root',

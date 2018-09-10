@@ -1,6 +1,6 @@
 define([
     'google-drive-api',
-    'spinner/site-global-loading-bar',
+    'ui/spinner/site-global-loading-bar',
     'storage/thought-storage-api',
     'storage/thought-tree'
 ], function(

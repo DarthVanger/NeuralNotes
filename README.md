@@ -1,30 +1,23 @@
-App is in developemnt, it's not ready yet (more precisely, only being planned to be developed... :)
+Neural Notes
 -----------
+App for saving notes & files in a mind map view.
 
-Description
------------
-Tool for organizing thoughts (notes), storing them in tree structure.
-Instead of database, I use filesystem:
-Every note (thought) is represented by directory with "thought.txt" file inside. This is like a usual filesystem, but every directory has a thought (or call it a note, a description). In NeuralNotes you can attach folders and files to your "thoughts", this done simply by putting files in the thought's directory.
+The files are saved to Google Drive.
 
-For example:  
-NeuralNotes (root folder)
->Projects (folder)  
->>MyOwnBlog (folder)  
->>>thought.txt (file with 'MyOwnBlog' folder description)  
->>>TodoList (folder)  
->>>>thought.txt (file with todo list text)  
+There is no DB, it's just files:
+- every node on mind map is a folder
+- basically it's a folder tree displayed as a mind map
 
->Articles (folder)  
->>MyFavouriteCarsDesign (folder)  
->>>thought.txt (file with 'MyFavouriteCarsDesign' folder description)  
->>>Pictures (folder)  
->>>>thought.txt (file with 'Pictures' folder description)  
->>>>lamborgidiMurchelago.jpg  
-             
->.....  
-  
-  This files are parsed and displayed as a mind map. You store the same files, but you organize them as mind map in NeuralNotes, and it takes care of creating the corresponding file tree, which is at the same time it's database.
+## Launch locally
+```
+git clone https://github.com/DarthVanger/NeuralNotes.git
+cd NeuralNotes
+npm install
+npm start # launches a server at localhost:3000
+```
+
+## Idea
+The files stored on Google Drive are parsed and displayed as a mind map. You store the same files, but you organize them as mind map in NeuralNotes, and it takes care of creating the corresponding file tree, which is at the same time it's database.
 
 The main aim is to create ultimate notebook, which will store all your life's notes, and allows to "google" through them.
 Every thought or note, gets a score, when it is viewed ("refreshed in memory"). Movements between thoughts are also recorded, and adds score to link between thoughts. Rarely viewed notes will have low score and considered "deep memory".

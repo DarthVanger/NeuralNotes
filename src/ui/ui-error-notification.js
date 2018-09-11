@@ -14,7 +14,7 @@ define([
         element.style.left = '0';
 
         element.style.backgroundColor = 'pink';
-        element.style.height = '4em';
+        element.style.height = '6em';
         element.style.width = '320px';
         element.style.padding = '10px';
         element.style.borderRadius = '2px';

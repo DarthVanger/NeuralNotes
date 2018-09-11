@@ -4,7 +4,6 @@ define([
     'thought/view-thoughts/vis-network-helper',
     'storage/thought-storage',
     'ui/spinner/site-global-loading-bar',
-    'thought/view-thoughts/viewed-thought-url',
     'underscore',
     'utils/ui-error-notification'
 ], function(
@@ -12,7 +11,6 @@ define([
     VisNetworkHelper,
     thoughtStorage,
     siteGlobalLoadingBar,
-    viewedThoughtUrl,
     _,
     uiErrorNotification
 ) {
@@ -136,7 +134,6 @@ define([
     function changeThought(targetThought) {
         console.info('===Event=== Change thought ===Event===');
         console.debug('thoughts-mind-map-view.changeThought()');
-        viewedThoughtUrl.update(targetThought.id);
 
         console.debug('thoughts-mind-map-view.changeThought(): targetThought.children: ', targetThought.children);
         if (!_.isEmpty(targetThought.children)) {

@@ -4,7 +4,7 @@ define([
     'auth-service',
     'api/google-drive-api',
     'ui/spinner/site-global-loading-bar',
-    'utils/ui-error-notification'
+    'ui/ui-error-notification'
 ], function(
     thoughtStorage,
     authService,

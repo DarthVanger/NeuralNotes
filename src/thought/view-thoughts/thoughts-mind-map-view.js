@@ -5,7 +5,7 @@ define([
     'storage/thought-storage',
     'ui/spinner/site-global-loading-bar',
     'underscore',
-    'utils/ui-error-notification'
+    'ui/ui-error-notification'
 ], function(
     BrainVisNetwork,
     VisNetworkHelper,

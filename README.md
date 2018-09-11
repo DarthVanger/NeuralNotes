@@ -1,6 +1,6 @@
 Neural Notes
 -----------
-App for saving notes & files in a mind map view.
+App to work with notes & files in a mind map view.
 
 The files are saved to Google Drive.
 

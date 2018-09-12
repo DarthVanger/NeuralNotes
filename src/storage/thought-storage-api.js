@@ -32,19 +32,17 @@ define([
      * OR create the "Brain" folder, if it's not found.
      */
     function scanDrive() {
-        console.debug('thoughtStorage.scanDrive()');
+        console.debug('Scan thought storage...');
         return new Promise(function(resolve, reject) {
             spinner.show();
             findBrainFolder().then(function(searchResult) {
-                console.debug('findBrainFolder searchResult: ', searchResult);
                 if (searchResult.length == 0) {
-                    console.info('thoughtStorage: Brain folder on Google Drive not found, create a new one.');
+                    console.info('Brain folder on Google Drive not found, create a new one.');
                     createBrainFolder().then(function(createdBrainFolder) {
                         service.brainFolder = createdBrainFolder;
                         resolve(createdBrainFolder);
                     });
                 } else {
-                    console.debug('thoughtStorage: Brain folder found, reading it');
                     console.info('Brain folder found on Google Drive');
                     service.brainFolder = searchResult[0];
                     readBrain().then(resolve);
@@ -61,11 +59,9 @@ define([
      * of the root "Brain" node.
      */
     function readBrain() {
-        console.debug('thoughtStorage.readBrain()');
+        console.debug('Reading Brain folder...');
         return new Promise(function(resolve, reject) {
             getFiles(service.brainFolder.id).then(function(files) {
-                console.debug('files inside the brain folder: ', files);
-                console.debug('files saved to thoughts storage');
                 service.brainFolder.children = [];
                 _.each(files, function(file) {
                     if (file.mimeType == 'application/vnd.google-apps.folder') {
@@ -98,9 +94,8 @@ define([
     function fetchChildThoughts(thoughtId) {
         spinner.show();
         return new Promise(function(resolve, reject) {
-            console.debug('fetchChildThoughts() for thoughtId: ', thoughtId);
+            console.debug('[Get] Child thoughts for: "' + thoughtId + '"');
             getFiles(thoughtId).then(function(files) {
-                console.debug('files inside the thought folder: ', files);
                 //thoughts.push(brainFolder);
                 var children = [];
                 _.each(files, function(file) {
@@ -108,7 +103,7 @@ define([
                         children.push(file);
                     }
                 });
-                console.debug('fetchChildThoughts() thoughts: ', children);
+                console.debug('[Loaded] thoughts for "' + thoughtId + '"');
                 resolve(children);
             })
             .finally(function() {
@@ -130,7 +125,7 @@ define([
      * Fetch thought folder by id.
      */
     function fetchThoughtById(thoughtId) {
-        console.debug('thoughtStorage.fetchThoughtById(): thoughtId: ', thoughtId);
+        console.debug('[Get] Thought folder for: "' + thoughtId + '"');
         spinner.show();
         //var request = gapi.client.request({
         //    path: '/upload/drive/v3/files/' + thoughtId,
@@ -148,7 +143,7 @@ define([
 
         var promise = new Promise(function(resolve, reject) {
             request.execute(function(resp) {
-                console.debug('thoughtStorage.fetchThoughtById(): response: ', resp);
+                console.debug('[Loaded] Thought folder for: "' + thoughtId + '"');
                 var file = resp;
                 file = googleDriveApi.parseParents(file);
                 resolve(file);
@@ -174,7 +169,6 @@ define([
         //        //'q': 'name = "' + BRAIN_FOLDER_NAME + '"'
         //    }
         //});
-        console.debug('getFiles()');
         var request = gapi.client.drive.files.list({
           'pageSize': 10,
           'fields': googleDriveApi.FILE_LIST_FIELDS,
@@ -184,7 +178,7 @@ define([
         spinner.show();
         var promise = new Promise(function(resolve, reject) {
               request.execute(function(resp) {
-                console.debug('[API] [Loaded] Files: ', resp);
+                console.debug('[Loaded] Files: ', resp);
                 if (!resp.files) {
                     var errorMessage = 'Remote Storage API: Failed to get files';
                     uiErrorNotification.show('Connection with Google Drive failed.\n Can not get files.');
@@ -206,7 +200,7 @@ define([
      * Create "Brain" directory in the root of google drive.
      */
     function createBrainFolder() {
-        console.debug('createBrainFolder!');
+        console.info('Creating a new Brain folder...');
         spinner.show();
         return createDirectory({
             name: BRAIN_FOLDER_NAME
@@ -214,9 +208,7 @@ define([
             if (response.code && response.code === -1) {
                 throw new Error('createBrainFolder error (code = -1)! Response: response');
             }
-
-            console.debug('createBrainFolder successs!!, response: ', response);
-            console.info('thoughtStorage.createBrainFolder(): created brain folder named: "' + BRAIN_FOLDER_NAME + '"');
+            console.info('Created Brain folder');
 
             var createdFolder = response;
             thoughtsTree.root = createdFolder;
@@ -228,8 +220,7 @@ define([
                 parents: [createdFolder.id]
             });
         }).then(function(response) {
-            console.debug('createBrainFolder(): create brain txt file success!, response: ', response);
-            console.info('thoughtStorage.createBrainFolder(): created brain txt file named: "' + BRAIN_FOLDER_NAME + '.txt"');
+            console.info('Created Brain txt file');
         })
         .finally(function() {
             spinner.hide();
@@ -265,12 +256,11 @@ define([
             parents: options.parents
         })
             .then(function(newFile) {
-                console.debug('created new file! :) ', newFile);
+                console.debug('Created a new file: ' + newFile.name);
                 return updateFile(newFile, options.content); 
             })
             .then(function(updatedFile) {
-                console.debug('updated file: ', updatedFile);
-                console.debug('Thought create success!');
+                console.debug('Updated file: ' + updatedFile.name);
                 return updatedFile;
             })
             .finally(function() {
@@ -284,7 +274,7 @@ define([
      * (in a separate request) to avoid making the multipart request.
      */
     function createEmptyFile(options) {
-        console.debug('createEmptyFile()');
+        console.debug('Creating empty file...');
         var request = googleDriveApi.client.files.create({
             name: options.name,
             mimeType: "text/plain",
@@ -309,7 +299,7 @@ define([
      * Update empty file with text content.
      */
     function updateFile(createdFile, content) {
-        console.debug('updateFile()');
+        console.debug('Updating file: ' + createdFile.name);
         spinner.show();
         var request = gapi.client.request({
             path: '/upload/drive/v3/files/' + createdFile.id,
@@ -400,7 +390,7 @@ define([
             }
 
             var thoughtContentFile = foundFiles[0];
-            console.debug('thoughtStorage.getThoughtContent(), thoughtContentFile: ', thoughtContentFile);
+            console.debug('[Loaded] Thought content file: ' + thoughtContentFile.name);
 
             return thoughtContentFile;
         });
@@ -425,11 +415,9 @@ define([
         spinner.show();
         var promise = new Promise(function(resolve, reject) {
             request.execute(function(gapiReturnsFalseHereForBlobs, responsePlain) {
-                console.debug('thoughtStorage.getTextFileContents(), responsePlain: ', responsePlain);
                 var responseObject = JSON.parse(responsePlain);
-                console.debug('thoughtStorage.getTextFileContents(), responseObject: ', responseObject);
                 var responseBody = responseObject.gapiRequest.data.body;
-                console.debug('thoughtStorage.getTextFileContents(), responseBody: ', responseBody);
+                console.debug('[Loaded] Text file contents');
 
                 var fileText = responseBody;
 
@@ -448,14 +436,10 @@ define([
      * contents inside.
      */
     function create(thought, parentThought) {
-        console.debug('create(). parentThought: ', parentThought);
+        console.debug('Creating a thought: ' + thought.name);
         if (!parentThought) {
             parentThought = brainFolder;
         }
-
-        console.debug('thoughtStorage.create(). Thought: ', thought);
-        console.debug('googleDriveApi: ', googleDriveApi);
-
 
         spinner.show();
         return createDirectory({
@@ -478,7 +462,7 @@ define([
     }
 
     function update(thought) {
-        console.debug('thoughtStorage.update(), thought: ', thought);
+        console.debug('Updaing thought: ' + thought);
 
         var updateSpinner = spinner.create('updating thought');
         updateSpinner.show();

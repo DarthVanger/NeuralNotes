@@ -23,7 +23,7 @@ define([
     // non-amd libs:
     'underscore',
     // add additional functionality to javascript native Promise.
-    'utils/promise-patch'
+    'utils/promise-finally'
 ], function(
     thoughtStorage,
     siteGlobalLoadingBar,

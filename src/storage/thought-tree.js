@@ -28,33 +28,24 @@ define([
     }
 
     function findThoughtById(id) {
-        console.debug('thought-storage-api.findThoughtById(). id: ', id);
-        console.debug('thoughtsTree: ', thoughtsTree);
        var depthLimit = 4;
        var nodesLimit = 50;
        var nodesCount = 0;
        var iterationLimitReached = false;
-
-        console.debug('thoughstTree.root: ', thoughtsTree.root);
-
         return findInNode(thoughtsTree.root);
 
         function findInNode(node, currentDepth) {
             if (iterationLimitReached) return;
-            //console.debug('findInNode() called. Node: ', node);
             nodesCount++;
             if (!currentDepth) currentDepth = 0;
-            //console.debug('findInNode(): currentDepth: ', currentDepth);
             if (node.id == id) {
-                console.debug('findInNode(): found the node! :', node);
+                console.debug('Found thought: ' + node.name);
                 return node;
             } else if (currentDepth < depthLimit && nodesCount < nodesLimit) {
-                //console.debug('Traversing tree, currentDepth: ', currentDepth);
                     var foundNode;
                     _.each(node.children, function(childNode) {
                         foundNode = foundNode || findInNode(childNode, currentDepth + 1);
                     });
-                    //console.debug('foundNode: ', foundNode);
                     return foundNode;
 
             } else {
@@ -68,7 +59,6 @@ define([
     }
 
     function mapTree(func) {
-       console.debug('mapTree() called! func: ', func.toString());
        var depthLimit = 4;
        var nodesLimit = 50;
        var nodesCount = 0;
@@ -88,8 +78,6 @@ define([
                mappedTree.root = mappedNode;
            } else {
                parentNode.children.push(mappedNode);
-               //console.debug('mapTree.executeForNode() called. CurrentDepth: ', currentDepth, 'nodesCount: ', nodesCount);
-               //console.debug('mapTree.executeForNode(): node: ', node);
 
                if (isRecursionLimitReached(currentDepth, nodesCount)) return;
            }
@@ -99,8 +87,6 @@ define([
                _.each(node.children, function(childNode) {
                    executeForNode(childNode, func, clonedNode, currentDepth + 1);
                });
-           } else {
-               //console.debug('mapTree(): reached leaf node: ', node);
            }
        }
 
@@ -120,7 +106,6 @@ define([
      * Execute func for each node of the thoughts tree
      */
     function forEachNode(func) {
-       console.debug('forEachNode() called!');
        var depthLimit = 4;
        var nodesLimit = 50;
        var nodesCount = 0;
@@ -128,9 +113,7 @@ define([
        executeForNode(thoughtsTree.root, func); 
 
        function executeForNode(node, func, currentDepth) {
-           //console.debug('executeForNode() called. CurrentDepth: ', currentDepth, 'nodesCount: ', nodesCount);
            if (!currentDepth) currentDepth = 0;
-           //console.debug('executeForNode(): node: ', node);
 
            if (isRecursionLimitReached(currentDepth, nodesCount)) return;
 
@@ -159,15 +142,11 @@ define([
      * @param {Array} options.children
      */
     function addChildrenToTree(options) {
-        console.debug('addChildrenToTree() called, options: ', options);
-        console.debug('thought-tree.addChildrenToTree()');
         var parentThought = findThoughtById(options.parentId);
-        console.debug('addChildrenToTree(): found parentThought by id: ', parentThought);
         parentThought.children = options.children;
     }
 
     function getThoughts() {
-        console.debug('thoughtStorage.getThoughts(). Returning thoughts: ', thoughtsTree);
         return thoughtsTree;
     }
 

@@ -17,13 +17,17 @@ define([
     function createNoteTutorial() {
         watch(function() {
             if (!treeHasOnlyOneNode()) {
-                unmount();
+                setTimeout(editNoteTutorial, 2000);
                 return false;
             }
             return true;
         });
 
         hint('Double-click "NeuralNotes" circle to create a note');
+    }
+
+    function editNoteTutorial() {
+        hint('Hold a note, to edit it\'s name');
     }
 
     function watch(test) {

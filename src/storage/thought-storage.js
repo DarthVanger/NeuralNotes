@@ -60,8 +60,8 @@ define([
     function scanDrive() {
         console.debug('thoughtStorage.scanDrive()');
         return thoughtStorageApi.scanDrive()
-            .then(function() {
-                thoughtStorageTree.setRoot(thoughtStorageApi.appRootFolder);
+            .then(function(appRootFolder) {
+                thoughtStorageTree.setRoot(appRootFolder);
                 console.info('Thought tree root set to the App root folder on Google Drive');
                 console.debug('thoughtStorage.scanDrive(), stored thoughtsTree: ', thoughtsTree);
             });

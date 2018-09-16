@@ -141,7 +141,14 @@ define([
      */
     function addChildrenToTree(options) {
         var parentThought = findThoughtById(options.parentId);
-        parentThought.children = options.children;
+        var newChildren;
+        if (parentThought.children) {
+            parentThought.children = parentThought.children.concat(options.children);
+        } else {
+            parentThought.children = options.children;
+        }
+
+        return parentThought.children;
     }
 
     function getThoughts() {

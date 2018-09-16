@@ -67,10 +67,12 @@ define([
         visNetworkHelper = new VisNetworkHelper(brainVisNetwork.visNetwork);
 
         brainVisNetwork.visNetwork.on('click', visNetworkClickHandler);
+        brainVisNetwork.visNetwork.on('doubleClick', visNetworkDoubleClickHandler);
 
         // init thought content controller
         thoughtContentController = new ThoughtContentController();
         thoughtContentController.loadThought(initialThought);
+
     }
 
     function visNetworkClickHandler(event) {
@@ -81,6 +83,42 @@ define([
 
             thoughtClickHandler(targetThoughtId);
         }
+    }
+
+    function visNetworkDoubleClickHandler(event) {
+        if (visNetworkHelper.clickedOnThought(event)) {
+            var targetThoughtId = visNetworkHelper.getTargetThoughtId(event);
+            console.info('=== Event === Node double click');
+            createEmptyChild(targetThoughtId);
+        }
+    }
+
+    function createEmptyChild(parentId) {
+        var thought = {
+            name: 'new',
+            content: '' 
+        };
+
+        var parent = thoughtStorage.findThoughtById(parentId);
+
+        return thoughtStorage.create(thought, parent)
+            .then(function(newThought) {
+               thought.id = newThought.id;
+
+               var children = [thought];
+
+               thoughtStorage.addChildrenToTree({
+                   parentId: parentId,
+                   children: children
+               });
+
+               brainVisNetwork.addChildThoughts({
+                   children: children,
+                   parentThoughtId: parentId
+               });
+
+               return thought;
+            });
     }
 
     function thoughtClickHandler(targetThoughtId) {

@@ -1,5 +1,7 @@
 define([
+    'storage/thought-storage'
 ], function(
+    thoughtStorage
 ) {
     var element;
 
@@ -13,11 +15,31 @@ define([
     }
 
     function createNoteTutorial() {
+        watch(function() {
+            if (!treeHasOnlyOneNode()) {
+                unmount();
+                return false;
+            }
+            return true;
+        });
+
         hint('Double-click "NeuralNotes" circle to create a note');
+    }
+
+    function watch(test) {
+        if (test()) {
+            setTimeout(function() {
+                watch(test);
+            }, 2000);
+        }
     }
 
     function hint(msg) {
        element.innerText = 'Hint: ' + msg; 
+    }
+
+    function treeHasOnlyOneNode() {
+        return !Boolean(thoughtStorage.getRoot().children && thoughtStorage.getRoot().children.length);
     }
 
     function render() {
@@ -31,5 +53,9 @@ define([
         element.style.backgroundColor = 'yellow';
 
         document.body.appendChild(element);
+    }
+
+    function unmount() {
+        element.remove();
     }
 });

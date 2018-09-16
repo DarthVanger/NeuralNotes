@@ -78,6 +78,7 @@ define([
     }
 
     function visNetworkClickHandler(event) {
+        closeThoughtNameEditor();
         if (visNetworkHelper.clickedOnThought(event)) {
             console.debug('change thought!');
             console.debug('event: ', event);
@@ -113,16 +114,22 @@ define([
         function onChange(event) {
             var name = event.target.value;
 
-            brainVisNetwork.updateNode({
-                id: targetThoughtId,
-                label: name
-            });
-
             thoughtStorage.updateThoughtName({
                 id: targetThoughtId,
                 name: name
-            });
+            })
+                .then(function() {
+                    brainVisNetwork.updateNode({
+                        id: targetThoughtId,
+                        label: name
+                    });
+                });
+
         }
+    }
+
+    function closeThoughtNameEditor() {
+        thoughtNameEditor.unmount();
     }
 
     function createEmptyChild(parentId) {

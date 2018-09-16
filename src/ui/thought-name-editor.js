@@ -6,7 +6,8 @@ define([
     var element;
 
     return {
-        render: render
+        render: render,
+        unmount: unmount
     };
 
     function render(options) {
@@ -28,5 +29,11 @@ define([
 
     function debounce(func, timeout) {
         setTimeout(func, timeout);
+    }
+
+    function unmount() {
+        if (element) {
+            element.remove();
+        }
     }
 });

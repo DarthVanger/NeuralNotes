@@ -1,11 +1,13 @@
 define([
     'text!thought/view-thoughts/view-thoughts.html',
     'thought/view-thoughts/thoughts-mind-map-view',
-    'storage/thought-storage'
+    'storage/thought-storage',
+    'ui/controls-help'
 ], function(
     template,
     thoughtsMindMapView,
-    thoughtStorage
+    thoughtStorage,
+    controlsHelp
 ) {
     const $element = $('.site-content');
 
@@ -32,5 +34,6 @@ define([
             selectedThoughtId: selectedThoughtId
         });
         thoughtsMindMapView.render();
+        controlsHelp.render();
     }
 });

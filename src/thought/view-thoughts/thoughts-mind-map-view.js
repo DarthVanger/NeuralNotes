@@ -117,6 +117,11 @@ define([
                 id: targetThoughtId,
                 label: name
             });
+
+            thoughtStorage.updateFileName({
+                id: targetThoughtId,
+                name: name
+            });
         }
     }
 

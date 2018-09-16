@@ -26,6 +26,7 @@ define([
         client: client,
         findByName: findByName,
         updateFile: updateFile,
+        updateFileName: updateFileName,
         parseParents: parseParents
     };
 
@@ -127,6 +128,29 @@ define([
 
         var promise = new Promise(function(resolve, reject) {
             request.execute(function(response) {
+                resolve(response);
+            });
+        });
+
+        return promise;
+    }
+
+    function updateFileName(options) {
+        var fileId = options.id;
+        var fileName = options.name;
+
+        var request = gapi.client.request({
+           'path': '/drive/v2/files/' + fileId,
+           'method': 'PATCH',
+           'body': JSON.stringify({
+               title: fileName
+           })
+        });
+
+        console.info('Updating filename to: ' + fileName + '...');
+        var promise = new Promise(function(resolve, reject) {
+            request.execute(function(response) {
+                console.info('Updated filename to: ' + fileName);
                 resolve(response);
             });
         });

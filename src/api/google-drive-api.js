@@ -101,8 +101,11 @@ define([
         spinner.show();
         var promise = new Promise(function(resolve, reject) {
               request.execute(function(resp) {
-                console.debug('googleDriveApi.findByname(): us params: ', params);
                 console.debug('googleDriveApi.findByname(): Files found by query "' + query + '": ', resp);
+
+                  if (resp.files.length === 0) {
+                      reject('No file found for options: ' + JSON.stringify(options));
+                  }
 
                 //TODO: same code is duplicated in thought-storage.js - Refactor!
                 resp.files.forEach(parseParents);

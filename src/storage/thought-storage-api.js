@@ -25,7 +25,8 @@ define([
         getThoughtContent: getThoughtContent,
         create: create,
         update: update,
-        updateFileName: updateFileName
+        updateFileName: updateFileName,
+        updateThoughtContentFileName: updateThoughtContentFileName
     };
 
     return service;
@@ -409,7 +410,7 @@ define([
         console.info('[Get] thought content for "' + thought.name + '"...');
         return findThoughtContentFile(thought)
             .then(function (thoughtContentFile) {
-                if (!thoughtContentFile) throw 'thoughtStorageApi.getThoughtContent(): thoughtContentFile is undefined';
+                if (!thoughtContentFile) throw new Error('thoughtStorageApi.getThoughtContent(): thoughtContentFile is undefined');
                 return getTextFileContents({
                     fileId: thoughtContentFile.id
                 });
@@ -426,7 +427,7 @@ define([
             }
 
             var thoughtContentFile = foundFiles[0];
-            console.debug('[Loaded] Thought content file: ' + thought.name);
+            console.info('[Loaded] Thought content file: ' + thought.name);
 
             return thoughtContentFile;
         });
@@ -453,7 +454,7 @@ define([
             request.execute(function(gapiReturnsFalseHereForBlobs, responsePlain) {
                 var responseObject = JSON.parse(responsePlain);
                 var responseBody = responseObject.gapiRequest.data.body;
-                console.debug('[Loaded] Text file contents');
+                console.info('[Loaded] Text file contents for a file');
 
                 var fileText = responseBody;
 
@@ -519,5 +520,15 @@ define([
                 updateSpinner.hide();
             });
 
+    }
+
+    function updateThoughtContentFileName(newThought, oldThought) {
+        return findThoughtContentFile(oldThought)
+            .then(function(thoughtContentFile) {
+                return googleDriveApi.updateFileName({
+                    id: thoughtContentFile.id,
+                    name: newThought.name + '.txt'
+                });
+            });
     }
 });

@@ -44,7 +44,6 @@ define([], function() {
         // add thought children
         console.debug('BrainVisNetwork: thought.children: ', thought.children);
         _.each(thought.children, function(childThought) {
-            //console.log('pushing childThought: ', childThought);
             //childThought.parent = thought;
             visNodesArray.push({
                 id: childThought.id,

@@ -19,6 +19,7 @@ define([
     'api/cloud-api-loader',
     'auth-service',
     'ui/app-root',
+    'ui/tutorial',
 
     // non-amd libs:
     'underscore',
@@ -30,6 +31,7 @@ define([
     cloudApiLoader,
     authService,
     appRootComponent,
+    tutorial,
     _underscore_undefined_,
     _promise_patch_undefined
 ) {
@@ -49,6 +51,11 @@ define([
             .then(function() {
                 cloudDriveSpinner.show();
                 return thoughtStorage.scanDrive();
+            })
+            .then(function() {
+                if (!thoughtStorage.getRoot().children) {
+                    tutorial.begin();
+                }
             })
             .finally(function() {
                 cloudDriveSpinner.hide();

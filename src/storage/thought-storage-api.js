@@ -29,6 +29,15 @@ define([
 
     return service;
 
+    function setAppRootFolder(appRootFolder) {
+        service.appRootFolder = appRootFolder;
+        return appRootFolder;
+    }
+
+    function getAppRootFolder() {
+        return service.appRootFolder;
+    }
+
     /**
      * Try to find "APP_FOLDER_NAME" folder on google drive,
      * then read its contents,
@@ -41,22 +50,17 @@ define([
             findAppFolder().then(function(searchResult) {
                 if (searchResult.length == 0) {
                     console.info('App root folder on Google Drive not found, create a new one.');
-                    createAppRootFolder().then(function(createdAppRootFolder) {
-                        service.appRootFolder = createdAppRootFolder;
-                        resolve(createdAppRootFolder);
-                    });
+                    createAppRootFolder()
+                        .then(setAppRootFolder)
+                        .then(createAppRootTextFile)
+                        .then(function() {
+                            resolve(getAppRootFolder());
+                        });
                 } else {
                     console.info('App root folder found on Google Drive');
-                    service.appRootFolder = searchResult[0];
-                    findAppRootTextFile(service.appRootFolder)
-                        .then(function() {
-                            readAppRootFolder().then(resolve);
-                        })
-                        .catch(function() {
-                            console.warn('App root has no text file. Creating a new one');
-                            createAppRootTextFile(service.appRootFolder)
-                                .then(resolve);
-                        });
+                    var appRootFolder = searchResult[0];
+                    setAppRootFolder(appRootFolder);
+                    resolve(appRootFolder);
                 }
             })
             .finally(function() {
@@ -222,9 +226,7 @@ define([
 
             var createdFolder = response;
 
-            return createAppRootTextFile(createdFolder);
-        }).then(function(response) {
-            console.info('Created App root txt file');
+            return createdFolder;
         })
         .finally(function() {
             spinner.hide();
@@ -236,11 +238,19 @@ define([
      * to store root note's content.
      */
     function createAppRootTextFile(appRootFolder) {
-        console.debug('Creating App Root text file');
+        console.info('Creating app root text file...');
         return createFile({
             name: APP_FOLDER_NAME + '.txt',
             content: 'Edit this text...',
             parents: [appRootFolder.id]
+        })
+            .then(function(response) {
+                console.info('Created app root textfile');
+                return response;
+            })
+            .catch(function(error) {
+                console.error('Failed to create App Root Text file. Error:', error);
+            throw error;
         });
     }
 

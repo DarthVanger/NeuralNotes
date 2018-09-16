@@ -5,17 +5,7 @@ define([], function() {
     }
 
     VisNetworkHelper.prototype.getTargetThoughtId = function(networkEvent) {
-        //console.log('network click event: ', networkEvent);
         var targetNodeId = networkEvent.nodes[0];
-        //console.log('targetNodeId: ', targetNodeId);
-        //var targetNode = nodes.get(targetNodeId);
-        //console.log('targetNode: ', targetNode);
-        //var targetThoughtName = targetNode.label;
-        //console.log('targetThoughtName: ', targetThoughtName);
-        //targetThought = { id: targetNodeId };
-        //var targetThought = _.findWhere(thoughts, { name: targetThoughtName });
-        //console.log('targetThought: ', targetThought);
-        //return targetThought;
         return targetNodeId;
     }
 

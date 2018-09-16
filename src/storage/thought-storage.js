@@ -33,7 +33,7 @@ define([
         getThoughtContent: thoughtStorageApi.getThoughtContent,
         create: create,
         update: thoughtStorageApi.update,
-        updateFileName: thoughtStorageApi.updateFileName
+        updateThoughtName: updateThoughtName
     };
 
     function fetchChildThoughts(thoughtId) {
@@ -80,6 +80,19 @@ define([
             return createdThought;
         });
 
+    }
+
+    function updateThoughtName(thought) {
+        var oldThought = this.findThoughtById(thought.id);
+        var newThought = thought;
+        return Promise.all([
+            thoughtStorageApi.updateFileName(newThought),
+            thoughtStorageApi.updateThoughtContentFileName(newThought, oldThought)
+        ])
+        .then(function(responses) {
+            oldThought.name = newThought.name;
+            return responses;
+        });
     }
 
 

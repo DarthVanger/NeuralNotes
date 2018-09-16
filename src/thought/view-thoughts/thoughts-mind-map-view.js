@@ -118,7 +118,7 @@ define([
                 label: name
             });
 
-            thoughtStorage.updateFileName({
+            thoughtStorage.updateThoughtName({
                 id: targetThoughtId,
                 name: name
             });

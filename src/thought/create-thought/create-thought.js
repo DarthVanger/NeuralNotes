@@ -19,12 +19,10 @@ define([
 
         self.templateData.parentThought = options.parentThought;
 
-        console.log('create-thought.init(). options: ', options);
         self.options = options;
     }
 
     function onRender() {
-        console.log('create-thought.onRender()');
         var $form = $('.create-thought-form');
         var $thoughtContent = $form.find('[name="thoughtContent"]');
         var $thoughtName = $form.find('[name="thoughtName"]');

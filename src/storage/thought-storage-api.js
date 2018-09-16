@@ -9,13 +9,16 @@ define([
 ) {
     'use strict';
 
-    var BRAIN_FOLDER_NAME = 'Brain';
-    var THOUGHTS_TREE_CACHE_KEY = 'thoughtStorage.thoughtsTree';
+    var APP_FOLDER_NAME = 'NeuralNotes';
 
     var spinner = siteGlobalLoadingBar.create('thought-storage-api');
 
     var service = {
-        barinFolder: undefined,
+        /**
+         * App root folder on Google Drive
+         */
+        appRootFolder: undefined,
+
         scanDrive: scanDrive,
         fetchParentThought: fetchParentThought,
         fetchChildThoughts: fetchChildThoughts,
@@ -27,25 +30,33 @@ define([
     return service;
 
     /**
-     * Try to find "Brain" folder on google drive,
+     * Try to find "APP_FOLDER_NAME" folder on google drive,
      * then read its contents,
-     * OR create the "Brain" folder, if it's not found.
+     * OR create the "APP_FOLDER_NAME" folder, if it's not found.
      */
     function scanDrive() {
         console.debug('Scan thought storage...');
         return new Promise(function(resolve, reject) {
             spinner.show();
-            findBrainFolder().then(function(searchResult) {
+            findAppFolder().then(function(searchResult) {
                 if (searchResult.length == 0) {
-                    console.info('Brain folder on Google Drive not found, create a new one.');
-                    createBrainFolder().then(function(createdBrainFolder) {
-                        service.brainFolder = createdBrainFolder;
-                        resolve(createdBrainFolder);
+                    console.info('App root folder on Google Drive not found, create a new one.');
+                    createAppRootFolder().then(function(createdAppRootFolder) {
+                        service.appRootFolder = createdAppRootFolder;
+                        resolve(createdAppRootFolder);
                     });
                 } else {
-                    console.info('Brain folder found on Google Drive');
-                    service.brainFolder = searchResult[0];
-                    readBrain().then(resolve);
+                    console.info('App root folder found on Google Drive');
+                    service.appRootFolder = searchResult[0];
+                    findAppRootTextFile(service.appRootFolder)
+                        .then(function() {
+                            readAppRootFolder().then(resolve);
+                        })
+                        .catch(function() {
+                            console.warn('App root has no text file. Creating a new one');
+                            createAppRootTextFile(service.appRootFolder)
+                                .then(resolve);
+                        });
                 }
             })
             .finally(function() {
@@ -55,27 +66,26 @@ define([
     }
 
     /**
-     * Get files from brain folder, which are childs
-     * of the root "Brain" node.
+     * Get files from the root "APP_FOLDER_NAME" folder.
      */
-    function readBrain() {
-        console.debug('Reading Brain folder...');
+    function readAppRootFolder() {
+        console.debug('Reading ' + APP_FOLDER_NAME + ' folder...');
         return new Promise(function(resolve, reject) {
-            getFiles(service.brainFolder.id).then(function(files) {
-                service.brainFolder.children = [];
+            getFiles(service.appRootFolder.id).then(function(files) {
+                service.appRootFolder.children = [];
                 _.each(files, function(file) {
                     if (file.mimeType == 'application/vnd.google-apps.folder') {
-                        service.brainFolder.children.push(file);
+                        service.appRootFolder.children.push(file);
                     }
                 });
             }).then(resolve);
             //
-            // code for getting children of all children of Brain folder.
+            // code for getting children of all children of App root folder folder.
             // -------------------------------
             //}).then(function() {
                 // (currently displaying only one level for better performance)
                 //var promises = [];
-                //service.brainFolder.children.forEach(function(thought) {
+                //service.appRootFolder.children.forEach(function(thought) {
                 //    var promise = getFiles(thought.id).then(function(files) {
                 //        thought.children = files;
                 //    });
@@ -96,7 +106,7 @@ define([
         return new Promise(function(resolve, reject) {
             console.debug('[Get] Child thoughts for: "' + thoughtId + '"');
             getFiles(thoughtId).then(function(files) {
-                //thoughts.push(brainFolder);
+                //thoughts.push(appRootFolder);
                 var children = [];
                 _.each(files, function(file) {
                     if (file.mimeType == 'application/vnd.google-apps.folder') {
@@ -166,7 +176,7 @@ define([
         //    params: {
         //        //'pageSize': 10,
         //        //'fields': "nextPageToken, files(id, name)",
-        //        //'q': 'name = "' + BRAIN_FOLDER_NAME + '"'
+        //        //'q': 'name = "' + APP_FOLDER_NAME + '"'
         //    }
         //});
         var request = gapi.client.drive.files.list({
@@ -197,30 +207,24 @@ define([
     }
 
     /**
-     * Create "Brain" directory in the root of google drive.
+     * Create "APP_FOLDER_NAME" directory in the root of google drive.
      */
-    function createBrainFolder() {
-        console.info('Creating a new Brain folder...');
+    function createAppRootFolder() {
+        console.info('Creating a new App root folder...');
         spinner.show();
         return createDirectory({
-            name: BRAIN_FOLDER_NAME
+            name: APP_FOLDER_NAME
         }).then(function(response) {
             if (response.code && response.code === -1) {
-                throw new Error('createBrainFolder error (code = -1)! Response: response');
+                throw new Error('createAppRootFolder error (code = -1)! Response: response');
             }
-            console.info('Created Brain folder');
+            console.info('Created App root folder');
 
             var createdFolder = response;
-            thoughtsTree.root = createdFolder;
-            thoughtsTree.root.children = [];
 
-            return createFile({
-                name: BRAIN_FOLDER_NAME + '.txt',
-                content: 'The root of your thoughts :)',
-                parents: [createdFolder.id]
-            });
+            return createAppRootTextFile(createdFolder);
         }).then(function(response) {
-            console.info('Created Brain txt file');
+            console.info('Created App root txt file');
         })
         .finally(function() {
             spinner.hide();
@@ -228,13 +232,30 @@ define([
     }
 
     /**
-     * Try to find "Brain" folder in google drive root.
+     * Create a text file for the root folder,
+     * to store root note's content.
      */
-    function findBrainFolder() {
+    function createAppRootTextFile(appRootFolder) {
+        console.debug('Creating App Root text file');
+        return createFile({
+            name: APP_FOLDER_NAME + '.txt',
+            content: 'Edit this text...',
+            parents: [appRootFolder.id]
+        });
+    }
+
+    /**
+     * Try to find "APP_FOLDER_NAME" folder in google drive root.
+     */
+    function findAppFolder() {
         return googleDriveApi.findByName({
-            name: BRAIN_FOLDER_NAME,
+            name: APP_FOLDER_NAME,
             folderId: 'root'
         });
+    }
+
+    function findAppRootTextFile(appRootFolder) {
+        return getThoughtContent(appRootFolder);
     }
 
     /**
@@ -390,7 +411,7 @@ define([
             }
 
             var thoughtContentFile = foundFiles[0];
-            console.debug('[Loaded] Thought content file: ' + thoughtContentFile.name);
+            console.debug('[Loaded] Thought content file: ' + thought.name);
 
             return thoughtContentFile;
         });
@@ -438,7 +459,7 @@ define([
     function create(thought, parentThought) {
         console.debug('Creating a thought: ' + thought.name);
         if (!parentThought) {
-            parentThought = brainFolder;
+            parentThought = appRootFolder;
         }
 
         spinner.show();

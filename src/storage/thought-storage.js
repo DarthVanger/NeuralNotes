@@ -11,10 +11,8 @@ define([
 ) {
     'use strict';
 
-    var BRAIN_FOLDER_NAME = 'Brain';
-    var brainFolder = thoughtStorageApi.brainFolder;
+    var appRootFolder = thoughtStorageApi.appRootFolder;
     var thoughtsTree = {};
-    var THOUGHTS_TREE_CACHE_KEY = 'thoughtStorage.thoughtsTree';
 
     var spinner = siteGlobalLoadingBar.create('thought-storage');
 
@@ -63,8 +61,8 @@ define([
         console.debug('thoughtStorage.scanDrive()');
         return thoughtStorageApi.scanDrive()
             .then(function() {
-                thoughtStorageTree.setRoot(thoughtStorageApi.brainFolder);
-                console.info('Thought tree root set to Brain folder');
+                thoughtStorageTree.setRoot(thoughtStorageApi.appRootFolder);
+                console.info('Thought tree root set to the App root folder on Google Drive');
                 console.debug('thoughtStorage.scanDrive(), stored thoughtsTree: ', thoughtsTree);
             });
     }

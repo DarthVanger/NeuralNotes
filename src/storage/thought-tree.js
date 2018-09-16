@@ -3,9 +3,7 @@ define([
 ) {
     'use strict';
 
-    var BRAIN_FOLDER_NAME = 'Brain';
     var thoughtsTree = {};
-    var THOUGHTS_TREE_CACHE_KEY = 'thoughtStorage.thoughtsTree';
 
     return {
         getThoughts: getThoughts,

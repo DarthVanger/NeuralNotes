@@ -1,5 +1,7 @@
 define([
+    'underscore',
 ], function(
+    _
 ) {
     var element;
 
@@ -15,10 +17,16 @@ define([
         element.style.top = '4em';
         element.style.backgroundColor = 'pink';
 
-        element.addEventListener('input', options.onChange);
+        var debouncedOnChange = _.debounce(options.onChange, 1500);
+
+        element.addEventListener('input', debouncedOnChange);
 
         element.innerText = thought.name;
 
         document.body.appendChild(element);
+    }
+
+    function debounce(func, timeout) {
+        setTimeout(func, timeout);
     }
 });

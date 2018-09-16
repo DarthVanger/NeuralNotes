@@ -33,6 +33,7 @@ define([
         getThoughtContent: thoughtStorageApi.getThoughtContent,
         create: create,
         update: thoughtStorageApi.update,
+        updateFileName: thoughtStorageApi.updateFileName
     };
 
     function fetchChildThoughts(thoughtId) {

@@ -25,6 +25,7 @@ define([
         getThoughtContent: getThoughtContent,
         create: create,
         update: update,
+        updateFileName: updateFileName
     };
 
     return service;
@@ -362,6 +363,10 @@ define([
         });
 
         return promise;
+    }
+
+    function updateFileName(options) {
+        return googleDriveApi.updateFileName(options);
     }
 
     /**

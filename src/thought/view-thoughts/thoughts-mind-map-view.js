@@ -1,18 +1,19 @@
-console.debug('thoughts-mind-map-view.js');
 define([
     'thought/view-thoughts/brain-vis-network',
     'thought/view-thoughts/vis-network-helper',
     'storage/thought-storage',
     'ui/spinner/site-global-loading-bar',
     'underscore',
-    'ui/ui-error-notification'
+    'ui/ui-error-notification',
+    'ui/thought-name-editor'
 ], function(
     BrainVisNetwork,
     VisNetworkHelper,
     thoughtStorage,
     siteGlobalLoadingBar,
     _,
-    uiErrorNotification
+    uiErrorNotification,
+    thoughtNameEditor
 ) {
     var brainVisNetwork;
     var visNetworkHelper;
@@ -68,6 +69,7 @@ define([
 
         brainVisNetwork.visNetwork.on('click', visNetworkClickHandler);
         brainVisNetwork.visNetwork.on('doubleClick', visNetworkDoubleClickHandler);
+        brainVisNetwork.visNetwork.on('hold', visNetworkHoldHandler);
 
         // init thought content controller
         thoughtContentController = new ThoughtContentController();
@@ -90,6 +92,31 @@ define([
             var targetThoughtId = visNetworkHelper.getTargetThoughtId(event);
             console.info('=== Event === Node double click');
             createEmptyChild(targetThoughtId);
+        }
+    }
+
+    function visNetworkHoldHandler(event) {
+        if (visNetworkHelper.clickedOnThought(event)) {
+            var targetThoughtId = visNetworkHelper.getTargetThoughtId(event);
+            console.info('=== Event === Node hold');
+            editThought(targetThoughtId);
+        }
+    }
+
+    function editThought(targetThoughtId) {
+        thought = thoughtStorage.findThoughtById(targetThoughtId);
+        thoughtNameEditor.render({
+            thought: thought,
+            onChange: onChange
+        });
+
+        function onChange(event) {
+            var name = event.target.value;
+
+            brainVisNetwork.updateNode({
+                id: targetThoughtId,
+                label: name
+            });
         }
     }
 

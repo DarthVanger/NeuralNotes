@@ -72,10 +72,11 @@ define([
           console.debug('authResult: ', authResult);
           if (authResult && !authResult.error) {
               authService.authResult = authResult;
+              console.info('Google Auth success!');
               resolve(authResult);
 
           } else {
-              console.debug('googleLogin(): Google auth fail! Need to relogin manually.');
+              console.error('googleLogin(): Google auth fail! Need to relogin manually.');
               reject(authResult);
             }
       });

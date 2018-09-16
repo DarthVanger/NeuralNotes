@@ -467,7 +467,6 @@ define([
      * contents inside.
      */
     function create(thought, parentThought) {
-        console.debug('Creating a thought: ' + thought.name);
         if (!parentThought) {
             parentThought = appRootFolder;
         }

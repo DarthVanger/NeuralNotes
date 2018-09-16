@@ -25,6 +25,7 @@ define([
         getThoughts: thoughtStorageTree.getThoughts,
         logTree: thoughtStorageTree.logTree,
         getRoot: thoughtStorageTree.getRoot,
+        addChildrenToTree: thoughtStorageTree.addChildrenToTree,
 
         // api:
         fetchParentThought: fetchParentThought,
@@ -72,13 +73,9 @@ define([
     }
 
     function create(thought, parentThought) {
+        console.info('Creating a new thought: ', thought.name);  
         return thoughtStorageApi.create(thought, parentThought).then(function(createdThought) {
-            var parentThoughtInTree = thoughtStorageTree.findThoughtById(parentThought.id);
-            if (!parentThoughtInTree.children) {
-                parentThoughtInTree.children = [];
-            }
-            parentThoughtInTree.children.push(createdThought);
-            console.debug('thoughtStore.create(): thoughtsTree after creating thought: ', thoughtsTree);  
+            console.info('Created new thought: ', thought.name);  
             return createdThought;
         });
 

@@ -54,7 +54,7 @@ define([
             })
             .then(function() {
                 if (!thoughtStorage.getRoot().children) {
-                    tutorial.begin();
+                    setTimeout(tutorial.begin, 4000);
                 }
             })
             .finally(function() {

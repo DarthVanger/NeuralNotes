@@ -141,5 +141,12 @@ define([], function() {
         });
     };
 
+    BrainVisNetwork.prototype.updateNode = function(options) {
+        this.visNodes.update({
+            id: options.id,
+            label: options.label
+        });
+    };
+
     return BrainVisNetwork;
 });

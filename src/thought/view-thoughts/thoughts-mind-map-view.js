@@ -156,6 +156,8 @@ define([
                    parentThoughtId: parentId
                });
 
+               editThought(thought.id);
+
                return thought;
             });
     }

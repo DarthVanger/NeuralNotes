@@ -17,6 +17,8 @@ define([
         element.style.padding = '1em';
         element.style.backgroundColor = 'yellow';
 
+        element.addEventListener('click', unmount);
+
         element.innerHTML = 'Controls:' + '<br />'
             + 'Double-click: add a child note' + '<br />'
             + 'Hold: edit note\'s name' + '<br />';

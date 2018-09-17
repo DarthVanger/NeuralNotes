@@ -22,7 +22,7 @@ define([
     var currentViewedThoughtId;
     var initialThought;
 
-    var spinner = siteGlobalLoadingBar.create('thoughts-view');
+    var spinner = siteGlobalLoadingBar.create('mind map');
 
     var thoughtContentController;
 

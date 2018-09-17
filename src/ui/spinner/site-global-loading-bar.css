@@ -3,36 +3,18 @@
 }
 .site-global-loading-bar__message {
   position: absolute;
-  z-index: 1;
-  bottom: 0;
-  right: 0;
-
-  padding: 5px;
-  background-color: white;
-  width: 50%;
-
-  opacity: 0.7;
-
-  /*
-	-webkit-animation:rainbow_border 5s infinite;
-	-ms-animation:rainbow_border 5s infinite;
-	-o-animation:rainbow_border 5s infinite;
-	animation:rainbow_border 5s infinite;
-  */
+  z-index: 4;
+  top: 0;
+  width: 100%;
+  padding: 0.2em;
+  height: 1.8em;
+  background-color: black;
+  color: white;
 }
 
 .site-global-loading-bar__message.hidden-message {
-  transition: all 0.5s;
-  border-color: white;
-  bottom: -50px;
+  display: 'none';
 }
-
-/*
-.site-global-loading-bar__message:nth-child(2) {
-  top: 30px;
-}
-*/
-
 
 #site-global-loading-bar {
   position: absolute;

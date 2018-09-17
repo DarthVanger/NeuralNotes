@@ -8,6 +8,11 @@ define([
     };
 
     function render() {
+        if (wasSeenByUser()) {
+            console.info('Not rendering controls help as user has seen it already');
+            return;
+        }
+
         element = document.createElement('DIV');
         element.id = 'tutorial';
         element.style.position = 'absolute';
@@ -35,6 +40,15 @@ define([
     }
 
     function unmount() {
+        recordUserView()
         element.remove();
+    }
+
+    function recordUserView() {
+        localStorage.setItem('controls_help:viewed', '1');
+    }
+
+    function wasSeenByUser() {
+        return localStorage.getItem('controls_help:viewed');
     }
 });

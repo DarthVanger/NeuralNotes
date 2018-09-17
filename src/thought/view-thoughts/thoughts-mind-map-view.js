@@ -320,9 +320,9 @@ define([
             console.debug('RealtimeSaving: Save thought content: currentViewedThought: ', currentViewedThought);
 
             return thoughtStorage.update(currentViewedThought)
-                .catch(function() {
-                  uiErrorNotification.show('Failed to save thought content');
-
+                .catch(function(error) {
+                    uiErrorNotification.show('Failed to save thought content');
+                    console.error(error);
                 })
                 .finally(function() {
                     savingThoughtContentSpinner.hide();

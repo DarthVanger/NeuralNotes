@@ -26,23 +26,33 @@ define([ ], function() {
         var $msgEl = $loadingMessageElement.clone();
         $msgEl.append($('<div>Loading: ' + name + '</div>'));
         $msgEl.addClass('hidden-message');
+
+        /**
+         * Show loading message, only if spinner takes more
+         * than the specified time.
+         * (to not annoy user with messages on every quick action)
+         */
+        var showDelay = 1000;
+
         var isShown = false;
+        var timeoutId;
         var loaderInstance = {
             name: name,
             create: function(subName) {
                 return loadingBarService.create(name + ' | ' + subName);
             },
             show: function() {
-
-                if (!isShown) {
-                    $loadersContainer.append($msgEl);
-                }
-                $msgEl.removeClass('hidden-message');
-
                 showLoadingBar();
-                isShown = true;
+                timeoutId = setTimeout(function() {
+                    if (!isShown) {
+                        $loadersContainer.append($msgEl);
+                    }
+                    $msgEl.removeClass('hidden-message');
+                    isShown = true;
+                }, showDelay);
             },
             hide: function() {
+                window.clearTimeout(timeoutId);
                 $msgEl.addClass('hidden-message');
                 hideLoadingBar(name);
                 var REMOVE_ANIMATION_DURATION = 2000;

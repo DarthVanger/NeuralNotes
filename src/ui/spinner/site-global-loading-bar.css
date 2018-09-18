@@ -13,7 +13,7 @@
 }
 
 .site-global-loading-bar__message.hidden-message {
-  display: 'none';
+  display: none;
 }
 
 #site-global-loading-bar {

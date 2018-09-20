@@ -17,9 +17,7 @@ define([
 
     var SCOPES = [
         // Per-file access to files created or opened by the app
-        'https://www.googleapis.com/auth/drive.file',
-        // Allows read-only access to file metadata and file content
-        'https://www.googleapis.com/auth/drive.readonly'
+        'https://www.googleapis.com/auth/drive.file'
     ];
 
     var service = {

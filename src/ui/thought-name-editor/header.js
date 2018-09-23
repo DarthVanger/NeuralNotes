@@ -7,7 +7,7 @@ define([
     };
 
     
-    function render() {
+    function render(props) {
         var headerElement = document.createElement('div');
         headerElement.style.position = 'absolute';
         headerElement.style.top = '0';
@@ -20,7 +20,19 @@ define([
         headerElement.style.textTransform = 'uppercase';
         headerElement.innerText = 'Edit note name';
 
+        var deleteNoteButton = document.createElement('button');
+        deleteNoteButton.innerText = 'Delete';
+        deleteNoteButton.className = 'btn btn-info';
+        deleteNoteButton.style.float = 'right';
+
+        deleteNoteButton.addEventListener('click', props.onDeleteClick);
+
+        headerElement.append(deleteNoteButton);
+
         return headerElement;
+    }
+
+    function deleteNote(event) {
     }
 
 

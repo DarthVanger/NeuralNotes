@@ -39,7 +39,9 @@ define([
 
         document.body.appendChild(element);
         element.append(textArea);
-        element.append(headerComponent.render());
+        element.append(headerComponent.render({
+            onDeleteClick: options.onDeleteClick
+        }));
     }
 
     function unmount() {

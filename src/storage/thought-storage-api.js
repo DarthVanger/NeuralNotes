@@ -116,9 +116,16 @@ define([
                 //thoughts.push(appRootFolder);
                 var children = [];
                 _.each(files, function(file) {
-                    if (file.name !== thought.name + '.txt') {
-                        children.push(file);
+                    if (file.name === thought.name + '.txt') {
+                        return;
                     }
+
+                    if (file.mimeType === 'application/vnd.google-apps.folder') {
+                        file.isNote = true;
+                    } else {
+                        file.isNote = false;
+                    }
+                    children.push(file);
                 });
                 console.debug('[Loaded] thoughts for "' + thought.id + '"');
                 resolve(children);

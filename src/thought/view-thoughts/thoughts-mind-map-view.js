@@ -147,7 +147,8 @@ define([
     function onUploadFileClick(event) {
         var note = currentViewedThought;
         console.info('[Event] Upload file click');
-        window.open('https://drive.google.com/drive/folders/' + note.id);
+
+        window.open(thoughtStorage.getLinkToThought(currentViewedThought));
     }
 
     function closeThoughtNameEditor() {
@@ -224,6 +225,7 @@ define([
         console.debug('thoughts-mind-map-view.thoughtClickHandler(): targetThought: ', targetThought);
 
         changeThought(targetThought);
+
         thoughtContentController.loadThought(targetThought);
     }
 
@@ -298,30 +300,57 @@ define([
     function ThoughtContentController() {
         var selectedThoughtContentContainer = document.querySelector('.selected-thought-content');
 
-        console.debug('thoughtsMindMapView: selectedThoughtContentContainer: ', selectedThoughtContentContainer);
-
         var textarea = selectedThoughtContentContainer.querySelector('textarea');
+        var linkToGoogleDrive = document.createElement('a');
+
+        linkToGoogleDrive.className = 'btn btn-primary';
+        linkToGoogleDrive.innerText = 'Open in Google Drive';
+        linkToGoogleDrive.target = '_blank';
+        selectedThoughtContentContainer.append(linkToGoogleDrive);
 
         initRealtimeSaving();
 
-        console.debug('thoughtsMindMapView: textarea: ', textarea);
-
-
         this.loadThought = function(thought) {
-            setThoughtContent('loading thought contents...');
-            
-            console.debug('ThoughtContentController.loadThought(), passed thought: ', thought);
-            thoughtStorage.getThoughtContent(thought)
-                .then(function(thoughtContent) {
-                   console.debug('ThoughtContentController.loadThought(), loaded thought content: ', thoughtContent);
-                   setThoughtContent(thoughtContent);
-                });
+            if (thought.isNote) {
+                hideLinkToGoogleDrive();
+                showTextArea();
+                setThoughtContent('loading thought contents...');
+                
+                console.debug('ThoughtContentController.loadThought(), passed thought: ', thought);
 
+                thoughtStorage.getThoughtContent(thought)
+                    .then(function(thoughtContent) {
+                       console.debug('ThoughtContentController.loadThought(), loaded thought content: ', thoughtContent);
+                       setThoughtContent(thoughtContent);
+                    });
+            } else {
+               hideTextArea();
+               showLinkToGoogleDrive(thought.parent);
+            }
+
+        }
+
+        function hideTextArea() {
+            textarea.style.display = 'none';
+        }
+
+        function showTextArea() {
+            textarea.style.display = 'block';
         }
 
         function setThoughtContent(text){
             textarea.value = text;
         }
+
+        function showLinkToGoogleDrive(thought) {
+            linkToGoogleDrive.href = thoughtStorage.getLinkToThought(thought);
+            linkToGoogleDrive.style.display = 'block';
+        }
+
+        function hideLinkToGoogleDrive() {
+            linkToGoogleDrive.style.display = 'none';
+        }
+
 
         function initRealtimeSaving() {
             var REAL_TIME_SAVING_INTERVAL_MS = 1000;

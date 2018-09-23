@@ -43,9 +43,4 @@ define([
 
         return headerElement;
     }
-
-    function deleteNote(event) {
-    }
-
-
 });

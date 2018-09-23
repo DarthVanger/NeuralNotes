@@ -113,7 +113,8 @@ define([
         thoughtNameEditor.render({
             thought: thought,
             onChange: onChange,
-            onDeleteClick: onDeleteClick
+            onDeleteClick: onDeleteClick,
+            onUploadFileClick: onUploadFileClick
         });
 
         function onChange(event) {
@@ -141,6 +142,12 @@ define([
                 console.info('Deleted ' + note.name);
                 brainVisNetwork.deleteSelectedNode();
             });
+    }
+
+    function onUploadFileClick(event) {
+        var note = currentViewedThought;
+        console.info('[Event] Upload file click');
+        window.open('https://drive.google.com/drive/folders/' + note.id);
     }
 
     function closeThoughtNameEditor() {

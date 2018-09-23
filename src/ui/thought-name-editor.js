@@ -40,7 +40,8 @@ define([
         document.body.appendChild(element);
         element.append(textArea);
         element.append(headerComponent.render({
-            onDeleteClick: options.onDeleteClick
+            onDeleteClick: options.onDeleteClick,
+            onUploadFileClick: options.onUploadFileClick
         }));
     }
 

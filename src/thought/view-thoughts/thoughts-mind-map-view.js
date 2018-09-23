@@ -187,10 +187,9 @@ define([
     function thoughtClickHandler(targetThoughtId) {
         // if clicking on the current thought, do nothing.
         if (targetThoughtId === currentViewedThoughtId) {
+            console.info('Click was on the selected note, doing nothing')
             return;
         }
-
-        console.debug('brainVisNetwork.visNodes.getIds(): ', brainVisNetwork.visNodes.getIds());
 
         var currentViewedThoughtId_temp = _.find(brainVisNetwork.visNodes.getIds(),
             function(nodeId) {
@@ -242,7 +241,7 @@ define([
             renderChildren(targetThought.children);
         } else {
             console.info('[Get] child thoughts for "' + targetThought.name + '"...');
-            fetchChildThoughts(targetThought.id)
+            fetchChildThoughts(targetThought)
                 .then(renderChildren);
         }
 
@@ -261,10 +260,10 @@ define([
             }
         }
 
-        function fetchChildThoughts() {
+        function fetchChildThoughts(thought) {
             var fetchingThoughtsSpinner = spinner.create('loading child thoughts');
             fetchingThoughtsSpinner.show();
-            return thoughtStorage.fetchChildThoughts(targetThought.id)
+            return thoughtStorage.fetchChildThoughts(thought)
                 .finally(function() {
                     fetchingThoughtsSpinner.hide();
                 });

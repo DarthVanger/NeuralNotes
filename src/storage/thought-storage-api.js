@@ -108,19 +108,19 @@ define([
     /**
      * Find child directories for given thoughtId folder.
      */
-    function fetchChildThoughts(thoughtId) {
+    function fetchChildThoughts(thought) {
         spinner.show();
         return new Promise(function(resolve, reject) {
-            console.debug('[Get] Child thoughts for: "' + thoughtId + '"');
-            getFiles(thoughtId).then(function(files) {
+            console.debug('[Get] Child thoughts for: "' + thought.name+ '"');
+            getFiles(thought.id).then(function(files) {
                 //thoughts.push(appRootFolder);
                 var children = [];
                 _.each(files, function(file) {
-                    if (file.mimeType == 'application/vnd.google-apps.folder') {
+                    if (file.name !== thought.name + '.txt') {
                         children.push(file);
                     }
                 });
-                console.debug('[Loaded] thoughts for "' + thoughtId + '"');
+                console.debug('[Loaded] thoughts for "' + thought.id + '"');
                 resolve(children);
             })
             .finally(function() {

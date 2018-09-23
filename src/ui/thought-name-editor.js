@@ -1,7 +1,9 @@
 define([
     'underscore',
+    './thought-name-editor/header',
 ], function(
-    _
+    _,
+    headerComponent
 ) {
     var element;
 
@@ -29,18 +31,6 @@ define([
         textArea.style.padding = '0.5em';
         textArea.style.backgroundColor = 'black';
 
-        var headerElement = document.createElement('div');
-        headerElement.style.position = 'absolute';
-        headerElement.style.top = '0';
-        headerElement.style.zIndex = '3';
-        headerElement.style.height = '1.5em';
-        headerElement.style.width = '100%';
-        headerElement.style.backgroundColor = '#aac';
-        headerElement.style.padding = '0.25em';
-        headerElement.style.color = 'black';
-        headerElement.style.textTransform = 'uppercase';
-        headerElement.innerText = 'Edit note name';
-
         var debouncedOnChange = _.debounce(options.onChange, 1500);
 
         element.addEventListener('input', debouncedOnChange);
@@ -49,7 +39,7 @@ define([
 
         document.body.appendChild(element);
         element.append(textArea);
-        element.append(headerElement);
+        element.append(headerComponent.render());
     }
 
     function debounce(func, timeout) {

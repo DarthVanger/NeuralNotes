@@ -22,8 +22,10 @@ define([
 
         var deleteNoteButton = document.createElement('button');
         deleteNoteButton.innerText = 'Delete';
-        deleteNoteButton.className = 'btn btn-info';
-        deleteNoteButton.style.float = 'right';
+        deleteNoteButton.className = 'btn btn-danger';
+        deleteNoteButton.style.position = 'absolute';
+        deleteNoteButton.style.top = '0';
+        deleteNoteButton.style.right = '0';
 
         deleteNoteButton.addEventListener('click', props.onDeleteClick);
 

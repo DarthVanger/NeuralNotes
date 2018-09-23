@@ -106,6 +106,10 @@ define([
 
     function editThought(targetThoughtId) {
         thought = thoughtStorage.findThoughtById(targetThoughtId);
+
+        currentViewedThought = thought;
+        brainVisNetwork.selectNote(targetThoughtId);
+
         thoughtNameEditor.render({
             thought: thought,
             onChange: onChange,

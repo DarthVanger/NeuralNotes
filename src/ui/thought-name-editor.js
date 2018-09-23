@@ -42,10 +42,6 @@ define([
         element.append(headerComponent.render());
     }
 
-    function debounce(func, timeout) {
-        setTimeout(func, timeout);
-    }
-
     function unmount() {
         if (element) {
             element.remove();

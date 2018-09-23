@@ -12,13 +12,6 @@ app.get('/', function(req, res){
   res.sendfile('index.html');
 });
 
-// not used :)
-//io.on('connection', function(socket){
-//  socket.on('chat message', function(msg){
-//    io.broadcast.emit('chat message', msg);
-//  });
-//});
-
 http.listen(3000, function(){
   log.info('listening on *:3000');
 });

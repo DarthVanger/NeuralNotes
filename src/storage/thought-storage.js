@@ -34,7 +34,8 @@ define([
         create: create,
         update: thoughtStorageApi.update,
         remove: remove,
-        updateThoughtName: updateThoughtName
+        updateThoughtName: updateThoughtName,
+        getLinkToThought: getLinkToThought
     };
 
     function fetchChildThoughts(thought) {
@@ -101,6 +102,10 @@ define([
             thoughtStorageTree.deleteNode(note);
             return result;
         });
+    }
+
+    function getLinkToThought(thought) {
+        return 'https://drive.google.com/drive/folders/' + thought.id;
     }
 
 });

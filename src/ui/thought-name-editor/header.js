@@ -20,16 +20,26 @@ define([
         headerElement.style.textTransform = 'uppercase';
         headerElement.innerText = 'Edit note name';
 
+        var buttonsContainer = document.createElement('div');
+        buttonsContainer.style.position = 'absolute';
+        buttonsContainer.style.top = '0';
+        buttonsContainer.style.right = '0';
+        buttonsContainer.style.textAlign = 'right';
+        buttonsContainer.className = 'btn-group';
+
         var deleteNoteButton = document.createElement('button');
         deleteNoteButton.innerText = 'Delete';
         deleteNoteButton.className = 'btn btn-danger';
-        deleteNoteButton.style.position = 'absolute';
-        deleteNoteButton.style.top = '0';
-        deleteNoteButton.style.right = '0';
-
         deleteNoteButton.addEventListener('click', props.onDeleteClick);
 
-        headerElement.append(deleteNoteButton);
+        var uploadFileButton = document.createElement('button');
+        uploadFileButton.innerText = 'Upload files';
+        uploadFileButton.className = 'btn btn-default';
+        uploadFileButton.addEventListener('click', props.onUploadFileClick);
+
+        buttonsContainer.append(uploadFileButton);
+        buttonsContainer.append(deleteNoteButton);
+        headerElement.append(buttonsContainer);
 
         return headerElement;
     }

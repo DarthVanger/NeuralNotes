@@ -303,7 +303,7 @@ define([
         var textarea = selectedThoughtContentContainer.querySelector('textarea');
         var linkToGoogleDrive = document.createElement('a');
 
-        linkToGoogleDrive.className = 'btn btn-primary';
+        linkToGoogleDrive.className = 'btn btn-primary btn-lg';
         linkToGoogleDrive.innerText = 'Open in Google Drive';
         linkToGoogleDrive.target = '_blank';
         selectedThoughtContentContainer.append(linkToGoogleDrive);

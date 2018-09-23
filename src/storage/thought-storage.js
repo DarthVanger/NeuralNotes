@@ -37,11 +37,11 @@ define([
         updateThoughtName: updateThoughtName
     };
 
-    function fetchChildThoughts(thoughtId) {
-        return thoughtStorageApi.fetchChildThoughts(thoughtId)
+    function fetchChildThoughts(thought) {
+        return thoughtStorageApi.fetchChildThoughts(thought)
             .then(function(children) {
                 thoughtStorageTree.addChildrenToTree({
-                    parentId: thoughtId,
+                    parentId: thought.id,
                     children: children
                 });
 

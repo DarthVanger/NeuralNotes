@@ -151,5 +151,9 @@ define([], function() {
         this.visNetwork.deleteSelected();
     };
 
+    BrainVisNetwork.prototype.selectNote = function(noteId) {
+        this.visNetwork.selectNodes([noteId]);
+    };
+
     return BrainVisNetwork;
 });

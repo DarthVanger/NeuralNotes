@@ -25,6 +25,7 @@ define([
         getThoughtContent: getThoughtContent,
         create: create,
         update: update,
+        remove: remove,
         updateFileName: updateFileName,
         updateThoughtContentFileName: updateThoughtContentFileName
     };
@@ -530,5 +531,30 @@ define([
                     name: newThought.name + '.txt'
                 });
             });
+    }
+
+    function remove(note) {
+        var requestParams = {
+            "fileId": note.id,
+            "mimeType": "application/vnd.google-apps.folder",
+        };
+
+        var request = googleDriveApi.client.files.delete(requestParams);
+
+        spinner.show();
+        var promise = new Promise(function(resolve, reject) {
+            request.execute(function(response) {
+                if (response.error) {
+                    console.error('Failed to delete a note "' + note.name + '"');
+                }
+                console.log('response : ', response);
+                resolve(response);
+            });
+
+        }).finally(function() {
+            spinner.hide();
+        });
+
+        return promise;
     }
 });

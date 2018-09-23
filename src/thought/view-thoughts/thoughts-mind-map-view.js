@@ -108,7 +108,8 @@ define([
         thought = thoughtStorage.findThoughtById(targetThoughtId);
         thoughtNameEditor.render({
             thought: thought,
-            onChange: onChange
+            onChange: onChange,
+            onDeleteClick: onDeleteClick
         });
 
         function onChange(event) {
@@ -126,6 +127,16 @@ define([
                 });
 
         }
+    }
+
+    function onDeleteClick(event) {
+        var note = currentViewedThought;
+        console.info('Deleting ' + note.name + '...');
+        thoughtStorage.remove(note)
+            .then(function() {
+                console.info('Deleted ' + note.name);
+                brainVisNetwork.deleteSelectedNode();
+            });
     }
 
     function closeThoughtNameEditor() {

@@ -11,7 +11,8 @@ define([
         logTree: logTree,
         getRoot: getRoot,
         setRoot: setRoot,
-        addChildrenToTree: addChildrenToTree
+        addChildrenToTree: addChildrenToTree,
+        deleteNode: deleteNode
     };
 
     function logTree() {
@@ -37,7 +38,7 @@ define([
             nodesCount++;
             if (!currentDepth) currentDepth = 0;
             if (node.id == id) {
-                console.debug('Found thought: ' + node.name);
+                console.debug('Found thought: ', node);
                 return node;
             } else if (currentDepth < depthLimit && nodesCount < nodesLimit) {
                     var foundNode;
@@ -142,10 +143,15 @@ define([
     function addChildrenToTree(options) {
         var parentThought = findThoughtById(options.parentId);
         var newChildren;
+        newChildren = options.children.map((child) => {
+            child.parent = parentThought;
+            return child;
+        });
+        
         if (parentThought.children) {
-            parentThought.children = parentThought.children.concat(options.children);
+            parentThought.children = parentThought.children.concat(newChildren);
         } else {
-            parentThought.children = options.children;
+            parentThought.children = newChildren;
         }
 
         return parentThought.children;
@@ -161,6 +167,13 @@ define([
 
     function setRoot(root) {
         thoughtsTree.root = root;
+    }
+
+    function deleteNode(note) {
+        var noteInTree = findThoughtById(note.id);
+        console.log('noteInTree: ', noteInTree);
+        var noteIndexInChildren = noteInTree.parent.children.indexOf(noteInTree);
+        noteInTree.parent.children.splice(noteIndexInChildren, 1);
     }
 
 });

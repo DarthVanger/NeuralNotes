@@ -33,6 +33,7 @@ define([
         getThoughtContent: thoughtStorageApi.getThoughtContent,
         create: create,
         update: thoughtStorageApi.update,
+        remove: remove,
         updateThoughtName: updateThoughtName
     };
 
@@ -95,6 +96,11 @@ define([
         });
     }
 
-
+    function remove(note) {
+        return thoughtStorageApi.remove(note).then(function(result) {
+            thoughtStorageTree.deleteNode(note);
+            return result;
+        });
+    }
 
 });

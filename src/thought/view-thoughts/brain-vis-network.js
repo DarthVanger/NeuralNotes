@@ -147,5 +147,9 @@ define([], function() {
         });
     };
 
+    BrainVisNetwork.prototype.deleteSelectedNode = function() {
+        this.visNetwork.deleteSelected();
+    };
+
     return BrainVisNetwork;
 });

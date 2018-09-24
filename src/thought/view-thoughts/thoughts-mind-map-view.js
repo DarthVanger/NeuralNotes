@@ -5,7 +5,8 @@ define([
     'ui/spinner/site-global-loading-bar',
     'underscore',
     'ui/ui-error-notification',
-    'ui/thought-name-editor'
+    'ui/thought-name-editor',
+    'ui/thought-content-editor'
 ], function(
     BrainVisNetwork,
     VisNetworkHelper,
@@ -13,7 +14,8 @@ define([
     siteGlobalLoadingBar,
     _,
     uiErrorNotification,
-    thoughtNameEditor
+    thoughtNameEditor,
+    thoughtContentEditor
 ) {
     var brainVisNetwork;
     var visNetworkHelper;
@@ -24,10 +26,7 @@ define([
 
     var spinner = siteGlobalLoadingBar.create('mind map');
 
-    var thoughtContentController;
-
     return {
-        set: set,
         render: render
     };
 
@@ -36,45 +35,35 @@ define([
      * @param {Array} options.thoughts - Array of thoughts to render.
      * @param {String} options.selectedThoughtId - Id of thought that should be in focus (center).
      */
-    function set(options) {
-        console.debug('thoughtsMindMapView.set(), options: ', options);
+    function setOptions(options) {
+        console.debug('thoughtsMindMapView.setOptions(), options: ', options);
         thoughts = options.thoughts;
         console.debug('options.selectedThoughtId: ', options.selectedThoughtId);
-        initialThought = options.selectedThought || thoughts.root;
+        initialThought = options.selectedThought;
         currentViewedThought = initialThought;
         currentViewedThoughtId = initialThought.id;
         console.debug('currentViewedThoughtId: ', currentViewedThoughtId);
     }
     
-    /**
-     * Create new vis network for thoughts.
-     * (Erases the old one).
-     */
-    function render() {
-        console.debug('thoughtsMindMapView.render()');
-        console.debug('thoughts: ', thoughts);
+    function render(options) {
+        setOptions(options);
 
-        console.debug('thoughtsMindMapView: initializing brainVisNetwork');
-        var visNetworkContainer = document.getElementById('thoughts-container');
-
+        var element = document.createElement('div');
+        element.id = 'thoughts-container';
         
         brainVisNetwork = new BrainVisNetwork({
-            containerDomElement: visNetworkContainer
+            containerDomElement: element
         });
-        console.debug('thoughtsMindMapView: brainVisNetwork instance: ', brainVisNetwork);
+
         brainVisNetwork.renderInitialThought(initialThought);
         changeThought(initialThought);
-        //var visNetwork = renderVisNetworkForOneThought(currentViewedThought);
         visNetworkHelper = new VisNetworkHelper(brainVisNetwork.visNetwork);
 
         brainVisNetwork.visNetwork.on('click', visNetworkClickHandler);
         brainVisNetwork.visNetwork.on('doubleClick', visNetworkDoubleClickHandler);
         brainVisNetwork.visNetwork.on('hold', visNetworkHoldHandler);
 
-        // init thought content controller
-        thoughtContentController = new ThoughtContentController();
-        thoughtContentController.loadThought(initialThought);
-
+        return element;
     }
 
     function visNetworkClickHandler(event) {
@@ -225,8 +214,6 @@ define([
         console.debug('thoughts-mind-map-view.thoughtClickHandler(): targetThought: ', targetThought);
 
         changeThought(targetThought);
-
-        thoughtContentController.loadThought(targetThought);
     }
 
     /**
@@ -247,6 +234,8 @@ define([
                 .then(renderChildren);
         }
 
+        thoughtContentEditor.loadThought(targetThought);
+
         if (targetThought.parent) {
             if (!_.isEmpty(targetThought.parent.name)) {
                 console.info('thoughts-mind-map-view.changeThought(): thought has a parent in cache, going to render it');
@@ -258,6 +247,7 @@ define([
                         targetThought.parent = thought;
                         console.info('[Loaded] parent "' + thought.name + '"' + ' for thought "' + targetThought.name + '"');
                         renderParent();
+
                     });
             }
         }
@@ -293,93 +283,5 @@ define([
        }
     }
 
-
-    /**
-     * Controller for the panel showing thought contents
-     */
-    function ThoughtContentController() {
-        var selectedThoughtContentContainer = document.querySelector('.selected-thought-content');
-
-        var textarea = selectedThoughtContentContainer.querySelector('textarea');
-        var linkToGoogleDrive = document.createElement('a');
-
-        linkToGoogleDrive.className = 'btn btn-primary btn-lg';
-        linkToGoogleDrive.innerText = 'Open in Google Drive';
-        linkToGoogleDrive.target = '_blank';
-        selectedThoughtContentContainer.append(linkToGoogleDrive);
-
-        initRealtimeSaving();
-
-        this.loadThought = function(thought) {
-            if (thought.isNote) {
-                hideLinkToGoogleDrive();
-                showTextArea();
-                setThoughtContent('loading thought contents...');
-                
-                console.debug('ThoughtContentController.loadThought(), passed thought: ', thought);
-
-                thoughtStorage.getThoughtContent(thought)
-                    .then(function(thoughtContent) {
-                       console.debug('ThoughtContentController.loadThought(), loaded thought content: ', thoughtContent);
-                       setThoughtContent(thoughtContent);
-                    });
-            } else {
-               hideTextArea();
-               showLinkToGoogleDrive(thought.parent);
-            }
-
-        }
-
-        function hideTextArea() {
-            textarea.style.display = 'none';
-        }
-
-        function showTextArea() {
-            textarea.style.display = 'block';
-        }
-
-        function setThoughtContent(text){
-            textarea.value = text;
-        }
-
-        function showLinkToGoogleDrive(thought) {
-            linkToGoogleDrive.href = thoughtStorage.getLinkToThought(thought);
-            linkToGoogleDrive.style.display = 'block';
-        }
-
-        function hideLinkToGoogleDrive() {
-            linkToGoogleDrive.style.display = 'none';
-        }
-
-
-        function initRealtimeSaving() {
-            var REAL_TIME_SAVING_INTERVAL_MS = 1000;
-            console.debug('ThoughtContentController.initRealtimeSaving()');
-            var debouncedUpdate = _.debounce(updateThoughtContent, REAL_TIME_SAVING_INTERVAL_MS);
-
-            textarea.addEventListener('input', function(event) {
-                debouncedUpdate(event);
-            });
-        }
-
-        function updateThoughtContent() {
-            console.debug('ThoughtContentController.updateThoughtContent()');
-            var savingThoughtContentSpinner = spinner.create('saving thought');
-            savingThoughtContentSpinner.show();
-
-            currentViewedThought.content = textarea.value;
-
-            console.debug('RealtimeSaving: Save thought content: currentViewedThought: ', currentViewedThought);
-
-            return thoughtStorage.update(currentViewedThought)
-                .catch(function(error) {
-                    uiErrorNotification.show('Failed to save thought content');
-                    console.error(error);
-                })
-                .finally(function() {
-                    savingThoughtContentSpinner.hide();
-                });
-        }
-    }
 
 });

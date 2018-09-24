@@ -18,6 +18,7 @@ define([
          * App root folder on Google Drive
          */
         appRootFolder: undefined,
+        APP_FOLDER_NAME: APP_FOLDER_NAME,
 
         scanDrive: scanDrive,
         fetchParentThought: fetchParentThought,

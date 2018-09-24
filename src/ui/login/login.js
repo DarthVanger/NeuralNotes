@@ -14,17 +14,16 @@ define([
     cloudApiLoader,
     googleLogin
 ) {
+    let element;
+
     var spinner = siteGlobalLoadingBar.create('login');
 
-
     return {
-        init: init,
-        onRender: onRender
+        render: render
     };
 
-    function init() {
-        console.debug('login.init()');
-
+    function render() {
+        element = document.querySelector('#authorize-button');
         //if (authService.authResult) {
         //    router.go('view-thoughts');
         //}
@@ -36,11 +35,13 @@ define([
             //router.go('view-thoughts');
         }
 
+        onRender();
+        return  element;
     }
 
     function onRender() {
         console.debug('login.onRender(): adding click listener to authorizeButton');
-        $('#authorize-button').on('click', handleAuthClick);
+        element.addEventListener('click', handleAuthClick);
     }
 
 

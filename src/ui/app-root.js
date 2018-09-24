@@ -1,39 +1,40 @@
 define([
-    'text!thought/view-thoughts/view-thoughts.html',
     'thought/view-thoughts/thoughts-mind-map-view',
     'storage/thought-storage',
-    'ui/controls-help'
+    'ui/controls-help',
+    'ui/login/login',
+    'ui/thought-content-editor'
 ], function(
-    template,
     thoughtsMindMapView,
     thoughtStorage,
-    controlsHelp
+    controlsHelp,
+    loginScreen,
+    thoughtContentEditor
 ) {
-    const $element = $('.site-content');
+    let element;
 
     return {
         render: render
     };
 
     function render() {
-        mount();
-    }
+        element =  document.getElementById('app-root');
+        element.style.position = 'relative';
+        element.style.height = '100%';
 
-    function mount() {
-        $element.empty();
-        $element.append(template);
-        onRender();
-    }
-
-    function onRender() {
         var selectedThoughtId = thoughtStorage.getRoot().id;
         selectedThought = thoughtStorage.findThoughtById(selectedThoughtId);
-        thoughtsMindMapView.set({
+        controlsHelp.render();
+
+        element.append(thoughtContentEditor.render());
+
+        //element.append(loginScreen.render());
+        element.append(thoughtsMindMapView.render({
             thoughts: thoughtStorage.getThoughts(),
             selectedThought: selectedThought,
             selectedThoughtId: selectedThoughtId
-        });
-        thoughtsMindMapView.render();
-        controlsHelp.render();
+        }));
+
+        return element;
     }
 });

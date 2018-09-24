@@ -22,7 +22,7 @@ define([
         element.className = 'selected-thought-content';
         textarea = document.createElement('textarea');
         textarea.className = 'thought-content__textarea';
-        textarea.plaseholder = 'asdf';
+        textarea.placeholder = 'Your note...';
         linkToGoogleDrive = document.createElement('a');
 
         linkToGoogleDrive.className = 'btn btn-primary btn-lg';

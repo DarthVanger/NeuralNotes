@@ -96,6 +96,16 @@ define([
     function editThought(targetThoughtId) {
         thought = thoughtStorage.findThoughtById(targetThoughtId);
 
+        if (thought.name === thoughtStorage.APP_FOLDER_NAME) {
+            console.info('It is not allowed to edit App root folder name');
+            return;
+        }
+
+        if (!thought.isNote) {
+            console.info('It is not allowed to edit user-uploaded files');
+            return;
+        }
+
         currentViewedThought = thought;
         brainVisNetwork.selectNote(targetThoughtId);
 

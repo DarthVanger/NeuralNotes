@@ -28,6 +28,7 @@ define([
         addChildrenToTree: thoughtStorageTree.addChildrenToTree,
 
         // api:
+        APP_FOLDER_NAME: thoughtStorageApi.APP_FOLDER_NAME,
         fetchParentThought: fetchParentThought,
         fetchChildThoughts: fetchChildThoughts,
         getThoughtContent: thoughtStorageApi.getThoughtContent,

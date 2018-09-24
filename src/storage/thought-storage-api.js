@@ -120,11 +120,7 @@ define([
                         return;
                     }
 
-                    if (file.mimeType === 'application/vnd.google-apps.folder') {
-                        file.isNote = true;
-                    } else {
-                        file.isNote = false;
-                    }
+                    file.isNote = isNote(file);
                     children.push(file);
                 });
                 console.debug('[Loaded] thoughts for "' + thought.id + '"');
@@ -134,6 +130,14 @@ define([
                 spinner.hide();
             });
         });
+    }
+
+    /**
+     * Whether a file is a note createad by app,
+     * or a user uploaded file (e.g. a "jpeg" image).
+     */
+    function isNote(file) {
+        return file.mimeType === 'application/vnd.google-apps.folder';
     }
 
     /**

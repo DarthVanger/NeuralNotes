@@ -157,7 +157,8 @@ define([
     function createEmptyChild(parentId) {
         var thought = {
             name: 'new',
-            content: '' 
+            content: '',
+            isNote: true
         };
 
         var parent = thoughtStorage.findThoughtById(parentId);

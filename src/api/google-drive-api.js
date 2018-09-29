@@ -1,8 +1,6 @@
 define([
-    'auth-service',
     'ui/spinner/site-global-loading-bar'
 ], function(
-    authService,
     siteGlobalLoadingBar
 ) {
 

@@ -1,9 +1,7 @@
 define([
-    'storage/thought-storage',
-    'auth-service'
+    'storage/thought-storage'
 ], function(
-    thoughtStorage,
-    authService
+    thoughtStorage
 ) {
     var controller = {
         init: init,

@@ -17,7 +17,6 @@ define([
     'storage/thought-storage',
     'ui/spinner/site-global-loading-bar',
     'api/cloud-api-loader',
-    'auth-service',
     'ui/app-root',
 
     // non-amd libs:
@@ -28,7 +27,6 @@ define([
     thoughtStorage,
     siteGlobalLoadingBar,
     cloudApiLoader,
-    authService,
     appRootComponent,
     _underscore_undefined_,
     _promise_patch_undefined

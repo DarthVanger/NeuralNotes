@@ -1,14 +1,12 @@
 console.debug('login.js');
 define([
     'storage/thought-storage',
-    'auth-service',
     'api/google-drive-api',
     'ui/spinner/site-global-loading-bar',
     'api/cloud-api-loader',
     'api/google-login'
 ], function(
     thoughtStorage,
-    authService,
     googleDriveApi,
     siteGlobalLoadingBar,
     cloudApiLoader,
@@ -24,16 +22,6 @@ define([
 
     function render() {
         element = document.querySelector('#authorize-button');
-        //if (authService.authResult) {
-        //    router.go('view-thoughts');
-        //}
-        //
-        
-        if (authService.authResult) {
-            console.info('login.init(): user is already authorized');
-            console.error('login.init(): redirecting to the main page is not implemented');
-            //router.go('view-thoughts');
-        }
 
         onRender();
         return  element;

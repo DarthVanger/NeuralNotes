@@ -102,7 +102,9 @@ define([
         var promise = new Promise(function(resolve, reject) {
               request.execute(function(resp) {
                 console.debug('googleDriveApi.findByname(): Files found by query "' + query + '": ', resp);
-
+                if (resp.error) {
+                    throw new Error('FIle named "' + options.name + '" not found');
+                }
                 //TODO: same code is duplicated in thought-storage.js - Refactor!
                 resp.files.forEach(parseParents);
                 

@@ -51,7 +51,7 @@ define([
         var checkGapiSpinner = spinner.create('checking google login');
         return new Promise(function(resolve, reject) {
             require(
-              ['https://apis.google.com/js/client.js?onload=doNothing"'],
+              ['https://apis.google.com/js/api.js'],
               // checkGAPI makes polling: calls itself until gapi is ready,
               // and then calls init().
               checkGAPI
@@ -61,8 +61,8 @@ define([
             function checkGAPI() {
                 console.debug('cloudApiLoader.checkGAPI()');
                 checkGapiSpinner.show();
-                if (gapi && gapi.client) {
-                    console.debug('cloudApiLoader.loadGoogleClient.checkGAPI(): gapi loaded! gapi.client: ', gapi.client);
+                if (gapi) {
+                    console.debug('cloudApiLoader.loadGoogleClient.checkGAPI(): gapi loaded! gapi: ', gapi);
                     console.debug('checkGapiSpinner.hide()');
                     checkGapiSpinner.hide();
                     resolve();

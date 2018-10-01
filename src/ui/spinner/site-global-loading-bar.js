@@ -32,7 +32,7 @@ define([ ], function() {
          * than the specified time.
          * (to not annoy user with messages on every quick action)
          */
-        var showDelay = 1000;
+        var showDelay = 2000;
 
         var isShown = false;
         var timeoutId;

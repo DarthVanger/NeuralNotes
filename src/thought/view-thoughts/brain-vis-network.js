@@ -79,8 +79,7 @@ define([], function() {
          */
         var options = {
           interaction: {
-            //navigationButtons: true,
-            keyboard: true
+            keyboard: false
           },
           edges: {
             arrows: {to : true },

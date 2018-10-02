@@ -1,6 +1,0 @@
-* Refactor thought-storage - move fetch methods to separate file
-* Fetch currently viewed thought - not always brain as root node.
-* Store thoughts in localStorage. Don't make request to google login before displaying cached thoughts.
-* Hide thoughts that are far from currently viewed (mb 2-3 nodes away).
-  No! Need to hide neighboor thoughts (sibling) because there are no space on circle to display new child thoughts!
-* Add indicator that thought has no children (and that thought might have children (not fetched yet)).

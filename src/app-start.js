@@ -32,8 +32,10 @@ define([
     _promise_patch_undefined
 ) {
 
-    $(document).ready(function() {
-        console.info('Loading...');
+    run();
+
+    function run() {
+        console.info('Loading app...');
 
         var apiLoadSpinner = siteGlobalLoadingBar.create('cloud-api');
         var cloudDriveSpinner = siteGlobalLoadingBar.create('cloud-drive');
@@ -54,6 +56,5 @@ define([
             .then(function() {
                 appRootComponent.render();
             });
-    });
-
+    }
 });

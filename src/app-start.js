@@ -37,21 +37,21 @@ define([
     function run() {
         console.info('Loading app...');
 
-        var apiLoadSpinner = siteGlobalLoadingBar.create('cloud-api');
-        var cloudDriveSpinner = siteGlobalLoadingBar.create('cloud-drive');
+        var spinner = siteGlobalLoadingBar.create();
 
-        apiLoadSpinner.show();
+        spinner.show('Loading Google Api');
+
         cloudApiLoader
             .load()
             .finally(function() {
-                apiLoadSpinner.hide();
+                spinner.hide();
             })
             .then(function() {
-                cloudDriveSpinner.show();
+                spinner.show('Scanning Google Drive');
                 return thoughtStorage.scanDrive();
             })
             .finally(function() {
-                cloudDriveSpinner.hide();
+                spinner.hide();
             })
             .then(function() {
                 appRootComponent.render();

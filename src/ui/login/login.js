@@ -3,14 +3,18 @@ define([
     'storage/thought-storage',
     'api/google-drive-api',
     'ui/spinner/site-global-loading-bar',
-    'api/cloud-api-loader',
-    'api/google-login'
+    'api/google-login',
+    'text!./login.html',
+    'api/google-api-loader',
+    'router'
 ], function(
     thoughtStorage,
     googleDriveApi,
     siteGlobalLoadingBar,
-    cloudApiLoader,
-    googleLogin
+    googleLogin,
+    loginPageHTML,
+    googleApiLoader,
+    router
 ) {
     let element;
 
@@ -21,14 +25,14 @@ define([
     };
 
     function render() {
-        element = document.querySelector('#authorize-button');
+        element = document.createElement('div');
+        element.innerHTML = loginPageHTML;
 
         onRender();
-        return  element;
+        return element;
     }
 
     function onRender() {
-        console.debug('login.onRender(): adding click listener to authorizeButton');
         element.addEventListener('click', handleAuthClick);
     }
 
@@ -43,7 +47,11 @@ define([
 
           var spinnerName = 'loading google drive login';
           siteGlobalLoadingBar.show(spinnerName);
-          googleLogin.gapiAuthorize()
+          googleApiLoader
+              .load()
+              .then(function() {
+                  return googleLogin.gapiAuthorize()
+              })
               .then(function(authResult) {
                   console.debug('login.js: auth success! calling thoughtStorage.scanDrive()');
                   siteGlobalLoadingBar.hide(spinnerName);
@@ -51,10 +59,10 @@ define([
               })
               .then(thoughtStorage.scanDrive)
               .then(function() {
-                  console.info('login: drive scanned');
-                  console.error('login.init(): redirecting to the main page is not implemented');
-                  //router.go('view-thoughts');
+                  console.info('login: drive scanned, redirecting to the app main page');
+                  router.go('notes');
               });
+
           return false;
       }
 

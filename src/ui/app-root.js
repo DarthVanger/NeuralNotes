@@ -8,7 +8,7 @@ define([
     thoughtsMindMapView,
     thoughtStorage,
     controlsHelp,
-    loginScreen,
+    loginPage,
     thoughtContentEditor
 ) {
     let element;
@@ -17,24 +17,38 @@ define([
         render: render
     };
 
-    function render() {
+    function render(props) {
         element =  document.getElementById('app-root');
         element.style.position = 'relative';
         element.style.height = '100%';
 
-        var selectedThoughtId = thoughtStorage.getRoot().id;
-        selectedThought = thoughtStorage.findThoughtById(selectedThoughtId);
-        controlsHelp.render();
+        switch(props.page) {
+            case 'login':
+                renderLoginPage();
+                break;
+            case 'notes':
+                renderNotesPage();
+                break;
+            default:
+                throw new Error('unknown page: ', page);
+        }
 
-        element.append(thoughtContentEditor.render());
+        function renderLoginPage() {
+            element.append(loginPage.render());
+        }
 
-        //element.append(loginScreen.render());
-        element.append(thoughtsMindMapView.render({
-            thoughts: thoughtStorage.getThoughts(),
-            selectedThought: selectedThought,
-            selectedThoughtId: selectedThoughtId
-        }));
+        function renderNotesPage() {
+            var selectedThoughtId = thoughtStorage.getRoot().id;
+            selectedThought = thoughtStorage.findThoughtById(selectedThoughtId);
+            controlsHelp.render();
 
-        return element;
+            element.append(thoughtContentEditor.render());
+
+            element.append(thoughtsMindMapView.render({
+                thoughts: thoughtStorage.getThoughts(),
+                selectedThought: selectedThought,
+                selectedThoughtId: selectedThoughtId
+            }));
+        }
     }
 });

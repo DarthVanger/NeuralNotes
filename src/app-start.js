@@ -16,8 +16,10 @@ require.config({
 define([
     'storage/thought-storage',
     'ui/spinner/site-global-loading-bar',
-    'api/cloud-api-loader',
+    'api/google-api-loader',
     'ui/app-root',
+    'api/google-login',
+    'auth',
 
     // non-amd libs:
     'underscore',
@@ -26,35 +28,44 @@ define([
 ], function(
     thoughtStorage,
     siteGlobalLoadingBar,
-    cloudApiLoader,
+    googleApiLoader,
     appRootComponent,
+    googleLogin,
+    auth,
     _underscore_undefined_,
     _promise_patch_undefined
 ) {
+    var spinner = siteGlobalLoadingBar.create();
 
     run();
 
     function run() {
         console.info('Loading app...');
 
-        var spinner = siteGlobalLoadingBar.create();
+        if (auth.signedIn()) {
+            loadApp();
+        } else {
+            appRootComponent.render({
+                page: 'login'
+            });
+        }
+    }
 
+    function loadApp() {
         spinner.show('Loading Google Api');
 
-        cloudApiLoader
+        googleApiLoader
             .load()
-            .finally(function() {
-                spinner.hide();
+            .then(function() {
+                return thoughtStorage.scanDrive()
             })
             .then(function() {
-                spinner.show('Scanning Google Drive');
-                return thoughtStorage.scanDrive();
+                appRootComponent.render({
+                    page: 'notes'
+                });
             })
             .finally(function() {
                 spinner.hide();
-            })
-            .then(function() {
-                appRootComponent.render();
             });
     }
 });

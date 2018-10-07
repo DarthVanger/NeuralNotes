@@ -4,13 +4,17 @@ define([
     return {
         haveToken: haveToken,
         saveToken: saveToken,
-        getToken: getToken
+        getToken: getToken,
+        signedIn: signedIn
     };
+
+    function signedIn() {
+        return haveToken();
+    }
 
     function haveToken() {
         var token = window.localStorage.getItem('gapiAccessToken');
         var expDate = window.localStorage.getItem('gapiAccessTokenExpirationDate');
-        console.log('token: ', token);
         if (token && expDate) {
             return new Date(expDate) > new Date();
         } else {

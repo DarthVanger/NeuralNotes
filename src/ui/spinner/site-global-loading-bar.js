@@ -5,7 +5,7 @@ define([ ], function() {
     var loadersContainer =  document.getElementById('site-global-loading-bar-messages-container');
     var loadingBar = document.getElementById('site-global-loading-bar');
 
-    loadingBar.style.display = 'none';
+    hideLoadingBar();
 
     var loadingMessageElement = document.createElement('div');
     loadingMessageElement.className = 'site-global-loading-bar__message';

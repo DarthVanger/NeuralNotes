@@ -72,7 +72,7 @@ define([ ], function() {
     }
 
     function hideLoadingBar(name) {
-        loadingBar.display = 'none';
+        loadingBar.style.display = 'none';
         backgroundSpinner.classList.remove('show');
     }
 

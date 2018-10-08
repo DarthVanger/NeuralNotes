@@ -232,7 +232,7 @@ define([
      * and redraw the network for new thoughts.
      */
     function changeThought(targetThought) {
-        console.info('[Event] Change thought [Event]');
+        console.info('[Event] Change thought to ' + targetThought.name);
         console.debug('thoughts-mind-map-view.changeThought()');
 
         console.debug('thoughts-mind-map-view.changeThought(): targetThought.children: ', targetThought.children);

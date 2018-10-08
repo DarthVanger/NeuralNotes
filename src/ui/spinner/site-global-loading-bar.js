@@ -1,13 +1,14 @@
 define([ ], function() {
     var loading = [];
 
-    var $backgroundSpinner = $('#background-spinner');
-    var $loadersContainer =  $('#site-global-loading-bar-messages-container');
-    var $loadingBar = $('#site-global-loading-bar');
+    var backgroundSpinner = document.getElementById('background-spinner');
+    var loadersContainer =  document.getElementById('site-global-loading-bar-messages-container');
+    var loadingBar = document.getElementById('site-global-loading-bar');
 
-    $loadingBar.hide();
+    loadingBar.style.display = 'none';
 
-    var $loadingMessageElement = $('<div class="site-global-loading-bar__message"></div>');
+    var loadingMessageElement = document.createElement('div');
+    loadingMessageElement.className = 'site-global-loading-bar__message';
 
     var loaderInstances = [];
 
@@ -23,9 +24,9 @@ define([ ], function() {
     return loadingBarService;
 
     function create(name) {
-        var $msgEl = $loadingMessageElement.clone();
-        $msgEl.append($('<div>Loading: ' + name + '</div>'));
-        $msgEl.addClass('hidden-message');
+        var msgEl = loadingMessageElement.cloneNode(true);
+        msgEl.innerText = 'Loading: ' + name;
+        msgEl.classList.add('hidden-message');
 
         /**
          * Show loading message, only if spinner takes more
@@ -45,19 +46,19 @@ define([ ], function() {
                 showLoadingBar();
                 timeoutId = setTimeout(function() {
                     if (!isShown) {
-                        $loadersContainer.append($msgEl);
+                        loadersContainer.append(msgEl);
                     }
-                    $msgEl.removeClass('hidden-message');
+                    msgEl.classList.remove('hidden-message');
                     isShown = true;
                 }, showDelay);
             },
             hide: function() {
                 window.clearTimeout(timeoutId);
-                $msgEl.addClass('hidden-message');
+                msgEl.classList.add('hidden-message');
                 hideLoadingBar(name);
                 var REMOVE_ANIMATION_DURATION = 2000;
                 setTimeout(function() {
-                    $msgEl.remove();
+                    msgEl.remove();
                 }, REMOVE_ANIMATION_DURATION);
             }
         }
@@ -66,13 +67,13 @@ define([ ], function() {
     }
 
     function showLoadingBar() {
-        $loadingBar.show();
-        $backgroundSpinner.addClass('show');
+        loadingBar.style.display = 'block';
+        backgroundSpinner.classList.add('show');
     }
 
     function hideLoadingBar(name) {
-        $loadingBar.hide();
-        $backgroundSpinner.removeClass('show');
+        loadingBar.display = 'none';
+        backgroundSpinner.classList.remove('show');
     }
 
 });

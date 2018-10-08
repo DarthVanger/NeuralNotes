@@ -55,7 +55,7 @@ define([
                 });
         } else {
            hideTextArea();
-           showLinkToGoogleDrive(thought.parent);
+           showLinkToGoogleDrive(thought);
         }
 
     }

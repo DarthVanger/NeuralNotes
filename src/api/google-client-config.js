@@ -8,7 +8,8 @@ define([
 
     var scopes = [
         // Per-file access to files created or opened by the app
-        'https://www.googleapis.com/auth/drive.file'
+        'https://www.googleapis.com/auth/drive.file',
+        'https://www.googleapis.com/auth/drive.metadata.readonly'
     ];
 
     var discoveryDocs = ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"];

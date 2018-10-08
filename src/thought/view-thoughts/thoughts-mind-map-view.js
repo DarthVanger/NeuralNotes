@@ -281,7 +281,6 @@ define([
         }
 
        function renderChildren(children) {
-           $('[data-text="currentViewedThought"]').html(currentViewedThought.name);
            console.debug('thoughts-mind-map-view: adding child thoughts to brainVisNetwork');
            brainVisNetwork.addChildThoughts({
                children: children,

@@ -34,12 +34,12 @@ define([
      * Load Drive API client library.
      */
     function loadDriveApi() {
-        console.debug('googleDriveApi.loadDriveApi()');
+        console.info('Loading Google Drive API...');
         var promise = new Promise(function(resolve, reject) {
               //gapi.client.load('drive', 'v3', function() {
               gapi.client.load('drive', 'v3').then(function() {
                   self.client = gapi.client.drive;
-                  console.debug('loadDriveApi(): load API success');
+                  console.info('[Loaded] Google Drive API');
                   console.debug('loadDriveApi(): googleDriveApi.client.files: ', self.client.files);
                   resolve();
               }, function onError(error) {
@@ -101,7 +101,7 @@ define([
               request.execute(function(resp) {
                 console.debug('googleDriveApi.findByname(): Files found by query "' + query + '": ', resp);
                 if (resp.error) {
-                    throw new Error('FIle named "' + options.name + '" not found');
+                    throw new Error('File named "' + options.name + '" not found');
                 }
                 //TODO: same code is duplicated in thought-storage.js - Refactor!
                 resp.files.forEach(parseParents);

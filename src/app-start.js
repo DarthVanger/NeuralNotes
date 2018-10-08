@@ -20,6 +20,7 @@ define([
     'ui/app-root',
     'api/google-login',
     'auth',
+    'api/google-drive-api',
 
     // non-amd libs:
     'underscore',
@@ -32,6 +33,7 @@ define([
     appRootComponent,
     googleLogin,
     auth,
+    googleDriveApi,
     _underscore_undefined_,
     _promise_patch_undefined
 ) {
@@ -40,9 +42,8 @@ define([
     run();
 
     function run() {
-        console.info('Loading app...');
-
         if (auth.signedIn()) {
+            console.info('User is signed in');
             loadApp();
         } else {
             appRootComponent.render({
@@ -52,10 +53,12 @@ define([
     }
 
     function loadApp() {
+        console.info('Loading app...');
         spinner.show('Loading Google Api');
 
         googleApiLoader
             .load()
+            .then(googleDriveApi.loadDriveApi)
             .then(function() {
                 return thoughtStorage.scanDrive()
             })

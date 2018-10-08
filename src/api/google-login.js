@@ -4,27 +4,18 @@ define([
     'api/google-drive-api',
     'ui/spinner/site-global-loading-bar',
     'ui/ui-error-notification',
-    'auth'
+    'auth',
+    'api/google-client-config'
 ], function(
     thoughtStorage,
     googleDriveApi,
     siteGlobalLoadingBar,
     uiErrorNotification,
-    auth
+    auth,
+    googleClientConfig
 ) {
-    // Developer Console, https://console.developers.google.com
-    var clientId = '586695064067-2k8v88rq1litcqj8v0ofnstj6t6qfhpa.apps.googleusercontent.com';
-
-    var apiKey = 'AIzaSyAPXuniw1OFvl6OgeIuZp3NSbqfrjnw8qA';
-
-    var scopes = [
-        // Per-file access to files created or opened by the app
-        'https://www.googleapis.com/auth/drive.file'
-    ];
-
-    var discoveryDocs = ["https://www.googleapis.com/discovery/v1/apis/drive/v3/rest"];
-
-    var checkAuthPromiseResolve;
+    var clientId = googleClientConfig.clientId;
+    var scopes = googleClientConfig.scopes;
 
     var service = {
         checkAuth: checkAuth,
@@ -37,52 +28,21 @@ define([
      * Check if current user has authorized this application.
      */
     function checkAuth() {
-      console.debug('googleLogin.checkAuth()');
-      console.log('googleLogin.checkAuth() (calling gapiAuthorize())');
-      //return gapiAuthorize().then(handleAuthResult);
-      return new Promise(function(resolve, reject) {
-          gapi.load('client:auth2', initClient);
-          checkGapiClient();
-          
-          function initClient() {
-              console.info('initClient()');
-              gapi.client.init({
-                  apiKey: apiKey,
-                  discoveryDocs: discoveryDocs,
-                  clientId: clientId,
-                  scope: scopes
-              });
-          }
+        console.debug('googleLogin.checkAuth()');
+        console.log('googleLogin.checkAuth() (calling gapiAuthorize())');
+        return new Promise(function(resolve, reject) {
+            if (!auth.haveToken()) {
+                console.info('User token expired, authorize again');
+                gapiAuthorize().then(resolve);
+            } else {
+                console.info('User token is still valid');
+                gapi.client.setToken({
+                  access_token: auth.getToken()
+                });
 
-          checkAuthPromiseResolve = resolve;
-      });
-    }
-
-    function onGapiClientInit() {
-        console.info('Gapi client initialized');
-        if (!auth.haveToken()) {
-            console.info('User token expired, authorize again');
-            gapiAuthorize().then(checkAuthPromiseResolve);
-        } else {
-            console.info('User token is still valid');
-            gapi.client.setToken({
-              access_token: auth.getToken()
-            });
-
-            checkAuthPromiseResolve();
-        }
-    }
-
-    function checkGapiClient() {
-        console.debug('cloudApiLoader.checkGapiClient()');
-        if (gapi.client) {
-            console.debug('gapi.client loaded!', gapi.client);
-            console.debug('checkGapiSpinner.hide()');
-            onGapiClientInit();
-            
-        } else {
-            setTimeout(checkGapiClient, 100);
-        }
+                resolve();
+            }
+        });
     }
 
     function updateSigninStatus(isSignedIn) {
@@ -101,7 +61,6 @@ define([
             gapi.auth.authorize({
                 client_id: clientId,
                 scope: scopes.join(' '),
-                //scope: scopes,
                 immediate: false
             }, function(authResult) {
                 console.debug('googleLogin.gapiAuthorize(): authResult: ', authResult);

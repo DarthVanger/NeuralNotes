@@ -33,7 +33,7 @@ define([
     }
 
     function onRender() {
-        element.addEventListener('click', handleAuthClick);
+        element.querySelector('#authorize-button').addEventListener('click', handleAuthClick);
     }
 
 

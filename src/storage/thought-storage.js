@@ -106,7 +106,7 @@ define([
     }
 
     function getLinkToThought(thought) {
-        return 'https://drive.google.com/drive/folders/' + thought.id;
+        return 'https://drive.google.com/open?id=' + thought.id;
     }
 
 });

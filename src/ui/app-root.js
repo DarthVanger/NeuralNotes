@@ -34,7 +34,12 @@ define([
         }
 
         function renderLoginPage() {
-            element.append(loginPage.render());
+            element.append(loginPage.render({
+                redirectToNotesPage: function() {
+                    loginPage.unmount();
+                    renderNotesPage();
+                }
+            }));
         }
 
         function renderNotesPage() {

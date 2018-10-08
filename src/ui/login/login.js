@@ -6,7 +6,7 @@ define([
     'api/google-login',
     'text!./login.html',
     'api/google-api-loader',
-    'router'
+    'api/google-drive-api'
 ], function(
     thoughtStorage,
     googleDriveApi,
@@ -14,17 +14,22 @@ define([
     googleLogin,
     loginPageHTML,
     googleApiLoader,
-    router
+    googleDriveApi
 ) {
     let element;
 
     var spinner = siteGlobalLoadingBar.create('login');
 
+    var redirectToNotesPage;
+
     return {
-        render: render
+        render: render,
+        unmount: unmount
     };
 
-    function render() {
+    function render(props) {
+        redirectToNotesPage = props.redirectToNotesPage;
+
         element = document.createElement('div');
         element.innerHTML = loginPageHTML;
 
@@ -41,31 +46,36 @@ define([
         });
     }
 
+    function unmount() {
+        element.remove();
+    }
+
 
       /**
        * Initiate auth flow in response to user clicking authorize button.
        *
        * @param {Event} event Button click event.
        */
-      function handleAuthClick(event) {
-          console.debug('login.handleAuthClick()');
-          var spinnerName = 'Loading google auth';
-          siteGlobalLoadingBar.show(spinnerName);
+    function handleAuthClick(event) {
+        console.debug('login.handleAuthClick()');
+        var spinnerName = 'Loading google auth';
+        siteGlobalLoadingBar.show(spinnerName);
 
-          googleLogin.gapiAuthorize()
-              .then(function(authResult) {
-                  console.debug('login.js: auth success! calling thoughtStorage.scanDrive()');
-                  siteGlobalLoadingBar.hide(spinnerName);
-                  //return googleLogin.handleAuthResult(authResult);
-              })
-              .then(thoughtStorage.scanDrive)
-              .then(function() {
-                  console.info('login: drive scanned, redirecting to the app main page');
-                  router.go('notes');
-              });
+        googleLogin.gapiAuthorize()
+            .then(function(authResult) {
+                console.debug('login.js: auth success! calling thoughtStorage.scanDrive()');
+                siteGlobalLoadingBar.hide(spinnerName);
+                //return googleLogin.handleAuthResult(authResult);
+            })
+            .then(googleDriveApi.loadDriveApi)
+            .then(thoughtStorage.scanDrive)
+            .then(function() {
+                console.info('login: drive scanned, redirecting to the app main page');
+                redirectToNotesPage();
+            });
 
-          return false;
-      }
+        return false;
+    }
 
 
 });

@@ -33,7 +33,12 @@ define([
     }
 
     function onRender() {
-        element.querySelector('#authorize-button').addEventListener('click', handleAuthClick);
+        var authorizeButton = element.querySelector('#authorize-button');
+        authorizeButton.style.display = 'none';
+        googleApiLoader.load().then(function() {
+            authorizeButton.style.display = 'block';
+            authorizeButton.addEventListener('click', handleAuthClick);
+        });
     }
 
 
@@ -44,14 +49,10 @@ define([
        */
       function handleAuthClick(event) {
           console.debug('login.handleAuthClick()');
-
-          var spinnerName = 'loading google drive login';
+          var spinnerName = 'Loading google auth';
           siteGlobalLoadingBar.show(spinnerName);
-          googleApiLoader
-              .load()
-              .then(function() {
-                  return googleLogin.gapiAuthorize()
-              })
+
+          googleLogin.gapiAuthorize()
               .then(function(authResult) {
                   console.debug('login.js: auth success! calling thoughtStorage.scanDrive()');
                   siteGlobalLoadingBar.hide(spinnerName);

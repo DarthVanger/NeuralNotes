@@ -2,51 +2,39 @@ console.debug('cloid-api-loader.js');
 define([
     'api/google-drive-api',
     'ui/spinner/site-global-loading-bar',
-    'api/google-login'
+    'api/google-login',
+    'api/google-client-config',
+    'auth'
 ], function(
     googleDriveApi,
     siteGlobalLoadingBar,
-    googleLogin
+    googleLogin,
+    googleClientConfig,
+    auth
 ) {
-    var service = {
+    var clientId = googleClientConfig.clientId;
+    var apiKey = googleClientConfig.apiKey;
+    var scopes = googleClientConfig.scopes;
+    var discoveryDocs = googleClientConfig.discoveryDocs;
+
+    return {
         load: load
     };
 
-    return service;
-
     function load() {
-        console.debug('cloudApiLoader.load()');
-        return loadGoogleClient()
-            .then(googleLogin.checkAuth, checkAuthFail)
-            .then(googleDriveApi.loadDriveApi, loginFail) 
-            .then(driveApiLoadSuccess, driveApiLoadFail);
-
-        function driveApiLoadSuccess() {
-            console.info('Google Drive API load success');
-            console.debug('cloudApiLoader.driveApiLoadSuccess()');
-        }
-
-        function checkAuthFail() {
-            console.error('cloudApiLoader: googleLogin.checkAuth() failed!');
-        }
-
-        function driveApiLoadFail() {
-            console.error('cloudApiLoader: Google Drive Api load failed!');
-        }
-
-        function loginFail() {
-            console.warn('cloudApiLoader: auto-login failed, user needs to relogin');
-        }
+        return loadGoogleClient();
     }
 
 
     /**
-     * Load google client script. It can't be hosted
-     * on private server, so need to get it from google server.
+     * Load google api script. It can't be hosted
+     * on a private server, so need to get it from google server.
+     * Also init google client.
      *
      * @return {Promise}
      */
     function loadGoogleClient() {
+        console.info('Loading Google Client...');
         var spinner = siteGlobalLoadingBar.create('login');
         var checkGapiSpinner = spinner.create('checking google login');
         return new Promise(function(resolve, reject) {
@@ -62,13 +50,48 @@ define([
                 console.debug('cloudApiLoader.checkGAPI()');
                 checkGapiSpinner.show();
                 if (gapi) {
-                    console.debug('cloudApiLoader.loadGoogleClient.checkGAPI(): gapi loaded! gapi: ', gapi);
-                    console.debug('checkGapiSpinner.hide()');
+                    console.info('[Loaded] Google API');
                     checkGapiSpinner.hide();
-                    resolve();
+
+                    loadGoogleApiClient();
                 } else {
                     setTimeout(checkGAPI, 100);
                 }
+            }
+
+            function loadGoogleApiClient() {
+                gapi.load('client:auth2', initClient);
+                checkGapiClient();
+            }
+            
+            function initClient() {
+                console.debug('googleApiLoader.initClient()');
+                gapi.client.init({
+                    apiKey: apiKey,
+                    discoveryDocs: discoveryDocs,
+                    clientId: clientId,
+                    scope: scopes
+                });
+            }
+
+            function checkGapiClient() {
+                console.debug('cloudApiLoader.checkGapiClient()');
+                if (gapi.client) {
+                    console.info('[Loaded] gapi.client');
+                    onGapiClientInit();
+                } else {
+                    setTimeout(checkGapiClient, 100);
+                }
+            }
+
+            function onGapiClientInit() {
+                if (auth.signedIn()) {
+                    gapi.client.setToken({
+                      access_token: auth.getToken()
+                    });
+                }
+
+                resolve();
             }
         });
     }

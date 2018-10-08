@@ -26,3 +26,7 @@
     outline: none;
     box-shadow: none;
 }
+.vis-network:focus,
+.vis-network canvas:focus {
+  outline: none;
+}

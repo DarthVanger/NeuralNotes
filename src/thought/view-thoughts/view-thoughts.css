@@ -26,6 +26,9 @@
     outline: none;
     box-shadow: none;
 }
+.vis-network {
+  background-color: #222;
+}
 .vis-network:focus,
 .vis-network canvas:focus {
   outline: none;

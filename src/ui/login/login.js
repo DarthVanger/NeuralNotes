@@ -41,7 +41,7 @@ define([
         var authorizeButton = element.querySelector('#authorize-button');
         authorizeButton.style.display = 'none';
         googleApiLoader.load().then(function() {
-            authorizeButton.style.display = 'block';
+            authorizeButton.style.display = 'inline-block';
             authorizeButton.addEventListener('click', handleAuthClick);
         });
     }

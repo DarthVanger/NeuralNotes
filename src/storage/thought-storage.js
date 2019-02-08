@@ -1,7 +1,7 @@
 define([
     'api/google-drive-api',
     'ui/spinner/site-global-loading-bar',
-    'storage/thought-storage-api',
+    'storage/note-storage-api',
     'storage/thought-tree'
 ], function(
     googleDriveApi,
@@ -31,7 +31,7 @@ define([
         APP_FOLDER_NAME: thoughtStorageApi.APP_FOLDER_NAME,
         fetchParentThought: fetchParentThought,
         fetchChildThoughts: fetchChildThoughts,
-        getThoughtContent: thoughtStorageApi.getThoughtContent,
+        getThoughtContent: thoughtStorageApi.getNoteContent,
         create: create,
         update: thoughtStorageApi.update,
         remove: remove,
@@ -40,7 +40,7 @@ define([
     };
 
     function fetchChildThoughts(thought) {
-        return thoughtStorageApi.fetchChildThoughts(thought)
+        return thoughtStorageApi.fetchChildNotes(thought)
             .then(function(children) {
                 thoughtStorageTree.addChildrenToTree({
                     parentId: thought.id,
@@ -52,7 +52,7 @@ define([
     }
 
     function fetchParentThought(thoughtId) {
-        return thoughtStorageApi.fetchParentThought(thoughtId)
+        return thoughtStorageApi.fetchParentNote(thoughtId)
             .then(function(parentThought) {
                 var thought = thoughtStorageTree.findThoughtById(thoughtId);
                 if (thought) { // root folder has no parent
@@ -90,7 +90,7 @@ define([
         var newThought = thought;
         return Promise.all([
             thoughtStorageApi.updateFileName(newThought),
-            thoughtStorageApi.updateThoughtContentFileName(newThought, oldThought)
+            thoughtStorageApi.updateNoteContentFileName(newThought, oldThought)
         ])
         .then(function(responses) {
             oldThought.name = newThought.name;

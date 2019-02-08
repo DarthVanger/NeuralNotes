@@ -11,7 +11,7 @@ define([
 
     var APP_FOLDER_NAME = 'NeuralNotes';
 
-    var spinner = siteGlobalLoadingBar.create('thought-storage-api');
+    var spinner = siteGlobalLoadingBar.create('note-storage-api');
 
     var service = {
         /**
@@ -21,14 +21,14 @@ define([
         APP_FOLDER_NAME: APP_FOLDER_NAME,
 
         scanDrive: scanDrive,
-        fetchParentThought: fetchParentThought,
-        fetchChildThoughts: fetchChildThoughts,
-        getThoughtContent: getThoughtContent,
+        fetchParentNote: fetchParentNote,
+        fetchChildNotes: fetchChildNotes,
+        getNoteContent: getNoteContent,
         create: create,
         update: update,
         remove: remove,
         updateFileName: updateFileName,
-        updateThoughtContentFileName: updateThoughtContentFileName
+        updateNoteContentFileName: updateNoteContentFileName
     };
 
     return service;
@@ -48,7 +48,7 @@ define([
      * OR create the "APP_FOLDER_NAME" folder, if it's not found.
      */
     function scanDrive() {
-        console.debug('Scan thought storage...');
+        console.debug('Scan note storage...');
         return new Promise(function(resolve, reject) {
             spinner.show();
             findAppFolder().then(function(searchResult) {
@@ -87,44 +87,27 @@ define([
                     }
                 });
             }).then(resolve);
-            //
-            // code for getting children of all children of App root folder folder.
-            // -------------------------------
-            //}).then(function() {
-                // (currently displaying only one level for better performance)
-                //var promises = [];
-                //service.appRootFolder.children.forEach(function(thought) {
-                //    var promise = getFiles(thought.id).then(function(files) {
-                //        thought.children = files;
-                //    });
-                //    promises.push(promise);
-                //});
-
-                //Promise.all(promises).then(resolve);
-            //});
         });
-
     }
 
     /**
-     * Find child directories for given thoughtId folder.
+     * Find child directories for given noteId folder.
      */
-    function fetchChildThoughts(thought) {
+    function fetchChildNotes(note) {
         spinner.show();
         return new Promise(function(resolve, reject) {
-            console.debug('[Get] Child thoughts for: "' + thought.name+ '"');
-            getFiles(thought.id).then(function(files) {
-                //thoughts.push(appRootFolder);
+            console.debug('[Get] Child notes for: "' + note.name+ '"');
+            getFiles(note.id).then(function(files) {
+                //notes.push(appRootFolder);
                 var children = [];
                 _.each(files, function(file) {
-                    if (file.name === thought.name + '.txt') {
+                    if (file.name === note.name + '.txt') {
                         return;
                     }
-
                     file.isNote = isNote(file);
                     children.push(file);
                 });
-                console.debug('[Loaded] thoughts for "' + thought.id + '"');
+                console.debug('[Loaded] notes for "' + note.id + '"');
                 resolve(children);
             })
             .finally(function() {
@@ -144,35 +127,27 @@ define([
     /**
      * Fetch parent folder
      */
-    function fetchParentThought(thoughtId) {
-        return fetchThoughtById(thoughtId).then(function(parentThought) {
-            return parentThought;
+    function fetchParentNote(noteId) {
+        return fetchNoteById(noteId).then(function(parentNote) {
+            return parentNote;
         });
     }
 
     /**
-     * Fetch thought folder by id.
+     * Fetch note folder by id.
      */
-    function fetchThoughtById(thoughtId) {
-        console.debug('[Get] Thought folder for: "' + thoughtId + '"');
+    function fetchNoteById(noteId) {
+        console.debug('[Get] Note folder for: "' + noteId + '"');
         spinner.show();
-        //var request = gapi.client.request({
-        //    path: '/upload/drive/v3/files/' + thoughtId,
-        //    method: 'GET',
-        //    params: {
-        //        uploadType: 'media'
-        //    },
-        //    body: content
-        //});
 
         var request = googleDriveApi.client.files.get({
-            fileId: thoughtId,
+            fileId: noteId,
             fields: googleDriveApi.FILE_FIELDS
         });
 
         var promise = new Promise(function(resolve, reject) {
             request.execute(function(resp) {
-                console.debug('[Loaded] Thought folder for: "' + thoughtId + '"');
+                console.debug('[Loaded] Note folder for: "' + noteId + '"');
                 var file = resp;
                 file = googleDriveApi.parseParents(file);
                 resolve(file);
@@ -189,15 +164,6 @@ define([
      * Get files from a folder.
      */
     function getFiles(folderId) {
-        //var request = gapi.client.request({
-        //    path: '/drive/v3/files/' + folderId,
-        //    method: 'GET',
-        //    params: {
-        //        //'pageSize': 10,
-        //        //'fields': "nextPageToken, files(id, name)",
-        //        //'q': 'name = "' + APP_FOLDER_NAME + '"'
-        //    }
-        //});
         var request = gapi.client.drive.files.list({
           'pageSize': 10,
           'fields': googleDriveApi.FILE_LIST_FIELDS,
@@ -280,7 +246,7 @@ define([
     }
 
     function findAppRootTextFile(appRootFolder) {
-        return getThoughtContent(appRootFolder);
+        return getNoteContent(appRootFolder);
     }
 
     /**
@@ -325,7 +291,6 @@ define([
             name: options.name,
             mimeType: "text/plain",
             parents: options.parents
-            //"description": "test file"
         });
 
         spinner.show();
@@ -356,17 +321,6 @@ define([
             body: content
         });
 
-        // this almost works but makes request to url
-        // without '/upload/' T_T
-        //var request = googleDriveApi.client.files.update(
-        //    {
-        //        fileId: createdFile.id,
-        //        name: 'test-updated3.txt',
-        //        uploadType: 'media'
-        //    },
-        //    btoa('content plzzzz ;))')
-        //);
-
         var promise = new Promise(function(resolve, reject) {
             request.execute(function(resp) {
                 resolve(resp);
@@ -394,7 +348,6 @@ define([
         var requestParams = {
             "name": options.name,
             "mimeType": "application/vnd.google-apps.folder",
-            //"description": "test file"
         };
 
         if (options.parents) {
@@ -416,33 +369,33 @@ define([
         return promise;
     }
 
-    function getThoughtContent(thought) {
-        if (!thought) {
-            throw new Error('thoughtStorageApi.getThoughtContent(): passed thought is undefined');
+    function getNoteContent(note) {
+        if (!note) {
+            throw new Error('noteStorageApi.getNoteContent(): passed note is undefined');
         }
-        console.info('[Get] thought content for "' + thought.name + '"...');
-        return findThoughtContentFile(thought)
-            .then(function (thoughtContentFile) {
-                if (!thoughtContentFile) throw new Error('thoughtStorageApi.getThoughtContent(): thoughtContentFile is undefined');
+        console.info('[Get] note content for "' + note.name + '"...');
+        return findNoteContentFile(note)
+            .then(function (noteContentFile) {
+                if (!noteContentFile) throw new Error('noteStorageApi.getNoteContent(): noteContentFile is undefined');
                 return getTextFileContents({
-                    fileId: thoughtContentFile.id
+                    fileId: noteContentFile.id
                 });
             });
     }
 
-    function findThoughtContentFile(thought) {
+    function findNoteContentFile(note) {
         return googleDriveApi.findByName({
-            name: thought.name + '.txt',
-            folderId: thought.id
+            name: note.name + '.txt',
+            folderId: note.id
         }).then(function(foundFiles) {
             if (!foundFiles) {
-                throw new Error('thoughtStorage.getThoughtContent(): no thought content file found for thought: "' + thought.name + '"');
+                throw new Error('noteStorage.getNoteContent(): no note content file found for note: "' + note.name + '"');
             }
 
-            var thoughtContentFile = foundFiles[0];
-            console.info('[Loaded] Thought content file: ' + thought.name);
+            var noteContentFile = foundFiles[0];
+            console.info('[Loaded] Note content file: ' + note.name);
 
-            return thoughtContentFile;
+            return noteContentFile;
         });
     }
     
@@ -459,8 +412,6 @@ define([
                 alt: 'media'
             }
         });
-
-        //var request = googleDriveApi.client.files.get(requestParams);
 
         spinner.show();
         var promise = new Promise(function(resolve, reject) {
@@ -482,45 +433,45 @@ define([
     }
 
     /**
-     * Create a thought: a directory and a file with thought
+     * Create a note: a directory and a file with note
      * contents inside.
      */
-    function create(thought, parentThought) {
-        if (!parentThought) {
-            parentThought = appRootFolder;
+    function create(note, parentNote) {
+        if (!parentNote) {
+            parentNote = appRootFolder;
         }
 
         spinner.show();
         return createDirectory({
-            name: thought.name,
-            parents: [parentThought.id]
+            name: note.name,
+            parents: [parentNote.id]
         }).then(function(createdDirectory) {
-            thought.id = createdDirectory.id;
+            note.id = createdDirectory.id;
             return createFile({
-                name: thought.name + '.txt',
-                content: thought.content,
+                name: note.name + '.txt',
+                content: note.content,
                 parents: [createdDirectory.id],
             });
         })
         .then(function(createdTxtFile) {
-            return thought;
+            return note;
         })
         .finally(function() {
             spinner.hide();
         });
     }
 
-    function update(thought) {
-        console.debug('Updaing thought: ' + thought);
+    function update(note) {
+        console.debug('Updaing note: ' + note);
 
-        var updateSpinner = spinner.create('updating thought');
+        var updateSpinner = spinner.create('updating note');
         updateSpinner.show();
 
-        return findThoughtContentFile(thought)
-            .then(function (thoughtContentFile) {
+        return findNoteContentFile(note)
+            .then(function (noteContentFile) {
                 return googleDriveApi.updateFile({
-                    fileId: thoughtContentFile.id,
-                    text: thought.content
+                    fileId: noteContentFile.id,
+                    text: note.content
                 });
             })
             .then(function(response) {
@@ -532,15 +483,14 @@ define([
             .finally(function() {
                 updateSpinner.hide();
             });
-
     }
 
-    function updateThoughtContentFileName(newThought, oldThought) {
-        return findThoughtContentFile(oldThought)
-            .then(function(thoughtContentFile) {
+    function updateNoteContentFileName(newNote, oldNote) {
+        return findNoteContentFile(oldNote)
+            .then(function(noteContentFile) {
                 return googleDriveApi.updateFileName({
-                    id: thoughtContentFile.id,
-                    name: newThought.name + '.txt'
+                    id: noteContentFile.id,
+                    name: newNote.name + '.txt'
                 });
             });
     }

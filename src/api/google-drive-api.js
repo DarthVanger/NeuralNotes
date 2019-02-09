@@ -25,7 +25,8 @@ define([
         findByName: findByName,
         updateFile: updateFile,
         updateFileName: updateFileName,
-        parseParents: parseParents
+        parseParents: parseParents,
+        createDirectory: createDirectory
     };
 
     return self;
@@ -172,5 +173,37 @@ define([
             console.debug('googleDriveApi.parseParents(): skipping file with name "' + file.name + '", because it has no "parents" property');
         }
     };
+
+    /**
+     * Create a directory.
+     *
+     * @param {String} options.name - Directory name.
+     * @param {Array} options.parents - Parent directories for the created
+     * directory (goolge drive allows many parents).
+     */
+    function createDirectory(options) {
+        var requestParams = {
+            "name": options.name,
+            "mimeType": "application/vnd.google-apps.folder",
+        };
+
+        if (options.parents) {
+            requestParams.parents = options.parents;
+        }
+        
+        var request = self.client.files.create(requestParams);
+
+        spinner.show();
+        var promise = new Promise(function(resolve, reject) {
+            request.execute(function(newFile) {
+                resolve(newFile);
+            });
+        })
+        .finally(function() {
+            spinner.hide();
+        });
+
+        return promise;
+    }
 
 });

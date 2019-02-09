@@ -197,7 +197,7 @@ define([
     function createAppRootFolder() {
         console.info('Creating a new App root folder...');
         spinner.show();
-        return createDirectory({
+        return googleDriveApi.createDirectory({
             name: APP_FOLDER_NAME
         }).then(function(response) {
             if (response.code && response.code === -1) {
@@ -337,38 +337,6 @@ define([
         return googleDriveApi.updateFileName(options);
     }
 
-    /**
-     * Create a directory.
-     *
-     * @param {String} options.name - Directory name.
-     * @param {Array} options.parents - Parent directories for the created
-     * directory (goolge drive allows many parents).
-     */
-    function createDirectory(options) {
-        var requestParams = {
-            "name": options.name,
-            "mimeType": "application/vnd.google-apps.folder",
-        };
-
-        if (options.parents) {
-            requestParams.parents = options.parents;
-        }
-
-        var request = googleDriveApi.client.files.create(requestParams);
-
-        spinner.show();
-        var promise = new Promise(function(resolve, reject) {
-            request.execute(function(newFile) {
-                resolve(newFile);
-            });
-        })
-        .finally(function() {
-            spinner.hide();
-        });
-
-        return promise;
-    }
-
     function getNoteContent(note) {
         if (!note) {
             throw new Error('noteStorageApi.getNoteContent(): passed note is undefined');
@@ -442,7 +410,7 @@ define([
         }
 
         spinner.show();
-        return createDirectory({
+        return googleDriveApi.createDirectory({
             name: note.name,
             parents: [parentNote.id]
         }).then(function(createdDirectory) {

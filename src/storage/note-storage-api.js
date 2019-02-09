@@ -74,23 +74,6 @@ define([
     }
 
     /**
-     * Get files from the root "APP_FOLDER_NAME" folder.
-     */
-    function readAppRootFolder() {
-        console.debug('Reading ' + APP_FOLDER_NAME + ' folder...');
-        return new Promise(function(resolve, reject) {
-            getFiles(service.appRootFolder.id).then(function(files) {
-                service.appRootFolder.children = [];
-                _.each(files, function(file) {
-                    if (file.mimeType == 'application/vnd.google-apps.folder') {
-                        service.appRootFolder.children.push(file);
-                    }
-                });
-            }).then(resolve);
-        });
-    }
-
-    /**
      * Find child directories for given noteId folder.
      */
     function fetchChildNotes(note) {
@@ -243,10 +226,6 @@ define([
             name: APP_FOLDER_NAME,
             folderId: 'root'
         });
-    }
-
-    function findAppRootTextFile(appRootFolder) {
-        return getNoteContent(appRootFolder);
     }
 
     /**

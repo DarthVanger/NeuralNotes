@@ -1,3 +1,6 @@
+require('./site-global-loading-bar.css');
+require('./colorful-spinner.css');
+
 define([ ], function() {
     var loading = [];
 

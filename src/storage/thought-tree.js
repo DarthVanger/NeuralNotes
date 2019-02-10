@@ -1,6 +1,6 @@
 define([
-], function(
-) {
+  'underscore'
+], function(_) {
     'use strict';
 
     var thoughtsTree = {};
@@ -63,7 +63,7 @@ define([
        var nodesCount = 0;
 
        var mappedTree = {};
-       executeForNode(thoughtsTree.root, func); 
+       executeForNode(thoughtsTree.root, func);
        return mappedTree;
 
        function executeForNode(node, func,  parentNode, currentDepth) {
@@ -95,7 +95,7 @@ define([
                 console.warn('Traversing tree: reached depth/nodes limit, exiting');
                 console.warn('Traversing tree: currentDepth: ', currentDepth);
                 console.warn('Traversing tree: nodesCount: ', nodesCount);
-           } 
+           }
 
            return limitReached;
        }
@@ -109,7 +109,7 @@ define([
        var nodesLimit = 50;
        var nodesCount = 0;
 
-       executeForNode(thoughtsTree.root, func); 
+       executeForNode(thoughtsTree.root, func);
 
        function executeForNode(node, func, currentDepth) {
            if (!currentDepth) currentDepth = 0;
@@ -130,7 +130,7 @@ define([
                 console.warn('Traversing tree: reached depth/nodes limit, exiting');
                 console.warn('Traversing tree: currentDepth: ', currentDepth);
                 console.warn('Traversing tree: nodesCount: ', nodesCount);
-           } 
+           }
 
            return limitReached;
        }
@@ -147,7 +147,7 @@ define([
             child.parent = parentThought;
             return child;
         });
-        
+
         if (parentThought.children) {
             parentThought.children = parentThought.children.concat(newChildren);
         } else {

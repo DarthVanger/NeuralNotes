@@ -1,4 +1,9 @@
-define([], function() {
+require('./view-thoughts.css');
+
+define([
+  'underscore',
+  'vis/dist/vis.js'
+], function(_, vis) {
 
     var BrainVisNetwork = function(options) {
         console.debug('vis.js: ', vis);

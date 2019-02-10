@@ -1,87 +1,73 @@
 console.debug('login.js');
-require('./slide-1.png');
-require('./slide-2.png');
-require('./slide-3.png');
-require('./slide-4.png');
-require('./login.css');
+import thoughtStorage from 'storage/thought-storage';
+import googleDriveApi from 'api/google-drive-api';
+import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
+import { gapiAuthorize } from 'api/google-login';
+import loginPageHTML from 'text!./login.html';
+import googleApiLoader from 'api/google-api-loader';
+import './slide-1.png';
+import './slide-2.png';
+import './slide-3.png';
+import './slide-4.png';
+import './login.css';
 
-define([
-    'storage/thought-storage',
-    'api/google-drive-api',
-    'ui/spinner/site-global-loading-bar',
-    'api/google-login',
-    'text!./login.html',
-    'api/google-api-loader',
-    'api/google-drive-api'
-], function(
-    thoughtStorage,
-    googleDriveApi,
-    siteGlobalLoadingBar,
-    googleLogin,
-    loginPageHTML,
-    googleApiLoader,
-    googleDriveApi
-) {
-    let element;
+let element;
 
-    var spinner = siteGlobalLoadingBar.create('login');
+let spinner = siteGlobalLoadingBar.create('login');
 
-    var redirectToNotesPage;
+let redirectToNotesPage;
 
-    return {
-        render: render,
-        unmount: unmount
-    };
+export default {
+  render: render,
+  unmount: unmount
+};
 
-    function render(props) {
-        redirectToNotesPage = props.redirectToNotesPage;
+function render(props) {
+  redirectToNotesPage = props.redirectToNotesPage;
 
-        element = document.createElement('div');
-        element.innerHTML = loginPageHTML;
+  element = document.createElement('div');
+  element.innerHTML = loginPageHTML;
 
-        onRender();
-        return element;
-    }
+  onRender();
+  return element;
+}
 
-    function onRender() {
-        var authorizeButton = element.querySelector('#authorize-button');
-        authorizeButton.style.display = 'none';
-        googleApiLoader.load().then(function() {
-            authorizeButton.style.display = 'inline-block';
-            authorizeButton.addEventListener('click', handleAuthClick);
-        });
-    }
+function onRender() {
+  let authorizeButton = element.querySelector('#authorize-button');
+  authorizeButton.style.display = 'none';
+  googleApiLoader.load().then(function () {
+    authorizeButton.style.display = 'inline-block';
+    authorizeButton.addEventListener('click', handleAuthClick);
+  });
+}
 
-    function unmount() {
-        element.remove();
-    }
+function unmount() {
+  element.remove();
+}
 
 
-      /**
-       * Initiate auth flow in response to user clicking authorize button.
-       *
-       * @param {Event} event Button click event.
-       */
-    function handleAuthClick(event) {
-        console.debug('login.handleAuthClick()');
-        var spinnerName = 'Loading google auth';
-        siteGlobalLoadingBar.show(spinnerName);
+/**
+ * Initiate auth flow in response to user clicking authorize button.
+ *
+ * @param {Event} event Button click event.
+ */
+function handleAuthClick(event) {
+  console.debug('login.handleAuthClick()');
+  let spinnerName = 'Loading google auth';
+  siteGlobalLoadingBar.show(spinnerName);
 
-        googleLogin.gapiAuthorize()
-            .then(function(authResult) {
-                console.debug('login.js: auth success! calling thoughtStorage.scanDrive()');
-                siteGlobalLoadingBar.hide(spinnerName);
-                //return googleLogin.handleAuthResult(authResult);
-            })
-            .then(googleDriveApi.loadDriveApi)
-            .then(thoughtStorage.scanDrive)
-            .then(function() {
-                console.info('login: drive scanned, redirecting to the app main page');
-                redirectToNotesPage();
-            });
+  gapiAuthorize()
+    .then(function (authResult) {
+      console.debug('login.js: auth success! calling thoughtStorage.scanDrive()');
+      siteGlobalLoadingBar.hide(spinnerName);
+      //return handleAuthResult(authResult);
+    })
+    .then(googleDriveApi.loadDriveApi)
+    .then(thoughtStorage.scanDrive)
+    .then(function () {
+      console.info('login: drive scanned, redirecting to the app main page');
+      redirectToNotesPage();
+    });
 
-        return false;
-    }
-
-
-});
+  return false;
+}

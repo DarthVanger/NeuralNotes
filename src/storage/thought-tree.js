@@ -1,179 +1,176 @@
-define([
-  'underscore'
-], function(_) {
-    'use strict';
+import _ from 'underscore';
 
-    var thoughtsTree = {};
+'use strict';
 
-    return {
-        getThoughts: getThoughts,
-        findThoughtById: findThoughtById,
-        logTree: logTree,
-        getRoot: getRoot,
-        setRoot: setRoot,
-        addChildrenToTree: addChildrenToTree,
-        deleteNode: deleteNode
-    };
+let thoughtsTree = {};
 
-    function logTree() {
-        console.debug('==============\n Thoughts Tree\n===========');
-        forEachNode(function(node, depth) {
-            var msg = node.name;
-            for (var i = 0; i <= depth; i++) {
-                msg = '>> ' + msg;
-            }
-            console.debug(msg);
-        });
+export default {
+  getThoughts,
+  findThoughtById,
+  logTree,
+  getRoot,
+  setRoot,
+  addChildrenToTree,
+  deleteNode
+};
+
+function logTree() {
+  console.debug('==============\n Thoughts Tree\n===========');
+  forEachNode(function (node, depth) {
+    var msg = node.name;
+    for (var i = 0; i <= depth; i++) {
+      msg = '>> ' + msg;
+    }
+    console.debug(msg);
+  });
+}
+
+function findThoughtById(id) {
+  var depthLimit = 4;
+  var nodesLimit = 50;
+  var nodesCount = 0;
+  var iterationLimitReached = false;
+  return findInNode(thoughtsTree.root);
+
+  function findInNode(node, currentDepth) {
+    if (iterationLimitReached) return;
+    nodesCount++;
+    if (!currentDepth) currentDepth = 0;
+    if (node.id == id) {
+      console.debug('Found thought: ', node);
+      return node;
+    } else if (currentDepth < depthLimit && nodesCount < nodesLimit) {
+      var foundNode;
+      _.each(node.children, function (childNode) {
+        foundNode = foundNode || findInNode(childNode, currentDepth + 1);
+      });
+      return foundNode;
+
+    } else {
+      console.warn('Traversing tree: reached depth/nodes limit, exiting');
+      console.warn('Traversing tree: currentDepth: ', currentDepth);
+      console.warn('Traversing tree: nodesCount: ', nodesCount);
+      iterationLimitReached = true;
+      return;
+    }
+  }
+}
+
+function mapTree(func) {
+  var depthLimit = 4;
+  var nodesLimit = 50;
+  var nodesCount = 0;
+
+  var mappedTree = {};
+  executeForNode(thoughtsTree.root, func);
+  return mappedTree;
+
+  function executeForNode(node, func, parentNode, currentDepth) {
+    nodesCount++;
+
+    var clonedNode = _.clone(node);
+    var mappedNode = func(clonedNode);
+
+    if (!currentDepth) currentDepth = 0;
+    if (!parentNode) {
+      mappedTree.root = mappedNode;
+    } else {
+      parentNode.children.push(mappedNode);
+
+      if (isRecursionLimitReached(currentDepth, nodesCount)) return;
     }
 
-    function findThoughtById(id) {
-       var depthLimit = 4;
-       var nodesLimit = 50;
-       var nodesCount = 0;
-       var iterationLimitReached = false;
-        return findInNode(thoughtsTree.root);
+    if (node.children) {
+      clonedNode.children = [];
+      _.each(node.children, function (childNode) {
+        executeForNode(childNode, func, clonedNode, currentDepth + 1);
+      });
+    }
+  }
 
-        function findInNode(node, currentDepth) {
-            if (iterationLimitReached) return;
-            nodesCount++;
-            if (!currentDepth) currentDepth = 0;
-            if (node.id == id) {
-                console.debug('Found thought: ', node);
-                return node;
-            } else if (currentDepth < depthLimit && nodesCount < nodesLimit) {
-                    var foundNode;
-                    _.each(node.children, function(childNode) {
-                        foundNode = foundNode || findInNode(childNode, currentDepth + 1);
-                    });
-                    return foundNode;
-
-            } else {
-                console.warn('Traversing tree: reached depth/nodes limit, exiting');
-                console.warn('Traversing tree: currentDepth: ', currentDepth);
-                console.warn('Traversing tree: nodesCount: ', nodesCount);
-                iterationLimitReached = true;
-                return;
-            }
-        }
+  function isRecursionLimitReached(currentDepth, nodesCount) {
+    var limitReached = (nodesCount > nodesLimit || currentDepth > depthLimit);
+    if (limitReached) {
+      console.warn('Traversing tree: reached depth/nodes limit, exiting');
+      console.warn('Traversing tree: currentDepth: ', currentDepth);
+      console.warn('Traversing tree: nodesCount: ', nodesCount);
     }
 
-    function mapTree(func) {
-       var depthLimit = 4;
-       var nodesLimit = 50;
-       var nodesCount = 0;
+    return limitReached;
+  }
+}
 
-       var mappedTree = {};
-       executeForNode(thoughtsTree.root, func);
-       return mappedTree;
+/**
+ * Execute func for each node of the thoughts tree
+ */
+function forEachNode(func) {
+  var depthLimit = 4;
+  var nodesLimit = 50;
+  var nodesCount = 0;
 
-       function executeForNode(node, func,  parentNode, currentDepth) {
-           nodesCount++;
+  executeForNode(thoughtsTree.root, func);
 
-           var clonedNode = _.clone(node);
-           var mappedNode = func(clonedNode);
+  function executeForNode(node, func, currentDepth) {
+    if (!currentDepth) currentDepth = 0;
 
-           if (!currentDepth) currentDepth = 0;
-           if (!parentNode) {
-               mappedTree.root = mappedNode;
-           } else {
-               parentNode.children.push(mappedNode);
+    if (isRecursionLimitReached(currentDepth, nodesCount)) return;
 
-               if (isRecursionLimitReached(currentDepth, nodesCount)) return;
-           }
+    func(node, currentDepth);
+    if (node.children) {
+      _.each(node.children, function (node) {
+        executeForNode(node, func, currentDepth + 1);
+      });
+    }
+  }
 
-           if (node.children) {
-               clonedNode.children = [];
-               _.each(node.children, function(childNode) {
-                   executeForNode(childNode, func, clonedNode, currentDepth + 1);
-               });
-           }
-       }
-
-       function isRecursionLimitReached(currentDepth, nodesCount) {
-           var limitReached = (nodesCount > nodesLimit || currentDepth > depthLimit);
-           if (limitReached) {
-                console.warn('Traversing tree: reached depth/nodes limit, exiting');
-                console.warn('Traversing tree: currentDepth: ', currentDepth);
-                console.warn('Traversing tree: nodesCount: ', nodesCount);
-           }
-
-           return limitReached;
-       }
+  function isRecursionLimitReached(currentDepth, nodesCount) {
+    var limitReached = (nodesCount > nodesLimit || currentDepth > depthLimit);
+    if (limitReached) {
+      console.warn('Traversing tree: reached depth/nodes limit, exiting');
+      console.warn('Traversing tree: currentDepth: ', currentDepth);
+      console.warn('Traversing tree: nodesCount: ', nodesCount);
     }
 
-    /**
-     * Execute func for each node of the thoughts tree
-     */
-    function forEachNode(func) {
-       var depthLimit = 4;
-       var nodesLimit = 50;
-       var nodesCount = 0;
+    return limitReached;
+  }
+}
 
-       executeForNode(thoughtsTree.root, func);
+/**
+ * @param {String} options.parentId
+ * @param {Array} options.children
+ */
+function addChildrenToTree(options) {
+  var parentThought = findThoughtById(options.parentId);
+  var newChildren;
+  newChildren = options.children.map((child) => {
+    child.parent = parentThought;
+    return child;
+  });
 
-       function executeForNode(node, func, currentDepth) {
-           if (!currentDepth) currentDepth = 0;
+  if (parentThought.children) {
+    parentThought.children = parentThought.children.concat(newChildren);
+  } else {
+    parentThought.children = newChildren;
+  }
 
-           if (isRecursionLimitReached(currentDepth, nodesCount)) return;
+  return parentThought.children;
+}
 
-           func(node, currentDepth);
-           if (node.children) {
-               _.each(node.children, function(node) {
-                   executeForNode(node, func, currentDepth + 1);
-               });
-           }
-       }
+function getThoughts() {
+  return thoughtsTree;
+}
 
-       function isRecursionLimitReached(currentDepth, nodesCount) {
-           var limitReached = (nodesCount > nodesLimit || currentDepth > depthLimit);
-           if (limitReached) {
-                console.warn('Traversing tree: reached depth/nodes limit, exiting');
-                console.warn('Traversing tree: currentDepth: ', currentDepth);
-                console.warn('Traversing tree: nodesCount: ', nodesCount);
-           }
+function getRoot() {
+  return thoughtsTree.root;
+}
 
-           return limitReached;
-       }
-    }
+function setRoot(root) {
+  thoughtsTree.root = root;
+}
 
-    /**
-     * @param {String} options.parentId
-     * @param {Array} options.children
-     */
-    function addChildrenToTree(options) {
-        var parentThought = findThoughtById(options.parentId);
-        var newChildren;
-        newChildren = options.children.map((child) => {
-            child.parent = parentThought;
-            return child;
-        });
-
-        if (parentThought.children) {
-            parentThought.children = parentThought.children.concat(newChildren);
-        } else {
-            parentThought.children = newChildren;
-        }
-
-        return parentThought.children;
-    }
-
-    function getThoughts() {
-        return thoughtsTree;
-    }
-
-    function getRoot() {
-        return thoughtsTree.root;
-    }
-
-    function setRoot(root) {
-        thoughtsTree.root = root;
-    }
-
-    function deleteNode(note) {
-        var noteInTree = findThoughtById(note.id);
-        console.log('noteInTree: ', noteInTree);
-        var noteIndexInChildren = noteInTree.parent.children.indexOf(noteInTree);
-        noteInTree.parent.children.splice(noteIndexInChildren, 1);
-    }
-
-});
+function deleteNode(note) {
+  var noteInTree = findThoughtById(note.id);
+  console.log('noteInTree: ', noteInTree);
+  var noteIndexInChildren = noteInTree.parent.children.indexOf(noteInTree);
+  noteInTree.parent.children.splice(noteIndexInChildren, 1);
+}

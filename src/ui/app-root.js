@@ -1,3 +1,5 @@
+require('./layout.css');
+
 define([
     'thought/view-thoughts/thoughts-mind-map-view',
     'storage/thought-storage',

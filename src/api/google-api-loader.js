@@ -1,3 +1,5 @@
+const scriptJS = require("scriptjs");
+
 console.debug('cloid-api-loader.js');
 define([
     'api/google-drive-api',
@@ -38,12 +40,7 @@ define([
         var spinner = siteGlobalLoadingBar.create('login');
         var checkGapiSpinner = spinner.create('checking google login');
         return new Promise(function(resolve, reject) {
-            require(
-              ['https://apis.google.com/js/api.js'],
-              // checkGAPI makes polling: calls itself until gapi is ready,
-              // and then calls init().
-              checkGAPI
-            );
+          scriptJS("https://apis.google.com/js/api.js", checkGAPI);
 
             // Poll until gapi is ready
             function checkGAPI() {
@@ -63,7 +60,7 @@ define([
                 gapi.load('client:auth2', initClient);
                 checkGapiClient();
             }
-            
+
             function initClient() {
                 console.debug('googleApiLoader.initClient()');
                 gapi.client.init({

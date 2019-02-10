@@ -1,7 +1,9 @@
 define([
+    'underscore',
     'ui/spinner/site-global-loading-bar',
     'storage/thought-storage'
 ], function(
+    _,
     siteGlobalLoadingBar,
     thoughtStorage
 ) {
@@ -45,7 +47,7 @@ define([
             hideLinkToGoogleDrive();
             showTextArea();
             setThoughtContent('loading thought contents...');
-            
+
             console.debug('ThoughtContentController.loadThought(), passed thought: ', thought);
 
             thoughtStorage.getThoughtContent(thought)

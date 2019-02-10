@@ -1,80 +1,46 @@
-require('vis/dist/vis.css');
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'font-awesome/css/font-awesome.css';
+import 'bootstrap-social/bootstrap-social.css';
+import 'vis/dist/vis.css';
 
-require('bootstrap/dist/css/bootstrap.min.css');
-require('font-awesome/css/font-awesome.css');
-require('bootstrap-social/bootstrap-social.css');
+import thoughtStorage from 'storage/thought-storage';
+import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
+import googleApiLoader from 'api/google-api-loader';
+import appRootComponent from 'ui/app-root';
+import auth from 'auth';
+import googleDriveApi from 'api/google-drive-api';
 
-require.config({
-    baseUrl: 'src/',
-    paths: {
-        text: "../bower_components/text/text",
-        d3: "../bower_components/d3/d3",
-        //lodash: "../bower_components/lodash/lodash"
-        underscore: "../bower_components/underscore/underscore"
-    },
-    shim: {
-       underscore: {
-          exports: '_'
-       }
-    }
-});
+var spinner = siteGlobalLoadingBar.create();
 
-define([
-    'storage/thought-storage',
-    'ui/spinner/site-global-loading-bar',
-    'api/google-api-loader',
-    'ui/app-root',
-    'api/google-login',
-    'auth',
-    'api/google-drive-api',
+run();
 
-    // non-amd libs:
-    'underscore',
-    // add additional functionality to javascript native Promise.
-    'utils/promise-finally'
-], function(
-    thoughtStorage,
-    siteGlobalLoadingBar,
-    googleApiLoader,
-    appRootComponent,
-    googleLogin,
-    auth,
-    googleDriveApi,
-    _underscore_undefined_,
-    _promise_patch_undefined
-) {
-    var spinner = siteGlobalLoadingBar.create();
+function run() {
+  if (auth.signedIn()) {
+    console.info('User is signed in');
+    loadApp();
+  } else {
+    appRootComponent.render({
+      page: 'login'
+    });
+  }
+}
 
-    run();
+function loadApp() {
+  console.info('Loading app...');
+  spinner.show('Loading Google Api');
 
-    function run() {
-        if (auth.signedIn()) {
-            console.info('User is signed in');
-            loadApp();
-        } else {
-            appRootComponent.render({
-                page: 'login'
-            });
-        }
-    }
-
-    function loadApp() {
-        console.info('Loading app...');
-        spinner.show('Loading Google Api');
-
-        googleApiLoader
-            .load()
-            .then(googleDriveApi.loadDriveApi)
-            .then(function() {
-                return thoughtStorage.scanDrive()
-            })
-            .then(function() {
-                appRootComponent.render({
-                    page: 'notes'
-                });
-            })
-            .finally(function() {
-                spinner.hide();
-            });
-    }
-});
+  googleApiLoader
+    .load()
+    .then(googleDriveApi.loadDriveApi)
+    .then(function () {
+      return thoughtStorage.scanDrive()
+    })
+    .then(function () {
+      appRootComponent.render({
+        page: 'notes'
+      });
+    })
+    .finally(function () {
+      spinner.hide();
+    });
+}

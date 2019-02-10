@@ -1,10 +1,10 @@
-var winston = require('winston');
+const winston = require('winston');
 
 /**
  * Using "winston" logger:
  * https://github.com/winstonjs/winston
  */
-var logger = new (winston.Logger)({
+const logger = new (winston.Logger)({
     transports: [
         new (winston.transports.Console)({
             colorize: true

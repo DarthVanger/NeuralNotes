@@ -1,34 +1,28 @@
-define([
-], function(
-) {
-    return {
-        show: show
-    };
+export default {show};
 
-    function show(messageText) {
-        var element = document.createElement('DIV');
+function show(messageText) {
+  let element = document.createElement('DIV');
 
-        element.style.position = 'absolute';
-        element.style.zIndex = '100';
-        element.style.bottom = '0';
-        element.style.left = '0';
+  element.style.position = 'absolute';
+  element.style.zIndex = '100';
+  element.style.bottom = '0';
+  element.style.left = '0';
 
-        element.style.backgroundColor = 'pink';
-        element.style.height = '6em';
-        element.style.width = '320px';
-        element.style.padding = '10px';
-        element.style.borderRadius = '2px';
+  element.style.backgroundColor = 'pink';
+  element.style.height = '6em';
+  element.style.width = '320px';
+  element.style.padding = '10px';
+  element.style.borderRadius = '2px';
 
-        element.innerText = 'ERROR: ' + messageText + '.\n Reload the browser tab please.';
+  element.innerText = 'ERROR: ' + messageText + '.\n Reload the browser tab please.';
 
-        mount();
+  mount();
 
-        function mount() {
-            document.body.appendChild(element);
-        }
+  function mount() {
+    document.body.appendChild(element);
+  }
 
-        function unmount() {
-            element.remove();
-        }
-    }
-});
+  function unmount() {
+    element.remove();
+  }
+}

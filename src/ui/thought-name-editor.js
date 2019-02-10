@@ -1,53 +1,45 @@
-define([
-    'underscore',
-    './thought-name-editor/header',
-], function(
-    _,
-    headerComponent
-) {
-    var element;
+import _ from 'underscore';
+import headerComponent from './thought-name-editor/header';
 
-    return {
-        render: render,
-        unmount: unmount
-    };
+let element;
 
-    function render(options) {
-        var thought = options.thought;
-        element = document.createElement('div');
-        element.id = 'thought-name-editor';
-        element.style.position = 'absolute';
-        element.style.top = '0';
-        element.style.height = '4em';
-        element.style.width = '100%';
-        element.style.paddingTop = '1.5em';
-        element.style.zIndex = '2';
-        element.style.backgroundColor = 'black';
-        element.style.color = 'white';
+export default {render, unmount};
 
-        var textArea = document.createElement('textarea');
-        textArea.style.width = '100%';
-        textArea.style.height = '100%';
-        textArea.style.padding = '0.5em';
-        textArea.style.backgroundColor = 'black';
+function render(options) {
+  let thought = options.thought;
+  element = document.createElement('div');
+  element.id = 'thought-name-editor';
+  element.style.position = 'absolute';
+  element.style.top = '0';
+  element.style.height = '4em';
+  element.style.width = '100%';
+  element.style.paddingTop = '1.5em';
+  element.style.zIndex = '2';
+  element.style.backgroundColor = 'black';
+  element.style.color = 'white';
 
-        var debouncedOnChange = _.debounce(options.onChange, 1500);
+  let textArea = document.createElement('textarea');
+  textArea.style.width = '100%';
+  textArea.style.height = '100%';
+  textArea.style.padding = '0.5em';
+  textArea.style.backgroundColor = 'black';
 
-        element.addEventListener('input', debouncedOnChange);
+  let debouncedOnChange = _.debounce(options.onChange, 1500);
 
-        textArea.innerText = thought.name;
+  element.addEventListener('input', debouncedOnChange);
 
-        document.body.appendChild(element);
-        element.append(textArea);
-        element.append(headerComponent.render({
-            onDeleteClick: options.onDeleteClick,
-            onUploadFileClick: options.onUploadFileClick
-        }));
-    }
+  textArea.innerText = thought.name;
 
-    function unmount() {
-        if (element) {
-            element.remove();
-        }
-    }
-});
+  document.body.appendChild(element);
+  element.append(textArea);
+  element.append(headerComponent.render({
+    onDeleteClick: options.onDeleteClick,
+    onUploadFileClick: options.onUploadFileClick
+  }));
+}
+
+function unmount() {
+  if (element) {
+    element.remove();
+  }
+}

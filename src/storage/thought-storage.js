@@ -1,112 +1,103 @@
-define([
-    'api/google-drive-api',
-    'ui/spinner/site-global-loading-bar',
-    'storage/note-storage-api',
-    'storage/thought-tree'
-], function(
-    googleDriveApi,
-    siteGlobalLoadingBar,
-    thoughtStorageApi,
-    thoughtStorageTree
-) {
-    'use strict';
+import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
+import thoughtStorageApi from 'storage/note-storage-api';
+import thoughtStorageTree from 'storage/thought-tree';
 
-    var appRootFolder = thoughtStorageApi.appRootFolder;
-    var thoughtsTree = {};
+'use strict';
 
-    var spinner = siteGlobalLoadingBar.create('thought-storage');
+var appRootFolder = thoughtStorageApi.appRootFolder;
+var thoughtsTree = {};
 
-    return {
-        restoreFromCache: restoreFromCache,
-        scanDrive: scanDrive,
+var spinner = siteGlobalLoadingBar.create('thought-storage');
 
-        // thoughts tree
-        findThoughtById: thoughtStorageTree.findThoughtById,
-        getThoughts: thoughtStorageTree.getThoughts,
-        logTree: thoughtStorageTree.logTree,
-        getRoot: thoughtStorageTree.getRoot,
-        addChildrenToTree: thoughtStorageTree.addChildrenToTree,
+export default {
+  restoreFromCache,
+  scanDrive,
 
-        // api:
-        APP_FOLDER_NAME: thoughtStorageApi.APP_FOLDER_NAME,
-        fetchParentThought: fetchParentThought,
-        fetchChildThoughts: fetchChildThoughts,
-        getThoughtContent: thoughtStorageApi.getNoteContent,
-        create: create,
-        update: thoughtStorageApi.update,
-        remove: remove,
-        updateThoughtName: updateThoughtName,
-        getLinkToThought: getLinkToThought
-    };
+  // thoughts tree
+  findThoughtById: thoughtStorageTree.findThoughtById,
+  getThoughts: thoughtStorageTree.getThoughts,
+  logTree: thoughtStorageTree.logTree,
+  getRoot: thoughtStorageTree.getRoot,
+  addChildrenToTree: thoughtStorageTree.addChildrenToTree,
 
-    function fetchChildThoughts(thought) {
-        return thoughtStorageApi.fetchChildNotes(thought)
-            .then(function(children) {
-                thoughtStorageTree.addChildrenToTree({
-                    parentId: thought.id,
-                    children: children
-                });
+  // api:
+  APP_FOLDER_NAME: thoughtStorageApi.APP_FOLDER_NAME,
+  fetchParentThought,
+  fetchChildThoughts,
+  getThoughtContent: thoughtStorageApi.getNoteContent,
+  create,
+  update: thoughtStorageApi.update,
+  remove,
+  updateThoughtName,
+  getLinkToThought
+};
 
-                return children;
-            });
-    }
+function fetchChildThoughts(thought) {
+  return thoughtStorageApi.fetchChildNotes(thought)
+    .then(function (children) {
+      thoughtStorageTree.addChildrenToTree({
+        parentId: thought.id,
+        children: children
+      });
 
-    function fetchParentThought(thoughtId) {
-        return thoughtStorageApi.fetchParentNote(thoughtId)
-            .then(function(parentThought) {
-                var thought = thoughtStorageTree.findThoughtById(thoughtId);
-                if (thought) { // root folder has no parent
-                    thought.parent = parentThought;
-                }
-                return thought;
-            });
-    }
+      return children;
+    });
+}
 
-    function scanDrive() {
-        console.debug('thoughtStorage.scanDrive()');
-        return thoughtStorageApi.scanDrive()
-            .then(function(appRootFolder) {
-                thoughtStorageTree.setRoot(appRootFolder);
-                console.info('Thought tree root set to the App root folder on Google Drive');
-                console.debug('thoughtStorage.scanDrive(), stored thoughtsTree: ', thoughtsTree);
-            });
-    }
+function fetchParentThought(thoughtId) {
+  return thoughtStorageApi.fetchParentNote(thoughtId)
+    .then(function (parentThought) {
+      var thought = thoughtStorageTree.findThoughtById(thoughtId);
+      if (thought) { // root folder has no parent
+        thought.parent = parentThought;
+      }
+      return thought;
+    });
+}
 
-    function restoreFromCache() {
-        return thoughtStorageTree.restoreFromCache();
-    }
+function scanDrive() {
+  console.debug('thoughtStorage.scanDrive()');
+  return thoughtStorageApi.scanDrive()
+    .then(function (appRootFolder) {
+      thoughtStorageTree.setRoot(appRootFolder);
+      console.info('Thought tree root set to the App root folder on Google Drive');
+      console.debug('thoughtStorage.scanDrive(), stored thoughtsTree: ', thoughtsTree);
+    });
+}
 
-    function create(thought, parentThought) {
-        console.info('Creating a new thought: ', thought.name);  
-        return thoughtStorageApi.create(thought, parentThought).then(function(createdThought) {
-            console.info('Created new thought: ', thought.name);  
-            return createdThought;
-        });
+function restoreFromCache() {
+  return thoughtStorageTree.restoreFromCache();
+}
 
-    }
+function create(thought, parentThought) {
+  console.info('Creating a new thought: ', thought.name);
+  return thoughtStorageApi.create(thought, parentThought).then(function (createdThought) {
+    console.info('Created new thought: ', thought.name);
+    return createdThought;
+  });
 
-    function updateThoughtName(thought) {
-        var oldThought = this.findThoughtById(thought.id);
-        var newThought = thought;
-        return Promise.all([
-            thoughtStorageApi.updateFileName(newThought),
-            thoughtStorageApi.updateNoteContentFileName(newThought, oldThought)
-        ])
-        .then(function(responses) {
-            oldThought.name = newThought.name;
-            return responses;
-        });
-    }
+}
 
-    function remove(note) {
-        return thoughtStorageApi.remove(note).then(function(result) {
-            thoughtStorageTree.deleteNode(note);
-            return result;
-        });
-    }
+function updateThoughtName(thought) {
+  var oldThought = this.findThoughtById(thought.id);
+  var newThought = thought;
+  return Promise.all([
+    thoughtStorageApi.updateFileName(newThought),
+    thoughtStorageApi.updateNoteContentFileName(newThought, oldThought)
+  ])
+    .then(function (responses) {
+      oldThought.name = newThought.name;
+      return responses;
+    });
+}
 
-    function getLinkToThought(thought) {
-        return 'https://drive.google.com/open?id=' + thought.id;
-    }
+function remove(note) {
+  return thoughtStorageApi.remove(note).then(function (result) {
+    thoughtStorageTree.deleteNode(note);
+    return result;
+  });
+}
 
-});
+function getLinkToThought(thought) {
+  return 'https://drive.google.com/open?id=' + thought.id;
+}

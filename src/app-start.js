@@ -1,74 +1,41 @@
-require.config({
-    baseUrl: 'src/',
-    paths: {
-        text: "../bower_components/text/text",
-        d3: "../bower_components/d3/d3",
-        //lodash: "../bower_components/lodash/lodash"
-        underscore: "../bower_components/underscore/underscore"
-    },
-    shim: {
-       underscore: {
-          exports: '_'
-       }
-    }
-});
+import thoughtStorage from 'storage/thought-storage';
+import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
+import googleApiLoader from 'api/google-api-loader';
+import appRootComponent from 'ui/app-root';
+import auth from 'auth';
+import googleDriveApi from 'api/google-drive-api';
 
-define([
-    'storage/thought-storage',
-    'ui/spinner/site-global-loading-bar',
-    'api/google-api-loader',
-    'ui/app-root',
-    'api/google-login',
-    'auth',
-    'api/google-drive-api',
+let spinner = siteGlobalLoadingBar.create();
 
-    // non-amd libs:
-    'underscore',
-    // add additional functionality to javascript native Promise.
-    'utils/promise-finally'
-], function(
-    thoughtStorage,
-    siteGlobalLoadingBar,
-    googleApiLoader,
-    appRootComponent,
-    googleLogin,
-    auth,
-    googleDriveApi,
-    _underscore_undefined_,
-    _promise_patch_undefined
-) {
-    var spinner = siteGlobalLoadingBar.create();
+run();
 
-    run();
+function run() {
+  if (auth.signedIn()) {
+    console.info('User is signed in');
+    loadApp();
+  } else {
+    appRootComponent.render({
+      page: 'login'
+    });
+  }
+}
 
-    function run() {
-        if (auth.signedIn()) {
-            console.info('User is signed in');
-            loadApp();
-        } else {
-            appRootComponent.render({
-                page: 'login'
-            });
-        }
-    }
+function loadApp() {
+  console.info('Loading app...');
+  spinner.show('Loading Google Api');
 
-    function loadApp() {
-        console.info('Loading app...');
-        spinner.show('Loading Google Api');
-
-        googleApiLoader
-            .load()
-            .then(googleDriveApi.loadDriveApi)
-            .then(function() {
-                return thoughtStorage.scanDrive()
-            })
-            .then(function() {
-                appRootComponent.render({
-                    page: 'notes'
-                });
-            })
-            .finally(function() {
-                spinner.hide();
-            });
-    }
-});
+  googleApiLoader
+    .load()
+    .then(googleDriveApi.loadDriveApi)
+    .then(function () {
+      return thoughtStorage.scanDrive()
+    })
+    .then(function () {
+      appRootComponent.render({
+        page: 'notes'
+      });
+    })
+    .finally(function () {
+      spinner.hide();
+    });
+}

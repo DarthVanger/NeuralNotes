@@ -1,115 +1,109 @@
-define([
-    'underscore',
-    'ui/spinner/site-global-loading-bar',
-    'storage/thought-storage'
-], function(
-    _,
-    siteGlobalLoadingBar,
-    thoughtStorage
-) {
-    var element;
-    var textarea;
-    var linkToGoogleDrive;
-    var currentViewedThought;
+import _ from 'underscore';
+import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
+import thoughtStorage from 'storage/thought-storage';
 
-    var spinner = siteGlobalLoadingBar.create('note text editor');
+let element;
+let textarea;
+let linkToGoogleDrive;
+let currentViewedThought;
 
-    return {
-        render: render,
-        loadThought: loadThought
-    };
+let spinner = siteGlobalLoadingBar.create('note text editor');
 
-    function render() {
-        element = document.createElement('div');
-        element.className = 'selected-thought-content';
-        textarea = document.createElement('textarea');
-        textarea.className = 'thought-content__textarea';
-        textarea.placeholder = 'Your note...';
-        linkToGoogleDrive = document.createElement('a');
+export default {
+  render: render,
+  loadThought: loadThought
+};
 
-        linkToGoogleDrive.className = 'btn btn-primary btn-lg';
-        linkToGoogleDrive.innerText = 'Open in Google Drive';
-        linkToGoogleDrive.target = '_blank';
-        hideLinkToGoogleDrive();
+function render() {
+  element = document.createElement('div');
+  element.className = 'selected-thought-content';
+  textarea = document.createElement('textarea');
+  textarea.className = 'thought-content__textarea';
+  textarea.placeholder = 'Your note...';
+  linkToGoogleDrive = document.createElement('a');
 
-        element.append(textarea);
-        element.append(linkToGoogleDrive);
+  linkToGoogleDrive.className = 'btn btn-primary btn-lg';
+  linkToGoogleDrive.innerText = 'Open in Google Drive';
+  linkToGoogleDrive.target = '_blank';
+  hideLinkToGoogleDrive();
 
-        initRealtimeSaving();
+  element.append(textarea);
+  element.append(linkToGoogleDrive);
 
-        return element;
-    }
+  initRealtimeSaving();
 
-    function loadThought(thought) {
-        console.log('Load thought');
-        currentViewedThought = thought;
-        if (thought.isNote) {
-            hideLinkToGoogleDrive();
-            showTextArea();
-            setThoughtContent('loading thought contents...');
+  return element;
+}
 
-            console.debug('ThoughtContentController.loadThought(), passed thought: ', thought);
+function loadThought(thought) {
+  console.log('Load thought');
+  currentViewedThought = thought;
+  if (thought.isNote) {
+    hideLinkToGoogleDrive();
+    showTextArea();
+    setThoughtContent('loading thought contents...');
 
-            thoughtStorage.getThoughtContent(thought)
-                .then(function(thoughtContent) {
-                   console.debug('ThoughtContentController.loadThought(), loaded thought content: ', thoughtContent);
-                   setThoughtContent(thoughtContent);
-                });
-        } else {
-           hideTextArea();
-           showLinkToGoogleDrive(thought);
-        }
+    console.debug('ThoughtContentController.loadThought(), passed thought: ', thought);
 
-    }
+    thoughtStorage.getThoughtContent(thought)
+      .then(function (thoughtContent) {
+        console.debug('ThoughtContentController.loadThought(), loaded thought content: ', thoughtContent);
+        setThoughtContent(thoughtContent);
+      });
+  } else {
+    hideTextArea();
+    showLinkToGoogleDrive(thought);
+  }
 
-    function hideTextArea() {
-        textarea.style.display = 'none';
-    }
+}
 
-    function showTextArea() {
-        textarea.style.display = 'block';
-    }
+function hideTextArea() {
+  textarea.style.display = 'none';
+}
 
-    function setThoughtContent(text){
-        textarea.value = text;
-    }
+function showTextArea() {
+  textarea.style.display = 'block';
+}
 
-    function showLinkToGoogleDrive(thought) {
-        linkToGoogleDrive.href = thoughtStorage.getLinkToThought(thought);
-        linkToGoogleDrive.style.display = 'block';
-    }
+function setThoughtContent(text) {
+  textarea.value = text;
+}
 
-    function hideLinkToGoogleDrive() {
-        linkToGoogleDrive.style.display = 'none';
-    }
+function showLinkToGoogleDrive(thought) {
+  linkToGoogleDrive.href = thoughtStorage.getLinkToThought(thought);
+  linkToGoogleDrive.style.display = 'block';
+}
+
+function hideLinkToGoogleDrive() {
+  linkToGoogleDrive.style.display = 'none';
+}
 
 
-    function initRealtimeSaving() {
-        var REAL_TIME_SAVING_INTERVAL_MS = 1000;
-        console.debug('ThoughtContentController.initRealtimeSaving()');
-        var debouncedUpdate = _.debounce(updateThoughtContent, REAL_TIME_SAVING_INTERVAL_MS);
+function initRealtimeSaving() {
+  let REAL_TIME_SAVING_INTERVAL_MS = 1000;
+  console.debug('ThoughtContentController.initRealtimeSaving()');
+  let debouncedUpdate = _.debounce(updateThoughtContent, REAL_TIME_SAVING_INTERVAL_MS);
 
-        textarea.addEventListener('input', function(event) {
-            debouncedUpdate(event);
-        });
-    }
+  textarea.addEventListener('input', function (event) {
+    debouncedUpdate(event);
+  });
+}
 
-    function updateThoughtContent() {
-        console.debug('ThoughtContentController.updateThoughtContent()');
-        var savingThoughtContentSpinner = spinner.create('saving thought');
-        savingThoughtContentSpinner.show();
+function updateThoughtContent() {
+  console.debug('ThoughtContentController.updateThoughtContent()');
+  let savingThoughtContentSpinner = spinner.create('saving thought');
+  savingThoughtContentSpinner.show();
 
-        currentViewedThought.content = textarea.value;
+  currentViewedThought.content = textarea.value;
 
-        console.debug('RealtimeSaving: Save thought content: currentViewedThought: ', currentViewedThought);
+  console.debug('RealtimeSaving: Save thought content: currentViewedThought: ', currentViewedThought);
 
-        return thoughtStorage.update(currentViewedThought)
-            .catch(function(error) {
-                uiErrorNotification.show('Failed to save thought content');
-                console.error(error);
-            })
-            .finally(function() {
-                savingThoughtContentSpinner.hide();
-            });
-    }
-});
+  return thoughtStorage.update(currentViewedThought)
+    .catch(function (error) {
+      uiErrorNotification.show('Failed to save thought content');
+      console.error(error);
+    })
+    .finally(function () {
+      savingThoughtContentSpinner.hide();
+    });
+}

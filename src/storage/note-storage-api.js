@@ -1,8 +1,10 @@
 define([
+    'underscore',
     'api/google-drive-api',
     'ui/spinner/site-global-loading-bar',
     'ui/ui-error-notification'
 ], function(
+    _,
     googleDriveApi,
     siteGlobalLoadingBar,
     uiErrorNotification
@@ -152,7 +154,7 @@ define([
           'fields': googleDriveApi.FILE_LIST_FIELDS,
           'q': '"' + folderId + '" in parents'
         });
-  
+
         spinner.show();
         var promise = new Promise(function(resolve, reject) {
               request.execute(function(resp) {
@@ -170,7 +172,7 @@ define([
                 resolve(resp.files);
               })
         });
-  
+
         return promise;
     }
 
@@ -248,7 +250,7 @@ define([
         })
             .then(function(newFile) {
                 console.debug('Created a new file: ' + newFile.name);
-                return updateFile(newFile, options.content); 
+                return updateFile(newFile, options.content);
             })
             .then(function(updatedFile) {
                 console.debug('Updated file: ' + updatedFile.name);
@@ -345,7 +347,7 @@ define([
             return noteContentFile;
         });
     }
-    
+
     function getTextFileContents(options) {
         var requestParams = {
             fileId: options.fileId,

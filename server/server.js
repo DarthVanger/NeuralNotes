@@ -1,17 +1,14 @@
-var log = require('./logger');
-var express = require('express');
-var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+const log = require('./logger');
+const express = require('express');
+const app = express();
+const webpack = require('webpack');
+const webpackMiddleware = require('webpack-dev-middleware');
+const webpackConfig = require('../webpack.config.js');
 
 log.info('Starting express server');
 
-app.use(express.static('./'));
+app.use(webpackMiddleware(webpack(webpackConfig)));
 
-app.get('/', function(req, res){
-  res.sendfile('index.html');
-});
-
-http.listen(3000, function(){
-  log.info('listening on *:3000');
+app.listen(3000, () => {
+  log.info('listening on *:3000')
 });

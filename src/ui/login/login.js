@@ -1,4 +1,10 @@
 console.debug('login.js');
+require('./slide-1.png');
+require('./slide-2.png');
+require('./slide-3.png');
+require('./slide-4.png');
+require('./login.css');
+
 define([
     'storage/thought-storage',
     'api/google-drive-api',

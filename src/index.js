@@ -10,6 +10,12 @@ import appRootComponent from 'ui/app-root';
 import auth from 'auth';
 import googleDriveApi from 'api/google-drive-api';
 
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { App } from './ui/app-root';
+
+ReactDOM.render( <App />, document.getElementById('app-root') );
+
 var spinner = siteGlobalLoadingBar.create();
 
 run();

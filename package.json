@@ -4,7 +4,7 @@
   "description": "Thought managment tool",
   "main": "server.js",
   "scripts": {
-    "start": "node server/server.js",
+    "start": "NODE_ENV='development' node server/server.js",
     "build": "webpack"
   },
   "author": "DarthVanger",

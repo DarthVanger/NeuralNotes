@@ -46,7 +46,7 @@ module.exports = {
     ]
   },
   devtool: 'source-map',
-  // mode: 'production',
+  mode: process.env=='production'?'production':'development',
   resolve: {
     modules: [
       path.resolve('./src'),

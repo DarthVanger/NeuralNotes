@@ -11,6 +11,8 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.13.4",
+    "react": "^16.8.2",
+    "react-dom": "^16.8.2",
     "socket.io": "^1.4.6"
   },
   "devDependencies": {

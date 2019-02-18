@@ -3,7 +3,6 @@ import thoughtStorage from 'storage/thought-storage';
 import googleDriveApi from 'api/google-drive-api';
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
 import { gapiAuthorize } from 'api/google-login';
-import loginPageHTML from 'text!./login.html';
 import googleApiLoader from 'api/google-api-loader';
 import './slide-1.png';
 import './slide-2.png';
@@ -11,12 +10,13 @@ import './slide-3.png';
 import './slide-4.png';
 import './login.css';
 import React, { Component } from 'react';
+import history from '../../utils/history';
 
 let spinner = siteGlobalLoadingBar.create('login');
 
 class LoginPage extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       googleApiLoaded: false
     }
@@ -45,8 +45,7 @@ class LoginPage extends Component {
       .then(thoughtStorage.scanDrive)
       .then(function () {
         console.info('login: drive scanned, redirecting to the app main page');
-        // TODO: below should be integrated with react router
-        //redirectToNotesPage();
+        history.push('/notes');
       });
 
     return false;

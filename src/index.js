@@ -12,9 +12,15 @@ import googleDriveApi from 'api/google-drive-api';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Router } from 'react-router-dom';
 import { App } from './ui/app-root';
+import history from './utils/history';
 
-ReactDOM.render( <App />, document.getElementById('app-root') );
+ReactDOM.render(( 
+  <Router history={history}>
+    <App />
+  </Router>
+  ), document.getElementById('app-root') );
 
 var spinner = siteGlobalLoadingBar.create();
 

@@ -1,5 +1,5 @@
 import _ from 'underscore';
-import headerComponent from './thought-name-editor/header';
+//import headerComponent from './thought-name-editor/header';
 
 let element;
 
@@ -32,10 +32,11 @@ function render(options) {
 
   document.body.appendChild(element);
   element.append(textArea);
-  element.append(headerComponent.render({
-    onDeleteClick: options.onDeleteClick,
-    onUploadFileClick: options.onUploadFileClick
-  }));
+  //TODO: import component below with React
+  //element.append(headerComponent.render({
+  //  onDeleteClick: options.onDeleteClick,
+  //  onUploadFileClick: options.onUploadFileClick
+  //}));
 }
 
 function unmount() {

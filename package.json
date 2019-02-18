@@ -11,8 +11,10 @@
   "license": "MIT",
   "dependencies": {
     "express": "^4.13.4",
+    "history": "^4.7.2",
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
+    "react-router-dom": "^4.3.1",
     "socket.io": "^1.4.6"
   },
   "devDependencies": {

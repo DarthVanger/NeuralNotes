@@ -5,6 +5,7 @@ import loginPage from 'ui/login/login';
 import thoughtContentEditor from 'ui/thought-content-editor';
 import './layout.css';
 import React, { Component } from 'react';
+import { LoginPage } from './login/login';
 
 let element;
 
@@ -15,7 +16,7 @@ function render(props) {
   
   switch (props.page) {
     case 'login':
-      renderLoginPage();
+      //renderLoginPage();
       break;
       case 'notes':
       renderNotesPage();
@@ -57,6 +58,18 @@ export class App extends Component {
   }
 
   render() {
+    let Page;
+    switch (this.state.currentPage ) {
+      case 'login':
+        Page=LoginPage;
+        break;
+      case 'note':
+        Page=(<div>This is the note page</div>)
+        break;
+      default:
+        Page=(<div>No page</div>);
+    }
+    console.log('here si the page...', Page)
     // methodology for react migration:
     // 1. make login page into a component in its own html file
     // 2. make notes pages into a component in its own html file
@@ -64,9 +77,10 @@ export class App extends Component {
     // 4. Once all is migrated to react, use React Router for page navigation
     return (
       <div>
-      {
-        // components will go here...
-      }
+        hey bros!!
+        {
+          <LoginPage/>
+        }
       </div>
     )
   }

@@ -2,8 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-//test
-
+// test2
 const ASSET_PATH = process.env.ASSET_PATH || '/';
 
 module.exports = {

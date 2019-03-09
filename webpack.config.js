@@ -2,8 +2,9 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-// test2
 const ASSET_PATH = process.env.ASSET_PATH || '/';
+
+// test 3
 
 module.exports = {
   entry: './src/index.js',

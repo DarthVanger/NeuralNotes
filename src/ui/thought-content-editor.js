@@ -1,109 +1,89 @@
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import _ from 'underscore';
+
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
 import thoughtStorage from 'storage/thought-storage';
+import uiErrorNotification from 'ui/ui-error-notification';
 
-let element;
-let textarea;
-let linkToGoogleDrive;
-let currentViewedThought;
+const REAL_TIME_SAVING_INTERVAL_MS = 1000;
+const spinner = siteGlobalLoadingBar.create('note text editor');
 
-let spinner = siteGlobalLoadingBar.create('note text editor');
+export class ThoughtContentEditor extends Component {
+  state = {
+    text: '',
+    noteText: ''
+  };
 
-export default {
-  render: render,
-  loadThought: loadThought
-};
+  textAreaRef = React.createRef();
 
-function render() {
-  element = document.createElement('div');
-  element.className = 'selected-thought-content';
-  textarea = document.createElement('textarea');
-  textarea.className = 'thought-content__textarea';
-  textarea.placeholder = 'Your note...';
-  linkToGoogleDrive = document.createElement('a');
+  debouncedUpdate = _.debounce(this.updateThoughtContent, REAL_TIME_SAVING_INTERVAL_MS);
 
-  linkToGoogleDrive.className = 'btn btn-primary btn-lg';
-  linkToGoogleDrive.innerText = 'Open in Google Drive';
-  linkToGoogleDrive.target = '_blank';
-  hideLinkToGoogleDrive();
+  render() {
+    const {text} = this.state;
 
-  element.append(textarea);
-  element.append(linkToGoogleDrive);
+    const {note, note: {isNote}} = this.props;
+    const link = thoughtStorage.getLinkToThought(note);
 
-  initRealtimeSaving();
-
-  return element;
-}
-
-function loadThought(thought) {
-  console.log('Load thought');
-  currentViewedThought = thought;
-  if (thought.isNote) {
-    hideLinkToGoogleDrive();
-    showTextArea();
-    setThoughtContent('loading thought contents...');
-
-    console.debug('ThoughtContentController.loadThought(), passed thought: ', thought);
-
-    thoughtStorage.getThoughtContent(thought)
-      .then(function (thoughtContent) {
-        console.debug('ThoughtContentController.loadThought(), loaded thought content: ', thoughtContent);
-        setThoughtContent(thoughtContent);
-      });
-  } else {
-    hideTextArea();
-    showLinkToGoogleDrive(thought);
+    return (
+      <div className="selected-thought-content">
+        {isNote ? (
+          <textarea
+            ref={this.textAreaRef}
+            className="thought-content__textarea"
+            onChange={this.onChange}
+            placeholder="Your note..."
+            value={text}
+          />
+        ) : (
+          <a
+            className="btn btn-primary btn-lg"
+            style={{display: 'block'}}
+            target="_blank"
+            href={link}
+          >
+            Open in Google Drive
+          </a>
+        )}
+      </div>
+    );
   }
 
+  onChange = () => {
+    this.setState({text: this.textAreaRef.current.value});
+    this.debouncedUpdate();
+  };
+
+  static getDerivedStateFromProps({note, noteText}, state) {
+    console.log('Load thought');
+    if (noteText !== state.noteText) {
+      return {
+        text: noteText,
+        noteText
+      }
+    }
+  }
+
+  updateThoughtContent() {
+    console.debug('ThoughtContentController.updateThoughtContent()');
+    let savingThoughtContentSpinner = spinner.create('saving thought');
+    savingThoughtContentSpinner.show();
+
+    this.props.note.content = this.textAreaRef.current.value;
+
+    console.debug('RealtimeSaving: Save thought content: currentViewedThought: ', this.props.note);
+
+    return thoughtStorage.update(this.props.note)
+      .catch(function (error) {
+        uiErrorNotification.show('Failed to save thought content');
+        console.error(error);
+      })
+      .finally(function () {
+        savingThoughtContentSpinner.hide();
+      });
+  }
 }
 
-function hideTextArea() {
-  textarea.style.display = 'none';
-}
-
-function showTextArea() {
-  textarea.style.display = 'block';
-}
-
-function setThoughtContent(text) {
-  textarea.value = text;
-}
-
-function showLinkToGoogleDrive(thought) {
-  linkToGoogleDrive.href = thoughtStorage.getLinkToThought(thought);
-  linkToGoogleDrive.style.display = 'block';
-}
-
-function hideLinkToGoogleDrive() {
-  linkToGoogleDrive.style.display = 'none';
-}
-
-
-function initRealtimeSaving() {
-  let REAL_TIME_SAVING_INTERVAL_MS = 1000;
-  console.debug('ThoughtContentController.initRealtimeSaving()');
-  let debouncedUpdate = _.debounce(updateThoughtContent, REAL_TIME_SAVING_INTERVAL_MS);
-
-  textarea.addEventListener('input', function (event) {
-    debouncedUpdate(event);
-  });
-}
-
-function updateThoughtContent() {
-  console.debug('ThoughtContentController.updateThoughtContent()');
-  let savingThoughtContentSpinner = spinner.create('saving thought');
-  savingThoughtContentSpinner.show();
-
-  currentViewedThought.content = textarea.value;
-
-  console.debug('RealtimeSaving: Save thought content: currentViewedThought: ', currentViewedThought);
-
-  return thoughtStorage.update(currentViewedThought)
-    .catch(function (error) {
-      uiErrorNotification.show('Failed to save thought content');
-      console.error(error);
-    })
-    .finally(function () {
-      savingThoughtContentSpinner.hide();
-    });
-}
+ThoughtContentEditor.propTypes = {
+  note: PropTypes.object.isRequired
+};

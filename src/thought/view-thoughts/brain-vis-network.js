@@ -73,7 +73,6 @@ BrainVisNetwork.prototype.renderInitialThought = function (thought) {
    * Container for the vis network visualization
    */
   this.container = this.containerDomElement;
-  this.container.innerHTML = '';
 
   /**
    * Collect options and initialize the vis network

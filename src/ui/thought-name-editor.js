@@ -1,45 +1,54 @@
+import React, {Component} from 'react';
 import _ from 'underscore';
-import headerComponent from './thought-name-editor/header';
 
-let element;
+import { HeaderComponent } from 'ui/thought-name-editor/header';
 
-export default {render, unmount};
+const wrapperStyles = {
+  position: 'fixed',
+  top: '0',
+  height: '4em',
+  width: '100%',
+  paddingTop: '1.5em',
+  zIndex: '2',
+  backgroundColor: 'black',
+  color: 'white'
+};
 
-function render(options) {
-  let thought = options.thought;
-  element = document.createElement('div');
-  element.id = 'thought-name-editor';
-  element.style.position = 'absolute';
-  element.style.top = '0';
-  element.style.height = '4em';
-  element.style.width = '100%';
-  element.style.paddingTop = '1.5em';
-  element.style.zIndex = '2';
-  element.style.backgroundColor = 'black';
-  element.style.color = 'white';
+const textAreaStyles = {
+  width: '100%',
+  height: '100%',
+  padding: '0.5em',
+  backgroundColor: 'black',
+};
 
-  let textArea = document.createElement('textarea');
-  textArea.style.width = '100%';
-  textArea.style.height = '100%';
-  textArea.style.padding = '0.5em';
-  textArea.style.backgroundColor = 'black';
+export class ThoughtNameEditor extends Component {
+  state = {name: '', propName: ''};
 
-  let debouncedOnChange = _.debounce(options.onChange, 1500);
+  ref = React.createRef();
 
-  element.addEventListener('input', debouncedOnChange);
+  debouncedOnChange = _.debounce(name => this.props.onChange(name), 1500);
 
-  textArea.innerText = thought.name;
+  render() {
+    const {onDeleteClick, onUploadFileClick} = this.props;
 
-  document.body.appendChild(element);
-  element.append(textArea);
-  element.append(headerComponent.render({
-    onDeleteClick: options.onDeleteClick,
-    onUploadFileClick: options.onUploadFileClick
-  }));
-}
+    return (
+      <div id="thought-name-editor" style={wrapperStyles}>
+        <HeaderComponent onDeleteClick={onDeleteClick} onUploadFileClick={onUploadFileClick}/>
+        <textarea ref={this.ref} onChange={this.onChange} style={textAreaStyles} value={this.state.name}/>
+      </div>
+    );
+  }
 
-function unmount() {
-  if (element) {
-    element.remove();
+  static getDerivedStateFromProps({thought: {name}}, state) {
+    if (name !== state.propName) {
+      console.log(name);
+      return {name, propName: name};
+    }
+  }
+
+  onChange = () => {
+    const name = this.ref.current.value;
+    this.debouncedOnChange(name);
+    this.setState({name})
   }
 }

@@ -1,0 +1,19 @@
+{
+  "presets": [
+    "@babel/preset-env",
+    "@babel/preset-react"
+  ],
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "root": [
+          "./src"
+        ],
+        "alias": {}
+      }
+    ],
+    "react-hot-loader/babel",
+    "@babel/plugin-proposal-class-properties"
+  ]
+}

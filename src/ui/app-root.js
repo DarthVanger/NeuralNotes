@@ -1,50 +1,45 @@
-import thoughtsMindMapView from 'thought/view-thoughts/thoughts-mind-map-view';
-import thoughtStorage from 'storage/thought-storage';
-import controlsHelp from 'ui/controls-help';
-import loginPage from 'ui/login/login';
-import thoughtContentEditor from 'ui/thought-content-editor';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import {LoginPage} from 'ui/login/login';
 import './layout.css';
+import {NotesPage} from 'ui/notes-page';
 
-let element;
+export const PAGES_ENUM = {
+  EMPTY: Symbol('empty'),
+  LOGIN: Symbol('login'),
+  NOTES: Symbol('notes')
+};
 
-export default {render};
+export class AppRoot extends Component {
+  render() {
+    // TODO: remove it when project is moved to styled-components
+    const element = document.getElementById('app-root');
+    element.style.position = 'relative';
+    element.style.height = '100%';
 
-function render(props) {
-  element = document.getElementById('app-root');
-  element.style.position = 'relative';
-  element.style.height = '100%';
-
-  switch (props.page) {
-    case 'login':
-      renderLoginPage();
-      break;
-    case 'notes':
-      renderNotesPage();
-      break;
-    default:
-      throw new Error('unknown page: ', page);
+    return this.getPage();
   }
 
-  function renderLoginPage() {
-    element.append(loginPage.render({
-      redirectToNotesPage: function () {
-        loginPage.unmount();
-        renderNotesPage();
-      }
-    }));
+  getPage() {
+    const { page } = this.props;
+    switch (page) {
+      case PAGES_ENUM.EMPTY:
+        return null;
+      case PAGES_ENUM.LOGIN:
+        return <LoginPage authorized={this.onLoginSuccess}/>;
+      case PAGES_ENUM.NOTES:
+        return <NotesPage/>;
+      default:
+        throw new Error(`unknown page: ${page}`);
+    }
   }
 
-  function renderNotesPage() {
-    let selectedThoughtId = thoughtStorage.getRoot().id;
-    let selectedThought = thoughtStorage.findThoughtById(selectedThoughtId);
-    controlsHelp.render();
-
-    element.append(thoughtContentEditor.render());
-
-    element.append(thoughtsMindMapView.render({
-      thoughts: thoughtStorage.getThoughts(),
-      selectedThought: selectedThought,
-      selectedThoughtId: selectedThoughtId
-    }));
-  }
+  onLoginSuccess = () => {
+    this.props.changePage(PAGES_ENUM.NOTES);
+  };
 }
+
+AppRoot.PropTypes = {
+  page: PropTypes.string.isRequired,
+  changePage: PropTypes.func.isRequired
+};

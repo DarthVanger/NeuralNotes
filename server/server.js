@@ -1,14 +1,19 @@
-const log = require('./logger');
-const express = require('express');
-const app = express();
-const webpack = require('webpack');
-const webpackMiddleware = require('webpack-dev-middleware');
-const webpackConfig = require('../webpack.config.js');
+import webpack from 'webpack';
+import path from 'path';
+import webpackConfig from '../webpack.config.js';
+import WebpackDevServer from 'webpack-dev-server';
+import log from './logger';
 
-log.info('Starting express server');
+const options = {
+  hot: true,
+  publicPath: path.resolve(__dirname, '/dist'),
+  port: 3000,
+  host: 'localhost',
+};
 
-app.use(webpackMiddleware(webpack(webpackConfig)));
+log.info('Starting dev server');
 
-app.listen(3000, () => {
-  log.info('listening on *:3000')
-});
+WebpackDevServer.addDevServerEntrypoints(webpackConfig, options);
+
+const server = new WebpackDevServer(webpack(webpackConfig));
+server.listen(options.port, () => log.info('listening on *:3000'));

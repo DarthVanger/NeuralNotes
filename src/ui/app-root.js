@@ -39,7 +39,7 @@ export class AppRoot extends Component {
   };
 }
 
-AppRoot.PropTypes = {
-  page: PropTypes.string.isRequired,
+AppRoot.propTypes = {
+  page: PropTypes.symbol.isRequired,
   changePage: PropTypes.func.isRequired
 };

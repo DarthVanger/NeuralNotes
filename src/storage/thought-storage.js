@@ -1,13 +1,13 @@
-import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
+// import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
 import thoughtStorageApi from 'storage/note-storage-api';
 import thoughtStorageTree from 'storage/thought-tree';
 
 'use strict';
 
-var appRootFolder = thoughtStorageApi.appRootFolder;
-var thoughtsTree = {};
+// var appRootFolder = thoughtStorageApi.appRootFolder;
+const thoughtsTree = {};
 
-var spinner = siteGlobalLoadingBar.create('thought-storage');
+// var spinner = siteGlobalLoadingBar.create('thought-storage');
 
 export default {
   restoreFromCache,

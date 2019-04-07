@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import _ from 'underscore';
 
 import { HeaderComponent } from 'ui/thought-name-editor/header';
@@ -52,3 +53,10 @@ export class ThoughtNameEditor extends Component {
     this.setState({name})
   }
 }
+
+ThoughtNameEditor.propTypes = {
+  thought: PropTypes.object.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onDeleteClick: PropTypes.func.isRequired,
+  onUploadFileClick: PropTypes.func.isRequired
+};

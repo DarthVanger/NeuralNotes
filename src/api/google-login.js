@@ -1,3 +1,4 @@
+/* global gapi */
 import uiErrorNotification from 'ui/ui-error-notification';
 import auth from 'auth';
 import {
@@ -11,7 +12,7 @@ import {
 export function checkAuth() {
   console.debug('googleLogin.checkAuth()');
   console.log('googleLogin.checkAuth() (calling gapiAuthorize())');
-  return new Promise(function (resolve, reject) {
+  return new Promise(resolve => {
     if (!auth.haveToken()) {
       console.info('User token expired, authorize again');
       gapiAuthorize().then(resolve);
@@ -26,19 +27,19 @@ export function checkAuth() {
   });
 }
 
-function updateSigninStatus(isSignedIn) {
-  if (isSignedIn) {
-    console.info('User is signed in');
-  } else {
-    console.info('User NOT signed in');
-    gapiAuthorize();
-  }
-}
+// function updateSigninStatus(isSignedIn) {
+//   if (isSignedIn) {
+//     console.info('User is signed in');
+//   } else {
+//     console.info('User NOT signed in');
+//     gapiAuthorize();
+//   }
+// }
 
 export function gapiAuthorize() {
   console.debug('googleLogin.gapiAuthorize(): clientId: ', clientId);
   console.debug('googleLogin.gapiAuthorize(): scopes: ', scopes);
-  return new Promise(function (resolve, rejct) {
+  return new Promise((resolve, reject) => {
     gapi.auth.authorize({
       client_id: clientId,
       scope: scopes.join(' '),

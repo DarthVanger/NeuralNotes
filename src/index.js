@@ -18,20 +18,21 @@ const spinner = siteGlobalLoadingBar.create();
 class App extends Component {
   state = {page: PAGES_ENUM.EMPTY};
 
-  render() {
-    const {page} = this.state;
-    return (
-      <AppRoot page={page} changePage={this.changePage}/>
-    );
-  }
-
-  componentWillMount() {
+  constructor() {
+    super();
     if (auth.signedIn()) {
       console.info('User is signed in');
       this.loadApp();
     } else {
       this.changePage(PAGES_ENUM.LOGIN);
     }
+  }
+
+  render() {
+    const {page} = this.state;
+    return (
+      <AppRoot page={page} changePage={this.changePage}/>
+    );
   }
 
   changePage = pageName => {

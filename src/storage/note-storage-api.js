@@ -1,3 +1,4 @@
+/* global gapi */
 import _ from 'underscore';
 import service from 'storage/note-storage-api';
 import googleDriveApi from 'api/google-drive-api';
@@ -44,7 +45,7 @@ function getAppRootFolder() {
  */
 function scanDrive() {
   console.debug('Scan note storage...');
-  return new Promise(function (resolve, reject) {
+  return new Promise(resolve => {
     spinner.show();
     findAppFolder().then(function (searchResult) {
       if (searchResult.length == 0) {
@@ -73,7 +74,7 @@ function scanDrive() {
  */
 function fetchChildNotes(note) {
   spinner.show();
-  return new Promise(function (resolve, reject) {
+  return new Promise(resolve => {
     console.debug('[Get] Child notes for: "' + note.name + '"');
     getFiles(note.id).then(function (files) {
       //notes.push(appRootFolder);
@@ -123,7 +124,7 @@ function fetchNoteById(noteId) {
     fields: googleDriveApi.FILE_FIELDS
   });
 
-  let promise = new Promise(function (resolve, reject) {
+  let promise = new Promise(resolve => {
     request.execute(function (resp) {
       console.debug('[Loaded] Note folder for: "' + noteId + '"');
       let file = resp;
@@ -149,7 +150,7 @@ function getFiles(folderId) {
   });
 
   spinner.show();
-  let promise = new Promise(function (resolve, reject) {
+  let promise = new Promise(resolve => {
     request.execute(function (resp) {
       console.debug('[Loaded] Files: ', resp);
       if (!resp.files) {
@@ -270,7 +271,7 @@ function createEmptyFile(options) {
   });
 
   spinner.show();
-  var promise = new Promise(function (resolve, reject) {
+  var promise = new Promise(resolve => {
     request.execute(function (newFile) {
       resolve(newFile);
     });
@@ -280,7 +281,7 @@ function createEmptyFile(options) {
     });
 
   return promise;
-};
+}
 
 /**
  * Update empty file with text content.
@@ -298,7 +299,7 @@ function updateFile(createdFile, content) {
   });
 
 
-  var promise = new Promise(function (resolve, reject) {
+  var promise = new Promise(resolve => {
     request.execute(function (resp) {
       resolve(resp);
     });
@@ -362,7 +363,7 @@ function getTextFileContents(options) {
 
 
   spinner.show();
-  var promise = new Promise(function (resolve, reject) {
+  var promise = new Promise(resolve => {
     request.execute(function (gapiReturnsFalseHereForBlobs, responsePlain) {
       var responseObject = JSON.parse(responsePlain);
       var responseBody = responseObject.gapiRequest.data.body;
@@ -386,7 +387,7 @@ function getTextFileContents(options) {
  */
 function create(note, parentNote) {
   if (!parentNote) {
-    parentNote = appRootFolder;
+    parentNote = getAppRootFolder();
   }
 
   spinner.show();
@@ -401,7 +402,7 @@ function create(note, parentNote) {
       parents: [createdDirectory.id],
     });
   })
-    .then(function (createdTxtFile) {
+    .then(() => {
       return note;
     })
     .finally(function () {
@@ -453,7 +454,7 @@ function remove(note) {
   var request = googleDriveApi.client.files.delete(requestParams);
 
   spinner.show();
-  var promise = new Promise(function (resolve, reject) {
+  var promise = new Promise(resolve => {
     request.execute(function (response) {
       if (response.error) {
         console.error('Failed to delete a note "' + note.name + '"');

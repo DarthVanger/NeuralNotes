@@ -22,7 +22,7 @@ function show(messageText) {
     document.body.appendChild(element);
   }
 
-  function unmount() {
-    element.remove();
-  }
+  // function unmount() {
+  //   element.remove();
+  // }
 }

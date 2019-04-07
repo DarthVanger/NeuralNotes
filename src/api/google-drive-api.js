@@ -1,3 +1,4 @@
+/* global gapi */
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar'
 
 let client;
@@ -32,7 +33,7 @@ export default self;
  */
 function loadDriveApi() {
   console.info('Loading Google Drive API...');
-  let promise = new Promise(function (resolve, reject) {
+  let promise = new Promise(resolve => {
     //gapi.client.load('drive', 'v3', function() {
     gapi.client.load('drive', 'v3').then(function () {
       self.client = gapi.client.drive;
@@ -94,7 +95,7 @@ function findByName(options) {
   //}
 
   spinner.show();
-  let promise = new Promise(function (resolve, reject) {
+  let promise = new Promise(resolve => {
     request.execute(function (resp) {
       console.debug('googleDriveApi.findByname(): Files found by query "' + query + '": ', resp);
       if (resp.error) {
@@ -122,7 +123,7 @@ function updateFile(options) {
     'body': options.text
   });
 
-  let promise = new Promise(function (resolve, reject) {
+  let promise = new Promise(resolve => {
     request.execute(function (response) {
       resolve(response);
     });
@@ -144,7 +145,7 @@ function updateFileName(options) {
   });
 
   console.info('Updating filename to: ' + fileName + '...');
-  let promise = new Promise(function (resolve, reject) {
+  let promise = new Promise(resolve => {
     request.execute(function (response) {
       console.info('Updated filename to: ' + fileName);
       resolve(response);
@@ -168,7 +169,7 @@ function parseParents(file) {
   } else {
     console.debug('googleDriveApi.parseParents(): skipping file with name "' + file.name + '", because it has no "parents" property');
   }
-};
+}
 
 /**
  * Create a directory.
@@ -187,10 +188,10 @@ function createDirectory(options) {
     requestParams.parents = options.parents;
   }
 
-  var request = self.client.files.create(requestParams);
+  const request = self.client.files.create(requestParams);
 
   spinner.show();
-  return new Promise(function (resolve, reject) {
+  return new Promise(resolve => {
     request.execute(function (newFile) {
       resolve(newFile);
     });

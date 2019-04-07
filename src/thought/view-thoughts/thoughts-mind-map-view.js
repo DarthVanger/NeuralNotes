@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 
 import BrainVisNetwork from 'thought/view-thoughts/brain-vis-network';
 import VisNetworkHelper from 'thought/view-thoughts/vis-network-helper';
@@ -50,7 +51,7 @@ export class ThoughtsMindMapView extends Component {
     brainVisNetwork.visNetwork.on('click', this.visNetworkClickHandler);
     brainVisNetwork.visNetwork.on('doubleClick', this.visNetworkDoubleClickHandler);
     brainVisNetwork.visNetwork.on('hold', this.visNetworkHoldHandler);
-  };
+  }
 
   /**
    * Set thoughts and selectedThought.
@@ -243,9 +244,7 @@ export class ThoughtsMindMapView extends Component {
   };
 
   onUploadFileClick = () => {
-    let note = this.state.currentViewedThought;
     console.info('[Event] Upload file click');
-
     window.open(thoughtStorage.getLinkToThought(this.state.currentViewedThought));
   };
 
@@ -284,3 +283,9 @@ export class ThoughtsMindMapView extends Component {
       });
   }
 }
+
+ThoughtsMindMapView.propTypes = {
+  thoughts: PropTypes.object.isRequired,
+  selectedThought: PropTypes.object.isRequired,
+  changeNote: PropTypes.func.isRequired
+};

@@ -17,8 +17,8 @@ export default {
 function logTree() {
   console.debug('==============\n Thoughts Tree\n===========');
   forEachNode(function (node, depth) {
-    var msg = node.name;
-    for (var i = 0; i <= depth; i++) {
+    let msg = node.name;
+    for (let i = 0; i <= depth; i++) {
       msg = '>> ' + msg;
     }
     console.debug(msg);
@@ -56,49 +56,49 @@ function findThoughtById(id) {
   }
 }
 
-function mapTree(func) {
-  var depthLimit = 4;
-  var nodesLimit = 50;
-  var nodesCount = 0;
-
-  var mappedTree = {};
-  executeForNode(thoughtsTree.root, func);
-  return mappedTree;
-
-  function executeForNode(node, func, parentNode, currentDepth) {
-    nodesCount++;
-
-    var clonedNode = _.clone(node);
-    var mappedNode = func(clonedNode);
-
-    if (!currentDepth) currentDepth = 0;
-    if (!parentNode) {
-      mappedTree.root = mappedNode;
-    } else {
-      parentNode.children.push(mappedNode);
-
-      if (isRecursionLimitReached(currentDepth, nodesCount)) return;
-    }
-
-    if (node.children) {
-      clonedNode.children = [];
-      _.each(node.children, function (childNode) {
-        executeForNode(childNode, func, clonedNode, currentDepth + 1);
-      });
-    }
-  }
-
-  function isRecursionLimitReached(currentDepth, nodesCount) {
-    var limitReached = (nodesCount > nodesLimit || currentDepth > depthLimit);
-    if (limitReached) {
-      console.warn('Traversing tree: reached depth/nodes limit, exiting');
-      console.warn('Traversing tree: currentDepth: ', currentDepth);
-      console.warn('Traversing tree: nodesCount: ', nodesCount);
-    }
-
-    return limitReached;
-  }
-}
+// function mapTree(func) {
+//   var depthLimit = 4;
+//   var nodesLimit = 50;
+//   var nodesCount = 0;
+//
+//   var mappedTree = {};
+//   executeForNode(thoughtsTree.root, func);
+//   return mappedTree;
+//
+//   function executeForNode(node, func, parentNode, currentDepth) {
+//     nodesCount++;
+//
+//     var clonedNode = _.clone(node);
+//     var mappedNode = func(clonedNode);
+//
+//     if (!currentDepth) currentDepth = 0;
+//     if (!parentNode) {
+//       mappedTree.root = mappedNode;
+//     } else {
+//       parentNode.children.push(mappedNode);
+//
+//       if (isRecursionLimitReached(currentDepth, nodesCount)) return;
+//     }
+//
+//     if (node.children) {
+//       clonedNode.children = [];
+//       _.each(node.children, function (childNode) {
+//         executeForNode(childNode, func, clonedNode, currentDepth + 1);
+//       });
+//     }
+//   }
+//
+//   function isRecursionLimitReached(currentDepth, nodesCount) {
+//     var limitReached = (nodesCount > nodesLimit || currentDepth > depthLimit);
+//     if (limitReached) {
+//       console.warn('Traversing tree: reached depth/nodes limit, exiting');
+//       console.warn('Traversing tree: currentDepth: ', currentDepth);
+//       console.warn('Traversing tree: nodesCount: ', nodesCount);
+//     }
+//
+//     return limitReached;
+//   }
+// }
 
 /**
  * Execute func for each node of the thoughts tree

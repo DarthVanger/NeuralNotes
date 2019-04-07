@@ -40,6 +40,7 @@ export class ThoughtContentEditor extends Component {
             className="btn btn-primary btn-lg"
             style={{display: 'block'}}
             target="_blank"
+            rel="noopener noreferrer"
             href={link}
           >
             Open in Google Drive
@@ -54,7 +55,7 @@ export class ThoughtContentEditor extends Component {
     this.debouncedUpdate();
   };
 
-  static getDerivedStateFromProps({note, noteText}, state) {
+  static getDerivedStateFromProps({noteText}, state) {
     console.log('Load thought');
     if (noteText !== state.noteText) {
       return {
@@ -85,5 +86,6 @@ export class ThoughtContentEditor extends Component {
 }
 
 ThoughtContentEditor.propTypes = {
-  note: PropTypes.object.isRequired
+  note: PropTypes.object.isRequired,
+  noteText: PropTypes.string.isRequired
 };

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const wrapperStyles = {
   position: 'absolute',
@@ -28,3 +29,8 @@ export const HeaderComponent = ({onDeleteClick, onUploadFileClick}) => (
     </div>
   </div>
 );
+
+HeaderComponent.propTypes = {
+  onDeleteClick: PropTypes.func.isRequired,
+  onUploadFileClick: PropTypes.func.isRequired
+};

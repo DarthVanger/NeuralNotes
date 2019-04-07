@@ -1,3 +1,4 @@
+/* global gapi */
 console.debug('cloid-api-loader.js');
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
 import {
@@ -26,7 +27,7 @@ function loadGoogleClient() {
   console.info('Loading Google Client...');
   let spinner = siteGlobalLoadingBar.create('login');
   let checkGapiSpinner = spinner.create('checking google login');
-  return new Promise(function (resolve, reject) {
+  return new Promise(resolve => {
     scriptJS("https://apis.google.com/js/api.js", checkGAPI);
 
     // Poll until gapi is ready

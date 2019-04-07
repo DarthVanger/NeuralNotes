@@ -68,7 +68,7 @@ function showLoadingBar() {
   backgroundSpinner.classList.add('show');
 }
 
-function hideLoadingBar(name) {
+function hideLoadingBar() {
   loadingBar.style.display = 'none';
   backgroundSpinner.classList.remove('show');
 }

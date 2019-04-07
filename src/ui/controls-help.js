@@ -18,9 +18,9 @@ export class ControlsHelp extends Component {
     return (
       <div id="tutorial" style={styles} onClick={onClick}>
         <span style={{float: 'right', cursor: 'pointer'}}>X</span>
-        Controls:<br/>
-        Double-click: add a child note<br/>
-        Hold: edit note's name
+        {'Controls:'}<br/>
+        {'Double-click: add a child note'}<br/>
+        {'Hold: edit note\'s name'}
       </div>
     );
   }

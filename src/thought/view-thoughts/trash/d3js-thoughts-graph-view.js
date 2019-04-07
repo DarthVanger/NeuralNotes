@@ -29,7 +29,7 @@ function render() {
     var thoughtCenterY = 2 * 100 * Math.sin(index * period) + 250;
 
     //Draw the Circle
-    var text = svgContainer.append("text")
+    svgContainer.append("text")
       .text(thought.name)
       .attr("x", function () {
         return thoughtCenterX - this.getComputedTextLength() / 2;
@@ -37,14 +37,14 @@ function render() {
       .attr("y", thoughtCenterY);
 
     //Draw the Center of thought
-    var circle = svgContainer.append("circle")
+    svgContainer.append("circle")
       .attr('cx', thoughtCenterX)
       .attr('cy', thoughtCenterY)
       .attr('r', 1)
       .attr('fill', 'black');
 
     //Draw the Circle
-    var circle = svgContainer.append("ellipse")
+    svgContainer.append("ellipse")
       .attr("cx", thoughtCenterX)
       .attr("cy", thoughtCenterY)
       .attr("rx", 80)

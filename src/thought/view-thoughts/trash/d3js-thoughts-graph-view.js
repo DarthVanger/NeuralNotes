@@ -6,7 +6,7 @@ console.debug('d3.js: ', d3);
 
 var thoughts = [];
 
-export default {set, render};
+export default { set, render };
 
 function set(p_thoughts) {
   thoughts = p_thoughts;

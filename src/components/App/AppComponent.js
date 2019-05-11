@@ -1,16 +1,11 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {LoginPage} from 'ui/login/login';
-import './layout.css';
-import {NotesPage} from 'ui/notes-page';
+import { NotesPage } from 'ui/notes-page';
+import { PAGES_ENUM } from 'components/App/AppConstants';
+import 'components/App/styles.css';
+import { LoginPageContainer } from 'components/LoginPage/LoginPageContainer';
 
-export const PAGES_ENUM = {
-  EMPTY: Symbol('empty'),
-  LOGIN: Symbol('login'),
-  NOTES: Symbol('notes')
-};
-
-export class AppRoot extends Component {
+export class AppComponent extends Component {
   render() {
     // TODO: remove it when project is moved to styled-components
     const element = document.getElementById('app-root');
@@ -23,23 +18,22 @@ export class AppRoot extends Component {
   getPage() {
     const { page } = this.props;
     switch (page) {
-      case PAGES_ENUM.EMPTY:
+      case PAGES_ENUM.LOADING:
         return null;
+
       case PAGES_ENUM.LOGIN:
-        return <LoginPage authorized={this.onLoginSuccess}/>;
+        return <LoginPageContainer/>;
+
       case PAGES_ENUM.NOTES:
         return <NotesPage/>;
+
       default:
         throw new Error(`unknown page: ${page}`);
     }
   }
-
-  onLoginSuccess = () => {
-    this.props.changePage(PAGES_ENUM.NOTES);
-  };
 }
 
-AppRoot.propTypes = {
+AppComponent.propTypes = {
   page: PropTypes.symbol.isRequired,
   changePage: PropTypes.func.isRequired
 };

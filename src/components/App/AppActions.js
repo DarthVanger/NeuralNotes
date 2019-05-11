@@ -1,0 +1,1 @@
+export const CHANGE_PAGE_ACTION = 'CHANGE_PAGE_ACTION';

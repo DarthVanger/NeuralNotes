@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'underscore';
 
@@ -23,14 +23,14 @@ const textAreaStyles = {
 };
 
 export class ThoughtNameEditor extends Component {
-  state = {name: '', propName: ''};
+  state = { name: '', propName: '' };
 
   ref = React.createRef();
 
   debouncedOnChange = _.debounce(name => this.props.onChange(name), 1500);
 
   render() {
-    const {onDeleteClick, onUploadFileClick} = this.props;
+    const { onDeleteClick, onUploadFileClick } = this.props;
 
     return (
       <div id="thought-name-editor" style={wrapperStyles}>
@@ -40,17 +40,17 @@ export class ThoughtNameEditor extends Component {
     );
   }
 
-  static getDerivedStateFromProps({thought: {name}}, state) {
+  static getDerivedStateFromProps({ thought: { name } }, state) {
     if (name !== state.propName) {
       console.log(name);
-      return {name, propName: name};
+      return { name, propName: name };
     }
   }
 
   onChange = () => {
     const name = this.ref.current.value;
     this.debouncedOnChange(name);
-    this.setState({name})
+    this.setState({ name })
   }
 }
 

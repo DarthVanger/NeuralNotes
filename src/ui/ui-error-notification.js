@@ -1,4 +1,4 @@
-export default {show};
+export default { show };
 
 function show(messageText) {
   let element = document.createElement('DIV');

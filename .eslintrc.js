@@ -33,6 +33,7 @@ module.exports = {
     "class-property"
   ],
   "rules": {
-    "no-console": "warn"
+    "no-console": "warn",
+    "object-curly-spacing": ["error", "always"]
   }
 };

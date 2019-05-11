@@ -6,12 +6,13 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ASSET_PATH = process.env.ASSET_PATH || '/';
 
 module.exports = {
-  entry: './src/index.js',
+  entry: ['@babel/polyfill', './src/index.js'] ,
   output: {
     filename: 'index.js',
     publicPath: ASSET_PATH,
     path: path.resolve(__dirname, 'dist')
   },
+  mode: 'development',
   module: {
     rules: [
       {

@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 export class ControlsHelp extends Component {
 
   render() {
-    const {onClick} = this.props;
+    const { onClick } = this.props;
 
     const styles = {
       position: 'absolute',
@@ -17,7 +17,7 @@ export class ControlsHelp extends Component {
 
     return (
       <div id="tutorial" style={styles} onClick={onClick}>
-        <span style={{float: 'right', cursor: 'pointer'}}>X</span>
+        <span style={{ float: 'right', cursor: 'pointer' }}>X</span>
         {'Controls:'}<br/>
         {'Double-click: add a child note'}<br/>
         {'Hold: edit note\'s name'}

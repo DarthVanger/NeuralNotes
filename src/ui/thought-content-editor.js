@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'underscore';
 
@@ -20,9 +20,9 @@ export class ThoughtContentEditor extends Component {
   debouncedUpdate = _.debounce(this.updateThoughtContent, REAL_TIME_SAVING_INTERVAL_MS);
 
   render() {
-    const {text} = this.state;
+    const { text } = this.state;
 
-    const {note, note: {isNote}} = this.props;
+    const { note, note: { isNote } } = this.props;
     const link = thoughtStorage.getLinkToThought(note);
 
     return (
@@ -38,7 +38,7 @@ export class ThoughtContentEditor extends Component {
         ) : (
           <a
             className="btn btn-primary btn-lg"
-            style={{display: 'block'}}
+            style={{ display: 'block' }}
             target="_blank"
             rel="noopener noreferrer"
             href={link}
@@ -51,11 +51,11 @@ export class ThoughtContentEditor extends Component {
   }
 
   onChange = () => {
-    this.setState({text: this.textAreaRef.current.value});
+    this.setState({ text: this.textAreaRef.current.value });
     this.debouncedUpdate();
   };
 
-  static getDerivedStateFromProps({noteText}, state) {
+  static getDerivedStateFromProps({ noteText }, state) {
     console.log('Load thought');
     if (noteText !== state.noteText) {
       return {
@@ -63,6 +63,7 @@ export class ThoughtContentEditor extends Component {
         noteText
       }
     }
+    return null;
   }
 
   updateThoughtContent() {

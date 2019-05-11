@@ -14,7 +14,7 @@ function load() {
   return loadGoogleClient();
 }
 
-export default {load};
+export default { load };
 
 /**
  * Load google api script. It can't be hosted

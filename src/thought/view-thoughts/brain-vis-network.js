@@ -41,7 +41,7 @@ BrainVisNetwork.prototype.renderInitialThought = function (thought) {
   let visEdgesArray = [];
 
   // draw the passed thought first
-  visNodesArray.push({id: thought.id, label: thought.name});
+  visNodesArray.push({ id: thought.id, label: thought.name });
 
   // add thought children
   console.debug('BrainVisNetwork: thought.children: ', thought.children);
@@ -83,7 +83,7 @@ BrainVisNetwork.prototype.renderInitialThought = function (thought) {
       keyboard: false
     },
     edges: {
-      arrows: {to: true},
+      arrows: { to: true },
       smooth: true
     },
     // set different color for children and parent

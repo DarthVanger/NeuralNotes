@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import BrainVisNetwork from 'thought/view-thoughts/brain-vis-network';
@@ -6,7 +6,7 @@ import VisNetworkHelper from 'thought/view-thoughts/vis-network-helper';
 import thoughtStorage from 'storage/thought-storage';
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
 import _ from 'underscore';
-import {ThoughtNameEditor} from 'ui/thought-name-editor';
+import { ThoughtNameEditor } from 'ui/thought-name-editor';
 
 let brainVisNetwork;
 let visNetworkHelper;
@@ -14,12 +14,12 @@ let visNetworkHelper;
 let spinner = siteGlobalLoadingBar.create('mind map');
 
 export class ThoughtsMindMapView extends Component {
-  state = {selectedNote: null};
+  state = { selectedNote: null };
 
   ref = React.createRef();
 
   render() {
-    const {selectedNote} = this.state;
+    const { selectedNote } = this.state;
 
     return (
       <div ref={this.ref} id="thoughts-container">
@@ -38,7 +38,7 @@ export class ThoughtsMindMapView extends Component {
   }
 
   componentDidMount() {
-    const {initialThought} = this.state;
+    const { initialThought } = this.state;
 
     brainVisNetwork = new BrainVisNetwork({
       containerDomElement: this.ref.current
@@ -57,7 +57,7 @@ export class ThoughtsMindMapView extends Component {
    * Set thoughts and selectedThought.
    */
   setOptions() {
-    const {thoughts, selectedThought} = this.props;
+    const { thoughts, selectedThought } = this.props;
     this.setState({
       thoughts,
       initialThought: selectedThought,
@@ -133,7 +133,7 @@ export class ThoughtsMindMapView extends Component {
   }
 
   thoughtClickHandler = targetThoughtId => {
-    const {currentViewedThoughtId} = this.state;
+    const { currentViewedThoughtId } = this.state;
 
     // if clicking on the current thought, do nothing.
     if (targetThoughtId === currentViewedThoughtId) {
@@ -166,7 +166,7 @@ export class ThoughtsMindMapView extends Component {
 
     console.debug('brainVisNetwork.visNodes: ', brainVisNetwork.visNodes);
 
-    this.setState({currentViewedThoughtId: targetThoughtId});
+    this.setState({ currentViewedThoughtId: targetThoughtId });
     thoughtStorage.logTree();
     var targetThought = thoughtStorage.findThoughtById(targetThoughtId);
 
@@ -228,9 +228,9 @@ export class ThoughtsMindMapView extends Component {
   }
 
   onNoteSelect = name => {
-    const {id} = this.state.selectedNote;
-    thoughtStorage.updateThoughtName({id, name})
-      .then(() => brainVisNetwork.updateNode({id, label: name}));
+    const { id } = this.state.selectedNote;
+    thoughtStorage.updateThoughtName({ id, name })
+      .then(() => brainVisNetwork.updateNode({ id, label: name }));
   };
 
   onDeleteClick = () => {
@@ -249,7 +249,7 @@ export class ThoughtsMindMapView extends Component {
   };
 
   closeThoughtNameEditor() {
-    this.setState({selectedNote: null});
+    this.setState({ selectedNote: null });
   }
 
   createEmptyChild(parentId) {

@@ -116,7 +116,7 @@ function updateFile(options) {
   let request = gapi.client.request({
     'path': '/upload/drive/v2/files/' + options.fileId,
     'method': 'PUT',
-    'params': {'uploadType': 'media'},
+    'params': { 'uploadType': 'media' },
     'headers': {
       'Content-Type': 'text/plain'
     },
@@ -165,7 +165,7 @@ function parseParents(file) {
     if (file.parents && file.parents.length > 1) {
       throw new Error('Files shouldn\'t have more than one parent. File with more than one parent: ', file);
     }
-    file.parent = {id: file.parents[0]};
+    file.parent = { id: file.parents[0] };
   } else {
     console.debug('googleDriveApi.parseParents(): skipping file with name "' + file.name + '", because it has no "parents" property');
   }

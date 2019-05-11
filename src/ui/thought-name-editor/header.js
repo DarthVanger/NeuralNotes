@@ -20,7 +20,7 @@ const buttonsContainerStyles = {
   textAlign: 'right',
 };
 
-export const HeaderComponent = ({onDeleteClick, onUploadFileClick}) => (
+export const HeaderComponent = ({ onDeleteClick, onUploadFileClick }) => (
   <div style={wrapperStyles}>
     Edit note name
     <div className="btn-group" style={buttonsContainerStyles}>

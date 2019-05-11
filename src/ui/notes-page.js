@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
-import {ControlsHelp} from 'ui/controls-help';
-import {ThoughtContentEditor} from 'ui/thought-content-editor';
+import { ControlsHelp } from 'ui/controls-help';
+import { ThoughtContentEditor } from 'ui/thought-content-editor';
 import { ThoughtsMindMapView } from 'thought/view-thoughts/thoughts-mind-map-view';
 import thoughtStorage from 'storage/thought-storage';
 
@@ -13,17 +13,17 @@ export class NotesPage extends Component {
   };
 
   render() {
-    const {showHelp, selectedNote, noteText} = this.state;
+    const { showHelp, selectedNote, noteText } = this.state;
     return (
       <>
-        {showHelp && <ControlsHelp onClick={this.recordUserView}/>}
-        <ThoughtContentEditor note={selectedNote} noteText={noteText}/>
         <ThoughtsMindMapView
           thoughts={thoughtStorage.getThoughts()}
           selectedThought={selectedNote}
           selectedThoughtId={selectedNote}
           changeNote={this.changeNote}
         />
+        <ThoughtContentEditor note={selectedNote} noteText={noteText}/>
+        {showHelp && <ControlsHelp onClick={this.recordUserView}/>}
       </>
     );
   }
@@ -42,13 +42,13 @@ export class NotesPage extends Component {
     thoughtStorage.getThoughtContent(this.state.selectedNote)
       .then(noteText => {
         console.debug('ThoughtContentController.loadThought(), loaded thought content: ', noteText);
-        this.setState({noteText});
+        this.setState({ noteText });
       });
   }
 
   recordUserView = () => {
     localStorage.setItem('controls_help:viewed', '1');
-    this.setState({showHelp: !NotesPage.wasSeenByUser()});
+    this.setState({ showHelp: !NotesPage.wasSeenByUser() });
   };
 
   static wasSeenByUser() {

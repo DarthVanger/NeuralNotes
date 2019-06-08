@@ -16,3 +16,5 @@ cd NeuralNotes
 npm install
 npm start # launches a server at localhost:3000
 ```
+## Jenkins
+http://neural-notes.com:8080/

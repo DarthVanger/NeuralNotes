@@ -1,7 +1,7 @@
 import { put } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
 
 import auth from 'auth';
-import { CHANGE_PAGE_ACTION } from 'components/App/AppActions';
+import { appInitSuccessAction, CHANGE_PAGE_ACTION } from 'components/App/AppActions';
 import { PAGES_ENUM } from 'components/App/AppConstants';
 import thoughtStorage from 'storage/thought-storage';
 import googleDriveApi from 'api/google-drive-api';
@@ -19,6 +19,7 @@ export function* loadApp() {
   yield googleApiLoader.load();
   yield googleDriveApi.loadDriveApi();
   yield thoughtStorage.scanDrive();
+  yield put(appInitSuccessAction());
   yield setPageAction(PAGES_ENUM.NOTES);
   yield hideSpinner();
 }

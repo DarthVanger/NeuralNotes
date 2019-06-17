@@ -13,7 +13,7 @@ let visNetworkHelper;
 
 let spinner = siteGlobalLoadingBar.create('mind map');
 
-export class ThoughtsMindMapView extends Component {
+export class NotesMindMapViewComponent extends Component {
   state = { selectedNote: null };
 
   ref = React.createRef();
@@ -284,7 +284,7 @@ export class ThoughtsMindMapView extends Component {
   }
 }
 
-ThoughtsMindMapView.propTypes = {
+NotesMindMapViewComponent.propTypes = {
   thoughts: PropTypes.object.isRequired,
   selectedThought: PropTypes.object.isRequired,
   changeNote: PropTypes.func.isRequired

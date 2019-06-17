@@ -45,6 +45,7 @@ export class ThoughtNameEditor extends Component {
       console.log(name);
       return { name, propName: name };
     }
+    return null;
   }
 
   onChange = () => {

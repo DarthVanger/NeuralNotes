@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { NotesPage } from 'ui/notes-page';
+
+import { NotesPageContainer } from 'components/NotesPage/NotesPageContainer';
 import { PAGES_ENUM } from 'components/App/AppConstants';
 import 'components/App/styles.css';
 import { LoginPageContainer } from 'components/LoginPage/LoginPageContainer';
@@ -25,7 +26,7 @@ export class AppComponent extends Component {
         return <LoginPageContainer/>;
 
       case PAGES_ENUM.NOTES:
-        return <NotesPage/>;
+        return <NotesPageContainer/>;
 
       default:
         throw new Error(`unknown page: ${page}`);

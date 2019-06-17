@@ -3,7 +3,7 @@ import { AppComponent } from 'components/App/AppComponent';
 import { action } from 'sagas';
 import { CHANGE_PAGE_ACTION } from 'components/App/AppActions';
 
-const mapStateToProps = ({ appReducer: { page } }) => ({
+const mapStateToProps = ({ app: { page } }) => ({
   page
 });
 

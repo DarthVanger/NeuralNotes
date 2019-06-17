@@ -19,7 +19,8 @@
     "react-redux": "^7.0.3",
     "redux": "^4.0.1",
     "redux-saga": "^1.0.2",
-    "socket.io": "^1.4.6"
+    "socket.io": "^1.4.6",
+    "styled-components": "^4.3.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.3",
@@ -49,6 +50,7 @@
     "html-webpack-plugin": "^3.2.0",
     "image-webpack-loader": "^4.6.0",
     "react-hot-loader": "^4.8.3",
+    "redux-devtools-extension": "^2.13.8",
     "scriptjs": "^2.5.9",
     "style-loader": "^0.23.1",
     "text-loader": "0.0.1",

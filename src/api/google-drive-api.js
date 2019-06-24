@@ -101,7 +101,7 @@ function findByName(options) {
       if (resp.error) {
         throw new Error('File named "' + options.name + '" not found');
       }
-      //TODO: same code is duplicated in thought-storage.js - Refactor!
+      //TODO: same code is duplicated in note-storage.js - Refactor!
       resp.files.forEach(parseParents);
 
       resolve(resp.files);

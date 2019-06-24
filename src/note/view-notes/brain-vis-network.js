@@ -9,57 +9,57 @@ let BrainVisNetwork = function (options) {
   this.visNodes = null;
 };
 
-BrainVisNetwork.prototype.renderParentThought = function (thought) {
-  console.debug('BrainVisNetwork.renderParentThought(): thought: ', thought);
-  if (!thought.parent) {
-    // don't render parent for root thought
-    // TODO: refactor to use function to check for root thought
+BrainVisNetwork.prototype.renderParentNote = function (note) {
+  console.debug('BrainVisNetwork.renderParentNote(): note: ', note);
+  if (!note.parent) {
+    // don't render parent for root note
+    // TODO: refactor to use function to check for root note
     return;
   }
 
-  if (this.visNodes.get(thought.parent.id)) {
+  if (this.visNodes.get(note.parent.id)) {
     // don't try to add existing nodes, because vis DataSet will throw an error
     return;
   }
 
   this.visNodes.add({
-    id: thought.parent.id,
-    label: thought.parent.name,
+    id: note.parent.id,
+    label: note.parent.name,
     group: 'parent'
   });
   this.visEdges.add({
-    from: thought.parent.id,
-    to: thought.id
+    from: note.parent.id,
+    to: note.id
   });
 };
 
-BrainVisNetwork.prototype.renderInitialThought = function (thought) {
-  console.debug('BrainVisNetwork.renderInitialThought(): ', thought);
+BrainVisNetwork.prototype.renderInitialNote = function (note) {
+  console.debug('BrainVisNetwork.renderInitialNote(): ', note);
 
   let visNodesArray = [];
   let visEdgesArray = [];
 
-  // draw the passed thought first
-  visNodesArray.push({ id: thought.id, label: thought.name });
+  // draw the passed note first
+  visNodesArray.push({ id: note.id, label: note.name });
 
-  // add thought children
-  console.debug('BrainVisNetwork: thought.children: ', thought.children);
-  _.each(thought.children, function (childThought) {
-    //childThought.parent = thought;
+  // add note children
+  console.debug('BrainVisNetwork: note.children: ', note.children);
+  _.each(note.children, function (childNote) {
+    //childNote.parent = note;
     visNodesArray.push({
-      id: childThought.id,
-      label: childThought.name,
+      id: childNote.id,
+      label: childNote.name,
       group: 'children'
     });
     visEdgesArray.push({
-      from: thought.id,
-      to: childThought.id
+      from: note.id,
+      to: childNote.id
     });
   });
 
   /**
    * Create vis data set from structure
-   * generated from thoughts
+   * generated from notes
    */
   console.debug('visNodesArray: ', visNodesArray);
   console.debug('visEdgesArray: ', visEdgesArray);
@@ -86,7 +86,7 @@ BrainVisNetwork.prototype.renderInitialThought = function (thought) {
       smooth: true
     },
     // set different color for children and parent
-    // (not rly needed now when displaying all thoughts on same
+    // (not rly needed now when displaying all notes on same
     // network).
     groups: {
       children: {
@@ -118,23 +118,23 @@ BrainVisNetwork.prototype.renderInitialThought = function (thought) {
   console.info('Visual Network initialized');
 };
 
-BrainVisNetwork.prototype.addChildThoughts = function (options) {
+BrainVisNetwork.prototype.addChildNotes = function (options) {
   let self = this;
-  console.debug('BrainVisNetwork.addChildThoughts(). Options: ', options);
-  _.each(options.children, function (childThought) {
-    if (self.visNodes.get(childThought.id)) {
+  console.debug('BrainVisNetwork.addChildNotes(). Options: ', options);
+  _.each(options.children, function (childNote) {
+    if (self.visNodes.get(childNote.id)) {
       // don't try to add existing nodes, because vis DataSet will throw an error
       return;
     }
 
     self.visNodes.add({
-      id: childThought.id,
-      label: childThought.name,
+      id: childNote.id,
+      label: childNote.name,
       group: 'children'
     });
     self.visEdges.add({
-      from: options.parentThoughtId,
-      to: childThought.id
+      from: options.parentNoteId,
+      to: childNote.id
     });
   });
 };

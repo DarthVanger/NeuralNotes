@@ -2,11 +2,11 @@ import _ from 'underscore';
 
 'use strict';
 
-let thoughtsTree = {};
+let notesTree = {};
 
 export default {
-  getThoughts,
-  findThoughtById,
+  getNotes,
+  findNoteById,
   logTree,
   getRoot,
   setRoot,
@@ -15,7 +15,7 @@ export default {
 };
 
 function logTree() {
-  console.debug('==============\n Thoughts Tree\n===========');
+  console.debug('==============\n Notes Tree\n===========');
   forEachNode(function (node, depth) {
     let msg = node.name;
     for (let i = 0; i <= depth; i++) {
@@ -25,19 +25,19 @@ function logTree() {
   });
 }
 
-function findThoughtById(id) {
+function findNoteById(id) {
   var depthLimit = 4;
   var nodesLimit = 50;
   var nodesCount = 0;
   var iterationLimitReached = false;
-  return findInNode(thoughtsTree.root);
+  return findInNode(notesTree.root);
 
   function findInNode(node, currentDepth) {
     if (iterationLimitReached) return;
     nodesCount++;
     if (!currentDepth) currentDepth = 0;
     if (node.id == id) {
-      console.debug('Found thought: ', node);
+      console.debug('Found note: ', node);
       return node;
     } else if (currentDepth < depthLimit && nodesCount < nodesLimit) {
       var foundNode;
@@ -62,7 +62,7 @@ function findThoughtById(id) {
 //   var nodesCount = 0;
 //
 //   var mappedTree = {};
-//   executeForNode(thoughtsTree.root, func);
+//   executeForNode(notesTree.root, func);
 //   return mappedTree;
 //
 //   function executeForNode(node, func, parentNode, currentDepth) {
@@ -101,14 +101,14 @@ function findThoughtById(id) {
 // }
 
 /**
- * Execute func for each node of the thoughts tree
+ * Execute func for each node of the notes tree
  */
 function forEachNode(func) {
   var depthLimit = 4;
   var nodesLimit = 50;
   var nodesCount = 0;
 
-  executeForNode(thoughtsTree.root, func);
+  executeForNode(notesTree.root, func);
 
   function executeForNode(node, func, currentDepth) {
     if (!currentDepth) currentDepth = 0;
@@ -140,36 +140,36 @@ function forEachNode(func) {
  * @param {Array} options.children
  */
 function addChildrenToTree(options) {
-  var parentThought = findThoughtById(options.parentId);
+  var parentNote = findNoteById(options.parentId);
   var newChildren;
   newChildren = options.children.map((child) => {
-    child.parent = parentThought;
+    child.parent = parentNote;
     return child;
   });
 
-  if (parentThought.children) {
-    parentThought.children = parentThought.children.concat(newChildren);
+  if (parentNote.children) {
+    parentNote.children = parentNote.children.concat(newChildren);
   } else {
-    parentThought.children = newChildren;
+    parentNote.children = newChildren;
   }
 
-  return parentThought.children;
+  return parentNote.children;
 }
 
-function getThoughts() {
-  return thoughtsTree;
+function getNotes() {
+  return notesTree;
 }
 
 function getRoot() {
-  return thoughtsTree.root;
+  return notesTree.root;
 }
 
 function setRoot(root) {
-  thoughtsTree.root = root;
+  notesTree.root = root;
 }
 
 function deleteNode(note) {
-  var noteInTree = findThoughtById(note.id);
+  var noteInTree = findNoteById(note.id);
   console.log('noteInTree: ', noteInTree);
   var noteIndexInChildren = noteInTree.parent.children.indexOf(noteInTree);
   noteInTree.parent.children.splice(noteIndexInChildren, 1);

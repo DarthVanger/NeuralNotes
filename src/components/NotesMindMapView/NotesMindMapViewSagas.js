@@ -5,19 +5,19 @@ import {
   changeSelectedNoteAction,
   REQUEST_NOTE_TEXT_ACTION
 } from 'components/NotesMindMapView/NotesMindMapViewActions';
-import thoughtStorage from 'storage/thought-storage';
+import noteStorage from 'storage/note-storage';
 import { APP_INIT_SUCCESS } from 'components/App/AppActions';
 
 const LOADING_NOTE_MESSAGE = 'loading note contents...';
 
 function* setRootNote() {
-  yield put(changeSelectedNoteAction(thoughtStorage.getRoot()));
+  yield put(changeSelectedNoteAction(noteStorage.getRoot()));
 }
 
 function* requestNoteText({ data }) {
   yield put(changeNoteTextAction(LOADING_NOTE_MESSAGE));
-  const noteText = yield call(thoughtStorage.getThoughtContent, data);
-  console.debug('ThoughtContentController.loadThought(), loaded thought content: ', noteText);
+  const noteText = yield call(noteStorage.getNoteContent, data);
+  console.debug('NoteContentController.loadNote(), loaded note content: ', noteText);
   yield put(changeNoteTextAction(noteText));
 }
 

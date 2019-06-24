@@ -2,17 +2,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'underscore';
 
-import BrainVisNetwork from 'note/view-notes/brain-vis-network';
-import VisNetworkHelper from 'note/view-notes/vis-network-helper';
+import { BrainVisNetwork } from 'helpers/brainVisNetwork';
+import { VisNetworkHelper } from 'helpers/visNetworkHelper';
 import noteStorage from 'storage/note-storage';
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
-import { NoteNameEditor } from 'ui/note-name-editor';
+import { NoteNameEditorComponent } from 'components/NoteNameEditor/NoteNameEditorComponent';
 import { StyledNotesMindMap } from 'components/NotesMindMapView/NotesMindMapViewStyles';
 
 let brainVisNetwork;
-let visNetworkHelper;
 let spinner = siteGlobalLoadingBar.create('mind map');
 
+// TODO: continue move to sagas
 export class NotesMindMapViewComponent extends Component {
   state = { selectedNote: null };
 
@@ -23,7 +23,7 @@ export class NotesMindMapViewComponent extends Component {
 
     return (
       <StyledNotesMindMap ref={this.ref}>
-        {selectedNote && <NoteNameEditor
+        {selectedNote && <NoteNameEditorComponent
           note={noteStorage.findNoteById(selectedNote.id)}
           onChange={this.onNoteSelect}
           onDeleteClick={this.onDeleteClick}
@@ -47,7 +47,6 @@ export class NotesMindMapViewComponent extends Component {
     brainVisNetwork.renderInitialNote(initialNote);
 
     this.changeNote(initialNote);
-    visNetworkHelper = new VisNetworkHelper(brainVisNetwork.visNetwork);
 
     brainVisNetwork.visNetwork.on('click', this.visNetworkClickHandler);
     brainVisNetwork.visNetwork.on('doubleClick', this.visNetworkDoubleClickHandler);
@@ -180,26 +179,26 @@ export class NotesMindMapViewComponent extends Component {
 
   visNetworkClickHandler = event => {
     this.closeNoteNameEditor();
-    if (visNetworkHelper.clickedOnNote(event)) {
+    if (VisNetworkHelper.clickedOnNote(event)) {
       console.debug('change note!');
       console.debug('event: ', event);
-      let targetNoteId = visNetworkHelper.getTargetNoteId(event);
+      let targetNoteId = VisNetworkHelper.getTargetNoteId(event);
 
       this.noteClickHandler(targetNoteId);
     }
   };
 
   visNetworkDoubleClickHandler = event => {
-    if (visNetworkHelper.clickedOnNote(event)) {
-      let targetNoteId = visNetworkHelper.getTargetNoteId(event);
+    if (VisNetworkHelper.clickedOnNote(event)) {
+      let targetNoteId = VisNetworkHelper.getTargetNoteId(event);
       console.info('=== Event === Node double click');
       this.createEmptyChild(targetNoteId);
     }
   };
 
   visNetworkHoldHandler = event => {
-    if (visNetworkHelper.clickedOnNote(event)) {
-      let targetNoteId = visNetworkHelper.getTargetNoteId(event);
+    if (VisNetworkHelper.clickedOnNote(event)) {
+      let targetNoteId = VisNetworkHelper.getTargetNoteId(event);
       console.info('=== Event === Node hold');
       this.editNote(targetNoteId);
     }

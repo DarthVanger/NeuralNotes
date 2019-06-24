@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import _ from 'underscore';
 
 import BrainVisNetwork from 'thought/view-thoughts/brain-vis-network';
 import VisNetworkHelper from 'thought/view-thoughts/vis-network-helper';
 import thoughtStorage from 'storage/thought-storage';
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
-import _ from 'underscore';
 import { ThoughtNameEditor } from 'ui/thought-name-editor';
+import { StyledNotesMindMap } from 'components/NotesMindMapView/NotesMindMapViewStyles';
 
 let brainVisNetwork;
 let visNetworkHelper;
-
 let spinner = siteGlobalLoadingBar.create('mind map');
 
 export class NotesMindMapViewComponent extends Component {
@@ -22,14 +22,14 @@ export class NotesMindMapViewComponent extends Component {
     const { selectedNote } = this.state;
 
     return (
-      <div ref={this.ref} id="thoughts-container">
+      <StyledNotesMindMap ref={this.ref}>
         {selectedNote && <ThoughtNameEditor
           thought={thoughtStorage.findThoughtById(selectedNote.id)}
           onChange={this.onNoteSelect}
           onDeleteClick={this.onDeleteClick}
           onUploadFileClick={this.onUploadFileClick}
         />}
-      </div>
+      </StyledNotesMindMap>
     );
   }
 
@@ -54,15 +54,14 @@ export class NotesMindMapViewComponent extends Component {
   }
 
   /**
-   * Set thoughts and selectedThought.
+   * Set thoughts and selectedNote.
    */
   setOptions() {
-    const { thoughts, selectedThought } = this.props;
+    const { selectedNote } = this.props;
     this.setState({
-      thoughts,
-      initialThought: selectedThought,
-      currentViewedThought: selectedThought,
-      currentViewedThoughtId: selectedThought.id,
+      initialThought: selectedNote,
+      currentViewedThought: selectedNote,
+      currentViewedThoughtId: selectedNote.id,
     });
   }
 
@@ -84,7 +83,7 @@ export class NotesMindMapViewComponent extends Component {
         .then(renderChildren);
     }
 
-    this.props.changeNote(targetThought);
+    this.changeNote(targetThought);
 
     if (targetThought.parent) {
       if (!_.isEmpty(targetThought.parent.name)) {
@@ -282,10 +281,18 @@ export class NotesMindMapViewComponent extends Component {
         return thought;
       });
   }
+
+  changeNote = note => {
+    const { requestNoteText, changeSelectedNote } = this.props;
+    changeSelectedNote(note);
+    if (note.isNote) {
+      requestNoteText(note);
+    }
+  };
 }
 
 NotesMindMapViewComponent.propTypes = {
-  thoughts: PropTypes.object.isRequired,
-  selectedThought: PropTypes.object.isRequired,
-  changeNote: PropTypes.func.isRequired
+  selectedNote: PropTypes.object.isRequired,
+  requestNoteText: PropTypes.func.isRequired,
+  changeSelectedNote: PropTypes.func.isRequired,
 };

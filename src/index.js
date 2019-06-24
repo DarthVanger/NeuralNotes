@@ -9,9 +9,11 @@ import 'vis/dist/vis.css';
 import 'sagas';
 import { AppContainer } from 'components/App/AppContainer';
 import { store } from 'sagas';
+import { GlobalStyle } from 'globalStyles';
 
 ReactDOM.render(
   <Provider store={store}>
+    <GlobalStyle/>
     <AppContainer/>
   </Provider>,
   document.getElementById('app-root')

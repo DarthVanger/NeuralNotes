@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import { NotesPageContainer } from 'components/NotesPage/NotesPageContainer';
 import { PAGES_ENUM } from 'components/App/AppConstants';
-import 'components/App/styles.css';
 import { LoginPageContainer } from 'components/LoginPage/LoginPageContainer';
 
 export class AppComponent extends Component {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'underscore';
 
-import thoughtStorage from 'storage/thought-storage';
+import noteStorage from 'storage/note-storage';
 import {
   StyledLink,
   StyledSelectedNotesContent,
@@ -25,7 +25,7 @@ export class NotesContentEditorComponent extends Component {
     const { text } = this.state;
 
     const { selectedNote, selectedNote: { isNote } } = this.props;
-    const link = thoughtStorage.getLinkToThought(selectedNote);
+    const link = noteStorage.getLinkToNote(selectedNote);
 
     return (
       <StyledSelectedNotesContent>
@@ -56,7 +56,7 @@ export class NotesContentEditorComponent extends Component {
   };
 
   static getDerivedStateFromProps({ noteText }, state) {
-    console.log('Load thought');
+    console.log('Load note');
     if (noteText !== state.noteText) {
       return {
         text: noteText,

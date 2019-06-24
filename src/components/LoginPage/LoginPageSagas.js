@@ -1,5 +1,5 @@
 import { call, put, takeEvery } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
-import thoughtStorage from 'storage/thought-storage';
+import noteStorage from 'storage/note-storage';
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
 import googleDriveApi from 'api/google-drive-api';
 import { gapiAuthorize } from 'api/google-login';
@@ -16,7 +16,7 @@ export function* handleAuth() {
   yield gapiAuthorize();
   yield call(siteGlobalLoadingBar.hide, spinnerName);
   yield call(googleDriveApi.loadDriveApi);
-  yield call(thoughtStorage.scanDrive);
+  yield call(noteStorage.scanDrive);
   yield put(appInitSuccessAction());
   yield setPageAction(PAGES_ENUM.NOTES);
 }

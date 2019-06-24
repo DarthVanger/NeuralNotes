@@ -1,7 +1,7 @@
 {
   "name": "Brain",
   "version": "0.0.0",
-  "description": "Thought managment tool",
+  "description": "Note managment tool",
   "main": "server.js",
   "scripts": {
     "start": "babel-node server/server.js",

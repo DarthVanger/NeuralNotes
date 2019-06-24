@@ -11,7 +11,7 @@ export class LoginPageComponent extends Component {
     return (
       <div>
         <div className="container-fluid">
-          <h3 style={{ display: "inline-block" }}>NeuralNotes &mdash; organize your thoughts</h3>
+          <h3 style={{ display: "inline-block" }}>NeuralNotes &mdash; organize your notes</h3>
           <a onClick={authHandler} className="btn btn-social btn-lg btn-google"
              style={{ width: '250px', display: 'inline-block', marginLeft: '20px', float: 'right', marginTop: '15px' }}>
             <span className="fa fa-google"/>

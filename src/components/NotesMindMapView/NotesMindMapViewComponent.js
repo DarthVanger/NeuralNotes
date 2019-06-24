@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'underscore';
 
-import BrainVisNetwork from 'thought/view-thoughts/brain-vis-network';
-import VisNetworkHelper from 'thought/view-thoughts/vis-network-helper';
-import thoughtStorage from 'storage/thought-storage';
+import BrainVisNetwork from 'note/view-notes/brain-vis-network';
+import VisNetworkHelper from 'note/view-notes/vis-network-helper';
+import noteStorage from 'storage/note-storage';
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
-import { ThoughtNameEditor } from 'ui/thought-name-editor';
+import { NoteNameEditor } from 'ui/note-name-editor';
 import { StyledNotesMindMap } from 'components/NotesMindMapView/NotesMindMapViewStyles';
 
 let brainVisNetwork;
@@ -23,8 +23,8 @@ export class NotesMindMapViewComponent extends Component {
 
     return (
       <StyledNotesMindMap ref={this.ref}>
-        {selectedNote && <ThoughtNameEditor
-          thought={thoughtStorage.findThoughtById(selectedNote.id)}
+        {selectedNote && <NoteNameEditor
+          note={noteStorage.findNoteById(selectedNote.id)}
           onChange={this.onNoteSelect}
           onDeleteClick={this.onDeleteClick}
           onUploadFileClick={this.onUploadFileClick}
@@ -38,14 +38,15 @@ export class NotesMindMapViewComponent extends Component {
   }
 
   componentDidMount() {
-    const { initialThought } = this.state;
+    const { initialNote } = this.state;
 
     brainVisNetwork = new BrainVisNetwork({
       containerDomElement: this.ref.current
     });
 
-    brainVisNetwork.renderInitialThought(initialThought);
-    this.changeThought(initialThought);
+    brainVisNetwork.renderInitialNote(initialNote);
+
+    this.changeNote(initialNote);
     visNetworkHelper = new VisNetworkHelper(brainVisNetwork.visNetwork);
 
     brainVisNetwork.visNetwork.on('click', this.visNetworkClickHandler);
@@ -54,188 +55,188 @@ export class NotesMindMapViewComponent extends Component {
   }
 
   /**
-   * Set thoughts and selectedNote.
+   * Set notes and selectedNote.
    */
   setOptions() {
     const { selectedNote } = this.props;
     this.setState({
-      initialThought: selectedNote,
-      currentViewedThought: selectedNote,
-      currentViewedThoughtId: selectedNote.id,
+      initialNote: selectedNote,
+      currentViewedNote: selectedNote,
+      currentViewedNoteId: selectedNote.id,
     });
   }
 
   /**
-   * Load child thoughts for clicked thought,
-   * and redraw the network for new thoughts.
+   * Load child notes for clicked note,
+   * and redraw the network for new notes.
    */
-  changeThought(targetThought) {
-    console.info('[Event] Change thought to ' + targetThought.name);
-    console.debug('thoughts-mind-map-view.changeThought()');
+  changeNote(targetNote) {
+    console.info('[Event] Change note to ' + targetNote.name);
+    console.debug('notes-mind-map-view.changeNote()');
 
-    console.debug('thoughts-mind-map-view.changeThought(): targetThought.children: ', targetThought.children);
-    if (!_.isEmpty(targetThought.children)) {
-      console.debug('thoughts-mind-map-view.changeThought(): targetThought has children in cache, rendering them: ', targetThought.children);
-      renderChildren(targetThought.children);
+    console.debug('notes-mind-map-view.changeNote(): targetNote.children: ', targetNote.children);
+    if (!_.isEmpty(targetNote.children)) {
+      console.debug('notes-mind-map-view.changeNote(): targetNote has children in cache, rendering them: ', targetNote.children);
+      renderChildren(targetNote.children);
     } else {
-      console.info('[Get] child thoughts for "' + targetThought.name + '"...');
-      fetchChildThoughts(targetThought)
+      console.info('[Get] child notes for "' + targetNote.name + '"...');
+      fetchChildNotes(targetNote)
         .then(renderChildren);
     }
 
-    this.changeNote(targetThought);
+    this.saveNote(targetNote);
 
-    if (targetThought.parent) {
-      if (!_.isEmpty(targetThought.parent.name)) {
-        console.info('thoughts-mind-map-view.changeThought(): thought has a parent in cache, going to render it');
+    if (targetNote.parent) {
+      if (!_.isEmpty(targetNote.parent.name)) {
+        console.info('notes-mind-map-view.changeNote(): note has a parent in cache, going to render it');
         renderParent();
       } else {
-        console.info('[Get] parent for "' + targetThought.name + '"...');
-        fetchParentThought(targetThought.id)
-          .then(function (thought) {
-            targetThought.parent = thought;
-            console.info('[Loaded] parent "' + thought.name + '"' + ' for thought "' + targetThought.name + '"');
+        console.info('[Get] parent for "' + targetNote.name + '"...');
+        fetchParentNote(targetNote.id)
+          .then(function (note) {
+            targetNote.parent = note;
+            console.info('[Loaded] parent "' + note.name + '"' + ' for note "' + targetNote.name + '"');
             renderParent();
 
           });
       }
     }
 
-    function fetchChildThoughts(thought) {
-      var fetchingThoughtsSpinner = spinner.create('loading child thoughts');
-      fetchingThoughtsSpinner.show();
-      return thoughtStorage.fetchChildThoughts(thought)
+    function fetchChildNotes(note) {
+      var fetchingNotesSpinner = spinner.create('loading child notes');
+      fetchingNotesSpinner.show();
+      return noteStorage.fetchChildNotes(note)
         .finally(function () {
-          fetchingThoughtsSpinner.hide();
+          fetchingNotesSpinner.hide();
         });
     }
 
-    function fetchParentThought(thoughtId) {
-      var fetchingParentThought = spinner.create('loading parent thought');
-      return thoughtStorage.fetchParentThought(thoughtId)
+    function fetchParentNote(noteId) {
+      var fetchingParentNote = spinner.create('loading parent note');
+      return noteStorage.fetchParentNote(noteId)
         .finally(function () {
-          fetchingParentThought.hide();
+          fetchingParentNote.hide();
         });
     }
 
     function renderChildren(children) {
-      console.debug('thoughts-mind-map-view: adding child thoughts to brainVisNetwork');
-      brainVisNetwork.addChildThoughts({
+      console.debug('notes-mind-map-view: adding child notes to brainVisNetwork');
+      brainVisNetwork.addChildNotes({
         children: children,
-        parentThoughtId: targetThought.id
+        parentNoteId: targetNote.id
       });
     }
 
     function renderParent() {
-      brainVisNetwork.renderParentThought(targetThought);
+      brainVisNetwork.renderParentNote(targetNote);
     }
   }
 
-  thoughtClickHandler = targetThoughtId => {
-    const { currentViewedThoughtId } = this.state;
+  noteClickHandler = targetNoteId => {
+    const { currentViewedNoteId } = this.state;
 
-    // if clicking on the current thought, do nothing.
-    if (targetThoughtId === currentViewedThoughtId) {
+    // if clicking on the current note, do nothing.
+    if (targetNoteId === currentViewedNoteId) {
       console.info('Click was on the selected note, doing nothing')
       return;
     }
 
-    var currentViewedThoughtId_temp = _.find(brainVisNetwork.visNodes.getIds(),
+    var currentViewedNoteId_temp = _.find(brainVisNetwork.visNodes.getIds(),
       function (nodeId) {
-        return nodeId == targetThoughtId;
+        return nodeId == targetNoteId;
       }
     );
 
-    console.debug('currentViewedThoughtId from visNodes: ', currentViewedThoughtId_temp);
+    console.debug('currentViewedNoteId from visNodes: ', currentViewedNoteId_temp);
 
-    var node = brainVisNetwork.visNodes.get(currentViewedThoughtId_temp);
+    var node = brainVisNetwork.visNodes.get(currentViewedNoteId_temp);
     console.debug('node from visNodes: ', node);
 
     this.setState({
-      currentViewedThought: {
+      currentViewedNote: {
         id: node.id,
         name: node.label
       }
     });
 
-    console.debug('currentViewedThought from visNodes: ', this.state.currentViewedThought);
+    console.debug('currentViewedNote from visNodes: ', this.state.currentViewedNote);
 
-    console.debug('targetThoughtId: ', targetThoughtId);
+    console.debug('targetNoteId: ', targetNoteId);
     console.debug('brainVisNetwork.visNodes: ', brainVisNetwork.visNodes);
 
     console.debug('brainVisNetwork.visNodes: ', brainVisNetwork.visNodes);
 
-    this.setState({ currentViewedThoughtId: targetThoughtId });
-    thoughtStorage.logTree();
-    var targetThought = thoughtStorage.findThoughtById(targetThoughtId);
+    this.setState({ currentViewedNoteId: targetNoteId });
+    noteStorage.logTree();
+    var targetNote = noteStorage.findNoteById(targetNoteId);
 
-    if (!targetThought) {
-      throw new Error('changeThought(): couldn\'t find targetThought in thoughtStorage by id: ', targetThoughtId);
+    if (!targetNote) {
+      throw new Error('changeNote(): couldn\'t find targetNote in noteStorage by id: ', targetNoteId);
     }
-    console.debug('thoughts-mind-map-view.thoughtClickHandler(): targetThought: ', targetThought);
+    console.debug('notes-mind-map-view.noteClickHandler(): targetNote: ', targetNote);
 
-    this.changeThought(targetThought);
+    this.changeNote(targetNote);
   };
 
   visNetworkClickHandler = event => {
-    this.closeThoughtNameEditor();
-    if (visNetworkHelper.clickedOnThought(event)) {
-      console.debug('change thought!');
+    this.closeNoteNameEditor();
+    if (visNetworkHelper.clickedOnNote(event)) {
+      console.debug('change note!');
       console.debug('event: ', event);
-      let targetThoughtId = visNetworkHelper.getTargetThoughtId(event);
+      let targetNoteId = visNetworkHelper.getTargetNoteId(event);
 
-      this.thoughtClickHandler(targetThoughtId);
+      this.noteClickHandler(targetNoteId);
     }
   };
 
   visNetworkDoubleClickHandler = event => {
-    if (visNetworkHelper.clickedOnThought(event)) {
-      let targetThoughtId = visNetworkHelper.getTargetThoughtId(event);
+    if (visNetworkHelper.clickedOnNote(event)) {
+      let targetNoteId = visNetworkHelper.getTargetNoteId(event);
       console.info('=== Event === Node double click');
-      this.createEmptyChild(targetThoughtId);
+      this.createEmptyChild(targetNoteId);
     }
   };
 
   visNetworkHoldHandler = event => {
-    if (visNetworkHelper.clickedOnThought(event)) {
-      let targetThoughtId = visNetworkHelper.getTargetThoughtId(event);
+    if (visNetworkHelper.clickedOnNote(event)) {
+      let targetNoteId = visNetworkHelper.getTargetNoteId(event);
       console.info('=== Event === Node hold');
-      this.editThought(targetThoughtId);
+      this.editNote(targetNoteId);
     }
   };
 
-  editThought(targetThoughtId) {
-    const thought = thoughtStorage.findThoughtById(targetThoughtId);
+  editNote(targetNoteId) {
+    const note = noteStorage.findNoteById(targetNoteId);
 
-    if (thought.name === thoughtStorage.APP_FOLDER_NAME) {
+    if (note.name === noteStorage.APP_FOLDER_NAME) {
       console.info('It is not allowed to edit App root folder name');
       return;
     }
 
-    if (!thought.isNote) {
+    if (!note.isNote) {
       console.info('It is not allowed to edit user-uploaded files');
       return;
     }
 
     this.setState({
-      currentViewedThought: thought,
+      currentViewedNote: note,
       selectedNote: {
-        id: targetThoughtId
+        id: targetNoteId
       }
     });
-    brainVisNetwork.selectNote(targetThoughtId);
+    brainVisNetwork.selectNote(targetNoteId);
   }
 
   onNoteSelect = name => {
     const { id } = this.state.selectedNote;
-    thoughtStorage.updateThoughtName({ id, name })
+    noteStorage.updateNoteName({ id, name })
       .then(() => brainVisNetwork.updateNode({ id, label: name }));
   };
 
   onDeleteClick = () => {
-    let note = this.state.currentViewedThought;
+    let note = this.state.currentViewedNote;
     console.info('Deleting ' + note.name + '...');
-    thoughtStorage.remove(note)
+    noteStorage.remove(note)
       .then(function () {
         console.info('Deleted ' + note.name);
         brainVisNetwork.deleteSelectedNode();
@@ -244,45 +245,45 @@ export class NotesMindMapViewComponent extends Component {
 
   onUploadFileClick = () => {
     console.info('[Event] Upload file click');
-    window.open(thoughtStorage.getLinkToThought(this.state.currentViewedThought));
+    window.open(noteStorage.getLinkToNote(this.state.currentViewedNote));
   };
 
-  closeThoughtNameEditor() {
+  closeNoteNameEditor() {
     this.setState({ selectedNote: null });
   }
 
   createEmptyChild(parentId) {
-    var thought = {
+    var note = {
       name: 'new',
       content: '',
       isNote: true
     };
 
-    var parent = thoughtStorage.findThoughtById(parentId);
+    var parent = noteStorage.findNoteById(parentId);
 
-    return thoughtStorage.create(thought, parent)
-      .then(newThought => {
-        thought.id = newThought.id;
+    return noteStorage.create(note, parent)
+      .then(newNote => {
+        note.id = newNote.id;
 
-        var children = [thought];
+        var children = [note];
 
-        thoughtStorage.addChildrenToTree({
+        noteStorage.addChildrenToTree({
           parentId: parentId,
           children: children
         });
 
-        brainVisNetwork.addChildThoughts({
+        brainVisNetwork.addChildNotes({
           children: children,
-          parentThoughtId: parentId
+          parentNoteId: parentId
         });
 
-        this.editThought(thought.id);
+        this.editNote(note.id);
 
-        return thought;
+        return note;
       });
   }
 
-  changeNote = note => {
+  saveNote = note => {
     const { requestNoteText, changeSelectedNote } = this.props;
     changeSelectedNote(note);
     if (note.isNote) {

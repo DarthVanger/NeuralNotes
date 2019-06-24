@@ -1,33 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const wrapperStyles = {
-  position: 'absolute',
-  top: '0',
-  zIndex: '3',
-  height: '1.5em',
-  width: '100%',
-  backgroundColor: '#aac',
-  padding: '0.25em',
-  color: 'black',
-  textTransform: 'uppercase',
-};
-
-const buttonsContainerStyles = {
-  position: 'absolute',
-  top: '0',
-  right: '0',
-  textAlign: 'right',
-};
+import { StyledButtonContainer, StyledHeader } from 'components/NoteNameEditor/HeaderComponent/HeaderStyles';
 
 export const HeaderComponent = ({ onDeleteClick, onUploadFileClick }) => (
-  <div style={wrapperStyles}>
+  <StyledHeader>
     Edit note name
-    <div className="btn-group" style={buttonsContainerStyles}>
+    <StyledButtonContainer>
       <button className="btn btn-danger" onClick={onDeleteClick}>Delete</button>
       <button className="btn btn-default" onClick={onUploadFileClick}>Upload files</button>
-    </div>
-  </div>
+    </StyledButtonContainer>
+  </StyledHeader>
 );
 
 HeaderComponent.propTypes = {

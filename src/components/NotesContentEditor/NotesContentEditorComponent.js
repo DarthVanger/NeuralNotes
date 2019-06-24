@@ -56,7 +56,7 @@ export class NotesContentEditorComponent extends Component {
   };
 
   static getDerivedStateFromProps({ noteText }, state) {
-    console.log('Load note');
+    console.log(`Load note: ${noteText}`);
     if (noteText !== state.noteText) {
       return {
         text: noteText,

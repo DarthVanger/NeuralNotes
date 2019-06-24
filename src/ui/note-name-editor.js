@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'underscore';
 
-import { HeaderComponent } from 'ui/thought-name-editor/header';
+import { HeaderComponent } from 'ui/note-name-editor/header';
 
 const wrapperStyles = {
   position: 'fixed',
@@ -22,7 +22,7 @@ const textAreaStyles = {
   backgroundColor: 'black',
 };
 
-export class ThoughtNameEditor extends Component {
+export class NoteNameEditor extends Component {
   state = { name: '', propName: '' };
 
   ref = React.createRef();
@@ -33,14 +33,14 @@ export class ThoughtNameEditor extends Component {
     const { onDeleteClick, onUploadFileClick } = this.props;
 
     return (
-      <div id="thought-name-editor" style={wrapperStyles}>
+      <div id="note-name-editor" style={wrapperStyles}>
         <HeaderComponent onDeleteClick={onDeleteClick} onUploadFileClick={onUploadFileClick}/>
         <textarea ref={this.ref} onChange={this.onChange} style={textAreaStyles} value={this.state.name}/>
       </div>
     );
   }
 
-  static getDerivedStateFromProps({ thought: { name } }, state) {
+  static getDerivedStateFromProps({ note: { name } }, state) {
     if (name !== state.propName) {
       console.log(name);
       return { name, propName: name };
@@ -55,8 +55,8 @@ export class ThoughtNameEditor extends Component {
   }
 }
 
-ThoughtNameEditor.propTypes = {
-  thought: PropTypes.object.isRequired,
+NoteNameEditor.propTypes = {
+  note: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
   onDeleteClick: PropTypes.func.isRequired,
   onUploadFileClick: PropTypes.func.isRequired

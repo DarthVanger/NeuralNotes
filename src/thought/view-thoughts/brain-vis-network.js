@@ -1,6 +1,5 @@
 import _ from 'underscore';
 import vis from 'vis/dist/vis.js';
-import './view-thoughts.css';
 
 let BrainVisNetwork = function (options) {
   console.debug('vis.js: ', vis);

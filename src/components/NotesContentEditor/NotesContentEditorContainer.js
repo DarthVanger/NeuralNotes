@@ -4,7 +4,7 @@ import { action } from 'sagas';
 import { NotesContentEditorComponent } from 'components/NotesContentEditor/NotesContentEditorComponent';
 import { SAVE_NOTE_CONTENT_ACTION } from 'components/NotesContentEditor/NotesContentEditorActions';
 
-const mapStateToProps = ({ notes: { selectedNote, noteText } }) => {
+const mapStateToProps = ({ notesMindMap: { selectedNote, noteText } }) => {
   return {
     selectedNote,
     noteText,

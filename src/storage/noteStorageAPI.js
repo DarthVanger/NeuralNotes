@@ -1,8 +1,9 @@
 /* global gapi */
 import _ from 'underscore';
+import { toast } from 'react-toastify';
+
 import googleDriveApi from 'api/google-drive-api';
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
-import uiErrorNotification from 'ui/ui-error-notification';
 
 'use strict';
 
@@ -142,7 +143,7 @@ function getFiles(folderId) {
       console.debug('[Loaded] Files: ', resp);
       if (!resp.files) {
         let errorMessage = 'Remote Storage API: Failed to get files';
-        uiErrorNotification.show('Connection with Google Drive failed.\n Can not get files.');
+        toast.error('Connection with Google Drive failed.\n Can not get files.');
         throw new Error(errorMessage);
       }
 

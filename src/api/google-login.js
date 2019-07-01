@@ -1,10 +1,7 @@
 /* global gapi */
-import uiErrorNotification from 'ui/ui-error-notification';
 import auth from 'auth';
-import {
-  clientId,
-  scopes
-} from 'api/google-client-config';
+import { clientId, scopes } from 'api/google-client-config';
+import { toast } from 'react-toastify';
 
 /**
  * Check if current user has authorized this application.
@@ -38,8 +35,6 @@ export function gapiAuthorize() {
     }, function (authResult) {
       console.debug('googleLogin.gapiAuthorize(): authResult: ', authResult);
       if (authResult.error) {
-        uiErrorNotification.show('Google Authentification failed: ' + authResult.error);
-        console.error('googleLogin.gapiAuthorize(): authError: ', authResult.error);
         reject(authResult);
       } else {
         auth.saveToken({

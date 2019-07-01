@@ -4,7 +4,7 @@ import _ from 'underscore';
 
 import { BrainVisNetwork } from 'helpers/brainVisNetwork';
 import { VisNetworkHelper } from 'helpers/visNetworkHelper';
-import noteStorage from 'storage/note-storage';
+import noteStorage from 'storage/noteStorage';
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
 import { NoteNameEditorComponent } from 'components/NoteNameEditor/NoteNameEditorComponent';
 import { StyledNotesMindMap } from 'components/NotesMindMapView/NotesMindMapViewStyles';

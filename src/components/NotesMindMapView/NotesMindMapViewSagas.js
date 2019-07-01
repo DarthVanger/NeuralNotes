@@ -5,7 +5,7 @@ import {
   changeSelectedNoteAction,
   REQUEST_NOTE_TEXT_ACTION
 } from 'components/NotesMindMapView/NotesMindMapViewActions';
-import noteStorage from 'storage/note-storage';
+import noteStorage from 'storage/noteStorage';
 import { APP_INIT_SUCCESS } from 'components/App/AppActions';
 
 const LOADING_NOTE_MESSAGE = 'loading note contents...';

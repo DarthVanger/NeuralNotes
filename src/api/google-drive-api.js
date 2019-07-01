@@ -34,7 +34,6 @@ export default self;
 function loadDriveApi() {
   console.info('Loading Google Drive API...');
   let promise = new Promise(resolve => {
-    //gapi.client.load('drive', 'v3', function() {
     gapi.client.load('drive', 'v3').then(function () {
       self.client = gapi.client.drive;
       console.info('[Loaded] Google Drive API');
@@ -78,22 +77,6 @@ function findByName(options) {
   request = gapi.client.drive.files.list(params);
 
   //TODO: allow search inside of a specified folder?
-
-  //if (options.folderId) {
-  //    request = gapi.client.request({
-  //        path: '/drive/v3/files/' + options.folderId + '/list',
-  //        method: 'GET',
-  //        params: {
-  //          'pageSize': 10,
-  //          'fields': "nextPageToken, files(id, name)",
-  //          'q': query
-  //        }
-  //    });
-  //} else {
-
-
-  //}
-
   spinner.show();
   let promise = new Promise(resolve => {
     request.execute(function (resp) {

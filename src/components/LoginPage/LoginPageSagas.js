@@ -1,5 +1,5 @@
 import { call, put, takeEvery } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
-import noteStorage from 'storage/note-storage';
+import noteStorage from 'storage/noteStorage';
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
 import googleDriveApi from 'api/google-drive-api';
 import { gapiAuthorize } from 'api/google-login';

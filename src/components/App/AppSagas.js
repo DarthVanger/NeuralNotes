@@ -3,7 +3,7 @@ import { put } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
 import auth from 'auth';
 import { appInitSuccessAction, CHANGE_PAGE_ACTION } from 'components/App/AppActions';
 import { PAGES_ENUM } from 'components/App/AppConstants';
-import noteStorage from 'storage/note-storage';
+import noteStorage from 'storage/noteStorage';
 import googleDriveApi from 'api/google-drive-api';
 import googleApiLoader from 'api/google-api-loader';
 import { hideSpinner, showSpinner } from 'components/Spinner/SpinnerSagas';

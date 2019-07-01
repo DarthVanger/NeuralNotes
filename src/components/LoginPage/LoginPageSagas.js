@@ -1,4 +1,6 @@
 import { call, put, takeEvery } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
+import { toast } from 'react-toastify';
+
 import noteStorage from 'storage/noteStorage';
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
 import googleDriveApi from 'api/google-drive-api';
@@ -13,12 +15,18 @@ export function* handleAuth() {
   const spinnerName = 'Loading google auth';
 
   yield call(siteGlobalLoadingBar.show, spinnerName);
-  yield gapiAuthorize();
+  try {
+    yield gapiAuthorize();
+    yield call(googleDriveApi.loadDriveApi);
+    yield call(noteStorage.scanDrive);
+    yield put(appInitSuccessAction());
+    yield setPageAction(PAGES_ENUM.NOTES);
+  }
+  catch (e) {
+    console.error('googleLogin.gapiAuthorize(): authError: ', e.error);
+    yield call([toast, toast.error], 'Google Authentification failed: ' + e.error);
+  }
   yield call(siteGlobalLoadingBar.hide, spinnerName);
-  yield call(googleDriveApi.loadDriveApi);
-  yield call(noteStorage.scanDrive);
-  yield put(appInitSuccessAction());
-  yield setPageAction(PAGES_ENUM.NOTES);
 }
 
 export function* loginInit() {

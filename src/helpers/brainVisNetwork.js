@@ -1,5 +1,6 @@
 import _ from 'underscore';
 import vis from 'vis/dist/vis.js';
+import noteStorage from 'storage/noteStorage';
 
 export class BrainVisNetwork {
   constructor(options) {
@@ -12,9 +13,8 @@ export class BrainVisNetwork {
 
   renderParentNote(note) {
     console.debug('BrainVisNetwork.renderParentNote(): note: ', note);
-    if (!note.parent) {
+    if (note.parent === noteStorage.getRoot()) {
       // don't render parent for root note
-      // TODO: refactor to use function to check for root note
       return;
     }
 
@@ -46,7 +46,6 @@ export class BrainVisNetwork {
     // add note children
     console.debug('BrainVisNetwork: note.children: ', note.children);
     _.each(note.children, function (childNote) {
-      //childNote.parent = note;
       visNodesArray.push({
         id: childNote.id,
         label: childNote.name,

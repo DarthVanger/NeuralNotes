@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'underscore';
 
-import noteStorage from 'storage/note-storage';
+import noteStorage from 'storage/noteStorage';
 import {
   StyledLink,
   StyledSelectedNotesContent,

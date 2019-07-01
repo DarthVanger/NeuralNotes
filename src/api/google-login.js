@@ -27,15 +27,6 @@ export function checkAuth() {
   });
 }
 
-// function updateSigninStatus(isSignedIn) {
-//   if (isSignedIn) {
-//     console.info('User is signed in');
-//   } else {
-//     console.info('User NOT signed in');
-//     gapiAuthorize();
-//   }
-// }
-
 export function gapiAuthorize() {
   console.debug('googleLogin.gapiAuthorize(): clientId: ', clientId);
   console.debug('googleLogin.gapiAuthorize(): scopes: ', scopes);

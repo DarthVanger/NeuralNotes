@@ -7,6 +7,11 @@ export const GlobalStyle = createGlobalStyle`
     font-family: 'Raleway', sans-serif;
   }
   
+  #app-root {
+    position: relative;
+    height: 100%;
+  }
+  
   .vis-network {
     background-color: #222;
     

@@ -1,4 +1,5 @@
-import { put } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
+import { put, call } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
+import { toast } from 'react-toastify';
 
 import auth from 'auth';
 import { appInitSuccessAction, CHANGE_PAGE_ACTION } from 'components/App/AppActions';
@@ -25,6 +26,9 @@ export function* loadApp() {
 }
 
 export function* appInit() {
+  yield call([toast, toast.configure], {
+    position: toast.POSITION.BOTTOM_RIGHT
+  });
   if (auth.signedIn()) {
     console.info('User is signed in');
     yield loadApp();

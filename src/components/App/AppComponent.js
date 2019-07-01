@@ -1,21 +1,12 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import { NotesPageContainer } from 'components/NotesPage/NotesPageContainer';
 import { PAGES_ENUM } from 'components/App/AppConstants';
 import { LoginPageContainer } from 'components/LoginPage/LoginPageContainer';
 
-export class AppComponent extends Component {
+export class AppComponent extends PureComponent {
   render() {
-    // TODO: remove it when project is moved to styled-components
-    const element = document.getElementById('app-root');
-    element.style.position = 'relative';
-    element.style.height = '100%';
-
-    return this.getPage();
-  }
-
-  getPage() {
     const { page } = this.props;
     switch (page) {
       case PAGES_ENUM.LOADING:

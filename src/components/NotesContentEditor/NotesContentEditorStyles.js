@@ -6,7 +6,6 @@ export const StyledSelectedNotesContent = styled.div`
   top: 0;
   height: 4em;
   padding: 0;
-  /* border: solid 1px rgba(50, 50, 100, 0.5); */
   width: 100%;
 `;
 

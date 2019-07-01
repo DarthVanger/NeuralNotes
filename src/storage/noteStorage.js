@@ -1,24 +1,20 @@
-// import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
-import noteStorageApi from 'storage/note-storage-api';
-import noteStorageTree from 'storage/note-tree';
+import noteStorageApi from 'storage/noteStorageAPI';
+import { addChildrenToTree, findNoteById, setRoot, deleteNode, getNotes, logTree, getRoot } from 'storage/noteTree';
 
 'use strict';
 
-// var appRootFolder = noteStorageApi.appRootFolder;
 const notesTree = {};
 
-// var spinner = siteGlobalLoadingBar.create('note-storage');
-
+// TODO: Better to avoid using export default
 export default {
-  restoreFromCache,
   scanDrive,
 
   // notes tree
-  findNoteById: noteStorageTree.findNoteById,
-  getNotes: noteStorageTree.getNotes,
-  logTree: noteStorageTree.logTree,
-  getRoot: noteStorageTree.getRoot,
-  addChildrenToTree: noteStorageTree.addChildrenToTree,
+  findNoteById,
+  getNotes,
+  logTree,
+  getRoot,
+  addChildrenToTree,
 
   // api:
   APP_FOLDER_NAME: noteStorageApi.APP_FOLDER_NAME,
@@ -35,7 +31,7 @@ export default {
 function fetchChildNotes(note) {
   return noteStorageApi.fetchChildNotes(note)
     .then(function (children) {
-      noteStorageTree.addChildrenToTree({
+      addChildrenToTree({
         parentId: note.id,
         children: children
       });
@@ -47,7 +43,7 @@ function fetchChildNotes(note) {
 function fetchParentNote(noteId) {
   return noteStorageApi.fetchParentNote(noteId)
     .then(function (parentNote) {
-      var note = noteStorageTree.findNoteById(noteId);
+      const note = findNoteById(noteId);
       if (note) { // root folder has no parent
         note.parent = parentNote;
       }
@@ -59,14 +55,10 @@ function scanDrive() {
   console.debug('noteStorage.scanDrive()');
   return noteStorageApi.scanDrive()
     .then(function (appRootFolder) {
-      noteStorageTree.setRoot(appRootFolder);
+      setRoot(appRootFolder);
       console.info('Note tree root set to the App root folder on Google Drive');
       console.debug('noteStorage.scanDrive(), stored notesTree: ', notesTree);
     });
-}
-
-function restoreFromCache() {
-  return noteStorageTree.restoreFromCache();
 }
 
 function create(note, parentNote) {
@@ -79,8 +71,8 @@ function create(note, parentNote) {
 }
 
 function updateNoteName(note) {
-  var oldNote = this.findNoteById(note.id);
-  var newNote = note;
+  const oldNote = this.findNoteById(note.id);
+  const newNote = note;
   return Promise.all([
     noteStorageApi.updateFileName(newNote),
     noteStorageApi.updateNoteContentFileName(newNote, oldNote)
@@ -92,12 +84,14 @@ function updateNoteName(note) {
 }
 
 function remove(note) {
-  return noteStorageApi.remove(note).then(function (result) {
-    noteStorageTree.deleteNode(note);
-    return result;
-  });
+  return noteStorageApi
+    .remove(note)
+    .then(result => {
+      deleteNode(note);
+      return result;
+    });
 }
 
-function getLinkToNote(note) {
-  return 'https://drive.google.com/open?id=' + note.id;
+function getLinkToNote({ id }) {
+  return 'https://drive.google.com/open?id=' + id;
 }

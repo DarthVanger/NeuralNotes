@@ -65,8 +65,8 @@ module.exports = {
     }),
     new LiveReloadPlugin(),
     new CopyWebpackPlugin([
-      {from: 'src/**/*.jpg'},
-      {from: 'src/**/*.png'},
+      { from: 'src/**/*.jpg' },
+      { from: 'src/**/*.png' },
     ])
   ]
 };

@@ -21,8 +21,4 @@ function show(messageText) {
   function mount() {
     document.body.appendChild(element);
   }
-
-  // function unmount() {
-  //   element.remove();
-  // }
 }

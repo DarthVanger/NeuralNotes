@@ -16,5 +16,29 @@ cd NeuralNotes
 npm install
 npm start # launches a server at localhost:3000
 ```
+
+## Production build
+```
+npm install
+npm run build
+```
+
+Build script puts `index.html` and all the assets into `dist/` folder
+```
+$ ls dist/index*
+dist/index.html         dist/index.js           dist/index.js.map
+```
+
+### Testing production build locally
+
+To test the production build locally, simply serve files from the `dist/` folder.
+
+For example you can easily launch a [nodejs http-server](https://www.npmjs.com/package/http-server) on port 3000 like this:
+```
+npx http-server -p 3000 ./dist/
+```
+
+Visit <http://localhost:3000> to see the website.
+
 ## Jenkins
 http://neural-notes.com:8080/

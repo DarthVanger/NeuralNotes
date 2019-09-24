@@ -1,25 +1,26 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const LiveReloadPlugin = require('webpack-livereload-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const LiveReloadPlugin = require("webpack-livereload-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
-const ASSET_PATH = process.env.ASSET_PATH || '/';
+const ASSET_PATH = process.env.ASSET_PATH || "/";
 
 module.exports = {
-  entry: ['@babel/polyfill', './src/index.js'] ,
+  entry: ["@babel/polyfill", "./src/index.js"],
   output: {
-    filename: 'index.js',
+    filename: "index.js",
     publicPath: ASSET_PATH,
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, "dist")
   },
-  mode: 'development',
+  mode: "development",
   module: {
     rules: [
       {
-        use: 'babel-loader',
+        use: "babel-loader",
         test: /\.js$/,
         exclude: /node_modules/
-      }, {
+      },
+      {
         test: /\.css$/,
         use: [
           {
@@ -29,44 +30,44 @@ module.exports = {
             loader: "css-loader" // translates CSS into CommonJS
           }
         ]
-      }, {
-        test: /\.(woff(2)?|ttf|eot|svg)$/,
-        use: [{
-          loader: 'file-loader',
-          options: {
-            name: '[name].[ext]',
-            outputPath: 'fonts/'
+      },
+      {
+        test: /\.(woff(2)?|ttf|eot)$/,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "[name].[ext]",
+              outputPath: "fonts/"
+            }
           }
-        }]
-      }, {
+        ]
+      },
+      {
         test: /\.(gif|png|jpe?g|svg)$/i,
-        use: [{
-          loader: 'file-loader'
-        }],
+        use: [
+          {
+            loader: "file-loader"
+          }
+        ]
       }
     ]
   },
-  devtool: 'source-map',
+  devtool: "source-map",
   // mode: 'production',
   resolve: {
-    modules: [
-      path.resolve('./src'),
-      path.resolve('./node_modules')
-    ]
+    modules: [path.resolve("./src"), path.resolve("./node_modules")]
   },
   resolveLoader: {
     alias: {
-      text: 'text-loader'
+      text: "text-loader"
     }
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'src/index.html'
+      template: "src/index.html"
     }),
     new LiveReloadPlugin(),
-    new CopyWebpackPlugin([
-      { from: 'src/**/*.jpg' },
-      { from: 'src/**/*.png' },
-    ])
+    new CopyWebpackPlugin([{ from: "src/**/*.jpg" }, { from: "src/**/*.png" }])
   ]
 };

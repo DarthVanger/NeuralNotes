@@ -1,8 +1,9 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
   html, body {
     height: 100%;
+    min-width: 400px;
     font-size: initial;
     font-family: 'Raleway', sans-serif;
   }

@@ -9,6 +9,9 @@ There is no DB, it's just files:
 - basically it's a folder tree displayed as a mind map
 - notes are just txt files inside the folders
 
+## Kanban board (github project)
+https://github.com/users/DarthVanger/projects/1
+
 ## Launch locally
 ```
 git clone https://github.com/DarthVanger/NeuralNotes.git

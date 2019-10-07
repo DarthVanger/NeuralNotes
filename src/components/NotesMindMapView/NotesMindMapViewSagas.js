@@ -5,7 +5,8 @@ import {
   CHANGE_NOTE_VIS_NETWORK_NOTE_ACTION,
   changeNoteTextAction,
   changeSelectedNoteAction,
-  REQUEST_NOTE_TEXT_ACTION
+  CREATE_EMPTY_CHILD,
+  DELETE_NOTE
 } from 'components/NotesMindMapView/NotesMindMapViewActions';
 import noteStorage from 'storage/noteStorage';
 import { APP_INIT_SUCCESS } from 'components/App/AppActions';
@@ -18,9 +19,9 @@ function* setRootNote() {
   yield put(changeSelectedNoteAction(noteStorage.getRoot()));
 }
 
-function* requestNoteText({ data }) {
+function* requestNoteText(note) {
   yield put(changeNoteTextAction(LOADING_NOTE_MESSAGE));
-  const noteText = yield call(noteStorage.getNoteContent, data);
+  const noteText = yield call(noteStorage.getNoteContent, note);
   yield put(changeNoteTextAction(noteText));
 }
 
@@ -79,10 +80,49 @@ function renderChildren(children, targetNote, visNetwork) {
   });
 }
 
+function createEmptyChild({ data: { parentId, visNetwork } }) {
+  const note = {
+    name: 'new2',
+    content: '',
+    isNote: true
+  };
+
+  const parent = noteStorage.findNoteById(parentId);
+
+  return noteStorage.create(note, parent)
+    .then(newNote => {
+      note.id = newNote.id;
+
+      const children = [note];
+
+      noteStorage.addChildrenToTree({
+        parentId: parentId,
+        children,
+      });
+
+      visNetwork.addChildNotes({
+        children,
+        parentNoteId: parentId,
+      });
+
+      this.editNote(note.id);
+
+      return note;
+    });
+}
+
+function deleteNote({ data: { note, visNetwork } }) {
+  noteStorage.remove(note)
+    .then(function () {
+      visNetwork.deleteSelectedNode();
+    });
+}
+
 export function* noteMindMapInit() {
   yield all([
     takeEvery(APP_INIT_SUCCESS, setRootNote),
-    takeEvery(REQUEST_NOTE_TEXT_ACTION, requestNoteText),
     takeEvery(CHANGE_NOTE_VIS_NETWORK_NOTE_ACTION, changeNote),
+    takeEvery(CREATE_EMPTY_CHILD, createEmptyChild),
+    takeEvery(DELETE_NOTE, deleteNote),
   ]);
 }

@@ -105,15 +105,13 @@ export class NotesMindMapViewComponent extends Component {
   visNetworkDoubleClickHandler = event => {
     if (VisNetworkHelper.clickedOnNote(event)) {
       let targetNoteId = VisNetworkHelper.getTargetNoteId(event);
-      console.info('=== Event === Node double click');
-      this.createEmptyChild(targetNoteId);
+      this.props.createEmptyChild({ parentId: targetNoteId, visNetwork });
     }
   };
 
   visNetworkHoldHandler = event => {
     if (VisNetworkHelper.clickedOnNote(event)) {
       let targetNoteId = VisNetworkHelper.getTargetNoteId(event);
-      console.info('=== Event === Node hold');
       this.editNote(targetNoteId);
     }
   };
@@ -121,13 +119,7 @@ export class NotesMindMapViewComponent extends Component {
   editNote(targetNoteId) {
     const note = noteStorage.findNoteById(targetNoteId);
 
-    if (note.name === noteStorage.APP_FOLDER_NAME) {
-      console.info('It is not allowed to edit App root folder name');
-      return;
-    }
-
-    if (!note.isNote) {
-      console.info('It is not allowed to edit user-uploaded files');
+    if (note.name === noteStorage.APP_FOLDER_NAME || !note.isNote) {
       return;
     }
 
@@ -148,58 +140,22 @@ export class NotesMindMapViewComponent extends Component {
 
   onDeleteClick = () => {
     let note = this.state.currentViewedNote;
-    console.info('Deleting ' + note.name + '...');
-    noteStorage.remove(note)
-      .then(function () {
-        console.info('Deleted ' + note.name);
-        visNetwork.deleteSelectedNode();
-      });
+    this.props.deleteNote({ note, visNetwork });
   };
 
   onUploadFileClick = () => {
-    console.info('[Event] Upload file click');
     window.open(noteStorage.getLinkToNote(this.state.currentViewedNote));
   };
 
   closeNoteNameEditor() {
     this.setState({ selectedNote: null });
   }
-
-  createEmptyChild(parentId) {
-    var note = {
-      name: 'new',
-      content: '',
-      isNote: true
-    };
-
-    var parent = noteStorage.findNoteById(parentId);
-
-    return noteStorage.create(note, parent)
-      .then(newNote => {
-        note.id = newNote.id;
-
-        var children = [note];
-
-        noteStorage.addChildrenToTree({
-          parentId: parentId,
-          children: children
-        });
-
-        visNetwork.addChildNotes({
-          children: children,
-          parentNoteId: parentId
-        });
-
-        this.editNote(note.id);
-
-        return note;
-      });
-  }
 }
 
 NotesMindMapViewComponent.propTypes = {
   selectedNote: PropTypes.object.isRequired,
-  requestNoteText: PropTypes.func.isRequired,
   changeSelectedNote: PropTypes.func.isRequired,
   changeVisNetworkNote: PropTypes.func.isRequired,
+  createEmptyChild: PropTypes.func.isRequired,
+  deleteNote: PropTypes.func.isRequired,
 };

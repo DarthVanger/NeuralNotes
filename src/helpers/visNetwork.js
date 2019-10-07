@@ -2,7 +2,7 @@ import _ from 'underscore';
 import vis from 'vis/dist/vis.js';
 import noteStorage from 'storage/noteStorage';
 
-export class BrainVisNetwork {
+export class VisNetwork {
   constructor(options) {
     console.debug('vis.js: ', vis);
     this.containerDomElement = options.containerDomElement;
@@ -12,7 +12,7 @@ export class BrainVisNetwork {
   }
 
   renderParentNote(note) {
-    console.debug('BrainVisNetwork.renderParentNote(): note: ', note);
+    console.debug('VisNetwork.renderParentNote(): note: ', note);
     if (note.parent === noteStorage.getRoot()) {
       // don't render parent for root note
       return;
@@ -35,7 +35,7 @@ export class BrainVisNetwork {
   }
 
   renderInitialNote(note) {
-    console.debug('BrainVisNetwork.renderInitialNote(): ', note);
+    console.debug('VisNetwork.renderInitialNote(): ', note);
 
     let visNodesArray = [];
     let visEdgesArray = [];
@@ -44,7 +44,7 @@ export class BrainVisNetwork {
     visNodesArray.push({ id: note.id, label: note.name });
 
     // add note children
-    console.debug('BrainVisNetwork: note.children: ', note.children);
+    console.debug('VisNetwork: note.children: ', note.children);
     _.each(note.children, function (childNote) {
       visNodesArray.push({
         id: childNote.id,
@@ -120,7 +120,7 @@ export class BrainVisNetwork {
 
   addChildNotes(options) {
     let self = this;
-    console.debug('BrainVisNetwork.addChildNotes(). Options: ', options);
+    console.debug('VisNetwork.addChildNotes(). Options: ', options);
     _.each(options.children, function (childNote) {
       if (self.visNodes.get(childNote.id)) {
         // don't try to add existing nodes, because vis DataSet will throw an error

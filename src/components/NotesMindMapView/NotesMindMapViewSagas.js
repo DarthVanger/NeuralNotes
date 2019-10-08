@@ -10,6 +10,8 @@ import {
 import noteStorage from 'storage/noteStorage';
 import { APP_INIT_SUCCESS } from 'components/App/AppActions';
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
+import { SEARCH_QUERY_CHANGED_ACTION } from 'components/SearchPanel/SearchPanelActions';
+import googleDriveApi from 'api/google-drive-api';
 
 const LOADING_NOTE_MESSAGE = 'loading note contents...';
 let spinner = siteGlobalLoadingBar.create('mind map');
@@ -79,10 +81,17 @@ function renderChildren(children, targetNote, visNetwork) {
   });
 }
 
+function* searchNoteSaga({ data }) {
+  const results = yield googleDriveApi.findNotesByName(data);
+  console.log(results);
+}
+
+
 export function* noteMindMapInit() {
   yield all([
     takeEvery(APP_INIT_SUCCESS, setRootNote),
     takeEvery(REQUEST_NOTE_TEXT_ACTION, requestNoteText),
     takeEvery(CHANGE_NOTE_VIS_NETWORK_NOTE_ACTION, changeNote),
+    takeEvery(SEARCH_QUERY_CHANGED_ACTION, searchNoteSaga),
   ]);
 }

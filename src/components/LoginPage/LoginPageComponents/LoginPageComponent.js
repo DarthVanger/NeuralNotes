@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import slide1 from 'components/LoginPage/images/slide-1.svg';
-import slide2 from 'components/LoginPage/images/slide-2.svg';
+import Slide1 from 'components/LoginPage/LoginPageComponents/Slide1';
+import Slide2 from 'components/LoginPage/LoginPageComponents/Slide2';
 import slide3img1 from 'components/LoginPage/images/slide-3_img-1.svg';
 import slide3img2 from 'components/LoginPage/images/slide-3_img-2.svg';
 import arrow from 'components/LoginPage/images/arrow.svg'
@@ -23,22 +23,6 @@ const Section = styled.section`
   width: 100%;
   max-width: calc(100vh*1.1);
   margin: auto;
-`;
-
-const AppName = styled.header`
-  display: block;
-  text-align: center;
-  color: #ffffff;
-  padding-top: 10%;
-  padding-bottom: 7%;
-
-  h1 {
-    font-weight: 100;
-    font-size: calc(24px + (45 - 24)*(100vw - 375px)/(1200 - 375));
-    b {
-        color: #96ffff;
-      }
-  }
 `;
 
 const Figure = styled.figure`
@@ -129,24 +113,6 @@ const Container = styled.div`
   position: relative;
 `;
 
-const Slide1 = styled.section`
-  padding-bottom: 10%;
-  text-align: center;
-
-  Img {
-    width: 74%;
-  }
-
-`;
-const Slide2 = styled.section`
-  padding-bottom: 10%;
-  text-align: center;
-
-  Img {
-    width: 74%;
-  }
-  
-`;
 const Slide3 = styled.section`
   padding-bottom: 10%;
   text-align: center;
@@ -296,22 +262,8 @@ export class LoginPageComponent extends Component {
     return (
       <Main>
         <Section>
-          <Slide1>
-            <AppName>
-              <h1><b>Neural</b>Notes</h1>
-            </AppName>
-            <Figure>
-              <Img src={slide1} />
-            </Figure>
-          </Slide1>
-          <Slide2>
-            <H3><b>Create Notes</b>
-              <br />
-              As A Mind Map</H3>
-            <Figure>
-              <Img src={slide2} />
-            </Figure>
-          </Slide2>
+          <Slide1 />
+          <Slide2 />
           <Slide3>
             <H2><b>Edit Notes Content</b>
               <br />

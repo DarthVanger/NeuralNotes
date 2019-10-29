@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import Slide1 from 'components/LoginPage/LoginPageComponents/Slide1';
-import Slide2 from 'components/LoginPage/LoginPageComponents/Slide2';
+import Slide1 from 'components/LoginPage/Slide1';
+import Slide2 from 'components/LoginPage/Slide2';
 import slide3img1 from 'components/LoginPage/images/slide-3_img-1.svg';
 import slide3img2 from 'components/LoginPage/images/slide-3_img-2.svg';
 import arrow from 'components/LoginPage/images/arrow.svg'

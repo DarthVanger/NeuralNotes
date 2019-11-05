@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Slide1 from 'components/LoginPage/Slide1';
 import Slide2 from 'components/LoginPage/Slide2';
-import slide3img1 from 'components/LoginPage/images/slide-3_img-1.svg';
-import slide3img2 from 'components/LoginPage/images/slide-3_img-2.svg';
+import Slide3 from 'components/LoginPage/Slide3';
 import arrow from 'components/LoginPage/images/arrow.svg'
 import slide4 from 'components/LoginPage/images/slide-4.svg';
 import arrowCurve from 'components/LoginPage/images/arrow-curve.svg';
@@ -60,24 +59,6 @@ const ArrowDown = styled.img`
   transform: rotate(180deg);
 `;
 
-const ArrowLeft = styled.img`
-  width: 2%;
-  height: auto;
-  transform: rotate(270deg);
-  position: absolute;
-  left: 31%;
-  top: 36%;
-`;
-
-const ArrowRight = styled.img`
-  width: 2%;
-  height: auto;
-  transform: rotate(90deg);
-  position: absolute;
-  right: 31%;
-  top: 36%;
-`;
-
 const Tooltip = styled.div`
   width: 29%;
   background: #0E1736;
@@ -93,17 +74,6 @@ const Tooltip = styled.div`
   margin: 1vw;
 `;
 
-const Caption = styled.caption`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 0;
-  color: #ffffff;
-  text-align: center;
-`;
-
 const Button = styled.a`
   display: block;
 
@@ -113,64 +83,6 @@ const Container = styled.div`
   position: relative;
 `;
 
-const Slide3 = styled.section`
-  padding-bottom: 10%;
-  text-align: center;
-
-  .cetered {
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .note-example {
-    width: 61%;
-  }
-
-  .edit-example {
-    position: relative;
-    margin-top: -11%;
-  }
-
-  .capt-s3-1 {
-    position: absolute;
-    right: 8%;
-    top: 11%;
-    height: 5%;
-    width: 13.6%;
-  }
-  .capt-s3-2 {
-    position: absolute;
-    height: 14%;
-    width: 16%;
-    top: 34%;
-    left: 42%;
-    text-align: center;
-    text-transform: uppercase;
-    font-weight: 700;
-  }
-  .capt-s3-3 {
-    position: absolute;
-    height: 10%;
-    width: 14%;
-    left: 11%;
-    top: 61%;
-    text-align: center;
-  }
-  .capt-s3-4 {
-    position: absolute;
-    height: 10%;
-    width: 14%;
-    left: 74%;
-    top: 61%;
-    text-align: center;
-    margin: 0;
-  }
-  
-  .bottomTooltip {
-    margin-top: -21%;
-    position: relative;
-
-  }
-`;
 const Slide4 = styled.section`
   text-align: center;
   position: relative;
@@ -264,46 +176,7 @@ export class LoginPageComponent extends Component {
         <Section>
           <Slide1 />
           <Slide2 />
-          <Slide3>
-            <H2><b>Edit Notes Content</b>
-              <br />
-              And Attach Files
-            </H2>
-            <Figure>
-              <Img className='note-example' src={slide3img1} />
-            </Figure>
-            <div>
-              <ArrowUp src={arrow} />
-              <Tooltip className='cetered'>
-                <svg viewBox="0 0 155 19"><text x="0" y="17" fill="#ffffff" font="bold">Edit Note Content</text></svg>
-                </Tooltip>
-              <ArrowDown src={arrow} />
-            </div>
-            <Figure className='edit-example'>
-              <Img src={slide3img2} />
-              <Caption>
-                <div className='capt-s3-1'>
-                  <svg viewBox="0 0 100 21">
-                    <text x="0" y="15" fill="#96ffff">Neural</text>
-                    <text x="47" y="15" fill="#ffffff">Notes</text>
-                  </svg>
-                </div>
-                <div className='capt-s3-2'>
-                  <svg viewBox="0 0 100 49">
-                    <text x="10" y="22" fill="#ffffff">Vacation</text>
-                    <text x="30" y="43" fill="#ffffff">2018</text>
-                  </svg>
-                </div>
-                <div className='capt-s3-3'>Hotel<br />Booking.pdf</div>
-                <div className='capt-s3-4'>Airplane<br />ticket.pdf</div>
-              </Caption>
-            </Figure>
-            <div className='bottomTooltip'>
-              <ArrowLeft src={arrow} />
-              <Tooltip className='cetered'><svg viewBox="0 0 155 19"><text x="23" y="17" fill="#ffffff" font="bold">Attach files</text></svg></Tooltip>
-              <ArrowRight src={arrow} />
-            </div>
-          </Slide3>
+          <Slide3 />
           <Slide4>
             <H3>All notes and files are stored
               <br />

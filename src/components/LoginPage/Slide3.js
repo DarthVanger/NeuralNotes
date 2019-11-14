@@ -67,6 +67,7 @@ const ArrowRight = styled.img`
   top: 38%;
 `;
 const Tooltip = styled.div`
+  position: relative;
   width: 34%;
   background: #0E1736;
   border-radius: 5px;
@@ -85,18 +86,17 @@ const Tooltip = styled.div`
 `;
 
 const Caption = styled.svg`
-  font-weight: ${props => props.font || 700};
+  font-weight: ${props => props.fontWeight || 700};
   position: absolute;
-  width: ${props => props.widthPerc};
+  width: ${props => props.width};
   top: ${props => props.top};
   left: ${props => props.left};
   right: ${props => props.right};
   bottom: ${props => props.bottom};
-  font-weight: ${props => props.font};
 `;
 
-const CaptionSvgTextBox = ({width = 100, height = 21, ...rest}) => {
-  return <Caption viewBox={`0 0 ${width} ${height}`} {...rest} />;
+const CaptionSvgTextBox = ({viewBoxWidth = 100, viewBoxHeight = 21, ...rest}) => {
+  return <Caption viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`} {...rest} />;
 };
 const CaptionSvgText = ({x = 0, y = 15, fill = "#FFFFFF", text}) => {
   return <text x={x} y={y} fill={fill}>{text}</text>;
@@ -117,7 +117,7 @@ export default class Slide3 extends Component {
             <Figure>
               <ArrowUp src={arrow} />
               <Tooltip>
-                <CaptionSvgTextBox  width="155" height="19" left="37%" top="40%" widthPerc="26%">
+                <CaptionSvgTextBox viewBoxWidth="155" viewBoxHeight="19" left="12%" top="27%" width="76%">
                   <CaptionSvgText y="17" text="Edit Note Content"/>
                 </CaptionSvgTextBox>
               </Tooltip>
@@ -125,19 +125,19 @@ export default class Slide3 extends Component {
             </Figure>
             <Figure className='edit-example'>
               <Img src={slideImage2} />
-                <CaptionSvgTextBox  left="78%" top="11.5%" widthPerc="15%">
+                <CaptionSvgTextBox  left="78%" top="11.5%" width="15%">
                   <CaptionSvgText fill="#96ffff" text="Neural"/>
                   <CaptionSvgText x="47" text="Notes"/>
                 </CaptionSvgTextBox>
-                <CaptionSvgTextBox width="80" height="40" left="43%" top="36%" widthPerc="14%">
+              <CaptionSvgTextBox viewBoxWidth="80" viewBoxHeight="40" left="43%" top="36%" width="14%">
                   <CaptionSvgText y="14" text="VACATION"/>
                   <CaptionSvgText x="22" y="34" text="2018"/>
                 </CaptionSvgTextBox>
-                <CaptionSvgTextBox width="90" height="44" left="12%" top="61%" widthPerc="12%">
+              <CaptionSvgTextBox viewBoxWidth="90" viewBoxHeight="44" left="12%" top="61%" width="12%">
                   <CaptionSvgText x="22" y="14" text="Hotel"/>
                   <CaptionSvgText y="34" text="Booking.pdf"/>
                 </CaptionSvgTextBox>
-                <CaptionSvgTextBox width="72" height="44"  left="76.5%" top="61%" widthPerc="10%">
+              <CaptionSvgTextBox viewBoxWidth="72" viewBoxHeight="44"  left="76.5%" top="61%" width="10%">
                   <CaptionSvgText x="4" y="14" text="Airplane"/>
                   <CaptionSvgText y="34" text="ticket.pdf"/>
                 </CaptionSvgTextBox>
@@ -145,7 +145,7 @@ export default class Slide3 extends Component {
             <div className='bottomPosition'>
               <ArrowLeft src={arrow} />
               <Tooltip className='bottomTooltip'>
-              <CaptionSvgTextBox  width="108" height="19" left="43.5%" top="32%" widthPerc="13%">
+                <CaptionSvgTextBox viewBoxWidth="108" viewBoxHeight="19" left="20%" top="30%" width="60%">
                   <CaptionSvgText x="1" y="15" text="Attach files"/>
                 </CaptionSvgTextBox>
                 </Tooltip>

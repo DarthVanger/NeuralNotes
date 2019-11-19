@@ -5,6 +5,11 @@ import slideImage from 'components/LoginPage/images/slide-2.svg';
 const Slide = styled.section`
   padding-bottom: 10%;
   text-align: center;
+
+  .shadow {
+  -webkit-filter: drop-shadow( 0px 7px 4px rgba(0, 0, 0, .3));
+  filter: drop-shadow( 0px 7px 4px rgba(0, 0, 0, .3));
+}
 `;
 const H3 = styled.h3`
   padding-bottom: 7%;
@@ -47,7 +52,7 @@ export default class Slide2 extends Component {
               <br />
               As A Mind Map</H3>
             <Figure>
-              <Img src={slideImage} />
+              <Img src={slideImage} className="shadow"/>
               <CaptionSvgTextBox left="14.5%" top="11%" width="9.5%">
                   <CaptionSvgText text="Chill"/>
                 </CaptionSvgTextBox>

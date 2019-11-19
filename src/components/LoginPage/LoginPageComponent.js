@@ -5,9 +5,9 @@ import Slide1 from 'components/LoginPage/Slide1';
 import Slide2 from 'components/LoginPage/Slide2';
 import Slide3 from 'components/LoginPage/Slide3';
 import arrow from 'components/LoginPage/images/arrow.svg'
-import slide5img1 from 'components/LoginPage/images/slide-5_img-1.svg';
-import slide5img2 from 'components/LoginPage/images/slide-5_img-2.svg';
-import slide6 from 'components/LoginPage/images/slide-6.svg';
+import slide4img1 from 'components/LoginPage/images/slide-4_img-1.svg';
+import slide4img2 from 'components/LoginPage/images/slide-4_img-2.svg';
+import slide5 from 'components/LoginPage/images/slide-5.svg';
 import iconGoogle from 'components/LoginPage/images/icon-google.svg';
 
 const Main = styled.main`
@@ -74,7 +74,7 @@ const Container = styled.div`
   position: relative;
 `;
 
-const Slide5 = styled.section`
+const Slide4 = styled.section`
   .img1 {
     position: absolute;
     width: 60%;
@@ -86,7 +86,7 @@ const Slide5 = styled.section`
     margin-left: -24%;
   }
 `;
-const Slide6 = styled.section`
+const Slide5 = styled.section`
   position: relative;
 
   H3 {
@@ -149,17 +149,17 @@ export class LoginPageComponent extends Component {
           <Slide1 />
           <Slide2 />
           <Slide3 />
-          <Slide5>
+          <Slide4>
             <Container>
             <Figure className='img1'>
-              <Img src={slide5img1} />
+              <Img src={slide4img1} />
             </Figure>
             <Figure  className='img2'>
-              <Img src={slide5img2} />
+              <Img src={slide4img2} />
             </Figure>
             </Container>
-          </Slide5>
-          <Slide6>
+          </Slide4>
+          <Slide5>
             <H3>Frequently used notes
               <br />
               get bigger
@@ -174,7 +174,7 @@ export class LoginPageComponent extends Component {
                 <ArrowDown src={arrow} />
             </Tooltip>
             <Figure>
-              <Img src={slide6} />
+              <Img src={slide5} />
             </Figure>
             <Tooltip className='tooltip-left'>
                 <ArrowUp src={arrow} />
@@ -185,7 +185,7 @@ export class LoginPageComponent extends Component {
                 <span> big</span>
             </Tooltip>
             </Container>
-          </Slide6>
+          </Slide5>
           <Footer>
             <H3><span>Neural</span>Notes is open source and free</H3>
             <Button onClick={authHandler}><span><img src={iconGoogle} /></span>Sing up with Google</Button>

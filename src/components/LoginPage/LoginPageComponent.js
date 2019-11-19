@@ -4,9 +4,8 @@ import styled from 'styled-components';
 import Slide1 from 'components/LoginPage/Slide1';
 import Slide2 from 'components/LoginPage/Slide2';
 import Slide3 from 'components/LoginPage/Slide3';
+import Slide4 from 'components/LoginPage/Slide4';
 import arrow from 'components/LoginPage/images/arrow.svg'
-import slide4img1 from 'components/LoginPage/images/slide-4_img-1.svg';
-import slide4img2 from 'components/LoginPage/images/slide-4_img-2.svg';
 import slide5 from 'components/LoginPage/images/slide-5.svg';
 import iconGoogle from 'components/LoginPage/images/icon-google.svg';
 
@@ -74,18 +73,6 @@ const Container = styled.div`
   position: relative;
 `;
 
-const Slide4 = styled.section`
-  .img1 {
-    position: absolute;
-    width: 60%;
-    right: 0%;
-    top: 3%;
-  }
-  .img2 {
-    width: 100%;
-    margin-left: -24%;
-  }
-`;
 const Slide5 = styled.section`
   position: relative;
 
@@ -149,16 +136,7 @@ export class LoginPageComponent extends Component {
           <Slide1 />
           <Slide2 />
           <Slide3 />
-          <Slide4>
-            <Container>
-            <Figure className='img1'>
-              <Img src={slide4img1} />
-            </Figure>
-            <Figure  className='img2'>
-              <Img src={slide4img2} />
-            </Figure>
-            </Container>
-          </Slide4>
+          <Slide4 />
           <Slide5>
             <H3>Frequently used notes
               <br />

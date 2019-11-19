@@ -30,7 +30,7 @@ const Img = styled.img`
 const Caption = styled.svg`
   font-weight: ${props => props.fontWeight || 300};
   position: absolute;
-  width: ${props => props.width};
+  width: ${props => props.width || "9.5%"};
   top: ${props => props.top};
   left: ${props => props.left};
   right: ${props => props.right};
@@ -53,30 +53,30 @@ export default class Slide2 extends Component {
               As A Mind Map</H3>
             <Figure>
               <Img src={slideImage} className="shadow"/>
-              <CaptionSvgTextBox left="14.5%" top="11%" width="9.5%">
+              <CaptionSvgTextBox left="14.5%" top="11%">
                   <CaptionSvgText text="Chill"/>
                 </CaptionSvgTextBox>
-              <CaptionSvgTextBox left="4.5%" top="35%" width="9.5%">
+              <CaptionSvgTextBox left="4.5%" top="35%">
                   <CaptionSvgText text="Rock"/>
                 </CaptionSvgTextBox>
-              <CaptionSvgTextBox left="4.5%" top="71%" width="9.5%">
+              <CaptionSvgTextBox left="4.5%" top="71%">
                   <CaptionSvgText text="Art"/>
                 </CaptionSvgTextBox>
-              <CaptionSvgTextBox left="46.5%" top="88%" width="9.5%">
+              <CaptionSvgTextBox left="46.5%" top="88%">
                   <CaptionSvgText text="Quotes"/>
                 </CaptionSvgTextBox>
-              <CaptionSvgTextBox viewBoxHeight="36" left="50%" top="6%" width="9.5%">
+              <CaptionSvgTextBox viewBoxHeight="36" left="50%" top="6%">
                   <CaptionSvgText text="Berlin"/>
                   <CaptionSvgText x="2" y="32" text="2019"/>
                 </CaptionSvgTextBox>
-              <CaptionSvgTextBox viewBoxHeight="36" left="88.5%" top="12%" width="9.5%">
+              <CaptionSvgTextBox viewBoxHeight="36" left="88.5%" top="12%">
                   <CaptionSvgText text="Japan"/>
                   <CaptionSvgText x="5" y="32" text="2018"/>
                 </CaptionSvgTextBox>
-              <CaptionSvgTextBox left="87%" top="54%" width="9.5%">
+              <CaptionSvgTextBox left="87%" top="54%">
                   <CaptionSvgText text="Keep fit"/>
                 </CaptionSvgTextBox>
-              <CaptionSvgTextBox viewBoxHeight="36" left="83.5%" top="80%" width="9.5%">
+              <CaptionSvgTextBox viewBoxHeight="36" left="83.5%" top="80%">
                   <CaptionSvgText x="5" text="Visit"/>
                   <CaptionSvgText y="32" text="Africa"/>
                 </CaptionSvgTextBox>

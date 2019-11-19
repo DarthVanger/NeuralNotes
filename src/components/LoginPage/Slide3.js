@@ -4,7 +4,7 @@ import arrow from 'components/LoginPage/images/arrow.svg'
 import slideImage1 from 'components/LoginPage/images/slide-3_img-1.svg';
 import slideImage2 from 'components/LoginPage/images/slide-3_img-2.svg';
 
-const Slide = styled.div`
+const Slide = styled.section`
   padding-bottom: 0%;
   text-align: center;
   .note-example {
@@ -15,8 +15,8 @@ const Slide = styled.div`
     margin-top: -9%;
   }
   .bottomPosition {
-    margin-top: -16%;
-    margin-bottom: 10%;
+    margin-top: -65%;
+    margin-bottom: 59%;
     position: relative;
   }
   .bottomTooltip {
@@ -24,10 +24,24 @@ const Slide = styled.div`
     padding-top: 3%;
     padding-bottom: 3%;
   }
+  .bottomHeader {
+    margin-top: -53%;
+    margin-bottom: 45%;
+    position: relative;
+  }
+  .shadow {
+  -webkit-filter: drop-shadow( 0px 7px 4px rgba(0, 0, 0, .3));
+  filter: drop-shadow( 0px 7px 4px rgba(0, 0, 0, .3));
+}
 `;
 const H2 = styled.h2`
   padding-bottom: 7%;
   font-size: calc(16px + (30 - 16)*(100vw - 375px)/(1200 - 375));
+  text-align: center;
+  color: #ffffff;
+`;
+const H3 = styled.h3`
+  padding-bottom: 7%;
   text-align: center;
   color: #ffffff;
 `;
@@ -98,8 +112,8 @@ const Caption = styled.svg`
 const CaptionSvgTextBox = ({viewBoxWidth = 100, viewBoxHeight = 21, ...rest}) => {
   return <Caption viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`} {...rest} />;
 };
-const CaptionSvgText = ({x = 0, y = 15, fill = "#FFFFFF", text}) => {
-  return <text x={x} y={y} fill={fill}>{text}</text>;
+const CaptionSvgText = ({x = 0, y = 15, fill = "#FFFFFF", fontWeight, text}) => {
+  return <text x={x} y={y} fill={fill} font-weight={fontWeight}>{text}</text>;
 };
 
 
@@ -124,20 +138,20 @@ export default class Slide3 extends Component {
               <ArrowDown src={arrow} />
             </Figure>
             <Figure className='edit-example'>
-              <Img src={slideImage2} />
-                <CaptionSvgTextBox  left="78%" top="11.5%" width="15%">
+              <Img src={slideImage2} className="shadow"/>
+                <CaptionSvgTextBox  left="78.5%" top="5%" width="15%">
                   <CaptionSvgText fill="#96ffff" text="Neural"/>
                   <CaptionSvgText x="47" text="Notes"/>
                 </CaptionSvgTextBox>
-              <CaptionSvgTextBox viewBoxWidth="80" viewBoxHeight="40" left="43%" top="36%" width="14%">
+              <CaptionSvgTextBox viewBoxWidth="80" viewBoxHeight="40" left="43.5%" top="16.5%" width="14%">
                   <CaptionSvgText y="14" text="VACATION"/>
                   <CaptionSvgText x="22" y="34" text="2018"/>
                 </CaptionSvgTextBox>
-              <CaptionSvgTextBox viewBoxWidth="90" viewBoxHeight="44" left="12%" top="61%" width="12%">
+              <CaptionSvgTextBox viewBoxWidth="90" viewBoxHeight="44" left="12%" top="28.5%" width="12%">
                   <CaptionSvgText x="22" y="14" text="Hotel"/>
                   <CaptionSvgText y="34" text="Booking.pdf"/>
                 </CaptionSvgTextBox>
-              <CaptionSvgTextBox viewBoxWidth="72" viewBoxHeight="44"  left="76.5%" top="61%" width="10%">
+              <CaptionSvgTextBox viewBoxWidth="72" viewBoxHeight="44" left="77%" top="28.5%" width="10%">
                   <CaptionSvgText x="4" y="14" text="Airplane"/>
                   <CaptionSvgText y="34" text="ticket.pdf"/>
                 </CaptionSvgTextBox>
@@ -150,6 +164,14 @@ export default class Slide3 extends Component {
                 </CaptionSvgTextBox>
                 </Tooltip>
               <ArrowRight src={arrow} />
+            </div>
+            <div className='bottomHeader'>
+             <H3>
+                <CaptionSvgTextBox viewBoxWidth="315" viewBoxHeight="56" left="35%" top="5%" width="30%">
+                  <CaptionSvgText x="0" y="20" fontWeight="300" text="All notes and files are stored" />
+                  <CaptionSvgText x="42" y="48" text="in your Google Drive" />
+                </CaptionSvgTextBox>
+              </H3>
             </div>
           </Slide>
         );

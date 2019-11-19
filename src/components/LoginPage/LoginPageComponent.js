@@ -5,8 +5,6 @@ import Slide1 from 'components/LoginPage/Slide1';
 import Slide2 from 'components/LoginPage/Slide2';
 import Slide3 from 'components/LoginPage/Slide3';
 import arrow from 'components/LoginPage/images/arrow.svg'
-import slide4 from 'components/LoginPage/images/slide-4.svg';
-import arrowCurve from 'components/LoginPage/images/arrow-curve.svg';
 import slide5img1 from 'components/LoginPage/images/slide-5_img-1.svg';
 import slide5img2 from 'components/LoginPage/images/slide-5_img-2.svg';
 import slide6 from 'components/LoginPage/images/slide-6.svg';
@@ -37,13 +35,6 @@ const Img = styled.img`
 const H3 = styled.h3`
   padding-bottom: 7%;
   font-size: calc(13px + (24 - 13)*(100vw - 375px)/(1200 - 375));
-  text-align: center;
-  color: #ffffff;
-`;
-
-const H2 = styled.h2`
-  padding-bottom: 7%;
-  font-size: calc(16px + (30 - 16)*(100vw - 375px)/(1200 - 375));
   text-align: center;
   color: #ffffff;
 `;
@@ -83,25 +74,6 @@ const Container = styled.div`
   position: relative;
 `;
 
-const Slide4 = styled.section`
-  text-align: center;
-  position: relative;
-
-  H3 {
-    padding-bottom: 2%;
-  }
-
-  Img {
-    width: 74%;
-  }
-
-  .curveArrow {
-    position: absolute;
-    top: -19%;
-    left: 5%;
-    right: 58.5%;
-  }
-`;
 const Slide5 = styled.section`
   .img1 {
     position: absolute;
@@ -177,18 +149,6 @@ export class LoginPageComponent extends Component {
           <Slide1 />
           <Slide2 />
           <Slide3 />
-          <Slide4>
-            <H3>All notes and files are stored
-              <br />
-              <b>in your Google Drive</b>
-            </H3>
-            <Figure>
-              <Img src={slide4} />
-            </Figure>
-            <figure className='curveArrow'>
-              <img src={arrowCurve} />
-            </figure>
-          </Slide4>
           <Slide5>
             <Container>
             <Figure className='img1'>

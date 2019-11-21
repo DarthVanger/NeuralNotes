@@ -38,7 +38,7 @@ function* changeNote({ data: { targetNote, visNetwork } }) {
     renderChildren(childNote, targetNote, visNetwork);
   }
 
-  put(changeSelectedNoteAction(targetNote));
+  yield put(changeSelectedNoteAction(targetNote));
   if (targetNote.isNote) {
     yield requestNoteText(targetNote);
   }

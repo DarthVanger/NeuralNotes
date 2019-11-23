@@ -80,7 +80,7 @@ function renderChildren(children, targetNote, visNetwork) {
   });
 }
 
-function createEmptyChild({ data: { parentId, visNetwork } }) {
+function createEmptyChild({ data: { parentId, visNetwork, context } }) {
   const note = {
     name: 'new2',
     content: '',
@@ -105,7 +105,7 @@ function createEmptyChild({ data: { parentId, visNetwork } }) {
         parentNoteId: parentId,
       });
 
-      this.editNote(note.id);
+      context.editNote(note.id);
 
       return note;
     });

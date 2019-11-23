@@ -105,7 +105,7 @@ export class NotesMindMapViewComponent extends Component {
   visNetworkDoubleClickHandler = event => {
     if (VisNetworkHelper.clickedOnNote(event)) {
       let targetNoteId = VisNetworkHelper.getTargetNoteId(event);
-      this.props.createEmptyChild({ parentId: targetNoteId, visNetwork });
+      this.props.createEmptyChild({ parentId: targetNoteId, visNetwork, context: this });
     }
   };
 

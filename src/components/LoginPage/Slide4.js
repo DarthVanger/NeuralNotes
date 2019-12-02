@@ -7,14 +7,10 @@ const Slide = styled.section`
   padding-bottom: 10%;
   text-align: center;
   position: relative;
-
-<<<<<<< HEAD
-=======
     .shadow {
     -webkit-filter: drop-shadow( 0px 7px 4px rgba(0, 0, 0, .3));
     filter: drop-shadow( 0px 7px 4px rgba(0, 0, 0, .3));
     }
->>>>>>> 0dfe1e73b0b826d4e2cba58197e330290b9fcca4
     .img1 {
         position: absolute;
         width: 60%;
@@ -25,11 +21,8 @@ const Slide = styled.section`
     .img2 {
         width: 100%;
         margin-left: -24%;
-<<<<<<< HEAD
         -webkit-filter: drop-shadow( 0px 7px 4px rgba(0, 0, 0, .3));
         filter: drop-shadow( 0px 7px 4px rgba(0, 0, 0, .3));
-=======
->>>>>>> 0dfe1e73b0b826d4e2cba58197e330290b9fcca4
     }
 `;
 const Figure = styled.figure`

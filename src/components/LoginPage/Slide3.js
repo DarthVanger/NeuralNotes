@@ -14,17 +14,17 @@ const Slide = styled.section`
     position: relative;
     margin-top: -9%;
   }
-  .bottomPosition {
+  .container-for-hint {
     margin-top: -65%;
     margin-bottom: 59%;
     position: relative;
   }
-  .bottomTooltip {
+  .hint-attach-files {
     width: 22%;
     padding-top: 3%;
     padding-bottom: 3%;
   }
-  .bottomHeader {
+  .subheader {
     margin-top: -53%;
     margin-bottom: 45%;
     position: relative;
@@ -80,7 +80,7 @@ const ArrowRight = styled.img`
   right: 36%;
   top: 38%;
 `;
-const Tooltip = styled.div`
+const Hint = styled.div`
   position: relative;
   width: 34%;
   background: #0E1736;
@@ -130,11 +130,11 @@ export default class Slide3 extends Component {
             </Figure>
             <Figure>
               <ArrowUp src={arrow} />
-              <Tooltip>
+              <Hint>
                 <CaptionSvgTextBox viewBoxWidth="155" viewBoxHeight="19" left="12%" top="27%" width="76%">
                   <CaptionSvgText y="17" text="Edit Note Content"/>
                 </CaptionSvgTextBox>
-              </Tooltip>
+              </Hint>
               <ArrowDown src={arrow} />
             </Figure>
             <Figure className='edit-example'>
@@ -156,16 +156,16 @@ export default class Slide3 extends Component {
                   <CaptionSvgText y="34" text="ticket.pdf"/>
                 </CaptionSvgTextBox>
             </Figure>
-            <div className='bottomPosition'>
+            <div className='container-for-hint'>
               <ArrowLeft src={arrow} />
-              <Tooltip className='bottomTooltip'>
+              <Hint className='hint-attach-files'>
                 <CaptionSvgTextBox viewBoxWidth="108" viewBoxHeight="19" left="20%" top="30%" width="60%">
                   <CaptionSvgText x="1" y="15" text="Attach files"/>
                 </CaptionSvgTextBox>
-                </Tooltip>
+              </Hint>
               <ArrowRight src={arrow} />
             </div>
-            <div className='bottomHeader'>
+            <div className='subheader'>
              <H3>
                 <CaptionSvgTextBox viewBoxWidth="315" viewBoxHeight="56" left="35%" top="5%" width="30%">
                   <CaptionSvgText x="0" y="20" fontWeight="300" text="All notes and files are stored" />

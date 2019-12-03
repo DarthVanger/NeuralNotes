@@ -11,14 +11,14 @@ const Slide = styled.section`
     -webkit-filter: drop-shadow( 0px 7px 4px rgba(0, 0, 0, .3));
     filter: drop-shadow( 0px 7px 4px rgba(0, 0, 0, .3));
     }
-    .img1 {
+    .mind-map {
         position: absolute;
         width: 60%;
         right: 0%;
         top: 3%;
         z-index: 1;
     }
-    .img2 {
+    .cloud-screenshot {
         width: 100%;
         margin-left: -24%;
         -webkit-filter: drop-shadow( 0px 7px 4px rgba(0, 0, 0, .3));
@@ -56,7 +56,7 @@ export default class Slide4 extends Component {
     render() {
         return (
             <Slide>
-                <Figure className='img1'>
+                <Figure className='mind-map'>
                     <Img src={slideImg1} />
                     <CaptionSvgTextBox left="69%" top="11%" width="7.5%">
                         <CaptionSvgText x="2" y="16" text="Chill" />
@@ -87,7 +87,7 @@ export default class Slide4 extends Component {
                         <CaptionSvgText x="6" y="18" fill="#131C3E" text="NeuralNotes"/>
                     </CaptionSvgTextBox>
                 </Figure>
-                <Figure className='img2'>
+                <Figure className='cloud-screenshot'>
                     <Img src={slideImg2} />
                 </Figure>
             </Slide>

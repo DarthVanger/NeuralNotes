@@ -22,7 +22,7 @@ const Slide = styled.section`
       left: 44%;
     }
   }
-  .hint-resent-notes {
+  .hint-recent-notes {
     position: absolute;
     left: 13%;
     bottom: 3%;
@@ -126,7 +126,7 @@ export default class Slide5 extends Component {
                 <CaptionSvgText x="17" y="32" text="project" />
               </CaptionSvgTextBox>
             </Figure>
-          <Hint className='hint-resent-notes'>
+          <Hint className='hint-recent-notes'>
             <ArrowUp src={arrow} />
             <CaptionSvgTextBox viewBoxWidth="170" viewBoxHeight="40" left="7%" top="35%" width="86%" fontWeight="700">
               <CaptionSvgText x="3" y="18" fill="#E8E9F8" text="RECENT, FREQUENTLY" />

@@ -14,7 +14,7 @@ const Main = styled.main`
   font-family: Roboto;
 `;
 
-const Section = styled.section`
+const Article = styled.article`
   width: 100%;
   max-width: calc(100vh*1.1);
   margin: auto;
@@ -52,7 +52,7 @@ export class LoginPageComponent extends Component {
     const authHandler = this.props.isGoogleApiInitialized ? this.props.requestAuthorization : null;
     return (
       <Main>
-        <Section>
+        <Article>
           <Slide1 />
           <Slide2 />
           <Slide3 />
@@ -62,7 +62,7 @@ export class LoginPageComponent extends Component {
             <H3><span>Neural</span>Notes is open source and free</H3>
             <Button onClick={authHandler}><span><img src={iconGoogle} /></span>Sing up with Google</Button>
           </Footer>
-        </Section>
+        </Article>
       </Main>
     );
   }

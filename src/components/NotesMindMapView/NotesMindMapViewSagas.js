@@ -1,4 +1,5 @@
 import { all, call, put, takeEvery } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
+import { toast } from 'react-toastify';
 import _ from 'underscore';
 
 import {
@@ -11,6 +12,8 @@ import {
 import noteStorage from 'storage/noteStorage';
 import { APP_INIT_SUCCESS } from 'components/App/AppActions';
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
+import { SEARCH_QUERY_CHANGED_ACTION } from 'components/SearchPanel/SearchPanelActions';
+import googleDriveApi from 'api/google-drive-api';
 
 const LOADING_NOTE_MESSAGE = 'loading note contents...';
 let spinner = siteGlobalLoadingBar.create('mind map');
@@ -118,11 +121,18 @@ function deleteNote({ data: { note, visNetwork } }) {
     });
 }
 
+function* searchNoteSaga({ data }) {
+  const results = yield googleDriveApi.findNotesByName(data);
+  yield call([toast, toast.error], 'Search is not implemented yet :) See search results in console');
+  console.log('Search results: ', results);
+}
+
 export function* noteMindMapInit() {
   yield all([
     takeEvery(APP_INIT_SUCCESS, setRootNote),
     takeEvery(CHANGE_NOTE_VIS_NETWORK_NOTE_ACTION, changeNote),
     takeEvery(CREATE_EMPTY_CHILD, createEmptyChild),
     takeEvery(DELETE_NOTE, deleteNote),
+    takeEvery(SEARCH_QUERY_CHANGED_ACTION, searchNoteSaga),
   ]);
 }

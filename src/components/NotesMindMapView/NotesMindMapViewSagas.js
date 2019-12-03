@@ -1,4 +1,5 @@
 import { all, call, put, takeEvery } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
+import { toast } from 'react-toastify';
 import _ from 'underscore';
 
 import {
@@ -122,6 +123,7 @@ function deleteNote({ data: { note, visNetwork } }) {
 
 function* searchNoteSaga({ data }) {
   const results = yield googleDriveApi.findNotesByName(data);
+  yield call([toast, toast.error], 'Search is not implemented yet :) See search results in console');
   console.log('Search results: ', results);
 }
 

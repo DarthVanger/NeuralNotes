@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import arrow from 'components/LoginPage/images/arrow.svg'
-import slideImage1 from 'components/LoginPage/images/slide-3_img-1.svg';
-import slideImage2 from 'components/LoginPage/images/slide-3_img-2.svg';
+import imageNoteContent from 'components/LoginPage/images/slide-3-note-content.svg';
+import imageMindmapExplanation from 'components/LoginPage/images/slide-3-mindmap-explanation.svg';
 
 const Slide = styled.section`
   padding-bottom: 0%;
@@ -126,7 +126,7 @@ export default class Slide3 extends Component {
               And Attach Files
             </H2>
             <Figure>
-              <Img className='note-example' src={slideImage1} />
+              <Img className='note-example' src={imageNoteContent} />
             </Figure>
             <Figure>
               <ArrowUp src={arrow} />
@@ -138,7 +138,7 @@ export default class Slide3 extends Component {
               <ArrowDown src={arrow} />
             </Figure>
             <Figure className='edit-example'>
-              <Img src={slideImage2} className="shadow"/>
+              <Img src={imageMindmapExplanation} className="shadow"/>
                 <CaptionSvgTextBox  left="78.5%" top="5%" width="15%">
                   <CaptionSvgText fill="#96ffff" text="Neural"/>
                   <CaptionSvgText x="47" text="Notes"/>

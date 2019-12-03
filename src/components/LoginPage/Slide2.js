@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import slideImage from 'components/LoginPage/images/slide-2.svg';
+import imageMindmap from 'components/LoginPage/images/slide-2-mindmap.svg';
 
 const Slide = styled.section`
   padding-bottom: 10%;
@@ -52,7 +52,7 @@ export default class Slide2 extends Component {
               <br />
               As A Mind Map</H3>
             <Figure>
-              <Img src={slideImage} className="shadow"/>
+              <Img src={imageMindmap} className="shadow"/>
               <CaptionSvgTextBox left="14.5%" top="11%">
                   <CaptionSvgText text="Chill"/>
                 </CaptionSvgTextBox>

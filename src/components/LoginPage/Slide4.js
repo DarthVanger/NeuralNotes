@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import slideImg1 from 'components/LoginPage/images/slide-4_img-1.svg';
-import slideImg2 from 'components/LoginPage/images/slide-4_img-2.svg';
+import imageMindmap from 'components/LoginPage/images/slide-4-mindmap.svg';
+import imageCloudScreenshot from 'components/LoginPage/images/slide-4-cloud-screenshot.svg';
 
 const Slide = styled.section`
   padding-bottom: 10%;
@@ -57,7 +57,7 @@ export default class Slide4 extends Component {
         return (
             <Slide>
                 <Figure className='mind-map'>
-                    <Img src={slideImg1} />
+                    <Img src={imageMindmap} />
                     <CaptionSvgTextBox left="69%" top="11%" width="7.5%">
                         <CaptionSvgText x="2" y="16" text="Chill" />
                     </CaptionSvgTextBox>
@@ -88,7 +88,7 @@ export default class Slide4 extends Component {
                     </CaptionSvgTextBox>
                 </Figure>
                 <Figure className='cloud-screenshot'>
-                    <Img src={slideImg2} />
+                    <Img src={imageCloudScreenshot} />
                 </Figure>
             </Slide>
         );

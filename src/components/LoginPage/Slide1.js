@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import slideImage from 'components/LoginPage/images/slide-1.svg';
+import imageBrain from 'components/LoginPage/images/slide-1-brain.svg';
 
 const Slide = styled.section`
   padding-bottom: 10%;
@@ -41,7 +41,7 @@ export default class Slide1 extends Component {
                     <h1><b>Neural</b>Notes</h1>
                 </AppName>
                 <Figure>
-                    <Img src={slideImage} />
+                  <Img src={imageBrain} />
                 </Figure>
             </Slide>
         );

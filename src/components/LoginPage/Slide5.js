@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import slideImage from 'components/LoginPage/images/slide-5.svg';
+import imageMindmap from 'components/LoginPage/images/slide-5-mindmap.svg';
 import arrow from 'components/LoginPage/images/arrow.svg';
 
 const Slide = styled.section`
@@ -98,7 +98,7 @@ export default class Slide5 extends Component {
               <ArrowDown src={arrow} />
             </Hint>
             <Figure>
-              <Img src={slideImage} className='shadow' />
+            <Img src={imageMindmap} className='shadow' />
               <CaptionSvgTextBox viewBoxWidth="100" viewBoxHeight="21" left="34%" top="21%" width="15.5%" fontWeight="700">
                 <CaptionSvgText x="6" y="18" fill="#131C3E" text="NeuralNotes" />
               </CaptionSvgTextBox>

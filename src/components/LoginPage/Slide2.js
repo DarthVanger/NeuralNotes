@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import imageMindmap from 'components/LoginPage/images/slide-2-mindmap.svg';
+import {Img} from 'components/LoginPage/slideComponents';
 
 const Slide = styled.section`
   padding-bottom: 10%;
   text-align: center;
-
-  .shadow {
-  -webkit-filter: drop-shadow( 0px 7px 4px rgba(0, 0, 0, .3));
-  filter: drop-shadow( 0px 7px 4px rgba(0, 0, 0, .3));
-}
 `;
 const H3 = styled.h3`
   padding-bottom: 7%;
@@ -21,10 +17,6 @@ const Figure = styled.figure`
   position: relative;
   width: 74%;
   margin: auto;
-  height: auto;
-`;
-const Img = styled.img`
-  width: 100%;
   height: auto;
 `;
 const Caption = styled.svg`
@@ -52,7 +44,7 @@ export default class Slide2 extends Component {
               <br />
               As A Mind Map</H3>
             <Figure>
-              <Img src={imageMindmap} className="shadow"/>
+              <Img src={imageMindmap} shadow />
               <CaptionSvgTextBox left="14.5%" top="11%">
                   <CaptionSvgText text="Chill"/>
                 </CaptionSvgTextBox>

@@ -2,15 +2,12 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import imageMindmap from 'components/LoginPage/images/slide-4-mindmap.svg';
 import imageCloudScreenshot from 'components/LoginPage/images/slide-4-cloud-screenshot.svg';
+import {Img} from 'components/LoginPage/slideComponents';
 
 const Slide = styled.section`
   padding-bottom: 10%;
   text-align: center;
   position: relative;
-    .shadow {
-    -webkit-filter: drop-shadow( 0px 7px 4px rgba(0, 0, 0, .3));
-    filter: drop-shadow( 0px 7px 4px rgba(0, 0, 0, .3));
-    }
     .mind-map {
         position: absolute;
         width: 60%;
@@ -21,18 +18,12 @@ const Slide = styled.section`
     .cloud-screenshot {
         width: 100%;
         margin-left: -24%;
-        -webkit-filter: drop-shadow( 0px 7px 4px rgba(0, 0, 0, .3));
-        filter: drop-shadow( 0px 7px 4px rgba(0, 0, 0, .3));
     }
 `;
 const Figure = styled.figure`
   position: relative;
   width: 74%;
   margin: auto;
-  height: auto;
-`;
-const Img = styled.img`
-  width: 100%;
   height: auto;
 `;
 const Caption = styled.svg`
@@ -57,7 +48,7 @@ export default class Slide4 extends Component {
         return (
             <Slide>
                 <Figure className='mind-map'>
-                    <Img src={imageMindmap} />
+                    <Img src={imageMindmap} shadow />
                     <CaptionSvgTextBox left="69%" top="11%" width="7.5%">
                         <CaptionSvgText x="2" y="16" text="Chill" />
                     </CaptionSvgTextBox>
@@ -88,7 +79,7 @@ export default class Slide4 extends Component {
                     </CaptionSvgTextBox>
                 </Figure>
                 <Figure className='cloud-screenshot'>
-                    <Img src={imageCloudScreenshot} />
+                    <Img src={imageCloudScreenshot} shadow />
                 </Figure>
             </Slide>
         );

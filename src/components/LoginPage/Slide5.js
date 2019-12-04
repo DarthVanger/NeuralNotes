@@ -2,13 +2,10 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import imageMindmap from 'components/LoginPage/images/slide-5-mindmap.svg';
 import arrow from 'components/LoginPage/images/arrow.svg';
+import {Img} from 'components/LoginPage/slideComponents';
 
 const Slide = styled.section`
   position: relative;
-   .shadow {
-    -webkit-filter: drop-shadow( 0px 7px 4px rgba(0, 0, 0, .3));
-    filter: drop-shadow( 0px 7px 4px rgba(0, 0, 0, .3));
-    }
   .hint-old-notes {
     position: absolute;
     right: 5%;
@@ -48,10 +45,6 @@ const Figure = styled.figure`
   width: 100%;
   height: auto;
   position: relative;
-`;
-const Img = styled.img`
-  width: 100%;
-  height: auto;
 `;
 const ArrowUp = styled.img`
   width: 2%;
@@ -98,7 +91,7 @@ export default class Slide5 extends Component {
               <ArrowDown src={arrow} />
             </Hint>
             <Figure>
-            <Img src={imageMindmap} className='shadow' />
+            <Img src={imageMindmap} shadow />
               <CaptionSvgTextBox viewBoxWidth="100" viewBoxHeight="21" left="34%" top="21%" width="15.5%" fontWeight="700">
                 <CaptionSvgText x="6" y="18" fill="#131C3E" text="NeuralNotes" />
               </CaptionSvgTextBox>

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import arrow from 'components/LoginPage/images/arrow.svg'
 import imageNoteContent from 'components/LoginPage/images/slide-3-note-content.svg';
 import imageMindmapExplanation from 'components/LoginPage/images/slide-3-mindmap-explanation.svg';
+import {Img} from 'components/LoginPage/slideComponents';
 
 const Slide = styled.section`
   padding-bottom: 0%;
@@ -29,10 +30,6 @@ const Slide = styled.section`
     margin-bottom: 45%;
     position: relative;
   }
-  .shadow {
-  -webkit-filter: drop-shadow( 0px 7px 4px rgba(0, 0, 0, .3));
-  filter: drop-shadow( 0px 7px 4px rgba(0, 0, 0, .3));
-}
 `;
 const H2 = styled.h2`
   padding-bottom: 7%;
@@ -49,10 +46,6 @@ const Figure = styled.figure`
   position: relative;
   width: 74%;
   margin: auto;
-  height: auto;
-`;
-const Img = styled.img`
-  width: 100%;
   height: auto;
 `;
 const ArrowUp = styled.img`
@@ -126,7 +119,7 @@ export default class Slide3 extends Component {
               And Attach Files
             </H2>
             <Figure>
-              <Img className='note-example' src={imageNoteContent} />
+              <Img className='note-example' src={imageNoteContent} shadow />
             </Figure>
             <Figure>
               <ArrowUp src={arrow} />
@@ -138,7 +131,7 @@ export default class Slide3 extends Component {
               <ArrowDown src={arrow} />
             </Figure>
             <Figure className='edit-example'>
-              <Img src={imageMindmapExplanation} className="shadow"/>
+              <Img src={imageMindmapExplanation} shadow />
                 <CaptionSvgTextBox  left="78.5%" top="5%" width="15%">
                   <CaptionSvgText fill="#96ffff" text="Neural"/>
                   <CaptionSvgText x="47" text="Notes"/>

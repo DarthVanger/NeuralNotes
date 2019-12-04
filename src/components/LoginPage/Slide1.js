@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import imageBrain from 'components/LoginPage/images/slide-1-brain.svg';
+import { Img } from 'components/LoginPage/slideComponents';
 
 const Slide = styled.section`
   padding-bottom: 10%;
@@ -27,11 +28,6 @@ const Figure = styled.figure`
   width: 100%;
   height: auto;
 `;
-const Img = styled.img`
-  width: 100%;
-  height: auto;
-`;
-
 
 export default class Slide1 extends Component {
     render() {
@@ -41,7 +37,7 @@ export default class Slide1 extends Component {
                     <h1><b>Neural</b>Notes</h1>
                 </AppName>
                 <Figure>
-                  <Img src={imageBrain} />
+                  <Img src={imageBrain} shadow />
                 </Figure>
             </Slide>
         );

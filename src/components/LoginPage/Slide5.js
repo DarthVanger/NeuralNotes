@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import imageMindmap from 'components/LoginPage/images/slide-5-mindmap.svg';
 import arrow from 'components/LoginPage/images/arrow.svg';
-import {Img} from 'components/LoginPage/slideComponents';
+import { Img, Caption } from 'components/LoginPage/slideComponents';
 
 const Slide = styled.section`
   position: relative;
@@ -60,21 +60,13 @@ const Hint = styled.div`
   border-radius: 1vw;
   box-shadow: inset 0px 4px 2px rgba(0, 0, 0, 0.25);
 `;
-const Caption = styled.svg`
-  font-weight: ${props => props.fontWeight || 300};
-  position: absolute;
-  width: ${props => props.width};
-  top: ${props => props.top};
-  left: ${props => props.left};
-  right: ${props => props.right};
-  bottom: ${props => props.bottom};
-`;
 
-const CaptionSvgTextBox = ({ viewBoxWidth = 60, viewBoxHeight = 40, ...rest }) => {
-    return <Caption viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`} {...rest} />;
-};
-const CaptionSvgText = ({ x = 0, y = 12, fill = "#96FFFF", text }) => {
+const CaptionTextSlide5 = ({ x = 0, y, fill = "#96FFFF", text }) => {
     return <text x={x} y={y} fill={fill}>{text}</text>;
+};
+
+const CaptionBoxSlide5 = ({ viewBoxWidth = 60, viewBoxHeight = 40, ...rest }) => {
+    return <Caption viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`} {...rest} />;
 };
 
 export default class Slide5 extends Component {
@@ -83,49 +75,49 @@ export default class Slide5 extends Component {
         <Slide>
             <H3>Frequently used notes<br />get bigger</H3>
             <Hint className='hint-old-notes'>
-              <CaptionSvgTextBox viewBoxWidth="160" viewBoxHeight="40" left="3%" top="10%" width="94%" fontWeight="700">
-                <CaptionSvgText x="6" y="18" fill="#E8E9F8" text="OLD UNUSED NOTES" />
-                <CaptionSvgText x="36" y="38" fill="#E8E9F8" text="ARE" />
-                <CaptionSvgText x="71" y="38" fill="#96FFFF" text="SMALL" />
-              </CaptionSvgTextBox>
+              <CaptionBoxSlide5 viewBoxWidth="160" viewBoxHeight="40" left="3%" top="10%" width="94%" fontWeight="700">
+                <CaptionTextSlide5 x="6" y="18" fill="#E8E9F8" text="OLD UNUSED NOTES" />
+                <CaptionTextSlide5 x="36" y="38" fill="#E8E9F8" text="ARE" />
+              <CaptionTextSlide5 x="71" y="38" fill="#96FFFF" text="SMALL" />
+            </CaptionBoxSlide5>
               <ArrowDown src={arrow} />
             </Hint>
             <Figure>
             <Img src={imageMindmap} shadow />
-              <CaptionSvgTextBox viewBoxWidth="100" viewBoxHeight="21" left="34%" top="21%" width="15.5%" fontWeight="700">
-                <CaptionSvgText x="6" y="18" fill="#131C3E" text="NeuralNotes" />
-              </CaptionSvgTextBox>
-              <CaptionSvgTextBox viewBoxWidth="45" left="52.5%" top="48%" width="9.5%" fontWeight="700">
-                <CaptionSvgText y="16" text="Work" />
-              </CaptionSvgTextBox>
-              <CaptionSvgTextBox left="19.5%" top="51%" width="13.5%" fontWeight="700">
-                <CaptionSvgText y="16" text="Current" />
-                <CaptionSvgText y="32" text="Project" />
-              </CaptionSvgTextBox>
-              <CaptionSvgTextBox left="14.5%" top="26%" width="7.5%">
-                <CaptionSvgText y="14" text="Personal" />
-                <CaptionSvgText x="20" y="32" text="life" />
-              </CaptionSvgTextBox>
-              <CaptionSvgTextBox left="61%" top="25.5%" width="7.5%">
-                <CaptionSvgText x="12" y="14" text="Old" />
-                <CaptionSvgText y="32" text="project" />
-              </CaptionSvgTextBox>
-              <CaptionSvgTextBox viewBoxWidth="70" left="81%" top="35%" width="8%">
-                <CaptionSvgText y="14" text="Forgotten" />
-                <CaptionSvgText x="10" y="32" text="project" />
-              </CaptionSvgTextBox>
-              <CaptionSvgTextBox viewBoxWidth="82" left="79%" top="60%" width="10%">
-                <CaptionSvgText y="14" text="Abandoned" />
-                <CaptionSvgText x="17" y="32" text="project" />
-              </CaptionSvgTextBox>
+              <CaptionBoxSlide5 viewBoxWidth="100" viewBoxHeight="21" left="34%" top="21%" width="15.5%" fontWeight="700">
+              <CaptionTextSlide5 x="6" y="18" fill="#131C3E" text="NeuralNotes" />
+            </CaptionBoxSlide5>
+              <CaptionBoxSlide5 viewBoxWidth="45" left="52.5%" top="48%" width="9.5%" fontWeight="700">
+                <CaptionTextSlide5 y="16" text="Work" />
+            </CaptionBoxSlide5>
+              <CaptionBoxSlide5 left="19.5%" top="51%" width="13.5%" fontWeight="700">
+              <CaptionTextSlide5 y="16" text="Current" />
+                <CaptionTextSlide5 y="32" text="Project" />
+            </CaptionBoxSlide5>
+              <CaptionBoxSlide5 left="14.5%" top="26%" width="7.5%">
+                <CaptionTextSlide5 y="14" text="Personal" />
+                <CaptionTextSlide5 x="20" y="32" text="life" />
+            </CaptionBoxSlide5>
+              <CaptionBoxSlide5 left="61%" top="25.5%" width="7.5%">
+              <CaptionTextSlide5 x="12" y="14" text="Old" />
+                <CaptionTextSlide5 y="32" text="project" />
+              </CaptionBoxSlide5>
+              <CaptionBoxSlide5 viewBoxWidth="70" left="81%" top="35%" width="8%">
+                <CaptionTextSlide5 y="14" text="Forgotten" />
+                <CaptionTextSlide5 x="10" y="32" text="project" />
+              </CaptionBoxSlide5>
+              <CaptionBoxSlide5 viewBoxWidth="82" left="79%" top="60%" width="10%">
+              <CaptionTextSlide5 y="14" text="Abandoned" />
+                <CaptionTextSlide5 x="17" y="32" text="project" />
+              </CaptionBoxSlide5>
             </Figure>
           <Hint className='hint-recent-notes'>
             <ArrowUp src={arrow} />
-            <CaptionSvgTextBox viewBoxWidth="170" viewBoxHeight="40" left="7%" top="35%" width="86%" fontWeight="700">
-              <CaptionSvgText x="3" y="18" fill="#E8E9F8" text="RECENT, FREQUENTLY" />
-              <CaptionSvgText x="3" y="38" fill="#E8E9F8" text="USED NOTES ARE" />
-              <CaptionSvgText x="137" y="38" fill="#96FFFF" text="BIG" />
-            </CaptionSvgTextBox>
+            <CaptionBoxSlide5 viewBoxWidth="170" viewBoxHeight="40" left="7%" top="35%" width="86%" fontWeight="700">
+              <CaptionTextSlide5 x="3" y="18" fill="#E8E9F8" text="RECENT, FREQUENTLY" />
+              <CaptionTextSlide5 x="3" y="38" fill="#E8E9F8" text="USED NOTES ARE" />
+              <CaptionTextSlide5 x="137" y="38" fill="#96FFFF" text="BIG" />
+            </CaptionBoxSlide5>
           </Hint>
         </Slide>
       );

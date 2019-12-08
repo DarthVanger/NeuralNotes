@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import imageMindmap from 'components/LoginPage/images/slide-2-mindmap.svg';
-import {Img} from 'components/LoginPage/slideComponents';
+import { Img, Caption } from 'components/LoginPage/slideComponents';
 
 const Slide = styled.section`
   padding-bottom: 10%;
@@ -19,21 +19,13 @@ const Figure = styled.figure`
   margin: auto;
   height: auto;
 `;
-const Caption = styled.svg`
-  font-weight: ${props => props.fontWeight || 300};
-  position: absolute;
-  width: ${props => props.width || "9.5%"};
-  top: ${props => props.top};
-  left: ${props => props.left};
-  right: ${props => props.right};
-  bottom: ${props => props.bottom};
-`;
 
-const CaptionSvgTextBox = ({viewBoxWidth = 60, viewBoxHeight = 15, ...rest}) => {
-  return <Caption viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`} {...rest} />;
+const CaptionTextSlide2 = ({x = 0, y = 12, fill = "#96FFFF", fontWeight, text}) => {
+  return <text x={x} y={y} fill={fill} font-weight={fontWeight} >{text}</text>;
 };
-const CaptionSvgText = ({x = 0, y = 12, fill = "#96FFFF", text}) => {
-  return <text x={x} y={y} fill={fill}>{text}</text>;
+
+const CaptionBoxSlide2 = ({ viewBoxWidth = 60, viewBoxHeight = 15, width = "9.5%", ...rest}) => {
+  return <Caption viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`} width={width} {...rest} />;
 };
 
 export default class Slide2 extends Component {
@@ -45,48 +37,48 @@ export default class Slide2 extends Component {
               As A Mind Map</H3>
             <Figure>
               <Img src={imageMindmap} shadow />
-              <CaptionSvgTextBox left="14.5%" top="11%">
-                  <CaptionSvgText text="Chill"/>
-                </CaptionSvgTextBox>
-              <CaptionSvgTextBox left="4.5%" top="35%">
-                  <CaptionSvgText text="Rock"/>
-                </CaptionSvgTextBox>
-              <CaptionSvgTextBox left="4.5%" top="71%">
-                  <CaptionSvgText text="Art"/>
-                </CaptionSvgTextBox>
-              <CaptionSvgTextBox left="46.5%" top="88%">
-                  <CaptionSvgText text="Quotes"/>
-                </CaptionSvgTextBox>
-              <CaptionSvgTextBox viewBoxHeight="36" left="50%" top="6%">
-                  <CaptionSvgText text="Berlin"/>
-                  <CaptionSvgText x="2" y="32" text="2019"/>
-                </CaptionSvgTextBox>
-              <CaptionSvgTextBox viewBoxHeight="36" left="88.5%" top="12%">
-                  <CaptionSvgText text="Japan"/>
-                  <CaptionSvgText x="5" y="32" text="2018"/>
-                </CaptionSvgTextBox>
-              <CaptionSvgTextBox left="87%" top="54%">
-                  <CaptionSvgText text="Keep fit"/>
-                </CaptionSvgTextBox>
-              <CaptionSvgTextBox viewBoxHeight="36" left="83.5%" top="80%">
-                  <CaptionSvgText x="5" text="Visit"/>
-                  <CaptionSvgText y="32" text="Africa"/>
-                </CaptionSvgTextBox>
-              <CaptionSvgTextBox left="26.5%" top="31.5%" width="10.5%">
-                  <CaptionSvgText text="Music"/>
-                </CaptionSvgTextBox>
-              <CaptionSvgTextBox viewBoxWidth="80" viewBoxHeight="20" left="21%" top="73.5%" width="14%">
-                  <CaptionSvgText text="Inspiration"/>
-                </CaptionSvgTextBox>
-              <CaptionSvgTextBox left="67.25%" top="25%" width="10.5%">
-                  <CaptionSvgText text="Travel"/>
-                </CaptionSvgTextBox>
-                <CaptionSvgTextBox left="66%" top="58.5%" width="10.5%">
-                  <CaptionSvgText text="Dreams"/>
-                </CaptionSvgTextBox>
-              <CaptionSvgTextBox viewBoxWidth="100" viewBoxHeight="21" left="41.5%" top="41%" width="18.5%" fontWeight="700">
-                  <CaptionSvgText x="6" y="18" fill="#131C3E" text="NeuralNotes"/>
-                </CaptionSvgTextBox>
+              <CaptionBoxSlide2 left="14.5%" top="11%">
+                  <CaptionTextSlide2 text="Chill"/>
+                </CaptionBoxSlide2>
+              <CaptionBoxSlide2 left="4.5%" top="35%">
+                  <CaptionTextSlide2 text="Rock"/>
+                </CaptionBoxSlide2>
+              <CaptionBoxSlide2 left="4.5%" top="71%">
+                  <CaptionTextSlide2 text="Art"/>
+              </CaptionBoxSlide2>
+              <CaptionBoxSlide2 left="46.5%" top="88%">
+                  <CaptionTextSlide2 text="Quotes"/>
+                </CaptionBoxSlide2>
+              <CaptionBoxSlide2 viewBoxHeight="36" left="50%" top="6%">
+                  <CaptionTextSlide2 text="Berlin"/>
+                  <CaptionTextSlide2 x="2" y="32" text="2019"/>
+              </CaptionBoxSlide2>
+              <CaptionBoxSlide2 viewBoxHeight="36" left="88.5%" top="12%">
+                  <CaptionTextSlide2 text="Japan"/>
+                  <CaptionTextSlide2 x="5" y="32" text="2018"/>
+              </CaptionBoxSlide2>
+              <CaptionBoxSlide2 left="87%" top="54%">
+                  <CaptionTextSlide2 text="Keep fit"/>
+              </CaptionBoxSlide2>
+              <CaptionBoxSlide2 viewBoxHeight="36" left="83.5%" top="80%">
+                  <CaptionTextSlide2 x="5" text="Visit"/>
+                <CaptionTextSlide2 y="32" text="Africa"/>
+                </CaptionBoxSlide2>
+              <CaptionBoxSlide2 left="26.5%" top="31.5%" width="10.5%">
+                <CaptionTextSlide2 text="Music"/>
+              </CaptionBoxSlide2>
+              <CaptionBoxSlide2 viewBoxWidth="80" viewBoxHeight="20" left="21%" top="73.5%" width="14%">
+                <CaptionTextSlide2 text="Inspiration"/>
+                </CaptionBoxSlide2>
+              <CaptionBoxSlide2 left="67.25%" top="25%" width="10.5%">
+                <CaptionTextSlide2 text="Travel"/>
+              </CaptionBoxSlide2>
+                <CaptionBoxSlide2 left="66%" top="58.5%" width="10.5%">
+                  <CaptionTextSlide2 text="Dreams"/>
+                </CaptionBoxSlide2>
+              <CaptionBoxSlide2 viewBoxWidth="100" viewBoxHeight="21" left="41.5%" top="41%" width="18.5%" fontWeight="700">
+                <CaptionTextSlide2 x="6" y="18" fill="#131C3E" text="NeuralNotes"/>
+              </CaptionBoxSlide2>
             </Figure>
           </Slide>
         );

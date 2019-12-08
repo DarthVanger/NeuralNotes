@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import arrow from 'components/LoginPage/images/arrow.svg'
 import imageNoteContent from 'components/LoginPage/images/slide-3-note-content.svg';
 import imageMindmapExplanation from 'components/LoginPage/images/slide-3-mindmap-explanation.svg';
-import {Img} from 'components/LoginPage/slideComponents';
+import { Img, Caption } from 'components/LoginPage/slideComponents';
 
 const Slide = styled.section`
   padding-bottom: 0%;
@@ -92,22 +92,14 @@ const Hint = styled.div`
   margin-right: auto;
 `;
 
-const Caption = styled.svg`
-  font-weight: ${props => props.fontWeight || 700};
-  position: absolute;
-  width: ${props => props.width};
-  top: ${props => props.top};
-  left: ${props => props.left};
-  right: ${props => props.right};
-  bottom: ${props => props.bottom};
-`;
-
-const CaptionSvgTextBox = ({viewBoxWidth = 100, viewBoxHeight = 21, ...rest}) => {
-  return <Caption viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`} {...rest} />;
-};
-const CaptionSvgText = ({x = 0, y = 15, fill = "#FFFFFF", fontWeight, text}) => {
+const CaptionTextSlide3 = ({x = 0, y = 15, fill = "#FFFFFF", fontWeight = 700, text}) => {
   return <text x={x} y={y} fill={fill} font-weight={fontWeight}>{text}</text>;
 };
+
+const CaptionBoxSlide3 = ({viewBoxWidth = 100, viewBoxHeight = 21, ...rest}) => {
+  return <Caption viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`} {...rest} />;
+};
+
 
 
 export default class Slide3 extends Component {
@@ -124,46 +116,46 @@ export default class Slide3 extends Component {
             <Figure>
               <ArrowUp src={arrow} />
               <Hint>
-                <CaptionSvgTextBox viewBoxWidth="155" viewBoxHeight="19" left="12%" top="27%" width="76%">
-                  <CaptionSvgText y="17" text="Edit Note Content"/>
-                </CaptionSvgTextBox>
+                <CaptionBoxSlide3 viewBoxWidth="155" viewBoxHeight="19" left="12%" top="27%" width="76%">
+                  <CaptionTextSlide3 y="17" text="Edit Note Content"/>
+                </CaptionBoxSlide3>
               </Hint>
               <ArrowDown src={arrow} />
             </Figure>
             <Figure className='edit-example'>
               <Img src={imageMindmapExplanation} shadow />
-                <CaptionSvgTextBox  left="78.5%" top="5%" width="15%">
-                  <CaptionSvgText fill="#96ffff" text="Neural"/>
-                  <CaptionSvgText x="47" text="Notes"/>
-                </CaptionSvgTextBox>
-              <CaptionSvgTextBox viewBoxWidth="80" viewBoxHeight="40" left="43.5%" top="16.5%" width="14%">
-                  <CaptionSvgText y="14" text="VACATION"/>
-                  <CaptionSvgText x="22" y="34" text="2018"/>
-                </CaptionSvgTextBox>
-              <CaptionSvgTextBox viewBoxWidth="90" viewBoxHeight="44" left="12%" top="28.5%" width="12%">
-                  <CaptionSvgText x="22" y="14" text="Hotel"/>
-                  <CaptionSvgText y="34" text="Booking.pdf"/>
-                </CaptionSvgTextBox>
-              <CaptionSvgTextBox viewBoxWidth="72" viewBoxHeight="44" left="77%" top="28.5%" width="10%">
-                  <CaptionSvgText x="4" y="14" text="Airplane"/>
-                  <CaptionSvgText y="34" text="ticket.pdf"/>
-                </CaptionSvgTextBox>
+                <CaptionBoxSlide3  left="78.5%" top="5%" width="15%">
+                  <CaptionTextSlide3 fill="#96ffff" text="Neural"/>
+                <CaptionTextSlide3 x="47" text="Notes"/>
+                </CaptionBoxSlide3>
+              <CaptionBoxSlide3 viewBoxWidth="80" viewBoxHeight="40" left="43.5%" top="16.5%" width="14%">
+                  <CaptionTextSlide3 y="14" text="VACATION"/>
+                  <CaptionTextSlide3 x="22" y="34" text="2018"/>
+              </CaptionBoxSlide3>
+              <CaptionBoxSlide3 viewBoxWidth="90" viewBoxHeight="44" left="12%" top="28.5%" width="12%">
+                <CaptionTextSlide3 x="22" y="14" text="Hotel"/>
+                  <CaptionTextSlide3 y="34" text="Booking.pdf"/>
+                </CaptionBoxSlide3>
+              <CaptionBoxSlide3 viewBoxWidth="72" viewBoxHeight="44" left="77%" top="28.5%" width="10%">
+                <CaptionTextSlide3 x="4" y="14" text="Airplane"/>
+                <CaptionTextSlide3 y="34" text="ticket.pdf"/>
+              </CaptionBoxSlide3>
             </Figure>
             <div className='container-for-hint'>
               <ArrowLeft src={arrow} />
               <Hint className='hint-attach-files'>
-                <CaptionSvgTextBox viewBoxWidth="108" viewBoxHeight="19" left="20%" top="30%" width="60%">
-                  <CaptionSvgText x="1" y="15" text="Attach files"/>
-                </CaptionSvgTextBox>
+                <CaptionBoxSlide3 viewBoxWidth="108" viewBoxHeight="19" left="20%" top="30%" width="60%">
+                  <CaptionTextSlide3 x="1" y="15" text="Attach files"/>
+                </CaptionBoxSlide3>
               </Hint>
               <ArrowRight src={arrow} />
             </div>
             <div className='subheader'>
              <H3>
-                <CaptionSvgTextBox viewBoxWidth="315" viewBoxHeight="56" left="35%" top="5%" width="30%">
-                  <CaptionSvgText x="0" y="20" fontWeight="300" text="All notes and files are stored" />
-                  <CaptionSvgText x="42" y="48" text="in your Google Drive" />
-                </CaptionSvgTextBox>
+                <CaptionBoxSlide3 viewBoxWidth="315" viewBoxHeight="56" left="35%" top="5%" width="30%">
+                  <CaptionTextSlide3 x="0" y="20" fontWeight="300" text="All notes and files are stored" />
+                  <CaptionTextSlide3 x="42" y="48" text="in your Google Drive" />
+                </CaptionBoxSlide3>
               </H3>
             </div>
           </Slide>

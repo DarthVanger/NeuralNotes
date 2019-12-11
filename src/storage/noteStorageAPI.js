@@ -413,13 +413,15 @@ function update(note) {
 
 }
 
-function updateNoteContentFileName(newNote, oldNote) {
-  return findNoteContentFile(oldNote)
+function updateNoteContentFileName({ note, newName }) {
+  return findNoteContentFile(note)
     .then(function (noteContentFile) {
       return googleDriveApi.updateFileName({
         id: noteContentFile.id,
-        name: newNote.name + '.txt'
+        name: newName + '.txt'
       });
+    }).catch((error) => {
+      throw new Error('noteStorageApi.updateNoteContentFileName(): could not find note content file. Error: ', error);
     });
 }
 

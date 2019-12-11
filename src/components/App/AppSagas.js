@@ -1,8 +1,12 @@
-import { put, call } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
+import { put, call, takeEvery } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
 import { toast } from 'react-toastify';
 
 import auth from 'auth';
-import { appInitSuccessAction, CHANGE_PAGE_ACTION } from 'components/App/AppActions';
+import {
+  rootNoteFoundAction,
+  CHANGE_PAGE_ACTION
+} from 'components/App/AppActions';
+import { AUTH_SUCCESS_ACTION } from 'components/LoginPage/LoginPagesActions.js';
 import { PAGES_ENUM } from 'components/App/AppConstants';
 import noteStorage from 'storage/noteStorage';
 import googleDriveApi from 'api/google-drive-api';
@@ -19,8 +23,8 @@ export function* loadApp() {
   yield showSpinner('Loading Google Api');
   yield googleApiLoader.load();
   yield googleDriveApi.loadDriveApi();
-  yield noteStorage.scanDrive();
-  yield put(appInitSuccessAction());
+  const rootNote = yield noteStorage.scanDrive();
+  yield put(rootNoteFoundAction(rootNote));
   yield setPageAction(PAGES_ENUM.NOTES);
   yield hideSpinner();
 }
@@ -33,6 +37,8 @@ export function* appInit() {
     console.info('User is signed in');
     yield loadApp();
   } else {
+    yield takeEvery(AUTH_SUCCESS_ACTION, loadApp),
+
     yield setPageAction(PAGES_ENUM.LOGIN);
   }
 }

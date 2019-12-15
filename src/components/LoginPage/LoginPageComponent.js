@@ -27,9 +27,28 @@ const H3 = styled.h3`
   color: #ffffff;
 `;
 
-const Button = styled.a`
-  display: block;
+const Button = styled.button`
+    color: #ffffff;
+    background-color: #4A51F5;
+    margin: auto;
+    position: relative;
+    border: none;
+    border-radius: 5px;
+    padding: 2vmin 4vmin 2vmin calc(9vmin + 8px);
 
+  img {
+    height: calc(100% - 8px);
+    background-color: #ffffff;
+    position: absolute;
+    padding: 3%;
+    left: 4px;
+    top: 4px;
+  }
+  span {
+    vertical-align: middle;
+    line-height: 100%;
+    font-size: 3vmin;
+  }
 `;
 
 const Footer = styled.footer`
@@ -41,9 +60,9 @@ const Footer = styled.footer`
 
   H3 {
     padding-bottom: 3%;
-  span {
-    color: #96ffff;
-  }
+    span {
+      color: #96ffff;
+    }
   }
 `;
 
@@ -60,7 +79,7 @@ export class LoginPageComponent extends Component {
           <Slide5 />
           <Footer>
             <H3><span>Neural</span>Notes is open source and free</H3>
-            <Button onClick={authHandler}><span><img src={iconGoogle} /></span>Sing up with Google</Button>
+            <Button onClick={authHandler}><img src={iconGoogle} /><span>Sing up with Google</span></Button>
           </Footer>
         </Article>
       </Main>

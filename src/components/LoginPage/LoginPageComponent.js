@@ -80,7 +80,7 @@ export class LoginPageComponent extends Component {
           <Slide5 />
           <Footer>
             <H3><span>Neural</span>Notes is open source and free</H3>
-            <Button onClick={authHandler}><img src={iconGoogle} /><span>Sing up with Google</span></Button>
+            <Button type="button" onClick={authHandler}><img src={iconGoogle} /><span>Sing up with Google</span></Button>
           </Footer>
         </Article>
       </Main>

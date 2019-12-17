@@ -29,13 +29,13 @@ const H3 = styled.h3`
 `;
 
 const Button = styled.button`
-    color: ${COLORS.white};
-    background-color: ${COLORS.blue};
-    margin: auto;
-    position: relative;
-    border: none;
-    border-radius: 5px;
-    padding: 2vmin 4vmin 2vmin calc(9vmin + 8px);
+  color: ${COLORS.white};
+  background-color: ${COLORS.blue};
+  margin: auto;
+  position: relative;
+  border: none;
+  border-radius: 5px;
+  padding: 2vmin 4vmin 2vmin calc(9vmin + 8px);
 
   img {
     height: calc(100% - 8px);
@@ -45,6 +45,7 @@ const Button = styled.button`
     left: 4px;
     top: 4px;
   }
+  
   span {
     vertical-align: middle;
     line-height: 100%;
@@ -61,6 +62,7 @@ const Footer = styled.footer`
 
   H3 {
     padding-bottom: 3%;
+
     span {
       color: ${COLORS.aqua};
     }

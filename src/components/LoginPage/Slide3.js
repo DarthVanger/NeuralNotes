@@ -4,6 +4,7 @@ import arrow from 'components/LoginPage/images/arrow.svg'
 import imageNoteContent from 'components/LoginPage/images/slide-3-note-content.svg';
 import imageMindmapExplanation from 'components/LoginPage/images/slide-3-mindmap-explanation.svg';
 import { Img, Caption } from 'components/LoginPage/slideComponents';
+import COLORS from 'components/LoginPage/colors';
 
 const Slide = styled.section`
   padding-bottom: 0%;
@@ -35,12 +36,12 @@ const H2 = styled.h2`
   padding-bottom: 7%;
   font-size: calc(16px + (30 - 16)*(100vw - 375px)/(1200 - 375));
   text-align: center;
-  color: #ffffff;
+  color: ${COLORS.white};
 `;
 const H3 = styled.h3`
   padding-bottom: 7%;
   text-align: center;
-  color: #ffffff;
+  color: ${COLORS.white};
 `;
 const Figure = styled.figure`
   position: relative;
@@ -76,14 +77,14 @@ const ArrowRight = styled.img`
 const Hint = styled.div`
   position: relative;
   width: 34%;
-  background: #0E1736;
+  background: ${COLORS.denim};
   border-radius: 5px;
   box-shadow: inset 0px 4px 2px rgba(0, 0, 0, 0.25);
   padding-left: 2.7%;
   padding-right: 2.7%;
   padding-top: 4%;
   padding-bottom: 4%;
-  color: #E8E9F8;
+  color: ${COLORS.pearl};
   text-transform: uppercase;
   font-weight: 700;
   margin-top: 1vw;
@@ -92,7 +93,7 @@ const Hint = styled.div`
   margin-right: auto;
 `;
 
-const CaptionTextSlide3 = ({x = 0, y = 15, fill = "#FFFFFF", fontWeight = 700, text}) => {
+const CaptionTextSlide3 = ({x = 0, y = 15, fill = COLORS.white, fontWeight = 700, text}) => {
   return <text x={x} y={y} fill={fill} font-weight={fontWeight}>{text}</text>;
 };
 
@@ -125,7 +126,7 @@ export default class Slide3 extends Component {
             <Figure className='edit-example'>
               <Img src={imageMindmapExplanation} shadow />
                 <CaptionBoxSlide3  left="78.5%" top="5%" width="15%">
-                  <CaptionTextSlide3 fill="#96ffff" text="Neural"/>
+                <CaptionTextSlide3 fill={COLORS.aqua} text="Neural"/>
                 <CaptionTextSlide3 x="47" text="Notes"/>
                 </CaptionBoxSlide3>
               <CaptionBoxSlide3 viewBoxWidth="80" viewBoxHeight="40" left="43.5%" top="16.5%" width="14%">

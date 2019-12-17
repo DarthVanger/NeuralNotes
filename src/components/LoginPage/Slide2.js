@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import imageMindmap from 'components/LoginPage/images/slide-2-mindmap.svg';
 import { Img, Caption } from 'components/LoginPage/slideComponents';
+import COLORS from 'components/LoginPage/colors';
 
 const Slide = styled.section`
   padding-bottom: 10%;
@@ -11,7 +12,7 @@ const H3 = styled.h3`
   padding-bottom: 7%;
   font-size: calc(13px + (24 - 13)*(100vw - 375px)/(1200 - 375));
   text-align: center;
-  color: #ffffff;
+  color: ${COLORS.white};
 `;
 const Figure = styled.figure`
   position: relative;
@@ -20,7 +21,7 @@ const Figure = styled.figure`
   height: auto;
 `;
 
-const CaptionTextSlide2 = ({x = 0, y = 12, fill = "#96FFFF", fontWeight, text}) => {
+const CaptionTextSlide2 = ({x = 0, y = 12, fill = COLORS.aqua, fontWeight, text}) => {
   return <text x={x} y={y} fill={fill} font-weight={fontWeight} >{text}</text>;
 };
 
@@ -77,7 +78,7 @@ export default class Slide2 extends Component {
                   <CaptionTextSlide2 text="Dreams"/>
                 </CaptionBoxSlide2>
               <CaptionBoxSlide2 viewBoxWidth="100" viewBoxHeight="21" left="41.5%" top="41%" width="18.5%" fontWeight="700">
-                <CaptionTextSlide2 x="6" y="18" fill="#131C3E" text="NeuralNotes"/>
+                <CaptionTextSlide2 x="6" y="18" fill={COLORS.rainfull} text="NeuralNotes"/>
               </CaptionBoxSlide2>
             </Figure>
           </Slide>

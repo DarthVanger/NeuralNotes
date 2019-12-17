@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import imageMindmap from 'components/LoginPage/images/slide-4-mindmap.svg';
 import imageCloudScreenshot from 'components/LoginPage/images/slide-4-cloud-screenshot.svg';
 import { Img, Caption } from 'components/LoginPage/slideComponents';
+import COLORS from 'components/LoginPage/colors';
 
 const Slide = styled.section`
   padding-bottom: 10%;
@@ -27,7 +28,7 @@ const Figure = styled.figure`
   height: auto;
 `;
 
-const CaptionTextSlide4 = ({ x = 0, y = 12, fill = "#96FFFF", text }) => {
+const CaptionTextSlide4 = ({ x = 0, y = 12, fill = COLORS.aqua, text }) => {
     return <text x={x} y={y} fill={fill}>{text}</text>;
 };
 
@@ -67,7 +68,7 @@ export default class Slide4 extends Component {
                         <CaptionTextSlide4 y="16" text="Work" />
                     </CaptionBoxSlide4>
                     <CaptionBoxSlide4 viewBoxWidth="100" viewBoxHeight="21" left="52.5%" top="48%" width="18.5%" fontWeight="700">
-                        <CaptionTextSlide4 x="6" y="18" fill="#131C3E" text="NeuralNotes"/>
+                        <CaptionTextSlide4 x="6" y="18" fill={COLORS.rainfull} text="NeuralNotes"/>
                     </CaptionBoxSlide4>
                 </Figure>
                 <Figure className='cloud-screenshot'>

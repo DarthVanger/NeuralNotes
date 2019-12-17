@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import imageBrain from 'components/LoginPage/images/slide-1-brain.svg';
 import { Img } from 'components/LoginPage/slideComponents';
+import COLORS from 'components/LoginPage/colors';
 
 const Slide = styled.section`
   padding-bottom: 10%;
@@ -13,14 +14,14 @@ const Slide = styled.section`
 const AppName = styled.header`
   display: block;
   text-align: center;
-  color: #ffffff;
+  color: ${COLORS.white};
   padding-top: 10%;
   padding-bottom: 7%;
   h1 {
     font-weight: 100;
     font-size: calc(24px + (45 - 24)*(100vw - 375px)/(1200 - 375));
     b {
-        color: #96ffff;
+        color: ${COLORS.aqua};
       }
   }
 `;

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import imageMindmap from 'components/LoginPage/images/slide-5-mindmap.svg';
 import arrow from 'components/LoginPage/images/arrow.svg';
 import { Img, Caption } from 'components/LoginPage/slideComponents';
+import COLORS from 'components/LoginPage/colors';
 
 const Slide = styled.section`
   position: relative;
@@ -39,7 +40,7 @@ const H3 = styled.h3`
   margin-bottom: 0;
   font-size: 4vmin;
   text-align: center;
-  color: #ffffff;
+  color: ${COLORS.white};
 `;
 const Figure = styled.figure`
   width: 100%;
@@ -56,12 +57,12 @@ const ArrowDown = styled.img`
   transform: rotate(180deg);
 `;
 const Hint = styled.div`
-  background: #0E1736;
+  background: ${COLORS.denim};
   border-radius: 1vw;
   box-shadow: inset 0px 4px 2px rgba(0, 0, 0, 0.25);
 `;
 
-const CaptionTextSlide5 = ({ x = 0, y, fill = "#96FFFF", text }) => {
+const CaptionTextSlide5 = ({ x = 0, y, fill = COLORS.aqua, text }) => {
     return <text x={x} y={y} fill={fill}>{text}</text>;
 };
 
@@ -76,16 +77,16 @@ export default class Slide5 extends Component {
             <H3>Frequently used notes<br />get bigger</H3>
             <Hint className='hint-old-notes'>
               <CaptionBoxSlide5 viewBoxWidth="160" viewBoxHeight="40" left="3%" top="10%" width="94%" fontWeight="700">
-                <CaptionTextSlide5 x="6" y="18" fill="#E8E9F8" text="OLD UNUSED NOTES" />
-                <CaptionTextSlide5 x="36" y="38" fill="#E8E9F8" text="ARE" />
-              <CaptionTextSlide5 x="71" y="38" fill="#96FFFF" text="SMALL" />
+              <CaptionTextSlide5 x="6" y="18" fill={COLORS.pearl} text="OLD UNUSED NOTES" />
+                <CaptionTextSlide5 x="36" y="38" fill={COLORS.pearl} text="ARE" />
+              <CaptionTextSlide5 x="71" y="38" text="SMALL" />
             </CaptionBoxSlide5>
               <ArrowDown src={arrow} />
             </Hint>
             <Figure>
             <Img src={imageMindmap} shadow />
               <CaptionBoxSlide5 viewBoxWidth="100" viewBoxHeight="21" left="34%" top="21%" width="15.5%" fontWeight="700">
-              <CaptionTextSlide5 x="6" y="18" fill="#131C3E" text="NeuralNotes" />
+              <CaptionTextSlide5 x="6" y="18" fill={COLORS.rainfull} text="NeuralNotes" />
             </CaptionBoxSlide5>
               <CaptionBoxSlide5 viewBoxWidth="45" left="52.5%" top="48%" width="9.5%" fontWeight="700">
                 <CaptionTextSlide5 y="16" text="Work" />
@@ -114,9 +115,9 @@ export default class Slide5 extends Component {
           <Hint className='hint-recent-notes'>
             <ArrowUp src={arrow} />
             <CaptionBoxSlide5 viewBoxWidth="170" viewBoxHeight="40" left="7%" top="35%" width="86%" fontWeight="700">
-              <CaptionTextSlide5 x="3" y="18" fill="#E8E9F8" text="RECENT, FREQUENTLY" />
-              <CaptionTextSlide5 x="3" y="38" fill="#E8E9F8" text="USED NOTES ARE" />
-              <CaptionTextSlide5 x="137" y="38" fill="#96FFFF" text="BIG" />
+              <CaptionTextSlide5 x="3" y="18" fill={COLORS.pearl} text="RECENT, FREQUENTLY" />
+              <CaptionTextSlide5 x="3" y="38" fill={COLORS.pearl} text="USED NOTES ARE" />
+              <CaptionTextSlide5 x="137" y="38" text="BIG" />
             </CaptionBoxSlide5>
           </Hint>
         </Slide>

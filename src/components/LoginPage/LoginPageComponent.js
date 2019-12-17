@@ -7,10 +7,11 @@ import Slide3 from 'components/LoginPage/Slide3';
 import Slide4 from 'components/LoginPage/Slide4';
 import Slide5 from 'components/LoginPage/Slide5';
 import iconGoogle from 'components/LoginPage/images/icon-google.svg';
+import COLORS from 'components/LoginPage/colors';
 
 const Main = styled.main`
   width: 100%;
-  background-color: #131c3e;
+  background-color: ${COLORS.rainfull};
   font-family: Roboto;
 `;
 
@@ -24,12 +25,12 @@ const H3 = styled.h3`
   padding-bottom: 7%;
   font-size: calc(13px + (24 - 13)*(100vw - 375px)/(1200 - 375));
   text-align: center;
-  color: #ffffff;
+  color: ${COLORS.white};
 `;
 
 const Button = styled.button`
-    color: #ffffff;
-    background-color: #4A51F5;
+    color: ${COLORS.white};
+    background-color: ${COLORS.blue};
     margin: auto;
     position: relative;
     border: none;
@@ -38,7 +39,7 @@ const Button = styled.button`
 
   img {
     height: calc(100% - 8px);
-    background-color: #ffffff;
+    background-color: ${COLORS.white};
     position: absolute;
     padding: 3%;
     left: 4px;
@@ -61,7 +62,7 @@ const Footer = styled.footer`
   H3 {
     padding-bottom: 3%;
     span {
-      color: #96ffff;
+      color: ${COLORS.aqua};
     }
   }
 `;

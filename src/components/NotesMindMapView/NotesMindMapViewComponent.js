@@ -18,14 +18,17 @@ export class NotesMindMapViewComponent extends Component {
 
   render() {
     const { selectedNote } = this.state;
+    const { isChangeParentModeActive } = this.props;
 
     return (
       <StyledNotesMindMap ref={this.ref}>
         {selectedNote && <NoteNameEditorComponent
           note={noteStorage.findNoteById(selectedNote.id)}
-          onChange={this.onNoteSelect}
+          onChange={this.onNoteChange}
+          onChangeParentClick={this.onChangeParentClick}
           onDeleteClick={this.onDeleteClick}
           onUploadFileClick={this.onUploadFileClick}
+          isChangeParentModeActive={ isChangeParentModeActive } 
         />}
       </StyledNotesMindMap>
     );
@@ -63,7 +66,7 @@ export class NotesMindMapViewComponent extends Component {
     });
   }
 
-  noteClickHandler = targetNoteId => {
+  changeCurrentViewedNote = targetNoteId => {
     const { currentViewedNoteId } = this.state;
 
     // if clicking on the current note, do nothing.
@@ -95,10 +98,25 @@ export class NotesMindMapViewComponent extends Component {
   };
 
   visNetworkClickHandler = event => {
-    this.closeNoteNameEditor();
+    const { currentViewedNote } = this.state;
+    const { isChangeParentModeActive } = this.props;
+
+    if (!isChangeParentModeActive) {
+      this.closeNoteNameEditor();
+    }
+
     if (VisNetworkHelper.clickedOnNote(event)) {
       let targetNoteId = VisNetworkHelper.getTargetNoteId(event);
-      this.noteClickHandler(targetNoteId);
+
+      if (isChangeParentModeActive) {
+        this.props.changeParentNote({
+          noteId: currentViewedNote.id, 
+          currentParentId: currentViewedNote.parent.id, 
+          newParentId: targetNoteId, 
+        });
+      } else {
+        this.changeCurrentViewedNote(targetNoteId);
+      }
     }
   };
 
@@ -132,11 +150,16 @@ export class NotesMindMapViewComponent extends Component {
     visNetwork.selectNote(targetNoteId);
   }
 
-  onNoteSelect = name => {
+  onNoteChange = name => {
     const { id } = this.state.selectedNote;
     noteStorage.updateNoteName({ id, name })
       .then(() => visNetwork.updateNode({ id, label: name }));
   };
+
+  onChangeParentClick = () => {
+    const { isChangeParentModeActive } = this.props;
+    this.props.switchChangeParentMode({ isActive: isChangeParentModeActive ? false : true });
+  }
 
   onDeleteClick = () => {
     let note = this.state.currentViewedNote;
@@ -158,4 +181,7 @@ NotesMindMapViewComponent.propTypes = {
   changeVisNetworkNote: PropTypes.func.isRequired,
   createEmptyChild: PropTypes.func.isRequired,
   deleteNote: PropTypes.func.isRequired,
+  isChangeParentModeActive: PropTypes.bool.isRequired,
+  changeParentNote: PropTypes.func.isRequired,
+  switchChangeParentMode: PropTypes.func.isRequired
 };

@@ -22,7 +22,7 @@ const Figure = styled.figure`
 `;
 
 const CaptionTextSlide2 = ({x = 0, y = 12, fill = COLORS.aqua, fontWeight, text}) => {
-  return <text x={x} y={y} fill={fill} font-weight={fontWeight} >{text}</text>;
+  return <text x={x} y={y} fill={fill} fontWeight={fontWeight} >{text}</text>;
 };
 
 const CaptionBoxSlide2 = ({ viewBoxWidth = 60, viewBoxHeight = 15, width = "9.5%", ...rest}) => {

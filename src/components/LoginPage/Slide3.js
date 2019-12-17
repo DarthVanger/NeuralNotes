@@ -94,7 +94,7 @@ const Hint = styled.div`
 `;
 
 const CaptionTextSlide3 = ({x = 0, y = 15, fill = COLORS.white, fontWeight = 700, text}) => {
-  return <text x={x} y={y} fill={fill} font-weight={fontWeight}>{text}</text>;
+  return <text x={x} y={y} fill={fill} fontWeight={fontWeight}>{text}</text>;
 };
 
 const CaptionBoxSlide3 = ({viewBoxWidth = 100, viewBoxHeight = 21, ...rest}) => {

@@ -1,4 +1,5 @@
 import { all, call, put, takeEvery } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
+import { toast } from 'react-toastify';
 import _ from 'underscore';
 
 import {
@@ -6,7 +7,9 @@ import {
   changeNoteTextAction,
   changeSelectedNoteAction,
   CREATE_EMPTY_CHILD,
-  DELETE_NOTE
+  DELETE_NOTE,
+  NOTE_CHANGE_PARENT_ACTION,
+  SWITCH_CHANGE_PARENT_MODE_ACTION
 } from 'components/NotesMindMapView/NotesMindMapViewActions';
 import noteStorage from 'storage/noteStorage';
 import { APP_INIT_SUCCESS } from 'components/App/AppActions';
@@ -67,9 +70,8 @@ function* fetchChildNotes(note) {
     const childNote = yield noteStorage.fetchChildNotes(note);
     fetchingNotesSpinner.hide();
     return childNote;
-  }
-  catch (e) {
-    throw Error(e);
+  } catch (e) {
+    yield call([toast, toast.error], e);
   }
 }
 
@@ -118,11 +120,23 @@ function deleteNote({ data: { note, visNetwork } }) {
     });
 }
 
+function* changeParentNote({ data: { noteId, newParentId } }) {
+  try {
+    yield noteStorage.move({ noteId, newParentId });
+    yield put({ type: SWITCH_CHANGE_PARENT_MODE_ACTION, data: { isActive: false } });
+    yield call([toast, toast.error], 'tree re-rendering is not implemented yet');
+  } catch (e) {
+    yield put({ type: SWITCH_CHANGE_PARENT_MODE_ACTION, data: { isActive: false } });
+    throw Error(e);
+  }
+}
+
 export function* noteMindMapInit() {
   yield all([
     takeEvery(APP_INIT_SUCCESS, setRootNote),
     takeEvery(CHANGE_NOTE_VIS_NETWORK_NOTE_ACTION, changeNote),
     takeEvery(CREATE_EMPTY_CHILD, createEmptyChild),
     takeEvery(DELETE_NOTE, deleteNote),
+    takeEvery(NOTE_CHANGE_PARENT_ACTION, changeParentNote),
   ]);
 }

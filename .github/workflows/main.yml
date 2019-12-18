@@ -12,5 +12,5 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: '12.6'
-    - run: npm lint
-    - run: npm build
+    - run: npm run lint
+    - run: npm run build

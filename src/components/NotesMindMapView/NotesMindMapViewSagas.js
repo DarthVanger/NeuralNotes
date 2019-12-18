@@ -70,8 +70,7 @@ function* fetchChildNotes(note) {
     const childNote = yield noteStorage.fetchChildNotes(note);
     fetchingNotesSpinner.hide();
     return childNote;
-  }
-  catch (e) {
+  } catch (e) {
     throw Error(e);
   }
 }

@@ -34,6 +34,7 @@ module.exports = {
   ],
   "rules": {
     "no-console": "off",
-    "object-curly-spacing": ["error", "always"]
+    "object-curly-spacing": ["error", "always"],
+    "brace-style":  ["error", "1tbs", { "allowSingleLine": true }]
   }
 };

@@ -31,7 +31,7 @@ export class NotesMindMapViewComponent extends Component {
     );
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.setOptions();
   }
 

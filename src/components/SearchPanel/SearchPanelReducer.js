@@ -8,7 +8,6 @@ export const searchPanelReducer = (state = defaultState, { type, data }) => {
   switch (type) {
     case SEARCH_QUERY_CHANGED_ACTION:
       return { ...state, query: data };
-      break;
 
     default:
       return state;

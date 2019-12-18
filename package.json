@@ -5,8 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "babel-node server/server.js",
-    "eslist": "eslint src",
-    "eslist-fix": "eslint src --fix",
+    "lint": "eslint src",
     "build": "webpack"
   },
   "author": "DarthVanger",

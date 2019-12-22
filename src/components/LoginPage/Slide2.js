@@ -3,15 +3,16 @@ import styled from 'styled-components';
 import imageMindmap from 'components/LoginPage/images/slide-2-mindmap.svg';
 import { Img, Caption } from 'components/LoginPage/slideComponents';
 import COLORS from 'components/LoginPage/colors';
+import { FONT_SIZE } from 'components/LoginPage/slideComponents';
 
 const Slide = styled.section`
   padding-bottom: 10%;
   text-align: center;
 `;
 
-const H3 = styled.h3`
+const H2 = styled.h2`
   padding-bottom: 7%;
-  font-size: calc(13px + (24 - 13)*(100vw - 375px)/(1200 - 375));
+  font-size: ${FONT_SIZE.H2};
   text-align: center;
   color: ${COLORS.white};
 `;
@@ -35,7 +36,7 @@ export default class Slide2 extends Component {
   render() {
     return (
       <Slide>
-        <H3><b>Create Notes</b><br />As A Mind Map</H3>
+        <H2><b>Create Notes</b><br />As A Mind Map</H2>
         <Figure>
           <Img src={imageMindmap} shadow />
           <CaptionBoxSlide2 left="14.5%" top="11%">

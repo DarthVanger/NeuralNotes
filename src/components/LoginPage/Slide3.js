@@ -5,6 +5,7 @@ import imageNoteContent from 'components/LoginPage/images/slide-3-note-content.s
 import imageMindmapExplanation from 'components/LoginPage/images/slide-3-mindmap-explanation.svg';
 import { Img, Caption } from 'components/LoginPage/slideComponents';
 import COLORS from 'components/LoginPage/colors';
+import { FONT_SIZE } from 'components/LoginPage/slideComponents';
 
 const Slide = styled.section`
   padding-bottom: 0%;
@@ -14,15 +15,9 @@ const Slide = styled.section`
     width: 61%;
   }
 
-   .edit-example {
+  .edit-example {
     position: relative;
     margin-top: -9%;
-  }
-
-  .container-for-hint {
-    margin-top: -65%;
-    margin-bottom: 59%;
-    position: relative;
   }
 
   .hint-attach-files {
@@ -30,23 +25,24 @@ const Slide = styled.section`
     padding-top: 3%;
     padding-bottom: 3%;
   }
+`;
 
-  .subheader {
-    margin-top: -53%;
-    margin-bottom: 45%;
-    position: relative;
-  }
+const HintContainer = styled.div`
+  margin-top: -65%;
+  margin-bottom: 59%;
+  position: relative;
 `;
 
 const H2 = styled.h2`
   padding-bottom: 7%;
-  font-size: calc(16px + (30 - 16)*(100vw - 375px)/(1200 - 375));
+  font-size: ${FONT_SIZE.H2};
   text-align: center;
   color: ${COLORS.white};
 `;
 
-const H3 = styled.h3`
+const P = styled.p`
   padding-bottom: 7%;
+  font-size: 1.6em;
   text-align: center;
   color: ${COLORS.white};
 `;
@@ -106,6 +102,12 @@ const Hint = styled.div`
   margin-right: auto;
 `;
 
+const TextBox = styled.div`
+  margin-top: -53%;
+  margin-bottom: 45%;
+  position: relative;
+`;
+
 const CaptionTextSlide3 = ({x = 0, y = 15, fill = COLORS.white, fontWeight = 700, text}) => {
   return <text x={x} y={y} fill={fill} fontWeight={fontWeight}>{text}</text>;
 };
@@ -150,7 +152,7 @@ export default class Slide3 extends Component {
             <CaptionTextSlide3 y="34" text="ticket.pdf"/>
           </CaptionBoxSlide3>
         </Figure>
-        <div className='container-for-hint'>
+        <HintContainer>
           <ArrowLeft src={arrow} />
           <Hint className='hint-attach-files'>
             <CaptionBoxSlide3 viewBoxWidth="108" viewBoxHeight="19" left="20%" top="30%" width="60%">
@@ -158,15 +160,15 @@ export default class Slide3 extends Component {
             </CaptionBoxSlide3>
           </Hint>
           <ArrowRight src={arrow} />
-        </div>
-        <div className='subheader'>
-          <H3>
+        </HintContainer>
+        <TextBox>
+          <P>
             <CaptionBoxSlide3 viewBoxWidth="315" viewBoxHeight="56" left="35%" top="5%" width="30%">
               <CaptionTextSlide3 x="0" y="20" fontWeight="300" text="All notes and files are stored" />
               <CaptionTextSlide3 x="42" y="48" text="in your Google Drive" />
             </CaptionBoxSlide3>
-          </H3>
-        </div>
+          </P>
+        </TextBox>
       </Slide>
     );
   }

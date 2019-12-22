@@ -15,3 +15,12 @@ export const Caption = styled.svg`
   right: ${props => props.right};
   bottom: ${props => props.bottom};
 `;
+
+//aspect ratio of the slide in the layout (375px/334px)
+export const ASPECT_RATIO = 1.1;   
+
+export const FONT_SIZE = {
+  H1: '5vmin',
+  H2: '3.5vmin',
+  H3: '2.5vmin',
+};

@@ -8,6 +8,8 @@ import Slide4 from 'components/LoginPage/Slide4';
 import Slide5 from 'components/LoginPage/Slide5';
 import iconGoogle from 'components/LoginPage/images/icon-google.svg';
 import COLORS from 'components/LoginPage/colors';
+import { ASPECT_RATIO} from 'components/LoginPage/slideComponents';
+import { FONT_SIZE } from 'components/LoginPage/slideComponents';
 
 const Main = styled.main`
   width: 100%;
@@ -17,13 +19,13 @@ const Main = styled.main`
 
 const Article = styled.article`
   width: 100%;
-  max-width: calc(100vh*1.1);
+  max-width: calc(100vh * ${ASPECT_RATIO});
   margin: auto;
 `;
 
 const H3 = styled.h3`
   padding-bottom: 7%;
-  font-size: calc(13px + (24 - 13)*(100vw - 375px)/(1200 - 375));
+  font-size: ${FONT_SIZE.H3};
   text-align: center;
   color: ${COLORS.white};
 `;
@@ -55,7 +57,7 @@ const Button = styled.button`
 
 const Footer = styled.footer`
   width: 100%;
-  max-width: calc(100vh*1.1);
+  max-width: calc(100vh * ${ASPECT_RATIO});
   margin: auto;
   text-align: center;
   padding-bottom: 10%;
@@ -82,7 +84,10 @@ export class LoginPageComponent extends Component {
           <Slide5 />
           <Footer>
             <H3><span>Neural</span>Notes is open source and free</H3>
-            <Button type="button" onClick={authHandler}><img src={iconGoogle} /><span>Sing up with Google</span></Button>
+            <Button type="button" onClick={authHandler}>
+              <img src={iconGoogle} />
+              <span>Sing up with Google</span>
+            </Button>
           </Footer>
         </Article>
       </Main>

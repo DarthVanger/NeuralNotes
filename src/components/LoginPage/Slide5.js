@@ -4,6 +4,7 @@ import imageMindmap from 'components/LoginPage/images/slide-5-mindmap.svg';
 import arrow from 'components/LoginPage/images/arrow.svg';
 import { Img, Caption } from 'components/LoginPage/slideComponents';
 import COLORS from 'components/LoginPage/colors';
+import { FONT_SIZE } from 'components/LoginPage/slideComponents';
 
 const Slide = styled.section`
   position: relative;
@@ -39,11 +40,11 @@ const Slide = styled.section`
   }
 `;
 
-const H3 = styled.h3`
+const H2 = styled.h2`
   padding-bottom: 0;
   margin-top: 0;
   margin-bottom: 0;
-  font-size: 4vmin;
+  font-size: ${FONT_SIZE.H2};
   text-align: center;
   color: ${COLORS.white};
 `;
@@ -83,7 +84,7 @@ export default class Slide5 extends Component {
   render() {
     return (
       <Slide>
-        <H3>Frequently used notes<br />get bigger</H3>
+        <H2>Frequently used notes<br />get bigger</H2>
         <Hint className='hint-old-notes'>
           <CaptionBoxSlide5 viewBoxWidth="160" viewBoxHeight="40" left="3%" top="10%" width="94%" fontWeight="700">
             <CaptionTextSlide5 x="6" y="18" fill={COLORS.pearl} text="OLD UNUSED NOTES" />

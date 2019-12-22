@@ -17,7 +17,7 @@ export const Caption = styled.svg`
 `;
 
 //aspect ratio of the slide in the layout (375px/334px)
-export const ASPECT_RATIO = 1.1;   
+export const ASPECT_RATIO = 375/334;   
 
 export const FONT_SIZE = {
   H1: '5vmin',

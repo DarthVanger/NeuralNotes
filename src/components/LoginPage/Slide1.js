@@ -15,7 +15,6 @@ const Slide = styled.section`
 `;
 
 const AppName = styled.header`
-  display: block;
   text-align: center;
   color: ${COLORS.white};
   padding-top: 10%;

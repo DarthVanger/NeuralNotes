@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { ControlsHelpComponent } from 'components/ControlsHelp/ControlsHelpComponent';
 import { NotesContentEditorContainer } from 'components/NotesContentEditor/NotesContentEditorContainer';
 import { NotesMindMapViewContainer } from 'components/NotesMindMapView/NotesMindMapViewContainer';
+import { SearchPanelContainer } from 'components/SearchPanel/SearchPanelContainer';
 
 export class NotesPageComponent extends Component {
   render() {
@@ -14,6 +15,7 @@ export class NotesPageComponent extends Component {
         <NotesMindMapViewContainer/>
         <NotesContentEditorContainer/>
         {!isHelpViewed && <ControlsHelpComponent onClose={closeHelp}/>}
+        <SearchPanelContainer />
       </>
     );
   }

@@ -1,4 +1,3 @@
-import { toast } from 'react-toastify';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 

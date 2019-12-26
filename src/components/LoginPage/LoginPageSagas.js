@@ -21,8 +21,7 @@ export function* handleAuth() {
     yield call(noteStorage.scanDrive);
     yield put(appInitSuccessAction());
     yield setPageAction(PAGES_ENUM.NOTES);
-  }
-  catch (e) {
+  } catch (e) {
     console.error('googleLogin.gapiAuthorize(): authError: ', e.error);
     yield call([toast, toast.error], 'Google Authentification failed: ' + e.error);
   }

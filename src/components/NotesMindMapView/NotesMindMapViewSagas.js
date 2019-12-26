@@ -14,6 +14,8 @@ import {
 import noteStorage from 'storage/noteStorage';
 import { APP_INIT_SUCCESS } from 'components/App/AppActions';
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
+import { SEARCH_QUERY_CHANGED_ACTION } from 'components/SearchPanel/SearchPanelActions';
+import googleDriveApi from 'api/google-drive-api';
 
 const LOADING_NOTE_MESSAGE = 'loading note contents...';
 let spinner = siteGlobalLoadingBar.create('mind map');
@@ -131,6 +133,12 @@ function* changeParentNote({ data: { noteId, newParentId } }) {
   }
 }
 
+function* searchNoteSaga({ data }) {
+  const results = yield googleDriveApi.findNotesByName(data);
+  yield call([toast, toast.error], 'Search is not implemented yet :) See search results in console');
+  console.log('Search results: ', results);
+}
+
 export function* noteMindMapInit() {
   yield all([
     takeEvery(APP_INIT_SUCCESS, setRootNote),
@@ -138,5 +146,6 @@ export function* noteMindMapInit() {
     takeEvery(CREATE_EMPTY_CHILD, createEmptyChild),
     takeEvery(DELETE_NOTE, deleteNote),
     takeEvery(NOTE_CHANGE_PARENT_ACTION, changeParentNote),
+    takeEvery(SEARCH_QUERY_CHANGED_ACTION, searchNoteSaga),
   ]);
 }

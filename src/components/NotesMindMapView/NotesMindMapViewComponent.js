@@ -52,7 +52,7 @@ export class NotesMindMapViewComponent extends Component {
       <StyledNotesMindMap>
         <VisGraph graph={visGraph} events={visEvents} options={visOptions} />
         {showNoteNameEditor && <NoteNameEditorComponent
-          note={noteStorage.findNoteById(selectedNote.id)}
+          note={selectedNote}
           onChange={this.handleNoteNameUpdate}
           onChangeParentClick={this.props.onChangeParentButtonClick}
           onDeleteClick={this.onDeleteClick}
@@ -87,15 +87,15 @@ export class NotesMindMapViewComponent extends Component {
     this.props.onMindMapClick();
     if (VisNetworkHelper.clickedOnNote(event)) {
       let targetNoteId = VisNetworkHelper.getTargetNoteId(event);
+      const targetNote = tree(rootNote).find(node => node.id === targetNoteId);
 
       if (isChangeParentModeActive) {
         this.props.changeParentNote({
           noteId: selectedNote.id,
           currentParentId: selectedNote.parent.id,
-          newParentId: targetNoteId,
+          newParent: targetNote,
         });
       } else {
-        const targetNote = tree(rootNote).find(node => node.id === targetNoteId);
         if (targetNote.id !== selectedNote.id) {
           this.props.changeSelectedNote(targetNote);
         }

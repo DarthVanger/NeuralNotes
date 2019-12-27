@@ -2,7 +2,6 @@ import tree from 'helpers/tree';
 import {
   CHANGE_NOTE_TEXT_ACTION,
   CHANGE_SELECTED_NOTE_ACTION,
-  SWITCH_CHANGE_PARENT_MODE_ACTION,
   SELECTED_NOTE_CHILDREN_FETCHED_ACTION,
   EDIT_NOTE_NAME_ACTION,
   NOTE_NAME_UPDATE_REQUEST_SUCCESS_ACTION,
@@ -111,7 +110,7 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
     case DELETE_NOTE_REQUEST_SUCCESS_ACTION:
       return handleDeleteNoteRequestSuccessAction({ state, data });
     case CHANGE_PARENT_BUTTON_CLICKED_ACTION:
-      return {...state, isChangeParentModeActive: true }
+      return { ...state, isChangeParentModeActive: true }
     case CHANGE_PARENT_REQUEST_SUCCESS_ACTION:
       return handleChangeParentNoteRequestSuccess();
     case CHANGE_PARENT_REQUEST_FAIL_ACTION:

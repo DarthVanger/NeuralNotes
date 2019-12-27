@@ -190,4 +190,5 @@ NotesMindMapViewComponent.propTypes = {
   onMindMapClick: PropTypes.func.isRequired,
   editNote:  PropTypes.func.isRequired,
   updateNoteName:  PropTypes.func.isRequired,
+  onChangeParentButtonClick: PropTypes.func.isRequired,
 };

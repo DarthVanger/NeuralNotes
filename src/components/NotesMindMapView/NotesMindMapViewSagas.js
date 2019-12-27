@@ -6,7 +6,6 @@ import {
   changeNoteTextAction,
   changeSelectedNoteAction,
   NOTE_CHANGE_PARENT_ACTION,
-  SWITCH_CHANGE_PARENT_MODE_ACTION,
   selectedNoteChildrenFetchedAction,
   CREATE_EMPTY_CHILD_ACTION,
   DELETE_NOTE_ACTION,

@@ -1,18 +1,23 @@
 import { all, call, put, takeEvery } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
 import { toast } from 'react-toastify';
-import _ from 'underscore';
 
 import {
-  CHANGE_NOTE_VIS_NETWORK_NOTE_ACTION,
+  CHANGE_SELECTED_NOTE_ACTION,
   changeNoteTextAction,
   changeSelectedNoteAction,
-  CREATE_EMPTY_CHILD,
-  DELETE_NOTE,
   NOTE_CHANGE_PARENT_ACTION,
-  SWITCH_CHANGE_PARENT_MODE_ACTION
+  SWITCH_CHANGE_PARENT_MODE_ACTION,
+  selectedNoteChildrenFetchedAction,
+  CREATE_EMPTY_CHILD_ACTION,
+  DELETE_NOTE_ACTION,
+  UPDATE_NOTE_NAME_ACTION,
+  noteNameUpdateRequestSuccessAction,
+  createNoteSuccessAction,
+  editNoteNameAction,
+  deleteNoteRequestSuccessAction,
 } from 'components/NotesMindMapView/NotesMindMapViewActions';
 import noteStorage from 'storage/noteStorage';
-import { APP_INIT_SUCCESS } from 'components/App/AppActions';
+import { ROOT_NOTE_FOUND_ACTION } from 'components/App/AppActions';
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
 import { SEARCH_QUERY_CHANGED_ACTION } from 'components/SearchPanel/SearchPanelActions';
 import googleDriveApi from 'api/google-drive-api';
@@ -20,8 +25,8 @@ import googleDriveApi from 'api/google-drive-api';
 const LOADING_NOTE_MESSAGE = 'loading note contents...';
 let spinner = siteGlobalLoadingBar.create('mind map');
 
-function* setRootNote() {
-  yield put(changeSelectedNoteAction(noteStorage.getRoot()));
+function* selectRootNote({ data }) {
+  yield put(changeSelectedNoteAction(data));
 }
 
 function* requestNoteText(note) {
@@ -35,91 +40,52 @@ function* requestNoteText(note) {
  * Load child notes for clicked note,
  * and redraw the network for new notes.
  */
-function* changeNote({ data: { targetNote, visNetwork } }) {
-  if (!_.isEmpty(targetNote.children)) {
-    renderChildren(targetNote.children, targetNote, visNetwork);
-  } else {
-    const childNote = yield fetchChildNotes(targetNote);
-    renderChildren(childNote, targetNote, visNetwork);
+function* changeNote({ data }) {
+  const targetNote = data;
+  if ((!targetNote.children || !targetNote.children.length) && !targetNote.hasNoChildren) {
+    const childNotes = yield fetchChildNotes(targetNote);
+    yield put(selectedNoteChildrenFetchedAction(childNotes));
   }
 
-  yield put(changeSelectedNoteAction(targetNote));
   if (targetNote.isNote) {
     yield requestNoteText(targetNote);
   }
-
-  if (targetNote.parent) {
-    if (!_.isEmpty(targetNote.parent.name)) {
-      visNetwork.renderParentNote(targetNote);
-    } else {
-      targetNote.parent = yield fetchParentNote(targetNote.id);
-      visNetwork.renderParentNote(targetNote);
-    }
-  }
-}
-
-function* fetchParentNote(noteId) {
-  const fetchingParentNote = spinner.create('loading parent note');
-  const parentNote = yield noteStorage.fetchParentNote(noteId);
-  fetchingParentNote.hide();
-  return parentNote;
 }
 
 function* fetchChildNotes(note) {
   const fetchingNotesSpinner = spinner.create('loading child notes');
   fetchingNotesSpinner.show();
   try {
-    const childNote = yield noteStorage.fetchChildNotes(note);
+    const childNotes = yield noteStorage.fetchChildNotes(note);
     fetchingNotesSpinner.hide();
-    return childNote;
+    return childNotes;
   } catch (e) {
     yield call([toast, toast.error], e);
   }
 }
 
-function renderChildren(children, targetNote, visNetwork) {
-  visNetwork.addChildNotes({
-    children,
-    parentNoteId: targetNote.id
-  });
-}
-
-function createEmptyChild({ data: { parentId, visNetwork } }) {
+function* createEmptyChild({ data: { parent } }) {
+  console.log('craete empty child');
   const note = {
     name: 'new2',
     content: '',
     isNote: true
   };
 
-  const parent = noteStorage.findNoteById(parentId);
-
-  return noteStorage.create(note, parent)
-    .then(newNote => {
-      note.id = newNote.id;
-
-      const children = [note];
-
-      noteStorage.addChildrenToTree({
-        parentId: parentId,
-        children,
-      });
-
-      visNetwork.addChildNotes({
-        children,
-        parentNoteId: parentId,
-      });
-
-      this.editNote(note.id);
-
-      return note;
-    });
+  const newNote = yield noteStorage.create(note, parent)
+  newNote.parent = parent;
+  yield put(createNoteSuccessAction(newNote));
+  yield put(editNoteNameAction(newNote));
 }
 
-function deleteNote({ data: { note, visNetwork } }) {
-  noteStorage.remove(note)
-    .then(function () {
-      visNetwork.deleteSelectedNode();
-    });
+function* deleteNote({ data: { note } }) {
+  yield noteStorage.remove(note);
+  yield put(deleteNoteRequestSuccessAction(note));
+}
+
+function* updateNoteName({ data: { note, newName } }) {
+  const newNote = yield noteStorage.updateNoteName({ note, newName });
+  yield put(noteNameUpdateRequestSuccessAction(newNote));
 }
 
 function* changeParentNote({ data: { noteId, newParentId } }) {
@@ -141,11 +107,12 @@ function* searchNoteSaga({ data }) {
 
 export function* noteMindMapInit() {
   yield all([
-    takeEvery(APP_INIT_SUCCESS, setRootNote),
-    takeEvery(CHANGE_NOTE_VIS_NETWORK_NOTE_ACTION, changeNote),
-    takeEvery(CREATE_EMPTY_CHILD, createEmptyChild),
-    takeEvery(DELETE_NOTE, deleteNote),
     takeEvery(NOTE_CHANGE_PARENT_ACTION, changeParentNote),
+    takeEvery(ROOT_NOTE_FOUND_ACTION, selectRootNote),
+    takeEvery(CHANGE_SELECTED_NOTE_ACTION, changeNote),
+    takeEvery(CREATE_EMPTY_CHILD_ACTION, createEmptyChild),
+    takeEvery(DELETE_NOTE_ACTION, deleteNote),
+    takeEvery(UPDATE_NOTE_NAME_ACTION, updateNoteName),
     takeEvery(SEARCH_QUERY_CHANGED_ACTION, searchNoteSaga),
   ]);
 }

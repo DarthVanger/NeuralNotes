@@ -36,16 +36,17 @@ function* requestNoteText(note) {
   yield put(changeNoteTextAction(noteText));
 }
 
-
 /**
  * Load child notes for clicked note,
  * and redraw the network for new notes.
  */
-function* changeNote({ data }) {
+function* changeSelectedNote({ data }) {
   const targetNote = data;
-  if ((!targetNote.children || !targetNote.children.length) && !targetNote.hasNoChildren) {
+  if (didNotAttemptToFetchChildren(targetNote)) {
     const childNotes = yield fetchChildNotes(targetNote);
     yield put(selectedNoteChildrenFetchedAction(childNotes));
+  } else {
+    console.log('not fetching child notes');
   }
 
   if (targetNote.isNote) {
@@ -57,7 +58,7 @@ function* fetchChildNotes(note) {
   const fetchingNotesSpinner = spinner.create('loading child notes');
   fetchingNotesSpinner.show();
   try {
-    const childNotes = yield noteStorage.fetchChildNotes(note);
+    const childNotes = yield call(noteStorage.fetchChildNotes, note);
     fetchingNotesSpinner.hide();
     return childNotes;
   } catch (e) {
@@ -66,7 +67,6 @@ function* fetchChildNotes(note) {
 }
 
 function* createEmptyChild({ data: { parent } }) {
-  console.log('craete empty child');
   const note = {
     name: 'new2',
     content: '',
@@ -89,12 +89,15 @@ function* updateNoteName({ data: { note, newName } }) {
   yield put(noteNameUpdateRequestSuccessAction(newNote));
 }
 
-function* changeParentNote({ data: { noteId, newParentId } }) {
+function* changeParentNote({ data: { noteId, newParent } }) {
   try {
-    yield noteStorage.move({ noteId, newParentId });
-    yield put(changeParentRequestSuccessAction({ noteId, newParentId }));
+    if (didNotAttemptToFetchChildren(newParent)) {
+      yield* fetchChildNotes(newParent);
+    }
+    yield call(noteStorage.move, { noteId, newParentId: newParent.id });
+    yield put(changeParentRequestSuccessAction({ noteId, newParentId: newParent.id }));
   } catch (e) {
-    yield put(changeParentRequestFailAction({ noteId, newParentId }));
+    yield put(changeParentRequestFailAction({ noteId, newParentId: newParent.id }));
     yield call([toast, toast.error], 'Changing note has parent failed');
     throw Error(e);
   }
@@ -106,11 +109,15 @@ function* searchNoteSaga({ data }) {
   console.log('Search results: ', results);
 }
 
+function didNotAttemptToFetchChildren(note) {
+  return (!note.children || !note.children.length) && !note.hasNoChildren;
+}
+
 export function* noteMindMapInit() {
   yield all([
     takeEvery(NOTE_CHANGE_PARENT_ACTION, changeParentNote),
     takeEvery(ROOT_NOTE_FOUND_ACTION, selectRootNote),
-    takeEvery(CHANGE_SELECTED_NOTE_ACTION, changeNote),
+    takeEvery(CHANGE_SELECTED_NOTE_ACTION, changeSelectedNote),
     takeEvery(CREATE_EMPTY_CHILD_ACTION, createEmptyChild),
     takeEvery(DELETE_NOTE_ACTION, deleteNote),
     takeEvery(UPDATE_NOTE_NAME_ACTION, updateNoteName),

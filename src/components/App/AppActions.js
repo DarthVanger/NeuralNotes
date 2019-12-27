@@ -1,4 +1,4 @@
 export const CHANGE_PAGE_ACTION = 'CHANGE_PAGE_ACTION';
-export const APP_INIT_SUCCESS = 'APP_INIT_SUCCESS';
+export const ROOT_NOTE_FOUND_ACTION = 'ROOT_NOTE_FOUND_ACTION';
 
-export const appInitSuccessAction = () => ({ type: APP_INIT_SUCCESS });
+export const rootNoteFoundAction = (data) => ({ type: ROOT_NOTE_FOUND_ACTION, data });

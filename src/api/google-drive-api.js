@@ -116,9 +116,9 @@ function updateFile(options) {
   return promise;
 }
 
-function updateFileName(options) {
-  let fileId = options.id;
-  let fileName = options.name;
+function updateFileName({ id, name }) {
+  let fileId = id;
+  let fileName = name;
 
   let request = gapi.client.request({
     'path': '/drive/v2/files/' + fileId,

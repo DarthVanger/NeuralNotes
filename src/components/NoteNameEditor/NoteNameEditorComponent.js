@@ -16,13 +16,15 @@ export class NoteNameEditorComponent extends Component {
   debouncedOnChange = _.debounce(name => this.props.onChange(name), 1500);
 
   render() {
-    const { onDeleteClick, onUploadFileClick } = this.props;
+    const { onChangeParentClick, onDeleteClick, onUploadFileClick, isChangeParentModeActive } = this.props;
 
     return (
       <StyledNoteNameEditor>
         <HeaderComponent
+          onChangeParentClick={onChangeParentClick}
           onDeleteClick={onDeleteClick}
           onUploadFileClick={onUploadFileClick}
+          isChangeParentModeActive={isChangeParentModeActive}
         />
         <StyledNoteEditorTextArea
           ref={this.ref}
@@ -51,6 +53,8 @@ export class NoteNameEditorComponent extends Component {
 NoteNameEditorComponent.propTypes = {
   note: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
+  onChangeParentClick: PropTypes.func.isRequired,
   onDeleteClick: PropTypes.func.isRequired,
-  onUploadFileClick: PropTypes.func.isRequired
+  onUploadFileClick: PropTypes.func.isRequired,
+  isChangeParentModeActive: PropTypes.bool.isRequired
 };

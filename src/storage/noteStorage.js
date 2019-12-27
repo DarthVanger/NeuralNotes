@@ -24,6 +24,7 @@ export default {
   create,
   update: noteStorageApi.update,
   remove,
+  move, 
   updateNoteName,
   getLinkToNote
 };
@@ -90,6 +91,19 @@ function remove(note) {
       deleteNode(note);
       return result;
     });
+}
+
+function move({ noteId, newParentId }) {
+  return new Promise((resolve, reject) => {
+    noteStorageApi
+    .move(noteId, newParentId)
+    .then(() => {
+      resolve();
+    })
+    .catch((error) => {
+      reject(error);
+    });
+  })
 }
 
 function getLinkToNote({ id }) {

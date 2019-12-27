@@ -1,7 +1,5 @@
 /* global gapi */
 import _ from 'underscore';
-import { toast } from 'react-toastify';
-
 import googleDriveApi from 'api/google-drive-api';
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
 
@@ -24,6 +22,7 @@ export default {
   create,
   update,
   remove,
+  move,
   updateFileName,
   updateNoteContentFileName
 };
@@ -65,7 +64,7 @@ function scanDrive() {
  */
 function fetchChildNotes(note) {
   spinner.show();
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     console.debug('[Get] Child notes for: "' + note.name + '"');
     getFiles(note.id).then(function (files) {
       const children = [];
@@ -79,9 +78,12 @@ function fetchChildNotes(note) {
       console.debug('[Loaded] notes for "' + note.id + '"');
       resolve(children);
     })
-      .finally(function () {
-        spinner.hide();
-      });
+    .catch(() => {
+      reject('Connection with Google Drive failed.\n Can not get files');
+    })
+    .finally(function () {
+      spinner.hide();
+    });
   });
 }
 
@@ -138,12 +140,13 @@ function getFiles(folderId) {
   });
 
   spinner.show();
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     request.execute(function (resp) {
       console.debug('[Loaded] Files: ', resp);
       if (!resp.files) {
+        spinner.hide();
+        reject();
         let errorMessage = 'Remote Storage API: Failed to get files';
-        toast.error('Connection with Google Drive failed.\n Can not get files.');
         throw new Error(errorMessage);
       }
 
@@ -152,7 +155,7 @@ function getFiles(folderId) {
 
       spinner.hide();
       resolve(resp.files);
-    })
+    });
   });
 }
 
@@ -439,6 +442,32 @@ function remove(note) {
     });
 
   }).finally(function () {
+    spinner.hide();
+  });
+}
+
+function move(noteId, newParentId) {
+  spinner.show();
+  const request = gapi.client.request({ 
+    path: '/drive/v2/files/' + noteId, 
+    method: 'PUT', 
+    params: { 'uploadType': 'multipart', 'alt': 'json' }, 
+    body: { parents: [{ 'id': newParentId }] }
+  });
+
+  return new Promise((resolve, reject) => {
+    request.execute(function (response, responseRaw) {
+      if(response) {
+        resolve(response);
+      } else {
+        reject(responseRaw);
+      }
+    })
+  })
+  .catch((e) => {
+    throw new Error(e);
+  })
+  .finally(() => {
     spinner.hide();
   });
 }

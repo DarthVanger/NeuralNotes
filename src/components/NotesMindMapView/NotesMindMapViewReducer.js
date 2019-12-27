@@ -1,11 +1,13 @@
 import {
   CHANGE_NOTE_TEXT_ACTION,
-  CHANGE_SELECTED_NOTE_ACTION
+  CHANGE_SELECTED_NOTE_ACTION,
+  SWITCH_CHANGE_PARENT_MODE_ACTION
 } from 'components/NotesMindMapView/NotesMindMapViewActions';
 
 const defaultState = {
   selectedNote: {},
   noteText: '',
+  isChangeParentModeActive: false,
 };
 
 export const notesMindMapReducer = (state = defaultState, { type, data }) => {
@@ -14,6 +16,8 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
       return { ...state, selectedNote: data };
     case CHANGE_NOTE_TEXT_ACTION:
       return { ...state, noteText: data };
+    case SWITCH_CHANGE_PARENT_MODE_ACTION:
+      return { ...state, isChangeParentModeActive: data.isActive };
     default:
       return state;
   }

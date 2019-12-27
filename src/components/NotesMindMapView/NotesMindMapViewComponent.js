@@ -96,7 +96,9 @@ export class NotesMindMapViewComponent extends Component {
         });
       } else {
         const targetNote = tree(rootNote).find(node => node.id === targetNoteId);
-        this.props.changeSelectedNote(targetNote);
+        if (targetNote.id !== selectedNote.id) {
+          this.props.changeSelectedNote(targetNote);
+        }
       }
     }
   };

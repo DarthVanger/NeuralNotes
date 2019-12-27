@@ -15,6 +15,8 @@ import {
   createNoteSuccessAction,
   editNoteNameAction,
   deleteNoteRequestSuccessAction,
+  changeParentRequestSuccessAction,
+  changeParentRequestFailAction,
 } from 'components/NotesMindMapView/NotesMindMapViewActions';
 import noteStorage from 'storage/noteStorage';
 import { ROOT_NOTE_FOUND_ACTION } from 'components/App/AppActions';
@@ -91,10 +93,10 @@ function* updateNoteName({ data: { note, newName } }) {
 function* changeParentNote({ data: { noteId, newParentId } }) {
   try {
     yield noteStorage.move({ noteId, newParentId });
-    yield put({ type: SWITCH_CHANGE_PARENT_MODE_ACTION, data: { isActive: false } });
-    yield call([toast, toast.error], 'tree re-rendering is not implemented yet');
+    yield put(changeParentRequestSuccessAction({ noteId, newParentId }));
   } catch (e) {
-    yield put({ type: SWITCH_CHANGE_PARENT_MODE_ACTION, data: { isActive: false } });
+    yield put(changeParentRequestFailAction({ noteId, newParentId }));
+    yield call([toast, toast.error], 'Changing note has parent failed');
     throw Error(e);
   }
 }

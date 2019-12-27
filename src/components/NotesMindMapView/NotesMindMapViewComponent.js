@@ -54,7 +54,7 @@ export class NotesMindMapViewComponent extends Component {
         {showNoteNameEditor && <NoteNameEditorComponent
           note={noteStorage.findNoteById(selectedNote.id)}
           onChange={this.handleNoteNameUpdate}
-          onChangeParentClick={this.onChangeParentClick}
+          onChangeParentClick={this.props.onChangeParentButtonClick}
           onDeleteClick={this.onDeleteClick}
           onUploadFileClick={this.onUploadFileClick}
           isChangeParentModeActive={ isChangeParentModeActive } 
@@ -135,11 +135,6 @@ export class NotesMindMapViewComponent extends Component {
     this.props.updateNoteName({ note, newName });
   };
 
-  onChangeParentClick = () => {
-    const { isChangeParentModeActive } = this.props;
-    this.props.switchChangeParentMode({ isActive: isChangeParentModeActive ? false : true });
-  }
-
   onDeleteClick = () => {
     let note = this.props.selectedNote;
     this.props.deleteNote({ note });
@@ -188,7 +183,6 @@ NotesMindMapViewComponent.propTypes = {
   deleteNote: PropTypes.func.isRequired,
   isChangeParentModeActive: PropTypes.bool.isRequired,
   changeParentNote: PropTypes.func.isRequired,
-  switchChangeParentMode: PropTypes.func.isRequired,
   showNoteNameEditor: PropTypes.bool.isRequired,
   rootNote: PropTypes.object.isRequired,
   onMindMapClick: PropTypes.func.isRequired,

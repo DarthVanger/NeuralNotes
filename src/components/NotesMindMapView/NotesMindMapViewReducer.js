@@ -9,6 +9,9 @@ import {
   CREATE_NOTE_SUCCESS_ACTION,
   MIND_MAP_CLICKED_ACTION,
   DELETE_NOTE_REQUEST_SUCCESS_ACTION,
+  CHANGE_PARENT_BUTTON_CLICKED_ACTION,
+  CHANGE_PARENT_REQUEST_SUCCESS_ACTION,
+  CHANGE_PARENT_REQUEST_FAIL_ACTION,
 } from 'components/NotesMindMapView/NotesMindMapViewActions';
 import {
   ROOT_NOTE_FOUND_ACTION,
@@ -56,14 +59,33 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
   };
 
   const handleDeleteNoteRequestSuccessAction = () => {
-      const noteToDelete = data;
-      const newState = cloneTreeInState();
-      newState.selectedNote = noteToDelete.parent
-      noteToDelete.parent.children = noteToDelete.parent.children.filter(
-        child => child.id !== noteToDelete.id
-      );
-      return newState;
+    const noteToDelete = data;
+    const newState = cloneTreeInState();
+    newState.selectedNote = noteToDelete.parent
+    noteToDelete.parent.children = noteToDelete.parent.children.filter(
+      child => child.id !== noteToDelete.id
+    );
+    return newState;
   };
+
+  const handleChangeParentNoteRequestSuccess = () => {
+    const { rootNote } = state;
+    const noteId = data.noteId;
+    const newParentId = data.newParentId;
+    const targetNote = tree(rootNote).find(node => node.id === noteId);
+    const newParent = tree(rootNote).find(node => node.id === newParentId);
+    const newState = cloneTreeInState();
+    targetNote.parent.children = targetNote.parent.children.filter(
+      child => child.id !== targetNote.id
+    );
+    newParent.children.push(targetNote);
+
+    return {
+      ...newState,
+      isChangeParentModeActive: false,
+      showNoteNameEditor: false,
+    };
+  }
 
   switch (type) {
     case ROOT_NOTE_FOUND_ACTION:
@@ -74,8 +96,6 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
       return handleSelectedNoteChildrenFetchedAction(data);
     case CHANGE_NOTE_TEXT_ACTION:
       return { ...state, noteText: data };
-    case SWITCH_CHANGE_PARENT_MODE_ACTION:
-      return { ...state, isChangeParentModeActive: data.isActive };
     case EDIT_NOTE_NAME_ACTION:
       return handleEditNoteNameAction({ state, data });
     case NOTE_NAME_UPDATE_REQUEST_SUCCESS_ACTION:
@@ -90,6 +110,12 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
       }
     case DELETE_NOTE_REQUEST_SUCCESS_ACTION:
       return handleDeleteNoteRequestSuccessAction({ state, data });
+    case CHANGE_PARENT_BUTTON_CLICKED_ACTION:
+      return {...state, isChangeParentModeActive: true }
+    case CHANGE_PARENT_REQUEST_SUCCESS_ACTION:
+      return handleChangeParentNoteRequestSuccess();
+    case CHANGE_PARENT_REQUEST_FAIL_ACTION:
+      return { ...state, isChangeParentModeActive: false };
     default:
       return state;
   }

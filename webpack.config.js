@@ -2,6 +2,10 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const CompressionPlugin = require('compression-webpack-plugin');
+const webpack = require('webpack')
 
 const ASSET_PATH = process.env.ASSET_PATH || '/';
 
@@ -59,7 +63,17 @@ module.exports = {
       text: 'text-loader'
     }
   },
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin()
+    ]
+  },
   plugins: [
+    new webpack.DefinePlugin({ // reduces the size of react dependencies by 1mb 
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+      }
+    }),
     new HtmlWebpackPlugin({
       template: 'src/index.html'
     }),
@@ -67,6 +81,14 @@ module.exports = {
     new CopyWebpackPlugin([
       { from: 'src/**/*.jpg' },
       { from: 'src/**/*.png' },
-    ])
+    ]),
+    new CompressionPlugin({ 
+      algorithm: "gzip",
+      test: /\.js$|\.css$|\.html$/,
+      threshold: 10240,
+      minRatio: 0.8
+    }),
+    new webpack.optimize.AggressiveMergingPlugin(),
+    new BundleAnalyzerPlugin()
   ]
 };

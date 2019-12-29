@@ -21,28 +21,21 @@ const Slide = styled.section`
   }
 
   .hint-attach-files {
-    width: 22%;
-    padding-top: 3%;
+    width: 32%;
+    padding-top: 5%;
     padding-bottom: 3%;
   }
 `;
 
 const HintContainer = styled.div`
-  margin-top: -65%;
-  margin-bottom: 59%;
-  position: relative;
+  top: 28.5%;
+  width: 100%;
+  position: absolute;
 `;
 
 const H2 = styled.h2`
   padding-bottom: 7%;
   font-size: ${FONT_SIZE.H2};
-  text-align: center;
-  color: ${COLORS.white};
-`;
-
-const P = styled.p`
-  padding-bottom: 7%;
-  font-size: 1.6em;
   text-align: center;
   color: ${COLORS.white};
 `;
@@ -66,21 +59,21 @@ const ArrowDown = styled.img`
 `;
 
 const ArrowLeft = styled.img`
-  width: 1.5%;
+  width: 2%;
   height: auto;
   transform: rotate(270deg);
   position: absolute;
-  left: 36%;
-  top: 38%;
+  left: 29.5%;
+  top: 44%;
 `;
 
 const ArrowRight = styled.img`
-  width: 1.5%;
+  width: 2%;
   height: auto;
   transform: rotate(90deg);
   position: absolute;
-  right: 36%;
-  top: 38%;
+  right: 29.5%;
+  top: 44%;
 `;
 
 const Hint = styled.div`
@@ -103,9 +96,10 @@ const Hint = styled.div`
 `;
 
 const TextBox = styled.div`
-  margin-top: -53%;
-  margin-bottom: 45%;
-  position: relative;
+  top: 39%;
+  width: 100%;
+  position: absolute;
+  color: ${COLORS.white};
 `;
 
 const CaptionTextSlide3 = ({x = 0, y = 15, fill = COLORS.white, fontWeight = 700, text}) => {
@@ -151,24 +145,22 @@ export default class Slide3 extends Component {
             <CaptionTextSlide3 x="4" y="14" text="Airplane"/>
             <CaptionTextSlide3 y="34" text="ticket.pdf"/>
           </CaptionBoxSlide3>
+          <HintContainer>
+            <ArrowLeft src={arrow} />
+            <Hint className='hint-attach-files'>
+              <CaptionBoxSlide3 viewBoxWidth="108" viewBoxHeight="19" left="20%" top="30%" width="60%">
+                <CaptionTextSlide3 x="1" y="15" text="Attach files" />
+              </CaptionBoxSlide3>
+            </Hint>
+            <ArrowRight src={arrow} />
+          </HintContainer>
+          <TextBox>
+              <CaptionBoxSlide3 viewBoxWidth="203" viewBoxHeight="56" left="25%" width="50%">
+                <CaptionTextSlide3 x="0" y="25" fontWeight="300" text="All notes and files are stored" />
+                <CaptionTextSlide3 x="27" y="45" text="in your Google Drive" />
+              </CaptionBoxSlide3>
+          </TextBox>
         </Figure>
-        <HintContainer>
-          <ArrowLeft src={arrow} />
-          <Hint className='hint-attach-files'>
-            <CaptionBoxSlide3 viewBoxWidth="108" viewBoxHeight="19" left="20%" top="30%" width="60%">
-              <CaptionTextSlide3 x="1" y="15" text="Attach files"/>
-            </CaptionBoxSlide3>
-          </Hint>
-          <ArrowRight src={arrow} />
-        </HintContainer>
-        <TextBox>
-          <P>
-            <CaptionBoxSlide3 viewBoxWidth="315" viewBoxHeight="56" left="35%" top="5%" width="30%">
-              <CaptionTextSlide3 x="0" y="20" fontWeight="300" text="All notes and files are stored" />
-              <CaptionTextSlide3 x="42" y="48" text="in your Google Drive" />
-            </CaptionBoxSlide3>
-          </P>
-        </TextBox>
       </Slide>
     );
   }

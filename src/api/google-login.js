@@ -1,7 +1,6 @@
 /* global gapi */
 import auth from 'auth';
 import { clientId, scopes } from 'api/google-client-config';
-import { toast } from 'react-toastify';
 
 /**
  * Check if current user has authorized this application.

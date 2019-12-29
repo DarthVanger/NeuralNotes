@@ -9,6 +9,41 @@ There is no DB, it's just files:
 - basically it's a folder tree displayed as a mind map
 - notes are just txt files inside the folders
 
+## Kanban board (github project)
+[Board](https://github.com/users/DarthVanger/projects/1)
+
+## Code style / Architecture
+We are using React, Redux and Sagas there. 
+
+- Component file - a file that contain React.Component with view (without business logic)
+- Container file - a file that connects react with redux. 
+- Saga file - this file contains business logic and action handlers. Use it also to work with asynchronous stuff.
+- Styles file - javascript file that exports Styled Components.
+
+#### React:
+Components are living in “/components” in componentName folder. For example “Note” component you will find in “/components/Note/NoteComponent.js”
+
+NoteComponent.js should export React component with exact name as filename like “NoteComponent”. 
+
+The same for containers - “NoteContainer”. 
+
+#### Structure
+All file types using their names as filename postfix. 
+Examples: 
+
+    components
+    └── Note
+        ├── NoteActions.js
+        ├── NoteComponent.js
+        ├── NoteConstants.js
+        ├── NoteContainer.js
+        ├── NoteReducer.js
+        ├── NoteSagas.js
+        └── NoteStyles.js
+
+#### Styled Components
+- Use “Styled” prefix for styled components. It will helps you yo understand in code what kind of components you are using. For example, if you override some styles for NoteComponent, please, gave it “StyledNote” name.
+
 ## Launch locally
 ```
 git clone https://github.com/DarthVanger/NeuralNotes.git

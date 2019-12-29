@@ -10,11 +10,9 @@ import {
 import auth from 'auth';
 import scriptJS from "scriptjs";
 
-function load() {
-  return loadGoogleClient();
-}
+const promise = loadGoogleClient();
 
-export default { load };
+export default { load: () => promise };
 
 /**
  * Load google api script. It can't be hosted

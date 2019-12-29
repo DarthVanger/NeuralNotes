@@ -1,298 +1,194 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import _ from 'underscore';
+import VisGraph from 'react-graph-vis';
 
-import { BrainVisNetwork } from 'helpers/brainVisNetwork';
 import { VisNetworkHelper } from 'helpers/visNetworkHelper';
 import noteStorage from 'storage/noteStorage';
-import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
 import { NoteNameEditorComponent } from 'components/NoteNameEditor/NoteNameEditorComponent';
 import { StyledNotesMindMap } from 'components/NotesMindMapView/NotesMindMapViewStyles';
+import tree from 'helpers/tree';
 
-let brainVisNetwork;
-let spinner = siteGlobalLoadingBar.create('mind map');
-
-// TODO: continue move to sagas
 export class NotesMindMapViewComponent extends Component {
-  state = { selectedNote: null };
-
-  ref = React.createRef();
-
   render() {
-    const { selectedNote } = this.state;
+    const {
+      selectedNote,
+      showNoteNameEditor,
+      isChangeParentModeActive
+    } = this.props;
+
+    const visGraph = this.treeToVisGraph();
+
+    const visOptions = {
+      interaction: {
+        keyboard: false
+      },
+      edges: {
+        arrows: { to: true },
+        smooth: true
+      },
+      groups: {
+        children: {
+          color: {
+            background: '#eef',
+            borderWidth: 3
+          }
+        },
+        parent: {
+          color: {
+            background: '#faa'
+          }
+        }
+      }
+
+    };
+
+    const visEvents = {
+      click: this.visNetworkClickHandler,
+      doubleClick: this.visNetworkDoubleClickHandler,
+      hold: this.visNetworkHoldHandler,
+    };
 
     return (
-      <StyledNotesMindMap ref={this.ref}>
-        {selectedNote && <NoteNameEditorComponent
-          note={noteStorage.findNoteById(selectedNote.id)}
-          onChange={this.onNoteSelect}
+      <StyledNotesMindMap>
+        <VisGraph graph={visGraph} events={visEvents} options={visOptions} />
+        {showNoteNameEditor && <NoteNameEditorComponent
+          note={selectedNote}
+          onChange={this.handleNoteNameUpdate}
+          onChangeParentClick={this.props.onChangeParentButtonClick}
           onDeleteClick={this.onDeleteClick}
           onUploadFileClick={this.onUploadFileClick}
+          isChangeParentModeActive={ isChangeParentModeActive } 
         />}
       </StyledNotesMindMap>
     );
   }
 
-  componentWillMount() {
-    this.setOptions();
-  }
-
-  componentDidMount() {
-    const { initialNote } = this.state;
-
-    brainVisNetwork = new BrainVisNetwork({
-      containerDomElement: this.ref.current
-    });
-
-    brainVisNetwork.renderInitialNote(initialNote);
-
-    this.changeNote(initialNote);
-
-    brainVisNetwork.visNetwork.on('click', this.visNetworkClickHandler);
-    brainVisNetwork.visNetwork.on('doubleClick', this.visNetworkDoubleClickHandler);
-    brainVisNetwork.visNetwork.on('hold', this.visNetworkHoldHandler);
-  }
-
-  /**
-   * Set notes and selectedNote.
-   */
-  setOptions() {
-    const { selectedNote } = this.props;
-    this.setState({
-      initialNote: selectedNote,
-      currentViewedNote: selectedNote,
-      currentViewedNoteId: selectedNote.id,
-    });
-  }
-
-  /**
-   * Load child notes for clicked note,
-   * and redraw the network for new notes.
-   */
-  changeNote(targetNote) {
-    console.info('[Event] Change note to ' + targetNote.name);
-    console.debug('notes-mind-map-view.changeNote()');
-
-    console.debug('notes-mind-map-view.changeNote(): targetNote.children: ', targetNote.children);
-    if (!_.isEmpty(targetNote.children)) {
-      console.debug('notes-mind-map-view.changeNote(): targetNote has children in cache, rendering them: ', targetNote.children);
-      renderChildren(targetNote.children);
-    } else {
-      console.info('[Get] child notes for "' + targetNote.name + '"...');
-      fetchChildNotes(targetNote)
-        .then(renderChildren);
-    }
-
-    this.saveNote(targetNote);
-
-    if (targetNote.parent) {
-      if (!_.isEmpty(targetNote.parent.name)) {
-        console.info('notes-mind-map-view.changeNote(): note has a parent in cache, going to render it');
-        renderParent();
-      } else {
-        console.info('[Get] parent for "' + targetNote.name + '"...');
-        fetchParentNote(targetNote.id)
-          .then(function (note) {
-            targetNote.parent = note;
-            console.info('[Loaded] parent "' + note.name + '"' + ' for note "' + targetNote.name + '"');
-            renderParent();
-
-          });
-      }
-    }
-
-    function fetchChildNotes(note) {
-      var fetchingNotesSpinner = spinner.create('loading child notes');
-      fetchingNotesSpinner.show();
-      return noteStorage.fetchChildNotes(note)
-        .finally(function () {
-          fetchingNotesSpinner.hide();
-        });
-    }
-
-    function fetchParentNote(noteId) {
-      var fetchingParentNote = spinner.create('loading parent note');
-      return noteStorage.fetchParentNote(noteId)
-        .finally(function () {
-          fetchingParentNote.hide();
-        });
-    }
-
-    function renderChildren(children) {
-      console.debug('notes-mind-map-view: adding child notes to brainVisNetwork');
-      brainVisNetwork.addChildNotes({
-        children: children,
-        parentNoteId: targetNote.id
-      });
-    }
-
-    function renderParent() {
-      brainVisNetwork.renderParentNote(targetNote);
-    }
-  }
-
   noteClickHandler = targetNoteId => {
-    const { currentViewedNoteId } = this.state;
+    const { selectedNote } = this.props;
 
     // if clicking on the current note, do nothing.
-    if (targetNoteId === currentViewedNoteId) {
-      console.info('Click was on the selected note, doing nothing')
-      return;
-    }
+    if (targetNoteId === selectedNote.id) return;
 
-    var currentViewedNoteId_temp = _.find(brainVisNetwork.visNodes.getIds(),
-      function (nodeId) {
-        return nodeId == targetNoteId;
-      }
-    );
+    const rootNote = this.props.rootNote;
 
-    console.debug('currentViewedNoteId from visNodes: ', currentViewedNoteId_temp);
-
-    var node = brainVisNetwork.visNodes.get(currentViewedNoteId_temp);
-    console.debug('node from visNodes: ', node);
-
-    this.setState({
-      currentViewedNote: {
-        id: node.id,
-        name: node.label
-      }
-    });
-
-    console.debug('currentViewedNote from visNodes: ', this.state.currentViewedNote);
-
-    console.debug('targetNoteId: ', targetNoteId);
-    console.debug('brainVisNetwork.visNodes: ', brainVisNetwork.visNodes);
-
-    console.debug('brainVisNetwork.visNodes: ', brainVisNetwork.visNodes);
-
-    this.setState({ currentViewedNoteId: targetNoteId });
-    noteStorage.logTree();
-    var targetNote = noteStorage.findNoteById(targetNoteId);
+    const targetNote = tree(rootNote).find(node => node.id === targetNoteId);
 
     if (!targetNote) {
-      throw new Error('changeNote(): couldn\'t find targetNote in noteStorage by id: ', targetNoteId);
+      throw new Error('noteClickHandler(): couldn\'t find targetNote: ', targetNoteId);
     }
-    console.debug('notes-mind-map-view.noteClickHandler(): targetNote: ', targetNote);
 
-    this.changeNote(targetNote);
+    this.props.changeSelectedNote(targetNote);
   };
 
   visNetworkClickHandler = event => {
-    this.closeNoteNameEditor();
-    if (VisNetworkHelper.clickedOnNote(event)) {
-      console.debug('change note!');
-      console.debug('event: ', event);
-      let targetNoteId = VisNetworkHelper.getTargetNoteId(event);
+    const { rootNote, selectedNote } = this.props;
+    const { isChangeParentModeActive } = this.props;
 
-      this.noteClickHandler(targetNoteId);
+    this.props.onMindMapClick();
+    if (VisNetworkHelper.clickedOnNote(event)) {
+      let targetNoteId = VisNetworkHelper.getTargetNoteId(event);
+      const targetNote = tree(rootNote).find(node => node.id === targetNoteId);
+
+      if (isChangeParentModeActive) {
+        this.props.changeParentNote({
+          noteId: selectedNote.id,
+          currentParentId: selectedNote.parent.id,
+          newParent: targetNote,
+        });
+      } else {
+        if (targetNote.id !== selectedNote.id) {
+          this.props.changeSelectedNote(targetNote);
+        }
+      }
     }
   };
 
   visNetworkDoubleClickHandler = event => {
+    const { rootNote } = this.props;
     if (VisNetworkHelper.clickedOnNote(event)) {
       let targetNoteId = VisNetworkHelper.getTargetNoteId(event);
-      console.info('=== Event === Node double click');
-      this.createEmptyChild(targetNoteId);
+      const targetNote = tree(rootNote).find(node => node.id === targetNoteId);
+      this.props.createEmptyChild({ parent: targetNote, rootNote: rootNote });
     }
   };
 
   visNetworkHoldHandler = event => {
+    const { rootNote } = this.props;
     if (VisNetworkHelper.clickedOnNote(event)) {
       let targetNoteId = VisNetworkHelper.getTargetNoteId(event);
-      console.info('=== Event === Node hold');
-      this.editNote(targetNoteId);
+      const targetNote = tree(rootNote).find(node => node.id === targetNoteId);
+      this.editNote(targetNote);
     }
   };
 
-  editNote(targetNoteId) {
-    const note = noteStorage.findNoteById(targetNoteId);
+  editNote(targetNote) {
+    const { rootNote } = this.props;
+    const note = tree(rootNote).find(node => node.id === targetNote.id);
 
-    if (note.name === noteStorage.APP_FOLDER_NAME) {
-      console.info('It is not allowed to edit App root folder name');
+    if (note.name === noteStorage.APP_FOLDER_NAME || !note.isNote) {
       return;
     }
 
-    if (!note.isNote) {
-      console.info('It is not allowed to edit user-uploaded files');
-      return;
-    }
-
-    this.setState({
-      currentViewedNote: note,
-      selectedNote: {
-        id: targetNoteId
-      }
-    });
-    brainVisNetwork.selectNote(targetNoteId);
+    this.props.editNote(note);
   }
 
-  onNoteSelect = name => {
-    const { id } = this.state.selectedNote;
-    noteStorage.updateNoteName({ id, name })
-      .then(() => brainVisNetwork.updateNode({ id, label: name }));
+  handleNoteNameUpdate = newName => {
+    const note = this.props.selectedNote;
+    this.props.updateNoteName({ note, newName });
   };
 
   onDeleteClick = () => {
-    let note = this.state.currentViewedNote;
-    console.info('Deleting ' + note.name + '...');
-    noteStorage.remove(note)
-      .then(function () {
-        console.info('Deleted ' + note.name);
-        brainVisNetwork.deleteSelectedNode();
-      });
+    let note = this.props.selectedNote;
+    this.props.deleteNote({ note });
   };
 
   onUploadFileClick = () => {
-    console.info('[Event] Upload file click');
-    window.open(noteStorage.getLinkToNote(this.state.currentViewedNote));
+    window.open(noteStorage.getLinkToNote(this.props.selectedNote));
   };
 
-  closeNoteNameEditor() {
-    this.setState({ selectedNote: null });
-  }
+  treeToVisGraph() {
+    const rootNote = this.props.rootNote;
+    const visNodes = [];
+    const visEdges = [];
 
-  createEmptyChild(parentId) {
-    var note = {
-      name: 'new',
-      content: '',
-      isNote: true
+    if (!rootNote) {
+      throw new Error('Can not render the mind map without a root node');
+    }
+
+    visNodes.push({ id: rootNote.id, label: rootNote.name });
+    addChildren(rootNote);
+
+    return {
+      nodes: visNodes,
+      edges: visEdges
     };
 
-    var parent = noteStorage.findNoteById(parentId);
-
-    return noteStorage.create(note, parent)
-      .then(newNote => {
-        note.id = newNote.id;
-
-        var children = [note];
-
-        noteStorage.addChildrenToTree({
-          parentId: parentId,
-          children: children
+    function addChildren(node) {
+      if (node.children) {
+        node.children.forEach((child) => {
+          const hasChildren = child.children && child.children.length;
+          visNodes.push({ id: child.id, label: child.name, group: (hasChildren ? 'parent' : 'children') });
+          visEdges.push({ from: node.id, to: child.id });
+          addChildren(child);
         });
-
-        brainVisNetwork.addChildNotes({
-          children: children,
-          parentNoteId: parentId
-        });
-
-        this.editNote(note.id);
-
-        return note;
-      });
-  }
-
-  saveNote = note => {
-    const { requestNoteText, changeSelectedNote } = this.props;
-    changeSelectedNote(note);
-    if (note.isNote) {
-      requestNoteText(note);
+      } else {
+        return;
+      }
     }
-  };
+  }
 }
 
 NotesMindMapViewComponent.propTypes = {
   selectedNote: PropTypes.object.isRequired,
-  requestNoteText: PropTypes.func.isRequired,
   changeSelectedNote: PropTypes.func.isRequired,
+  createEmptyChild: PropTypes.func.isRequired,
+  deleteNote: PropTypes.func.isRequired,
+  isChangeParentModeActive: PropTypes.bool.isRequired,
+  changeParentNote: PropTypes.func.isRequired,
+  showNoteNameEditor: PropTypes.bool.isRequired,
+  rootNote: PropTypes.object.isRequired,
+  onMindMapClick: PropTypes.func.isRequired,
+  editNote:  PropTypes.func.isRequired,
+  updateNoteName:  PropTypes.func.isRequired,
+  onChangeParentButtonClick: PropTypes.func.isRequired,
 };

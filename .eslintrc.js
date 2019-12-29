@@ -10,6 +10,11 @@ module.exports = {
                                          // default to "createReactClass"
       "pragma": "React",  // Pragma to use, default to "React"
       "version": "detect"
+    },
+    "import/resolver": {
+      "webpack": {
+      "config": "webpack.config.js"
+      }
     }
   },
   "extends": [
@@ -33,7 +38,8 @@ module.exports = {
     "class-property"
   ],
   "rules": {
-    "no-console": "warn",
-    "object-curly-spacing": ["error", "always"]
+    "no-console": "off",
+    "object-curly-spacing": ["error", "always"],
+    "brace-style":  ["error", "1tbs", { "allowSingleLine": true }]
   }
 };

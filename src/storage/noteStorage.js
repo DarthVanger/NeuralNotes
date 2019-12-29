@@ -24,6 +24,7 @@ export default {
   create,
   update: noteStorageApi.update,
   remove,
+  move, 
   updateNoteName,
   getLinkToNote
 };
@@ -58,6 +59,7 @@ function scanDrive() {
       setRoot(appRootFolder);
       console.info('Note tree root set to the App root folder on Google Drive');
       console.debug('noteStorage.scanDrive(), stored notesTree: ', notesTree);
+      return appRootFolder;
     });
 }
 
@@ -70,16 +72,16 @@ function create(note, parentNote) {
 
 }
 
-function updateNoteName(note) {
-  const oldNote = this.findNoteById(note.id);
-  const newNote = note;
+function updateNoteName({ note, newName }) {
   return Promise.all([
-    noteStorageApi.updateFileName(newNote),
-    noteStorageApi.updateNoteContentFileName(newNote, oldNote)
+    noteStorageApi.updateFileName({ id: note.id, name: newName }),
+    noteStorageApi.updateNoteContentFileName({ note, newName }),
   ])
     .then(function (responses) {
-      oldNote.name = newNote.name;
-      return responses;
+      console.log('resonses for note name update: ', responses);
+      const newNote = { ...note };
+      newNote.name = newName;
+      return newNote;
     });
 }
 
@@ -90,6 +92,19 @@ function remove(note) {
       deleteNode(note);
       return result;
     });
+}
+
+function move({ noteId, newParentId }) {
+  return new Promise((resolve, reject) => {
+    noteStorageApi
+    .move(noteId, newParentId)
+    .then(() => {
+      resolve();
+    })
+    .catch((error) => {
+      reject(error);
+    });
+  })
 }
 
 function getLinkToNote({ id }) {

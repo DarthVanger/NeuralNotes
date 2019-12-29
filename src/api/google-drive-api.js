@@ -19,7 +19,8 @@ var self = {
   FILE_LIST_FIELDS: FILE_LIST_FIELDS,
   loadDriveApi: loadDriveApi,
   client: client,
-  findByName: findByName,
+  findByName,
+  findNotesByName,
   updateFile: updateFile,
   updateFileName: updateFileName,
   parseParents: parseParents,
@@ -115,9 +116,9 @@ function updateFile(options) {
   return promise;
 }
 
-function updateFileName(options) {
-  let fileId = options.id;
-  let fileName = options.name;
+function updateFileName({ id, name }) {
+  let fileId = id;
+  let fileName = name;
 
   let request = gapi.client.request({
     'path': '/drive/v2/files/' + fileId,
@@ -180,5 +181,20 @@ function createDirectory(options) {
     });
   }).finally(function () {
     spinner.hide();
+  });
+}
+
+function findNotesByName(name = '') {
+  const query = `name contains '${name}' and trashed = false and mimeType = 'text/plain'`;
+  const params = { 'q': query };
+  const request = gapi.client.drive.files.list(params);
+
+  spinner.show();
+
+  return new Promise(resolve => {
+    request.execute(function (resp) {
+      resolve(resp.files);
+      spinner.hide();
+    });
   });
 }

@@ -30,22 +30,27 @@ const H3 = styled.h3`
   color: ${COLORS.white};
 `;
 
-const Button = styled.button`
+// 2% - indent for image positioning
+// 92% - image height without vertical indention
+// 4% - vertical indention
+// 0.75% - horizontal indention
+const GoogleLoginButton = styled.button`
   color: ${COLORS.white};
   background-color: ${COLORS.blue};
   margin: auto;
   position: relative;
   border: none;
-  border-radius: 5px;
-  padding: 2vmin 4vmin 2vmin calc(9vmin + 8px);
+  border-radius: 0.4vmin;
+  padding: 2vmin 4vmin 2vmin calc(9vmin + 2%); 
 
   img {
-    height: calc(100% - 8px);
+    height: 92%;
     background-color: ${COLORS.white};
     position: absolute;
     padding: 3%;
-    left: 4px;
-    top: 4px;
+    left: 0.75%;
+    top: 4%;
+    border-radius: 0.4vmin;
   }
   
   span {
@@ -84,10 +89,10 @@ export class LoginPageComponent extends Component {
           <Slide5 />
           <Footer>
             <H3><span>Neural</span>Notes is open source and free</H3>
-            <Button type="button" onClick={authHandler}>
+            <GoogleLoginButton type="button" onClick={authHandler}>
               <img src={iconGoogle} />
               <span>Sing up with Google</span>
-            </Button>
+            </GoogleLoginButton>
           </Footer>
         </Article>
       </Main>

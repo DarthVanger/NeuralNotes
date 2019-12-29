@@ -10,6 +10,11 @@ module.exports = {
                                          // default to "createReactClass"
       "pragma": "React",  // Pragma to use, default to "React"
       "version": "detect"
+    },
+    "import/resolver": {
+      "webpack": {
+      "config": "webpack.config.js"
+      }
     }
   },
   "extends": [

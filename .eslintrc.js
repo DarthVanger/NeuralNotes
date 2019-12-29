@@ -34,6 +34,7 @@ module.exports = {
   ],
   "rules": {
     "no-console": "off",
+    "react/prop-types": 0,
     "object-curly-spacing": ["error", "always"],
     "brace-style":  ["error", "1tbs", { "allowSingleLine": true }]
   }

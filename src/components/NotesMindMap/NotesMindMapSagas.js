@@ -16,7 +16,7 @@ import {
   deleteNoteRequestSuccessAction,
   changeParentRequestSuccessAction,
   changeParentRequestFailAction,
-} from 'components/NotesMindMapView/NotesMindMapViewActions';
+} from 'components/NotesMindMap/NotesMindMapActions';
 import noteStorage from 'storage/noteStorage';
 import { ROOT_NOTE_FOUND_ACTION } from 'components/App/AppActions';
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';

@@ -11,7 +11,7 @@ import {
   CHANGE_PARENT_BUTTON_CLICKED_ACTION,
   CHANGE_PARENT_REQUEST_SUCCESS_ACTION,
   CHANGE_PARENT_REQUEST_FAIL_ACTION,
-} from 'components/NotesMindMapView/NotesMindMapViewActions';
+} from 'components/NotesMindMap/NotesMindMapActions';
 import {
   ROOT_NOTE_FOUND_ACTION,
 } from 'components/App/AppActions.js';

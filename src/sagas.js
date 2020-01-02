@@ -9,7 +9,7 @@ import { appInit } from 'components/App/AppSagas';
 import { loginInit } from 'components/LoginPage/LoginPageSagas';
 import { notesInit } from 'components/NotesPage/NotesPageSagas';
 import { notesContentEditorInit } from 'components/NotesContentEditor/NotesContentEditorSagas';
-import { noteMindMapInit } from 'components/NotesMindMapView/NotesMindMapViewSagas';
+import { noteMindMapInit } from 'components/NotesMindMap/NotesMindMapSagas';
 
 const sagaMiddleware = createSagaMiddleware();
 

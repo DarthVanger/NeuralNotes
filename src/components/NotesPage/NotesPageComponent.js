@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { ControlsHelpComponent } from 'components/ControlsHelp/ControlsHelpComponent';
 import { NotesContentEditorContainer } from 'components/NotesContentEditor/NotesContentEditorContainer';
-import { NotesMindMapViewContainer } from 'components/NotesMindMapView/NotesMindMapViewContainer';
+import { NotesMindMapContainer } from 'components/NotesMindMap/NotesMindMapContainer';
 import { SearchPanelContainer } from 'components/SearchPanel/SearchPanelContainer';
 
 export class NotesPageComponent extends Component {
@@ -12,7 +12,7 @@ export class NotesPageComponent extends Component {
 
     return (
       <>
-        <NotesMindMapViewContainer/>
+        <NotesMindMapContainer/>
         <NotesContentEditorContainer/>
         {!isHelpViewed && <ControlsHelpComponent onClose={closeHelp}/>}
         <SearchPanelContainer />

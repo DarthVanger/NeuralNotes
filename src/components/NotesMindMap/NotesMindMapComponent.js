@@ -5,10 +5,10 @@ import VisGraph from 'react-graph-vis';
 import { VisNetworkHelper } from 'helpers/visNetworkHelper';
 import noteStorage from 'storage/noteStorage';
 import { NoteNameEditorComponent } from 'components/NoteNameEditor/NoteNameEditorComponent';
-import { StyledNotesMindMap } from 'components/NotesMindMapView/NotesMindMapViewStyles';
+import { StyledNotesMindMap } from 'components/NotesMindMap/NotesMindMapStyles';
 import tree from 'helpers/tree';
 
-export class NotesMindMapViewComponent extends Component {
+export class NotesMindMapComponent extends Component {
   render() {
     const {
       selectedNote,
@@ -178,7 +178,7 @@ export class NotesMindMapViewComponent extends Component {
   }
 }
 
-NotesMindMapViewComponent.propTypes = {
+NotesMindMapComponent.propTypes = {
   selectedNote: PropTypes.object.isRequired,
   changeSelectedNote: PropTypes.func.isRequired,
   createEmptyChild: PropTypes.func.isRequired,

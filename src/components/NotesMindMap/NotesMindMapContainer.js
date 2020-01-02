@@ -10,8 +10,8 @@ import {
   UPDATE_NOTE_NAME_ACTION,
   MIND_MAP_CLICKED_ACTION,
   CHANGE_PARENT_BUTTON_CLICKED_ACTION,
-} from 'components/NotesMindMapView/NotesMindMapViewActions';
-import { NotesMindMapViewComponent } from 'components/NotesMindMapView/NotesMindMapViewComponent';
+} from 'components/NotesMindMap/NotesMindMapActions';
+import { NotesMindMapComponent } from 'components/NotesMindMap/NotesMindMapComponent';
 
 const mapStateToProps = ({ notesMindMap: { rootNote, selectedNote, noteText, showNoteNameEditor, isChangeParentModeActive } }) => {
   return {
@@ -34,7 +34,7 @@ const mapDispatchToProps = () => ({
   onChangeParentButtonClick: data => action(CHANGE_PARENT_BUTTON_CLICKED_ACTION, data),
 });
 
-export const NotesMindMapViewContainer = connect(
+export const NotesMindMapContainer = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(NotesMindMapViewComponent);
+)(NotesMindMapComponent);

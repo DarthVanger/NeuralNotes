@@ -12,11 +12,6 @@ module.exports = {
       "version": "detect"
     }
   },
-  "import/resolver": {
-    "webpack": {
-    "config": "webpack.config.js"
-    }
-  },
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended"

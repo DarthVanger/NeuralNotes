@@ -323,8 +323,6 @@ function findNoteContentFile(note) {
     }
 
     const noteContentFile = foundFiles[0];
-    console.info('[Loaded] Note content file: ' + note.name);
-
     return noteContentFile;
   });
 }
@@ -439,7 +437,6 @@ function remove(note) {
       if (response.error) {
         console.error('Failed to delete a note "' + note.name + '"');
       }
-      console.log('response : ', response);
       resolve(response);
     });
 

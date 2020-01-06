@@ -1,4 +1,3 @@
-import tree from 'helpers/tree';
 import {
   CHANGE_NOTE_TEXT_ACTION,
   CHANGE_SELECTED_NOTE_ACTION,
@@ -15,31 +14,31 @@ import {
 import {
   ROOT_NOTE_FOUND_ACTION,
 } from 'components/App/AppActions.js';
+import { updateGroupOfOldParent, addGroupTagToNote, removeNoteFromGraph } from '../../helpers/graph'
 
 const defaultState = {
   selectedNote: {},
   showNoteNameEditor: false,
   noteText: '',
   isChangeParentModeActive: false,
-  rootNote: undefined,
+  notes: [],
+  edges: []
 };
 
 export const notesMindMapReducer = (state = defaultState, { type, data }) => {
   const handleSelectedNoteChildrenFetchedAction = () => {
-      const newState = cloneTreeInState();
+      let notes = [ ...state.notes ]
+      let edges = [ ...state.edges ]
+
       const childNotes = data;
-      let selectedNoteInTree = tree(newState.rootNote).find(note => note.id === newState.selectedNote.id);
       if (childNotes.length) {
-        newState.selectedNote.children = childNotes;
-        selectedNoteInTree.children = childNotes;
-      } else {
-        newState.selectedNote.hasNoChildren = true;
-        selectedNoteInTree.hasNoChildren = true;
+        childNotes.forEach(child => {
+          notes.push({ id: child.id, label: child.name, name: child.name, isNote: child.isNote, group: 'children' });
+          edges.push({ from: child.parent.id, to: child.id });
+        });
+        notes = addGroupTagToNote(notes, state.selectedNote.id)
       }
-
-      newState.selectedNote = selectedNoteInTree;
-
-      return newState;
+      return { ...state, notes, edges };
   };
 
   const handleEditNoteNameAction = () => {
@@ -49,59 +48,65 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
 
   const handleNoteNameUpdateRequestSuccessAction = () => {
     const updatedNote = data;
-    const newState = cloneTreeInState();
-    const noteToUpdate = tree(newState.rootNote).find(note => note.id === updatedNote.id);
-    noteToUpdate.name = updatedNote.name;
-    return newState;
+    let notes = [ ...state.notes ]
+    notes = notes.filter(note => note.id !== updatedNote.id)
+    notes.push({ id: updatedNote.id, label: updatedNote.name, name: updatedNote.name, isNote: updatedNote.isNote });
+    return { ...state, notes };
   };
 
   const handleCreateNoteSuccessAction = () => {
     const newNote = data;
-    const newState = cloneTreeInState();
-    const parentNote = tree(newState.rootNote).find(note => newNote.parent.id === note.id);
-    parentNote.children.push(newNote);
-    return newState;
+    let notes = [ ...state.notes ]
+    let edges = [ ...state.edges ]
+    notes.push({ id: newNote.id, name: newNote.name, label: newNote.name, isNote: newNote.isNote, group: 'children' });
+    edges.push({ from: newNote.parent.id, to: newNote.id });
+    notes = addGroupTagToNote(notes, state.selectedNote.id)
+      return { ...state, notes, edges };
   };
 
   const handleDeleteNoteRequestSuccessAction = () => {
     const noteToDelete = data;
-    const newState = cloneTreeInState();
-    newState.selectedNote = noteToDelete.parent
-    noteToDelete.parent.children = noteToDelete.parent.children.filter(
-      child => child.id !== noteToDelete.id
-    );
-    return newState;
+    let notes = [ ...state.notes ]
+    let edges = [ ...state.edges ]
+    let graph = removeNoteFromGraph(notes, edges, noteToDelete)
+    notes = graph.notes
+    edges = graph.edges
+    return { ...state, notes, edges };
   };
 
   const handleChangeParentNoteRequestSuccess = () => {
-    const { rootNote } = state;
     const noteId = data.noteId;
     const newParentId = data.newParentId;
-    const targetNote = tree(rootNote).find(node => node.id === noteId);
-    const newParent = tree(rootNote).find(node => node.id === newParentId);
-    const newState = cloneTreeInState();
+    let edges = [ ...state.edges ]
+    let notes = [ ...state.notes ]
+    const oldParent = edges.find(edge => edge.to === noteId);
+    edges = edges.filter(edge => edge.to !== noteId)
+    edges.push({ from: newParentId, to: noteId });
 
-    newParent.children.push(targetNote);
-
-    targetNote.parent.children = targetNote.parent.children.filter(
-      child => child.id !== targetNote.id
-    );
+    notes = updateGroupOfOldParent(notes, edges, newParentId, oldParent.from)
     return {
-      ...newState,
+      ...state,
       isChangeParentModeActive: false,
       showNoteNameEditor: false,
+      edges, notes
     };
   }
 
   const handleChangeSelectedNoteAction = () => {
-    const newState = cloneTreeInState();
-    newState.selectedNote = data;
-    return newState;
+    const newState = { ...state };
+    newState.selectedNote = data.note;
+    return { ...state, selectedNote: data.note };
+  }
+
+  const addRootToGraph = () => {
+    let notes = [ ...state.notes ]
+    notes.push({ id: data.id, label: data.name });
+    return { ...state, notes };
   }
 
   switch (type) {
     case ROOT_NOTE_FOUND_ACTION:
-      return { ...state, rootNote: data };
+      return addRootToGraph();
     case CHANGE_SELECTED_NOTE_ACTION:
       return handleChangeSelectedNoteAction();
     case SELECTED_NOTE_CHILDREN_FETCHED_ACTION:
@@ -130,16 +135,5 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
       return { ...state, isChangeParentModeActive: false };
     default:
       return state;
-  }
-
-  /**
-   * Clone tree in the state by cloning rootNote and selectedNote.
-   * If rootNote is not cloned, the mind map won't be re-rendered.
-   */
-  function cloneTreeInState() {
-    const clonedState = { ...state };
-    clonedState.rootNote = { ...state.rootNote };
-    clonedState.selectedNote = { ...state.selectedNote };
-    return clonedState;
   }
 };

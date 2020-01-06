@@ -27,7 +27,7 @@ const LOADING_NOTE_MESSAGE = 'loading note contents...';
 let spinner = siteGlobalLoadingBar.create('mind map');
 
 function* selectRootNote({ data }) {
-  yield put(changeSelectedNoteAction(data));
+  yield put(changeSelectedNoteAction({ note: data, edges: [] }));
 }
 
 function* requestNoteText(note) {
@@ -40,9 +40,9 @@ function* requestNoteText(note) {
  * Load child notes for clicked note,
  * and redraw the network for new notes.
  */
-function* changeSelectedNote({ data }) {
-  const targetNote = data;
-  if (didNotAttemptToFetchChildren(targetNote)) {
+function* changeSelectedNote({ data: { note, edges } }) {
+  const targetNote = note; 
+  if (didNotAttemptToFetchChildren(targetNote, edges)) {
     const childNotes = yield fetchChildNotes(targetNote);
     yield put(selectedNoteChildrenFetchedAction(childNotes));
   } else {
@@ -73,7 +73,7 @@ function* createEmptyChild({ data: { parent } }) {
     isNote: true
   };
 
-  const newNote = yield noteStorage.create(note, parent)
+  const newNote = yield noteStorage.create(note, parent);
   newNote.parent = parent;
   yield put(createNoteSuccessAction(newNote));
   yield put(editNoteNameAction(newNote));
@@ -89,9 +89,9 @@ function* updateNoteName({ data: { note, newName } }) {
   yield put(noteNameUpdateRequestSuccessAction(newNote));
 }
 
-function* changeParentNote({ data: { noteId, newParent } }) {
+function* changeParentNote({ data: { noteId, newParent, edges } }) {
   try {
-    if (didNotAttemptToFetchChildren(newParent)) {
+    if (didNotAttemptToFetchChildren(newParent, edges)) {
       yield* fetchChildNotes(newParent);
     }
     yield call(noteStorage.move, { noteId, newParentId: newParent.id });
@@ -109,8 +109,8 @@ function* searchNoteSaga({ data }) {
   console.log('Search results: ', results);
 }
 
-function didNotAttemptToFetchChildren(note) {
-  return (!note.children || !note.children.length) && !note.hasNoChildren;
+function didNotAttemptToFetchChildren(note, edges) {
+  return !(edges ? edges.filter(edge => edge.from === note.id ).length > 0 : false);
 }
 
 export function* noteMindMapInit() {

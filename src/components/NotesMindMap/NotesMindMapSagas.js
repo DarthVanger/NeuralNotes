@@ -42,6 +42,7 @@ function* requestNoteText(note) {
  */
 function* changeSelectedNote({ data }) {
   const targetNote = data;
+  console.log(data)
   if (didNotAttemptToFetchChildren(targetNote)) {
     const childNotes = yield fetchChildNotes(targetNote);
     yield put(selectedNoteChildrenFetchedAction(childNotes));

@@ -22,22 +22,26 @@ const defaultState = {
   noteText: '',
   isChangeParentModeActive: false,
   rootNote: undefined,
+  nodes: [],
+  edges: []
 };
 
 export const notesMindMapReducer = (state = defaultState, { type, data }) => {
   const handleSelectedNoteChildrenFetchedAction = () => {
       const newState = cloneTreeInState();
       const childNotes = data;
-      let selectedNoteInTree = tree(newState.rootNote).find(note => note.id === newState.selectedNote.id);
+      let nodes = state.nodes;
+      let edges = state.edges;
+
       if (childNotes.length) {
+        childNotes.forEach(child => {
+          nodes.push({ id: child.id, label: child.name, /*group: (hasChildren ? 'parent' : 'children')*/ });
+          edges.push({ from: child.parent.id, to: child.id });
+        });
         newState.selectedNote.children = childNotes;
-        selectedNoteInTree.children = childNotes;
       } else {
         newState.selectedNote.hasNoChildren = true;
-        selectedNoteInTree.hasNoChildren = true;
       }
-
-      newState.selectedNote = selectedNoteInTree;
 
       return newState;
   };
@@ -52,6 +56,10 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
     const newState = cloneTreeInState();
     const noteToUpdate = tree(newState.rootNote).find(note => note.id === updatedNote.id);
     noteToUpdate.name = updatedNote.name;
+    newState.nodes = newState.nodes.map(node => {
+      if (node.id === updatedNote.id) node.name  = updatedNote.name;
+      return node
+    })
     return newState;
   };
 
@@ -60,6 +68,8 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
     const newState = cloneTreeInState();
     const parentNote = tree(newState.rootNote).find(note => newNote.parent.id === note.id);
     parentNote.children.push(newNote);
+    newState.nodes.push({ id: newNote.id, label: newNote.name, /*group: (hasChildren ? 'parent' : 'children')*/ });
+    newState.edges.push({ from: newNote.parent.id, to: newNote.id });
     return newState;
   };
 
@@ -70,6 +80,8 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
     noteToDelete.parent.children = noteToDelete.parent.children.filter(
       child => child.id !== noteToDelete.id
     );
+    newState.nodes = newState.filter(node => node.id !== noteToDelete.id) //remove node from nodes array
+    newState.edges = newState.filter(edge => edge.to !== noteToDelete.id) //remove edge from the edges array
     return newState;
   };
 
@@ -80,6 +92,11 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
     const targetNote = tree(rootNote).find(node => node.id === noteId);
     const newParent = tree(rootNote).find(node => node.id === newParentId);
     const newState = cloneTreeInState();
+
+    newState.edges = newState.edges.map(edge => {
+      if (edge.to === noteId) edge.from = newParentId
+      return edge
+    })
 
     newParent.children.push(targetNote);
 
@@ -99,9 +116,16 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
     return newState;
   }
 
+  const addRootToGraph = () => {
+    const newState = { ...state };
+    newState.rootNote = data;
+    newState.nodes.push({ id: data.id, label: data.name, /*group: (hasChildren ? 'parent' : 'children')*/ });
+    return newState;
+  }
+
   switch (type) {
     case ROOT_NOTE_FOUND_ACTION:
-      return { ...state, rootNote: data };
+      return addRootToGraph();
     case CHANGE_SELECTED_NOTE_ACTION:
       return handleChangeSelectedNoteAction();
     case SELECTED_NOTE_CHILDREN_FETCHED_ACTION:

@@ -16,7 +16,10 @@ export class NotesMindMapComponent extends Component {
       isChangeParentModeActive
     } = this.props;
 
-    const visGraph = this.treeToVisGraph();
+    let visGraph = {
+      nodes: [ ...this.props.nodes ],
+      edges: [ ...this.props.edges ]
+    };
 
     const visOptions = {
       interaction: {
@@ -81,13 +84,13 @@ export class NotesMindMapComponent extends Component {
   };
 
   visNetworkClickHandler = event => {
-    const { rootNote, selectedNote } = this.props;
+    const { selectedNote } = this.props;
     const { isChangeParentModeActive } = this.props;
 
     this.props.onMindMapClick();
     if (VisNetworkHelper.clickedOnNote(event)) {
       let targetNoteId = VisNetworkHelper.getTargetNoteId(event);
-      const targetNote = tree(rootNote).find(node => node.id === targetNoteId);
+      const targetNote = this.props.nodes.filter(node => node.id === targetNoteId)[0]
 
       if (isChangeParentModeActive) {
         this.props.changeParentNote({
@@ -104,6 +107,7 @@ export class NotesMindMapComponent extends Component {
   };
 
   visNetworkDoubleClickHandler = event => {
+    console.log('double CLICK')
     const { rootNote } = this.props;
     if (VisNetworkHelper.clickedOnNote(event)) {
       let targetNoteId = VisNetworkHelper.getTargetNoteId(event);
@@ -145,37 +149,6 @@ export class NotesMindMapComponent extends Component {
   onUploadFileClick = () => {
     window.open(noteStorage.getLinkToNote(this.props.selectedNote));
   };
-
-  treeToVisGraph() {
-    const rootNote = this.props.rootNote;
-    const visNodes = [];
-    const visEdges = [];
-
-    if (!rootNote) {
-      throw new Error('Can not render the mind map without a root node');
-    }
-
-    visNodes.push({ id: rootNote.id, label: rootNote.name });
-    addChildren(rootNote);
-
-    return {
-      nodes: visNodes,
-      edges: visEdges
-    };
-
-    function addChildren(node) {
-      if (node.children) {
-        node.children.forEach((child) => {
-          const hasChildren = child.children && child.children.length;
-          visNodes.push({ id: child.id, label: child.name, group: (hasChildren ? 'parent' : 'children') });
-          visEdges.push({ from: node.id, to: child.id });
-          addChildren(child);
-        });
-      } else {
-        return;
-      }
-    }
-  }
 }
 
 NotesMindMapComponent.propTypes = {
@@ -187,6 +160,8 @@ NotesMindMapComponent.propTypes = {
   changeParentNote: PropTypes.func.isRequired,
   showNoteNameEditor: PropTypes.bool.isRequired,
   rootNote: PropTypes.object.isRequired,
+  nodes: PropTypes.array.isRequired,
+  edges: PropTypes.array.isRequired,
   onMindMapClick: PropTypes.func.isRequired,
   editNote:  PropTypes.func.isRequired,
   updateNoteName:  PropTypes.func.isRequired,

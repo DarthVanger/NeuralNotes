@@ -74,7 +74,7 @@ function* createEmptyChild({ data: { parent } }) {
     isNote: true
   };
 
-  const newNote = yield noteStorage.create(note, parent)
+  const newNote = yield noteStorage.create(note, parent);
   newNote.parent = parent;
   yield put(createNoteSuccessAction(newNote));
   yield put(editNoteNameAction(newNote));

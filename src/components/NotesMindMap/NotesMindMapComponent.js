@@ -16,10 +16,7 @@ export class NotesMindMapComponent extends Component {
       isChangeParentModeActive
     } = this.props;
 
-    let visGraph = {
-      nodes: [ ...this.props.nodes ],
-      edges: [ ...this.props.edges ]
-    };
+    let visGraph = this.copyToVisGraph()
 
     const visOptions = {
       interaction: {
@@ -51,6 +48,7 @@ export class NotesMindMapComponent extends Component {
       hold: this.visNetworkHoldHandler,
     };
 
+    console.log('re-render')
     return (
       <StyledNotesMindMap>
         <VisGraph graph={visGraph} events={visEvents} options={visOptions} />
@@ -64,6 +62,18 @@ export class NotesMindMapComponent extends Component {
         />}
       </StyledNotesMindMap>
     );
+  }
+
+  copyToVisGraph() {
+    const nodes = []
+    const edges = []
+
+    for (let i =0;i<this.props.nodes.length;i++) nodes.push(this.props.nodes[i])
+    for (let i =0;i<this.props.edges.length;i++) edges.push(this.props.edges[i])
+
+    return {
+      nodes, edges
+    }
   }
 
   noteClickHandler = targetNoteId => {
@@ -107,7 +117,6 @@ export class NotesMindMapComponent extends Component {
   };
 
   visNetworkDoubleClickHandler = event => {
-    console.log('double CLICK')
     const { rootNote } = this.props;
     if (VisNetworkHelper.clickedOnNote(event)) {
       let targetNoteId = VisNetworkHelper.getTargetNoteId(event);

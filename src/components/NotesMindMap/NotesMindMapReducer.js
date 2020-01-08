@@ -30,17 +30,12 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
   const handleSelectedNoteChildrenFetchedAction = () => {
       const newState = cloneTreeInState();
       const childNotes = data;
-      let nodes = state.nodes;
-      let edges = state.edges;
 
       if (childNotes.length) {
         childNotes.forEach(child => {
-          nodes.push({ id: child.id, label: child.name, /*group: (hasChildren ? 'parent' : 'children')*/ });
-          edges.push({ from: child.parent.id, to: child.id });
+          newState.nodes.push({ id: child.id, label: child.name, /*group: (hasChildren ? 'parent' : 'children')*/ });
+          newState.edges.push({ from: child.parent.id, to: child.id });
         });
-        newState.selectedNote.children = childNotes;
-      } else {
-        newState.selectedNote.hasNoChildren = true;
       }
 
       return newState;
@@ -54,20 +49,14 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
   const handleNoteNameUpdateRequestSuccessAction = () => {
     const updatedNote = data;
     const newState = cloneTreeInState();
-    const noteToUpdate = tree(newState.rootNote).find(note => note.id === updatedNote.id);
-    noteToUpdate.name = updatedNote.name;
-    newState.nodes = newState.nodes.map(node => {
-      if (node.id === updatedNote.id) node.name  = updatedNote.name;
-      return node
-    })
+    newState.nodes = newState.nodes.filter(node => node.id !== updatedNote.id)
+    newState.nodes.push({ id: updatedNote.id, label: updatedNote.name, /*group: (hasChildren ? 'parent' : 'children')*/ });
     return newState;
   };
 
   const handleCreateNoteSuccessAction = () => {
     const newNote = data;
     const newState = cloneTreeInState();
-    const parentNote = tree(newState.rootNote).find(note => newNote.parent.id === note.id);
-    parentNote.children.push(newNote);
     newState.nodes.push({ id: newNote.id, label: newNote.name, /*group: (hasChildren ? 'parent' : 'children')*/ });
     newState.edges.push({ from: newNote.parent.id, to: newNote.id });
     return newState;
@@ -76,12 +65,9 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
   const handleDeleteNoteRequestSuccessAction = () => {
     const noteToDelete = data;
     const newState = cloneTreeInState();
-    newState.selectedNote = noteToDelete.parent
-    noteToDelete.parent.children = noteToDelete.parent.children.filter(
-      child => child.id !== noteToDelete.id
-    );
-    newState.nodes = newState.filter(node => node.id !== noteToDelete.id) //remove node from nodes array
-    newState.edges = newState.filter(edge => edge.to !== noteToDelete.id) //remove edge from the edges array
+    newState.nodes = newState.nodes.filter(node => node.id !== noteToDelete.id) //remove node from nodes array
+    newState.edges = newState.edges.filter(edge => edge.to !== noteToDelete.id) //remove edge to the edges array
+    newState.edges = newState.edges.filter(edge => edge.from !== noteToDelete.id) //remove edge from the edges array
     return newState;
   };
 
@@ -89,20 +75,11 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
     const { rootNote } = state;
     const noteId = data.noteId;
     const newParentId = data.newParentId;
-    const targetNote = tree(rootNote).find(node => node.id === noteId);
-    const newParent = tree(rootNote).find(node => node.id === newParentId);
     const newState = cloneTreeInState();
 
-    newState.edges = newState.edges.map(edge => {
-      if (edge.to === noteId) edge.from = newParentId
-      return edge
-    })
+    newState.edges = newState.edges.filter(edge => edge.to !== noteId)
+    newState.edges.push({ from: newParentId, to: noteId });
 
-    newParent.children.push(targetNote);
-
-    targetNote.parent.children = targetNote.parent.children.filter(
-      child => child.id !== targetNote.id
-    );
     return {
       ...newState,
       isChangeParentModeActive: false,
@@ -164,6 +141,9 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
     const clonedState = { ...state };
     clonedState.rootNote = { ...state.rootNote };
     clonedState.selectedNote = { ...state.selectedNote };
+    clonedState.nodes = [ ...state.nodes ];
+    clonedState.edges = [ ...state.edges ];
+
     return clonedState;
   }
 };

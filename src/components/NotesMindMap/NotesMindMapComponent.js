@@ -6,7 +6,6 @@ import { VisNetworkHelper } from 'helpers/visNetworkHelper';
 import noteStorage from 'storage/noteStorage';
 import { NoteNameEditorComponent } from 'components/NoteNameEditor/NoteNameEditorComponent';
 import { StyledNotesMindMap } from 'components/NotesMindMap/NotesMindMapStyles';
-import tree from 'helpers/tree';
 
 export class NotesMindMapComponent extends Component {
   render() {
@@ -81,9 +80,9 @@ export class NotesMindMapComponent extends Component {
     // if clicking on the current note, do nothing.
     if (targetNoteId === selectedNote.id) return;
 
-    const rootNote = this.props.rootNote;
+    const notes = this.props.notes;
 
-    const targetNote = tree(rootNote).find(note => note.id === targetNoteId);
+    const targetNote = notes.find(note => note.id === targetNoteId);
 
     if (!targetNote) {
       throw new Error('noteClickHandler(): couldn\'t find targetNote: ', targetNoteId);
@@ -116,26 +115,26 @@ export class NotesMindMapComponent extends Component {
   };
 
   visNetworkDoubleClickHandler = event => {
-    const { rootNote } = this.props;
+    const { notes } = this.props;
     if (VisNetworkHelper.clickedOnNote(event)) {
       let targetNoteId = VisNetworkHelper.getTargetNoteId(event);
-      const targetNote = tree(rootNote).find(note => note.id === targetNoteId);
-      this.props.createEmptyChild({ parent: targetNote, rootNote: rootNote });
+      const targetNote = notes.find(node => node.id === targetNoteId );
+      this.props.createEmptyChild({ parent: targetNote });
     }
   };
 
   visNetworkHoldHandler = event => {
-    const { rootNote } = this.props;
+    const { notes } = this.props;
     if (VisNetworkHelper.clickedOnNote(event)) {
       let targetNoteId = VisNetworkHelper.getTargetNoteId(event);
-      const targetNote = tree(rootNote).find(note => note.id === targetNoteId);
+      const targetNote = notes.find(node => node.id === targetNoteId );
       this.editNote(targetNote);
     }
   };
 
   editNote(targetNote) {
-    const { rootNote } = this.props;
-    const note = tree(rootNote).find(note => note.id === targetNote.id);
+    const { notes } = this.props;
+    const note = notes.find(node => node.id === targetNote.id );
 
     if (note.name === noteStorage.APP_FOLDER_NAME || !note.isNote) {
       return;

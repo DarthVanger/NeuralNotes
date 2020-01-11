@@ -323,8 +323,6 @@ function findNoteContentFile(note) {
     }
 
     const noteContentFile = foundFiles[0];
-    console.info('[Loaded] Note content file: ' + note.name);
-
     return noteContentFile;
   });
 }

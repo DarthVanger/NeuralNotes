@@ -58,7 +58,12 @@ function updateNoteName({ note, newName }) {
 }
 
 function remove(note) {
-  return noteStorageApi.remove(note);
+  return noteStorageApi
+    .remove(note)
+    .then(result => {
+      //deleteNode(note);
+      return result;
+    });
 }
 
 function move({ noteId, newParentId }) {

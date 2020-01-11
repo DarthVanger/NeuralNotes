@@ -41,9 +41,9 @@ function* requestNoteText(note) {
  * and redraw the network for new notes.
  */
 function* changeSelectedNote({ data }) {
-  const targetNote = data;
-  console.log(data)
-  if (didNotAttemptToFetchChildren(targetNote)) {
+  const targetNote = data.note ? data.note: data; 
+  const edges = data.edges
+  if (didNotAttemptToFetchChildren(targetNote, edges)) {
     const childNotes = yield fetchChildNotes(targetNote);
     yield put(selectedNoteChildrenFetchedAction(childNotes));
   } else {
@@ -110,8 +110,8 @@ function* searchNoteSaga({ data }) {
   console.log('Search results: ', results);
 }
 
-function didNotAttemptToFetchChildren(note) {
-  return (!note.children || !note.children.length) && !note.hasNoChildren;
+function didNotAttemptToFetchChildren(note, edges) {
+  return !(edges ? edges.filter(edge => edge.from === note.id ).length > 0 : false);
 }
 
 export function* noteMindMapInit() {

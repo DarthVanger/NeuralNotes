@@ -16,7 +16,7 @@ export class NotesMindMapComponent extends Component {
       isChangeParentModeActive
     } = this.props;
 
-    let visGraph = this.copyToVisGraph()
+    let visGraph = this.convertToVisGraph()
 
     const visOptions = {
       interaction: {
@@ -48,7 +48,6 @@ export class NotesMindMapComponent extends Component {
       hold: this.visNetworkHoldHandler,
     };
 
-    console.log('re-render')
     return (
       <StyledNotesMindMap>
         <VisGraph graph={visGraph} events={visEvents} options={visOptions} />
@@ -64,15 +63,15 @@ export class NotesMindMapComponent extends Component {
     );
   }
 
-  copyToVisGraph() {
-    const nodes = []
+  convertToVisGraph() {
+    const notes = []
     const edges = []
 
-    for (let i =0;i<this.props.nodes.length;i++) nodes.push(this.props.nodes[i])
+    for (let i =0;i<this.props.notes.length;i++) notes.push(this.props.notes[i])
     for (let i =0;i<this.props.edges.length;i++) edges.push(this.props.edges[i])
 
     return {
-      nodes, edges
+      nodes: [...this.props.notes], edges: [...this.props.edges]
     }
   }
 
@@ -84,13 +83,13 @@ export class NotesMindMapComponent extends Component {
 
     const rootNote = this.props.rootNote;
 
-    const targetNote = tree(rootNote).find(node => node.id === targetNoteId);
+    const targetNote = tree(rootNote).find(note => note.id === targetNoteId);
 
     if (!targetNote) {
       throw new Error('noteClickHandler(): couldn\'t find targetNote: ', targetNoteId);
     }
 
-    this.props.changeSelectedNote(targetNote);
+    this.props.changeSelectedNote({ note: targetNote, edges: this.props.edges });
   };
 
   visNetworkClickHandler = event => {
@@ -100,7 +99,7 @@ export class NotesMindMapComponent extends Component {
     this.props.onMindMapClick();
     if (VisNetworkHelper.clickedOnNote(event)) {
       let targetNoteId = VisNetworkHelper.getTargetNoteId(event);
-      const targetNote = this.props.nodes.filter(node => node.id === targetNoteId)[0]
+      const targetNote = this.props.notes.filter(note => note.id === targetNoteId)[0]
 
       if (isChangeParentModeActive) {
         this.props.changeParentNote({
@@ -110,7 +109,7 @@ export class NotesMindMapComponent extends Component {
         });
       } else {
         if (targetNote.id !== selectedNote.id) {
-          this.props.changeSelectedNote(targetNote);
+          this.props.changeSelectedNote({ note: targetNote, edges: this.props.edges });
         }
       }
     }
@@ -120,7 +119,7 @@ export class NotesMindMapComponent extends Component {
     const { rootNote } = this.props;
     if (VisNetworkHelper.clickedOnNote(event)) {
       let targetNoteId = VisNetworkHelper.getTargetNoteId(event);
-      const targetNote = tree(rootNote).find(node => node.id === targetNoteId);
+      const targetNote = tree(rootNote).find(note => note.id === targetNoteId);
       this.props.createEmptyChild({ parent: targetNote, rootNote: rootNote });
     }
   };
@@ -129,14 +128,14 @@ export class NotesMindMapComponent extends Component {
     const { rootNote } = this.props;
     if (VisNetworkHelper.clickedOnNote(event)) {
       let targetNoteId = VisNetworkHelper.getTargetNoteId(event);
-      const targetNote = tree(rootNote).find(node => node.id === targetNoteId);
+      const targetNote = tree(rootNote).find(note => note.id === targetNoteId);
       this.editNote(targetNote);
     }
   };
 
   editNote(targetNote) {
     const { rootNote } = this.props;
-    const note = tree(rootNote).find(node => node.id === targetNote.id);
+    const note = tree(rootNote).find(note => note.id === targetNote.id);
 
     if (note.name === noteStorage.APP_FOLDER_NAME || !note.isNote) {
       return;
@@ -169,7 +168,7 @@ NotesMindMapComponent.propTypes = {
   changeParentNote: PropTypes.func.isRequired,
   showNoteNameEditor: PropTypes.bool.isRequired,
   rootNote: PropTypes.object.isRequired,
-  nodes: PropTypes.array.isRequired,
+  notes: PropTypes.array.isRequired,
   edges: PropTypes.array.isRequired,
   onMindMapClick: PropTypes.func.isRequired,
   editNote:  PropTypes.func.isRequired,

@@ -1,5 +1,4 @@
 import noteStorageApi from 'storage/noteStorageAPI';
-import { addChildrenToTree, findNoteById, setRoot, deleteNode, getNotes, logTree, getRoot } from 'storage/noteTree';
 
 'use strict';
 
@@ -8,13 +7,6 @@ const notesTree = {};
 // TODO: Better to avoid using export default
 export default {
   scanDrive,
-
-  // notes tree
-  findNoteById,
-  getNotes,
-  logTree,
-  getRoot,
-  addChildrenToTree,
 
   // api:
   APP_FOLDER_NAME: noteStorageApi.APP_FOLDER_NAME,
@@ -30,37 +22,19 @@ export default {
 };
 
 function fetchChildNotes(note) {
-  return noteStorageApi.fetchChildNotes(note)
-    .then(function (children) {
-      addChildrenToTree({
-        parentId: note.id,
-        children: children
-      });
-
-      return children;
-    });
+  return noteStorageApi.fetchChildNotes(note);
 }
 
 function fetchParentNote(noteId) {
-  return noteStorageApi.fetchParentNote(noteId)
-    .then(function (parentNote) {
-      const note = findNoteById(noteId);
-      if (note) { // root folder has no parent
-        note.parent = parentNote;
-      }
-      return note;
-    });
+  return noteStorageApi.fetchParentNote(noteId);
 }
 
+/**
+ * Find app root folder on Google Drive and return it,
+ * or create a fresh one and return it.
+ */
 function scanDrive() {
-  console.debug('noteStorage.scanDrive()');
-  return noteStorageApi.scanDrive()
-    .then(function (appRootFolder) {
-      setRoot(appRootFolder);
-      console.info('Note tree root set to the App root folder on Google Drive');
-      console.debug('noteStorage.scanDrive(), stored notesTree: ', notesTree);
-      return appRootFolder;
-    });
+  return noteStorageApi.scanDrive();
 }
 
 function create(note, parentNote) {
@@ -86,12 +60,7 @@ function updateNoteName({ note, newName }) {
 }
 
 function remove(note) {
-  return noteStorageApi
-    .remove(note)
-    .then(result => {
-      deleteNode(note);
-      return result;
-    });
+  return noteStorageApi.remove(note);
 }
 
 function move({ noteId, newParentId }) {

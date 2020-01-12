@@ -28,11 +28,17 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
   const handleSelectedNoteChildrenFetchedAction = () => {
       const newState = cloneTreeInState();
       const childNotes = data;
+      let selectedNoteInTree = tree(newState.rootNote).find(note => note.id === newState.selectedNote.id);
       if (childNotes.length) {
         newState.selectedNote.children = childNotes;
+        selectedNoteInTree.children = childNotes;
       } else {
         newState.selectedNote.hasNoChildren = true;
+        selectedNoteInTree.hasNoChildren = true;
       }
+
+      newState.selectedNote = selectedNoteInTree;
+
       return newState;
   };
 

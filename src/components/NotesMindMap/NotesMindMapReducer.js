@@ -132,7 +132,7 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
    */
   function cloneTreeInState() {
     const clonedState = { ...state };
-    clonedState.rooNote = { ...state.rootNote };
+    clonedState.rootNote = { ...state.rootNote };
     clonedState.selectedNote = { ...state.selectedNote };
     return clonedState;
   }

@@ -2,8 +2,6 @@ import noteStorageApi from 'storage/noteStorageAPI';
 
 'use strict';
 
-const notesTree = {};
-
 // TODO: Better to avoid using export default
 export default {
   scanDrive,

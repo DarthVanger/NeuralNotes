@@ -6,7 +6,8 @@ import { VisNetworkHelper } from 'helpers/visNetworkHelper';
 import noteStorage from 'storage/noteStorage';
 import { NoteNameEditorComponent } from 'components/NoteNameEditor/NoteNameEditorComponent';
 import { StyledNotesMindMap } from 'components/NotesMindMap/NotesMindMapStyles';
-
+import { addGroupTagToNotes } from '../../helpers/graph'
+ 
 export class NotesMindMapComponent extends Component {
   render() {
     const {
@@ -17,6 +18,7 @@ export class NotesMindMapComponent extends Component {
 
     let visGraph = this.convertToVisGraph()
 
+    console.log(visGraph)
     const visOptions = {
       interaction: {
         keyboard: false
@@ -63,14 +65,9 @@ export class NotesMindMapComponent extends Component {
   }
 
   convertToVisGraph() {
-    const notes = []
-    const edges = []
-
-    for (let i =0;i<this.props.notes.length;i++) notes.push(this.props.notes[i])
-    for (let i =0;i<this.props.edges.length;i++) edges.push(this.props.edges[i])
-
+    
     return {
-      nodes: [...this.props.notes], edges: [...this.props.edges]
+      nodes: addGroupTagToNotes([...this.props.notes], [...this.props.edges]), edges: [...this.props.edges]
     }
   }
 

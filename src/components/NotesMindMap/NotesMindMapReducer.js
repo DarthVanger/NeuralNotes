@@ -14,6 +14,7 @@ import {
 import {
   ROOT_NOTE_FOUND_ACTION,
 } from 'components/App/AppActions.js';
+import { removeNoteFromGraph } from '../../helpers/graph'
 
 const defaultState = {
   selectedNote: {},
@@ -32,11 +33,10 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
 
       if (childNotes.length) {
         childNotes.forEach(child => {
-          newState.notes.push({ id: child.id, name: child.name, label: child.name, isNote: child.isNote /*group: (hasChildren ? 'parent' : 'children')*/ });
+          newState.notes.push({ id: child.id, name: child.name, label: child.name, isNote: child.isNote });
           newState.edges.push({ from: child.parent.id, to: child.id });
         });
       }
-
       return newState;
   };
 
@@ -49,34 +49,25 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
     const updatedNote = data;
     const newState = cloneTreeInState();
     newState.notes = newState.notes.filter(note => note.id !== updatedNote.id)
-    newState.notes.push({ id: updatedNote.id, name: updatedNote.name, label: updatedNote.name, isNote: updatedNote.isNote  /*group: (hasChildren ? 'parent' : 'children')*/ });
+    newState.notes.push({ id: updatedNote.id, name: updatedNote.name, label: updatedNote.name, isNote: updatedNote.isNote });
     return newState;
   };
 
   const handleCreateNoteSuccessAction = () => {
     const newNote = data;
     const newState = cloneTreeInState();
-    newState.notes.push({ id: newNote.id, name: newNote.name, label: newNote.name, isNote: newNote.isNote/*group: (hasChildren ? 'parent' : 'children')*/ });
+    newState.notes.push({ id: newNote.id, name: newNote.name, label: newNote.name, isNote: newNote.isNote });
     newState.edges.push({ from: newNote.parent.id, to: newNote.id });
+
     return newState;
   };
 
   const handleDeleteNoteRequestSuccessAction = () => {
     const noteToDelete = data;
     const newState = cloneTreeInState();
-    let notes = []
-
-    newState.notes = newState.notes.filter(note => note.id !== noteToDelete.id)
-    notes = [ ...newState.notes ]
-    newState.edges = newState.edges.filter(edge => {
-      if (edge.from === noteToDelete.id) {
-        notes = notes.filter(note => note.id !== edge.to)
-      } else { return edge }
-
-      if (edge.to !== noteToDelete.id) return edge
-    })
-    
-    newState.notes = [ ...notes ]
+    let graph = removeNoteFromGraph(newState.notes, newState.edges, noteToDelete)
+    newState.notes = graph.notes
+    newState.edges = graph.edges
     return newState;
   };
 
@@ -104,7 +95,7 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
   const addRootToGraph = () => {
     const newState = { ...state };
     newState.rootNote = data;
-    newState.notes.push({ id: data.id, label: data.name, /*group: (hasChildren ? 'parent' : 'children')*/ });
+    newState.notes.push({ id: data.id, label: data.name });
     return newState;
   }
 

@@ -30,7 +30,6 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
   const handleSelectedNoteChildrenFetchedAction = () => {
       const newState = cloneTreeInState();
       const childNotes = data;
-
       if (childNotes.length) {
         childNotes.forEach(child => {
           newState.notes.push({ id: child.id, name: child.name, label: child.name, isNote: child.isNote });
@@ -41,7 +40,7 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
   };
 
   const handleEditNoteNameAction = () => {
-      const noteToEdit = data.note ? data.note : data;
+      const noteToEdit = data;
       return { ...state, showNoteNameEditor: true, selectedNote: noteToEdit };
   };
 
@@ -88,7 +87,7 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
 
   const handleChangeSelectedNoteAction = () => {
     const newState = cloneTreeInState();
-    newState.selectedNote = data.note ? data.note : data;
+    newState.selectedNote = data;
     return newState;
   }
 

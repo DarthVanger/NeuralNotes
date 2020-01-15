@@ -17,8 +17,7 @@ export class NotesMindMapComponent extends Component {
     } = this.props;
 
     let visGraph = this.convertToVisGraph()
-
-    console.log(visGraph)
+    
     const visOptions = {
       interaction: {
         keyboard: false
@@ -65,7 +64,6 @@ export class NotesMindMapComponent extends Component {
   }
 
   convertToVisGraph() {
-    
     return {
       nodes: addGroupTagToNotes([...this.props.notes], [...this.props.edges]), edges: [...this.props.edges]
     }
@@ -90,17 +88,18 @@ export class NotesMindMapComponent extends Component {
 
   visNetworkClickHandler = event => {
     const { selectedNote } = this.props;
+    const { edges } = this.props;
     const { isChangeParentModeActive } = this.props;
 
     this.props.onMindMapClick();
     if (VisNetworkHelper.clickedOnNote(event)) {
       let targetNoteId = VisNetworkHelper.getTargetNoteId(event);
-      const targetNote = this.props.notes.filter(note => note.id === targetNoteId)[0]
+      const targetNote = this.props.notes.find(note => note.id === targetNoteId)
 
       if (isChangeParentModeActive) {
         this.props.changeParentNote({
           noteId: selectedNote.id,
-          currentParentId: selectedNote.parent.id,
+          currentParentId: edges.find(edge => edge.to === selectedNote.id).id,
           newParent: targetNote,
         });
       } else {

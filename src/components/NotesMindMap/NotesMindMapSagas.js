@@ -27,7 +27,7 @@ const LOADING_NOTE_MESSAGE = 'loading note contents...';
 let spinner = siteGlobalLoadingBar.create('mind map');
 
 function* selectRootNote({ data }) {
-  yield put(changeSelectedNoteAction(data));
+  yield put(changeSelectedNoteAction({ note: data, edges: [] }));
 }
 
 function* requestNoteText(note) {
@@ -40,9 +40,8 @@ function* requestNoteText(note) {
  * Load child notes for clicked note,
  * and redraw the network for new notes.
  */
-function* changeSelectedNote({ data }) {
-  const targetNote = data.note ? data.note: data; 
-  const edges = data.edges
+function* changeSelectedNote({ data: { note, edges } }) {
+  const targetNote = note; 
   if (didNotAttemptToFetchChildren(targetNote, edges)) {
     const childNotes = yield fetchChildNotes(targetNote);
     yield put(selectedNoteChildrenFetchedAction(childNotes));

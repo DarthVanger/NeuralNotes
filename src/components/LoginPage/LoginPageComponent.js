@@ -91,7 +91,7 @@ export class LoginPageComponent extends Component {
             <H3><span>Neural</span>Notes is open source and free</H3>
             <GoogleLoginButton type="button" onClick={authHandler}>
               <img src={iconGoogle} />
-              <span>Sing up with Google</span>
+              <span>Sign up with Google</span>
             </GoogleLoginButton>
           </Footer>
         </Article>

@@ -20,7 +20,7 @@ export const Caption = styled.svg`
 export const ASPECT_RATIO = 375/334;   
 
 export const FONT_SIZE = {
-  H1: '5vmin',
-  H2: '3.5vmin',
+  H1: '7vmin',
+  H2: '4.5vmin',
   H3: '2.5vmin',
 };

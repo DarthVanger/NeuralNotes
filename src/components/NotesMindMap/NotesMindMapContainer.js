@@ -13,12 +13,11 @@ import {
 } from 'components/NotesMindMap/NotesMindMapActions';
 import { NotesMindMapComponent } from 'components/NotesMindMap/NotesMindMapComponent';
 
-const mapStateToProps = ({ notesMindMap: { rootNote, selectedNote, noteText, showNoteNameEditor, isChangeParentModeActive, notes, edges } }) => {
+const mapStateToProps = ({ notesMindMap: { selectedNote, noteText, showNoteNameEditor, isChangeParentModeActive, notes, edges } }) => {
   return {
     selectedNote,
     showNoteNameEditor,
     noteText,
-    rootNote,
     notes,
     edges,
     isChangeParentModeActive,

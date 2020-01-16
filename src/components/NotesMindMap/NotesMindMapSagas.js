@@ -89,9 +89,9 @@ function* updateNoteName({ data: { note, newName } }) {
   yield put(noteNameUpdateRequestSuccessAction(newNote));
 }
 
-function* changeParentNote({ data: { noteId, newParent } }) {
+function* changeParentNote({ data: { noteId, newParent, edges } }) {
   try {
-    if (didNotAttemptToFetchChildren(newParent)) {
+    if (didNotAttemptToFetchChildren(newParent, edges)) {
       yield* fetchChildNotes(newParent);
     }
     yield call(noteStorage.move, { noteId, newParentId: newParent.id });

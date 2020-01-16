@@ -1,22 +1,42 @@
-export function addGroupTagToNotes(notes, edges) {
-    if (notes && edges) {
-        notes = notes.map(note => { // add group tag to all the egdes
-            note.group = edges.filter(edge => edge.from === note.id).length > 0 ? 'parent' : 'children' 
-            return note
-        })
+export function removeNoteFromGraph(nodes, edges, noteToDelete) {
+  let newNodes = [ ...nodes ]
+  let newEdges = [ ...edges ]
+  let parentEdge = newEdges.find(edge => edge.to === noteToDelete.id)
+
+  removeChild(noteToDelete.id)
+  newNodes = newEdges.find(edge => edge.from === parentEdge.from) ? //check if there are siblings of deleted node if not revoke parant status
+             newNodes : newNodes.map(node => { return node.id === parentEdge.from ? { ...node, group: 'children' } : node })
+  return { notes: newNodes, edges: newEdges }
+
+  function removeChild(childNoteId) {
+    newNodes = newNodes.filter(note => note.id !== childNoteId)
+    if(newEdges.find(edge => edge.from === childNoteId)) { // check if the node has children
+      newEdges.forEach(edge => {
+        if (edge.from === childNoteId) {
+          removeChild(edge.to)
+          newEdges = newEdges.filter(e => (e.from !== childNoteId))
+        }
+      })
+      newEdges = newEdges.filter(e => e.to !== childNoteId) // remove the edge from parent to the deleted node
+    } else {
+      newEdges = newEdges.filter(e => e.to !== childNoteId)
+      return;
     }
-    return notes
+  }
 }
 
-export function removeNoteFromGraph(notes, edges, noteToDelete) {
-    notes = notes.filter(note => note.id !== noteToDelete.id) // remove the note from the array
-    edges = edges.filter(edge => {  // remove all the children of the deleted parent
-      if (edge.from === noteToDelete.id) {
-        notes = notes.filter(note => note.id !== edge.to)
-      } else { return edge }
+export function updateGroupOfOldParent(nodes, edges, newParentId, oldParentId) {
+  nodes = nodes.map(node => {
+    if (node.id === newParentId) return { ...node, group: 'parent' }
+    else if (node.id === oldParentId && edges.find(edge => edge.from === node.id) === undefined){
+      return { ...node, group: 'children' }
+    } 
+    return node
+  })
+  return nodes
+}
 
-      if (edge.to !== noteToDelete.id) return edge
-    })
-
-    return { notes, edges }
+export function addGroupTagToNote(nodes, selectedNoteId) {
+  nodes = nodes.map(note => (note.isNote && note.id === selectedNoteId) ? { ...note, group: 'parent' } : note)
+  return nodes
 }

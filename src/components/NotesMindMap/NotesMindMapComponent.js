@@ -6,7 +6,6 @@ import { VisNetworkHelper } from 'helpers/visNetworkHelper';
 import noteStorage from 'storage/noteStorage';
 import { NoteNameEditorComponent } from 'components/NoteNameEditor/NoteNameEditorComponent';
 import { StyledNotesMindMap } from 'components/NotesMindMap/NotesMindMapStyles';
-import { addGroupTagToNotes } from '../../helpers/graph'
  
 export class NotesMindMapComponent extends Component {
   render() {
@@ -16,8 +15,8 @@ export class NotesMindMapComponent extends Component {
       isChangeParentModeActive
     } = this.props;
 
-    let visGraph = this.convertToVisGraph()
-    
+    let visGraph = { nodes: [...this.props.notes] , edges: [...this.props.edges] }
+
     const visOptions = {
       interaction: {
         keyboard: false
@@ -39,7 +38,6 @@ export class NotesMindMapComponent extends Component {
           }
         }
       }
-
     };
 
     const visEvents = {
@@ -61,12 +59,6 @@ export class NotesMindMapComponent extends Component {
         />}
       </StyledNotesMindMap>
     );
-  }
-
-  convertToVisGraph() {
-    return {
-      nodes: addGroupTagToNotes([...this.props.notes], [...this.props.edges]), edges: [...this.props.edges]
-    }
   }
 
   noteClickHandler = targetNoteId => {
@@ -101,6 +93,7 @@ export class NotesMindMapComponent extends Component {
           noteId: selectedNote.id,
           currentParentId: edges.find(edge => edge.to === selectedNote.id).id,
           newParent: targetNote,
+          edges
         });
       } else {
         if (targetNote.id !== selectedNote.id) {
@@ -162,7 +155,6 @@ NotesMindMapComponent.propTypes = {
   isChangeParentModeActive: PropTypes.bool.isRequired,
   changeParentNote: PropTypes.func.isRequired,
   showNoteNameEditor: PropTypes.bool.isRequired,
-  rootNote: PropTypes.object.isRequired,
   notes: PropTypes.array.isRequired,
   edges: PropTypes.array.isRequired,
   onMindMapClick: PropTypes.func.isRequired,

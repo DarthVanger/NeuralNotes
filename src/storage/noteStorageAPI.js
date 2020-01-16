@@ -437,7 +437,6 @@ function remove(note) {
       if (response.error) {
         console.error('Failed to delete a note "' + note.name + '"');
       }
-      console.log('response : ', response);
       resolve(response);
     });
 

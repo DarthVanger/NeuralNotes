@@ -1,4 +1,8 @@
-import { call, put, takeEvery } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
+import {
+  call,
+  put,
+  takeEvery,
+} from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
 import { toast } from 'react-toastify';
 
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
@@ -19,7 +23,10 @@ export function* handleAuth() {
     yield put(authSuccessAction());
   } catch (e) {
     console.error('googleLogin.gapiAuthorize(): authError: ', e);
-    yield call([toast, toast.error], 'Google Authentification failed: ' + e.error);
+    yield call(
+      [toast, toast.error],
+      'Google Authentification failed: ' + e.error,
+    );
   }
 
   yield call(siteGlobalLoadingBar.hide, spinnerName);

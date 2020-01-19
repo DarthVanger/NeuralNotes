@@ -4,7 +4,7 @@ import { GOOGLE_API_INITIALIZED_ACTION } from 'components/LoginPage/LoginPagesAc
 
 const defaultState = {
   page: PAGES_ENUM.LOADING,
-  isGoogleApiInitialized: false
+  isGoogleApiInitialized: false,
 };
 
 export const appReducer = (state = defaultState, { type, data }) => {

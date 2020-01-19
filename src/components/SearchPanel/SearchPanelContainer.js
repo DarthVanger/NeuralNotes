@@ -7,7 +7,7 @@ import { SearchPanelComponent } from 'components/SearchPanel/SearchPanelComponen
 const mapStateToProps = () => ({});
 
 const mapDispatchToProps = () => ({
-  onChange: query => action(SEARCH_QUERY_CHANGED_ACTION, query)
+  onChange: query => action(SEARCH_QUERY_CHANGED_ACTION, query),
 });
 
 export const SearchPanelContainer = connect(

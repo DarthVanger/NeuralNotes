@@ -1,4 +1,4 @@
-import { all } from 'redux-saga/effects'
+import { all } from 'redux-saga/effects';
 import createSagaMiddleware from 'redux-saga';
 import { reducers } from 'reducers';
 import { applyMiddleware, createStore } from 'redux';
@@ -15,7 +15,7 @@ const sagaMiddleware = createSagaMiddleware();
 
 export const store = createStore(
   reducers,
-  composeWithDevTools(applyMiddleware(sagaMiddleware))
+  composeWithDevTools(applyMiddleware(sagaMiddleware)),
 );
 
 sagaMiddleware.run(rootSaga);
@@ -30,5 +30,5 @@ export function* rootSaga() {
     notesInit(),
     noteMindMapInit(),
     notesContentEditorInit(),
-  ])
+  ]);
 }

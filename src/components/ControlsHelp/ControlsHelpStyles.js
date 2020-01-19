@@ -5,7 +5,7 @@ export const StyledTutorial = styled.div`
   bottom: 0;
   left: 0;
   height: 5em;
-  padding: .5em;
+  padding: 0.5em;
   background-color: yellow;
 `;
 

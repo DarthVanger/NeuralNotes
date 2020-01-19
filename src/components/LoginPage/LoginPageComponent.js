@@ -41,7 +41,7 @@ const GoogleLoginButton = styled.button`
   position: relative;
   border: none;
   border-radius: 0.4vmin;
-  padding: 2vmin 4vmin 2vmin calc(9vmin + 2%); 
+  padding: 2vmin 4vmin 2vmin calc(9vmin + 2%);
 
   img {
     height: 92%;
@@ -52,7 +52,7 @@ const GoogleLoginButton = styled.button`
     top: 4%;
     border-radius: 0.4vmin;
   }
-  
+
   span {
     vertical-align: middle;
     line-height: 100%;
@@ -67,7 +67,7 @@ const Footer = styled.footer`
   text-align: center;
   padding-bottom: 10%;
 
-  H3 {
+  h3 {
     padding-bottom: 3%;
 
     span {
@@ -78,7 +78,9 @@ const Footer = styled.footer`
 
 export class LoginPageComponent extends Component {
   render() {
-    const authHandler = this.props.isGoogleApiInitialized ? this.props.requestAuthorization : null;
+    const authHandler = this.props.isGoogleApiInitialized
+      ? this.props.requestAuthorization
+      : null;
     return (
       <Main>
         <Article>
@@ -88,7 +90,9 @@ export class LoginPageComponent extends Component {
           <Slide4 />
           <Slide5 />
           <Footer>
-            <H3><span>Neural</span>Notes is open source and free</H3>
+            <H3>
+              <span>Neural</span>Notes is open source and free
+            </H3>
             <GoogleLoginButton type="button" onClick={authHandler}>
               <img src={iconGoogle} />
               <span>Sing up with Google</span>
@@ -102,5 +106,5 @@ export class LoginPageComponent extends Component {
 
 LoginPageComponent.propTypes = {
   isGoogleApiInitialized: PropTypes.bool.isRequired,
-  requestAuthorization: PropTypes.func.isRequired
+  requestAuthorization: PropTypes.func.isRequired,
 };

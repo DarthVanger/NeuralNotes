@@ -8,12 +8,12 @@
  * https://codepen.io/WebSonata/pen/bRaONB
  */
 #background-spinner {
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 #background-spinner {
@@ -28,54 +28,54 @@
 }
 
 .colorful-spinner {
-    --spinner-size: calc(40vmin - 50px);
-    display: block;
-    position: relative;
-    width: var(--spinner-size);
-    height: var(--spinner-size);
-    left: calc(50% - var(--spinner-size) / 2);
-    top: calc(50% - var(--spinner-size) / 2);
-    border-radius: 50%;
-    border: 3px solid transparent;
-    border-top-color: #9370DB;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
+  --spinner-size: calc(40vmin - 50px);
+  display: block;
+  position: relative;
+  width: var(--spinner-size);
+  height: var(--spinner-size);
+  left: calc(50% - var(--spinner-size) / 2);
+  top: calc(50% - var(--spinner-size) / 2);
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: #9370db;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
 }
 .colorful-spinner:before {
-    content: "";
-    position: absolute;
-    top: 5px;
-    left: 5px;
-    right: 5px;
-    bottom: 5px;
-    border-radius: 50%;
-    border: 3px solid transparent;
-    border-top-color: #BA55D3;
-    -webkit-animation: spin 3s linear infinite;
-    animation: spin 3s linear infinite;
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: #ba55d3;
+  -webkit-animation: spin 3s linear infinite;
+  animation: spin 3s linear infinite;
 }
 .colorful-spinner:after {
-    content: "";
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    right: 15px;
-    bottom: 15px;
-    border-radius: 50%;
-    border: 3px solid transparent;
-    border-top-color: #FF00FF;
-    -webkit-animation: spin 1.5s linear infinite;
-    animation: spin 1.5s linear infinite;
+  content: '';
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: #ff00ff;
+  -webkit-animation: spin 1.5s linear infinite;
+  animation: spin 1.5s linear infinite;
 }
 @keyframes spin {
-    0%   {
-        -webkit-transform: rotate(0deg);
-        -ms-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-    100% {
-        -webkit-transform: rotate(360deg);
-        -ms-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
+  0% {
+    -webkit-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }

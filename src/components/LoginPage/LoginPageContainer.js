@@ -4,13 +4,13 @@ import { LoginPageComponent } from 'components/LoginPage/LoginPageComponent';
 import { action } from 'sagas';
 
 const mapStateToProps = ({ app: { isGoogleApiInitialized } }) => ({
-  isGoogleApiInitialized
+  isGoogleApiInitialized,
 });
 
 const mapDispatchToProps = () => ({
   requestAuthorization() {
     action(REQUEST_AUTHORIZATION_ACTION);
-  }
+  },
 });
 
 export const LoginPageContainer = connect(

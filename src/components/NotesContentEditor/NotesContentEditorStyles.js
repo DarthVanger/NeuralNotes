@@ -10,16 +10,16 @@ export const StyledSelectedNotesContent = styled.div`
 `;
 
 export const StyledTextArea = styled.textarea`
-    background-color: #edf3ff;
-    height: 100%;
-    width: 100%;
-    padding: 0.5em;
+  background-color: #edf3ff;
+  height: 100%;
+  width: 100%;
+  padding: 0.5em;
 
-    /* disable border on focus */
-    border: none;
-    overflow: auto;
-    outline: none;
-    box-shadow: none;
+  /* disable border on focus */
+  border: none;
+  overflow: auto;
+  outline: none;
+  box-shadow: none;
 `;
 
 export const StyledLink = styled.a`

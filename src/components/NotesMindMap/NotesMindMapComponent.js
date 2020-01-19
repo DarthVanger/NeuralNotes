@@ -6,38 +6,41 @@ import { VisNetworkHelper } from 'helpers/visNetworkHelper';
 import noteStorage from 'storage/noteStorage';
 import { NoteNameEditorComponent } from 'components/NoteNameEditor/NoteNameEditorComponent';
 import { StyledNotesMindMap } from 'components/NotesMindMap/NotesMindMapStyles';
- 
+
 export class NotesMindMapComponent extends Component {
   render() {
     const {
       selectedNote,
       showNoteNameEditor,
-      isChangeParentModeActive
+      isChangeParentModeActive,
     } = this.props;
 
-    let visGraph = { nodes: [...this.props.notes] , edges: [...this.props.edges] }
+    let visGraph = {
+      nodes: [...this.props.notes],
+      edges: [...this.props.edges],
+    };
 
     const visOptions = {
       interaction: {
-        keyboard: false
+        keyboard: false,
       },
       edges: {
         arrows: { to: true },
-        smooth: true
+        smooth: true,
       },
       groups: {
         children: {
           color: {
             background: '#eef',
-            borderWidth: 3
-          }
+            borderWidth: 3,
+          },
         },
         parent: {
           color: {
-            background: '#faa'
-          }
-        }
-      }
+            background: '#faa',
+          },
+        },
+      },
     };
 
     const visEvents = {
@@ -49,14 +52,16 @@ export class NotesMindMapComponent extends Component {
     return (
       <StyledNotesMindMap>
         <VisGraph graph={visGraph} events={visEvents} options={visOptions} />
-        {showNoteNameEditor && <NoteNameEditorComponent
-          note={selectedNote}
-          onChange={this.handleNoteNameUpdate}
-          onChangeParentClick={this.props.onChangeParentButtonClick}
-          onDeleteClick={this.onDeleteClick}
-          onUploadFileClick={this.onUploadFileClick}
-          isChangeParentModeActive={ isChangeParentModeActive } 
-        />}
+        {showNoteNameEditor && (
+          <NoteNameEditorComponent
+            note={selectedNote}
+            onChange={this.handleNoteNameUpdate}
+            onChangeParentClick={this.props.onChangeParentButtonClick}
+            onDeleteClick={this.onDeleteClick}
+            onUploadFileClick={this.onUploadFileClick}
+            isChangeParentModeActive={isChangeParentModeActive}
+          />
+        )}
       </StyledNotesMindMap>
     );
   }
@@ -72,10 +77,16 @@ export class NotesMindMapComponent extends Component {
     const targetNote = notes.find(note => note.id === targetNoteId);
 
     if (!targetNote) {
-      throw new Error('noteClickHandler(): couldn\'t find targetNote: ', targetNoteId);
+      throw new Error(
+        "noteClickHandler(): couldn't find targetNote: ",
+        targetNoteId,
+      );
     }
 
-    this.props.changeSelectedNote({ note: targetNote, edges: this.props.edges });
+    this.props.changeSelectedNote({
+      note: targetNote,
+      edges: this.props.edges,
+    });
   };
 
   visNetworkClickHandler = event => {
@@ -86,18 +97,23 @@ export class NotesMindMapComponent extends Component {
     this.props.onMindMapClick();
     if (VisNetworkHelper.clickedOnNote(event)) {
       let targetNoteId = VisNetworkHelper.getTargetNoteId(event);
-      const targetNote = this.props.notes.find(note => note.id === targetNoteId)
+      const targetNote = this.props.notes.find(
+        note => note.id === targetNoteId,
+      );
 
       if (isChangeParentModeActive) {
         this.props.changeParentNote({
           noteId: selectedNote.id,
           currentParentId: edges.find(edge => edge.to === selectedNote.id).id,
           newParent: targetNote,
-          edges
+          edges,
         });
       } else {
         if (targetNote.id !== selectedNote.id) {
-          this.props.changeSelectedNote({ note: targetNote, edges: this.props.edges });
+          this.props.changeSelectedNote({
+            note: targetNote,
+            edges: this.props.edges,
+          });
         }
       }
     }
@@ -107,7 +123,7 @@ export class NotesMindMapComponent extends Component {
     const { notes } = this.props;
     if (VisNetworkHelper.clickedOnNote(event)) {
       let targetNoteId = VisNetworkHelper.getTargetNoteId(event);
-      const targetNote = notes.find(node => node.id === targetNoteId );
+      const targetNote = notes.find(node => node.id === targetNoteId);
       this.props.createEmptyChild({ parent: targetNote });
     }
   };
@@ -116,14 +132,14 @@ export class NotesMindMapComponent extends Component {
     const { notes } = this.props;
     if (VisNetworkHelper.clickedOnNote(event)) {
       let targetNoteId = VisNetworkHelper.getTargetNoteId(event);
-      const targetNote = notes.find(node => node.id === targetNoteId );
+      const targetNote = notes.find(node => node.id === targetNoteId);
       this.editNote(targetNote);
     }
   };
 
   editNote(targetNote) {
     const { notes } = this.props;
-    const note = notes.find(node => node.id === targetNote.id );
+    const note = notes.find(node => node.id === targetNote.id);
 
     if (note.name === noteStorage.APP_FOLDER_NAME || !note.isNote) {
       return;
@@ -158,7 +174,7 @@ NotesMindMapComponent.propTypes = {
   notes: PropTypes.array.isRequired,
   edges: PropTypes.array.isRequired,
   onMindMapClick: PropTypes.func.isRequired,
-  editNote:  PropTypes.func.isRequired,
-  updateNoteName:  PropTypes.func.isRequired,
+  editNote: PropTypes.func.isRequired,
+  updateNoteName: PropTypes.func.isRequired,
   onChangeParentButtonClick: PropTypes.func.isRequired,
 };

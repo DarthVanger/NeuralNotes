@@ -1,4 +1,9 @@
-import { all, call, put, takeEvery } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
+import {
+  all,
+  call,
+  put,
+  takeEvery,
+} from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
 import { toast } from 'react-toastify';
 
 import {
@@ -41,7 +46,7 @@ function* requestNoteText(note) {
  * and redraw the network for new notes.
  */
 function* changeSelectedNote({ data: { note, edges } }) {
-  const targetNote = note; 
+  const targetNote = note;
   if (didNotAttemptToFetchChildren(targetNote, edges)) {
     const childNotes = yield fetchChildNotes(targetNote);
     yield put(selectedNoteChildrenFetchedAction(childNotes));
@@ -70,7 +75,7 @@ function* createEmptyChild({ data: { parent } }) {
   const note = {
     name: 'new2',
     content: '',
-    isNote: true
+    isNote: true,
   };
 
   const newNote = yield noteStorage.create(note, parent);
@@ -95,9 +100,13 @@ function* changeParentNote({ data: { noteId, newParent, edges } }) {
       yield* fetchChildNotes(newParent);
     }
     yield call(noteStorage.move, { noteId, newParentId: newParent.id });
-    yield put(changeParentRequestSuccessAction({ noteId, newParentId: newParent.id }));
+    yield put(
+      changeParentRequestSuccessAction({ noteId, newParentId: newParent.id }),
+    );
   } catch (e) {
-    yield put(changeParentRequestFailAction({ noteId, newParentId: newParent.id }));
+    yield put(
+      changeParentRequestFailAction({ noteId, newParentId: newParent.id }),
+    );
     yield call([toast, toast.error], 'Changing note has parent failed');
     throw Error(e);
   }
@@ -105,12 +114,17 @@ function* changeParentNote({ data: { noteId, newParent, edges } }) {
 
 function* searchNoteSaga({ data }) {
   const results = yield googleDriveApi.findNotesByName(data);
-  yield call([toast, toast.error], 'Search is not implemented yet :) See search results in console');
+  yield call(
+    [toast, toast.error],
+    'Search is not implemented yet :) See search results in console',
+  );
   console.log('Search results: ', results);
 }
 
 function didNotAttemptToFetchChildren(note, edges) {
-  return !(edges ? edges.filter(edge => edge.from === note.id ).length > 0 : false);
+  return !(edges
+    ? edges.filter(edge => edge.from === note.id).length > 0
+    : false);
 }
 
 export function* noteMindMapInit() {

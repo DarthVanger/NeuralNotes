@@ -1,10 +1,14 @@
-import { put, call, takeEvery } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
+import {
+  put,
+  call,
+  takeEvery,
+} from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
 import { toast } from 'react-toastify';
 
 import auth from 'auth';
 import {
   rootNoteFoundAction,
-  CHANGE_PAGE_ACTION
+  CHANGE_PAGE_ACTION,
 } from 'components/App/AppActions';
 import { AUTH_SUCCESS_ACTION } from 'components/LoginPage/LoginPagesActions.js';
 import { PAGES_ENUM } from 'components/App/AppConstants';
@@ -31,14 +35,13 @@ export function* loadApp() {
 
 export function* appInit() {
   yield call([toast, toast.configure], {
-    position: toast.POSITION.BOTTOM_RIGHT
+    position: toast.POSITION.BOTTOM_RIGHT,
   });
   if (auth.signedIn()) {
     console.info('User is signed in');
     yield loadApp();
   } else {
     yield takeEvery(AUTH_SUCCESS_ACTION, loadApp),
-
-    yield setPageAction(PAGES_ENUM.LOGIN);
+      yield setPageAction(PAGES_ENUM.LOGIN);
   }
 }

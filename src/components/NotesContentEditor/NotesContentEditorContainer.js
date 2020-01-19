@@ -8,11 +8,11 @@ const mapStateToProps = ({ notesMindMap: { selectedNote, noteText } }) => {
   return {
     selectedNote,
     noteText,
-  }
+  };
 };
 
 const mapDispatchToProps = () => ({
-  updateNoteContent: note => action(SAVE_NOTE_CONTENT_ACTION, note)
+  updateNoteContent: note => action(SAVE_NOTE_CONTENT_ACTION, note),
 });
 
 export const NotesContentEditorContainer = connect(

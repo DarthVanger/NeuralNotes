@@ -15,7 +15,7 @@ export function checkAuth() {
     } else {
       console.info('User token is still valid');
       gapi.client.setToken({
-        access_token: auth.getToken()
+        access_token: auth.getToken(),
       });
 
       resolve();
@@ -27,23 +27,29 @@ export function gapiAuthorize() {
   console.debug('googleLogin.gapiAuthorize(): clientId: ', clientId);
   console.debug('googleLogin.gapiAuthorize(): scopes: ', scopes);
   return new Promise((resolve, reject) => {
-    gapi.auth.authorize({
-      client_id: clientId,
-      scope: scopes.join(' '),
-      immediate: false
-    }, function (authResult) {
-      console.debug('googleLogin.gapiAuthorize(): authResult: ', authResult);
-      if (authResult.error) {
-        reject(authResult);
-      } else {
-        auth.saveToken({
-          access_token: authResult.access_token,
-          expires_in: authResult.expires_in
-        });
+    gapi.auth.authorize(
+      {
+        client_id: clientId,
+        scope: scopes.join(' '),
+        immediate: false,
+      },
+      function(authResult) {
+        console.debug('googleLogin.gapiAuthorize(): authResult: ', authResult);
+        if (authResult.error) {
+          reject(authResult);
+        } else {
+          auth.saveToken({
+            access_token: authResult.access_token,
+            expires_in: authResult.expires_in,
+          });
 
-        console.debug('googleLogin.gapiAuthorize(): auth sucess! authResult: ', authResult);
-        resolve(authResult);
-      }
-    });
+          console.debug(
+            'googleLogin.gapiAuthorize(): auth sucess! authResult: ',
+            authResult,
+          );
+          resolve(authResult);
+        }
+      },
+    );
   });
 }

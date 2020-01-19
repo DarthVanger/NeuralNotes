@@ -1,6 +1,6 @@
 import noteStorageApi from 'storage/noteStorageAPI';
 
-'use strict';
+('use strict');
 
 // TODO: Better to avoid using export default
 export default {
@@ -14,9 +14,9 @@ export default {
   create,
   update: noteStorageApi.update,
   remove,
-  move, 
+  move,
   updateNoteName,
-  getLinkToNote
+  getLinkToNote,
 };
 
 function fetchChildNotes(note) {
@@ -37,45 +37,41 @@ function scanDrive() {
 
 function create(note, parentNote) {
   console.info('Creating a new note: ', note.name);
-  return noteStorageApi.create(note, parentNote).then(function (createdNote) {
+  return noteStorageApi.create(note, parentNote).then(function(createdNote) {
     console.info('Created new note: ', note.name);
     return createdNote;
   });
-
 }
 
 function updateNoteName({ note, newName }) {
   return Promise.all([
     noteStorageApi.updateFileName({ id: note.id, name: newName }),
     noteStorageApi.updateNoteContentFileName({ note, newName }),
-  ])
-    .then(function (responses) {
-      console.log('resonses for note name update: ', responses);
-      const newNote = { ...note };
-      newNote.name = newName;
-      return newNote;
-    });
+  ]).then(function(responses) {
+    console.log('resonses for note name update: ', responses);
+    const newNote = { ...note };
+    newNote.name = newName;
+    return newNote;
+  });
 }
 
 function remove(note) {
-  return noteStorageApi
-    .remove(note)
-    .then(result => {
-      return result;
-    });
+  return noteStorageApi.remove(note).then(result => {
+    return result;
+  });
 }
 
 function move({ noteId, newParentId }) {
   return new Promise((resolve, reject) => {
     noteStorageApi
-    .move(noteId, newParentId)
-    .then(() => {
-      resolve();
-    })
-    .catch((error) => {
-      reject(error);
-    });
-  })
+      .move(noteId, newParentId)
+      .then(() => {
+        resolve();
+      })
+      .catch(error => {
+        reject(error);
+      });
+  });
 }
 
 function getLinkToNote({ id }) {

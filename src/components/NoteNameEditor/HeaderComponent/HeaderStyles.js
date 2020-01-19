@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 export const StyledHeader = styled.div`
-
   position: absolute;
   top: 0;
   z-index: 3;

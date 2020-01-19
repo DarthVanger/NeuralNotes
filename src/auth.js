@@ -2,7 +2,7 @@ export default {
   haveToken: haveToken,
   saveToken: saveToken,
   getToken: getToken,
-  signedIn: signedIn
+  signedIn: signedIn,
 };
 
 function signedIn() {
@@ -30,7 +30,10 @@ function saveToken(tokenObject) {
   window.localStorage.setItem('gapiAccessToken', access_token);
   let expDate = new Date();
   expDate.setSeconds(expDate.getSeconds() + parseInt(expires_in));
-  window.localStorage.setItem('gapiAccessTokenExpirationDate', expDate.toISOString());
+  window.localStorage.setItem(
+    'gapiAccessTokenExpirationDate',
+    expDate.toISOString(),
+  );
   console.info('access token saved in localStorage');
 }
 

@@ -6,8 +6,8 @@ import { CHANGE_USER_HELP_SEEN_ACTION } from 'components/NotesPage/NotesPageActi
 
 const mapStateToProps = ({ notes: { isHelpViewed } }) => {
   return {
-    isHelpViewed
-  }
+    isHelpViewed,
+  };
 };
 
 const mapDispatchToProps = () => ({

@@ -5,10 +5,10 @@ import {
   clientId,
   apiKey,
   scopes,
-  discoveryDocs
+  discoveryDocs,
 } from 'api/google-client-config';
 import auth from 'auth';
-import scriptJS from "scriptjs";
+import scriptJS from 'scriptjs';
 
 const promise = loadGoogleClient();
 
@@ -26,7 +26,7 @@ function loadGoogleClient() {
   let spinner = siteGlobalLoadingBar.create('login');
   let checkGapiSpinner = spinner.create('checking google login');
   return new Promise(resolve => {
-    scriptJS("https://apis.google.com/js/api.js", checkGAPI);
+    scriptJS('https://apis.google.com/js/api.js', checkGAPI);
 
     // Poll until gapi is ready
     function checkGAPI() {
@@ -53,7 +53,7 @@ function loadGoogleClient() {
         apiKey: apiKey,
         discoveryDocs: discoveryDocs,
         clientId: clientId,
-        scope: scopes
+        scope: scopes,
       });
     }
 
@@ -70,7 +70,7 @@ function loadGoogleClient() {
     function onGapiClientInit() {
       if (auth.signedIn()) {
         gapi.client.setToken({
-          access_token: auth.getToken()
+          access_token: auth.getToken(),
         });
       }
 

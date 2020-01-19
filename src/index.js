@@ -14,8 +14,8 @@ import { GlobalStyle } from 'globalStyles';
 
 ReactDOM.render(
   <Provider store={store}>
-    <GlobalStyle/>
-    <AppContainer/>
+    <GlobalStyle />
+    <AppContainer />
   </Provider>,
-  document.getElementById('app-root')
+  document.getElementById('app-root'),
 );

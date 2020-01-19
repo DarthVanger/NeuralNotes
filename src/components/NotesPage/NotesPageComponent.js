@@ -12,9 +12,9 @@ export class NotesPageComponent extends Component {
 
     return (
       <>
-        <NotesMindMapContainer/>
-        <NotesContentEditorContainer/>
-        {!isHelpViewed && <ControlsHelpComponent onClose={closeHelp}/>}
+        <NotesMindMapContainer />
+        <NotesContentEditorContainer />
+        {!isHelpViewed && <ControlsHelpComponent onClose={closeHelp} />}
         <SearchPanelContainer />
       </>
     );

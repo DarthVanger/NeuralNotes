@@ -1,6 +1,14 @@
-import { all, call, put, takeEvery } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
+import {
+  all,
+  call,
+  put,
+  takeEvery,
+} from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
 
-import { CHANGE_USER_HELP_SEEN_ACTION, changeUserHelpSeenAction, } from 'components/NotesPage/NotesPageActions';
+import {
+  CHANGE_USER_HELP_SEEN_ACTION,
+  changeUserHelpSeenAction,
+} from 'components/NotesPage/NotesPageActions';
 
 const HELP_VIEWED_KEY = 'controls_help:viewed';
 
@@ -11,8 +19,8 @@ function* saveHelpSeenState({ data }) {
 function* readHelpSeenState() {
   const value = Boolean(
     JSON.parse(
-      yield call([localStorage, localStorage.getItem], HELP_VIEWED_KEY)
-    )
+      yield call([localStorage, localStorage.getItem], HELP_VIEWED_KEY),
+    ),
   );
   yield put(changeUserHelpSeenAction(value));
 }

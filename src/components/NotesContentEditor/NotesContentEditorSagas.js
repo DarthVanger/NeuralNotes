@@ -1,4 +1,7 @@
-import { all, takeEvery } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
+import {
+  all,
+  takeEvery,
+} from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
 
 import { SAVE_NOTE_CONTENT_ACTION } from 'components/NotesContentEditor/NotesContentEditorActions';
 import { toast } from 'react-toastify';
@@ -24,7 +27,5 @@ function* updateNoteContent({ data }) {
 }
 
 export function* notesContentEditorInit() {
-  yield all([
-    takeEvery(SAVE_NOTE_CONTENT_ACTION, updateNoteContent),
-  ]);
+  yield all([takeEvery(SAVE_NOTE_CONTENT_ACTION, updateNoteContent)]);
 }

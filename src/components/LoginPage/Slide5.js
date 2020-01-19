@@ -73,10 +73,18 @@ const Hint = styled.div`
 `;
 
 const CaptionTextSlide5 = ({ x = 0, y, fill = COLORS.aqua, text }) => {
-  return <text x={x} y={y} fill={fill}>{text}</text>;
+  return (
+    <text x={x} y={y} fill={fill}>
+      {text}
+    </text>
+  );
 };
 
-const CaptionBoxSlide5 = ({ viewBoxWidth = 60, viewBoxHeight = 40, ...rest }) => {
+const CaptionBoxSlide5 = ({
+  viewBoxWidth = 60,
+  viewBoxHeight = 40,
+  ...rest
+}) => {
   return <Caption viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`} {...rest} />;
 };
 
@@ -84,10 +92,25 @@ export default class Slide5 extends Component {
   render() {
     return (
       <Slide>
-        <H2>Frequently used notes<br />get bigger</H2>
-        <Hint className='hint-old-notes'>
-          <CaptionBoxSlide5 viewBoxWidth="160" viewBoxHeight="40" left="3%" top="10%" width="94%" fontWeight="700">
-            <CaptionTextSlide5 x="6" y="18" fill={COLORS.pearl} text="OLD UNUSED NOTES" />
+        <H2>
+          Frequently used notes
+          <br />
+          get bigger
+        </H2>
+        <Hint className="hint-old-notes">
+          <CaptionBoxSlide5
+            viewBoxWidth="160"
+            viewBoxHeight="40"
+            left="3%"
+            top="10%"
+            width="94%"
+            fontWeight="700">
+            <CaptionTextSlide5
+              x="6"
+              y="18"
+              fill={COLORS.pearl}
+              text="OLD UNUSED NOTES"
+            />
             <CaptionTextSlide5 x="36" y="38" fill={COLORS.pearl} text="ARE" />
             <CaptionTextSlide5 x="71" y="38" text="SMALL" />
           </CaptionBoxSlide5>
@@ -95,13 +118,33 @@ export default class Slide5 extends Component {
         </Hint>
         <Figure>
           <Img src={imageMindmap} shadow />
-          <CaptionBoxSlide5 viewBoxWidth="100" viewBoxHeight="21" left="34%" top="21%" width="15.5%" fontWeight="700">
-            <CaptionTextSlide5 x="6" y="18" fill={COLORS.rainfull} text="NeuralNotes" />
+          <CaptionBoxSlide5
+            viewBoxWidth="100"
+            viewBoxHeight="21"
+            left="34%"
+            top="21%"
+            width="15.5%"
+            fontWeight="700">
+            <CaptionTextSlide5
+              x="6"
+              y="18"
+              fill={COLORS.rainfull}
+              text="NeuralNotes"
+            />
           </CaptionBoxSlide5>
-          <CaptionBoxSlide5 viewBoxWidth="45" left="52.5%" top="48%" width="9.5%" fontWeight="700">
+          <CaptionBoxSlide5
+            viewBoxWidth="45"
+            left="52.5%"
+            top="48%"
+            width="9.5%"
+            fontWeight="700">
             <CaptionTextSlide5 y="16" text="Work" />
           </CaptionBoxSlide5>
-          <CaptionBoxSlide5 left="19.5%" top="51%" width="13.5%" fontWeight="700">
+          <CaptionBoxSlide5
+            left="19.5%"
+            top="51%"
+            width="13.5%"
+            fontWeight="700">
             <CaptionTextSlide5 y="16" text="Current" />
             <CaptionTextSlide5 y="32" text="Project" />
           </CaptionBoxSlide5>
@@ -122,11 +165,27 @@ export default class Slide5 extends Component {
             <CaptionTextSlide5 x="17" y="32" text="project" />
           </CaptionBoxSlide5>
         </Figure>
-        <Hint className='hint-recent-notes'>
+        <Hint className="hint-recent-notes">
           <ArrowUp src={arrow} />
-          <CaptionBoxSlide5 viewBoxWidth="170" viewBoxHeight="40" left="7%" top="35%" width="86%" fontWeight="700">
-            <CaptionTextSlide5 x="3" y="18" fill={COLORS.pearl} text="RECENT, FREQUENTLY" />
-            <CaptionTextSlide5 x="3" y="38" fill={COLORS.pearl} text="USED NOTES ARE" />
+          <CaptionBoxSlide5
+            viewBoxWidth="170"
+            viewBoxHeight="40"
+            left="7%"
+            top="35%"
+            width="86%"
+            fontWeight="700">
+            <CaptionTextSlide5
+              x="3"
+              y="18"
+              fill={COLORS.pearl}
+              text="RECENT, FREQUENTLY"
+            />
+            <CaptionTextSlide5
+              x="3"
+              y="38"
+              fill={COLORS.pearl}
+              text="USED NOTES ARE"
+            />
             <CaptionTextSlide5 x="137" y="38" text="BIG" />
           </CaptionBoxSlide5>
         </Hint>

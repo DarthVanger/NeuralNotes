@@ -13,10 +13,10 @@ export class AppComponent extends PureComponent {
         return null;
 
       case PAGES_ENUM.LOGIN:
-        return <LoginPageContainer/>;
+        return <LoginPageContainer />;
 
       case PAGES_ENUM.NOTES:
-        return <NotesPageContainer/>;
+        return <NotesPageContainer />;
 
       default:
         throw new Error(`unknown page: ${page}`);
@@ -26,5 +26,5 @@ export class AppComponent extends PureComponent {
 
 AppComponent.propTypes = {
   page: PropTypes.symbol.isRequired,
-  changePage: PropTypes.func.isRequired
+  changePage: PropTypes.func.isRequired,
 };

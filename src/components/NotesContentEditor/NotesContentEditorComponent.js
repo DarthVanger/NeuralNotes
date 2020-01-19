@@ -6,7 +6,7 @@ import noteStorage from 'storage/noteStorage';
 import {
   StyledLink,
   StyledSelectedNotesContent,
-  StyledTextArea
+  StyledTextArea,
 } from 'components/NotesContentEditor/NotesContentEditorStyles';
 
 const REAL_TIME_SAVING_INTERVAL_MS = 1000;
@@ -14,17 +14,23 @@ const REAL_TIME_SAVING_INTERVAL_MS = 1000;
 export class NotesContentEditorComponent extends Component {
   state = {
     text: '',
-    noteText: ''
+    noteText: '',
   };
 
   textAreaRef = React.createRef();
 
-  debouncedUpdate = _.debounce(this.updateNoteContent, REAL_TIME_SAVING_INTERVAL_MS);
+  debouncedUpdate = _.debounce(
+    this.updateNoteContent,
+    REAL_TIME_SAVING_INTERVAL_MS,
+  );
 
   render() {
     const { text } = this.state;
 
-    const { selectedNote, selectedNote: { isNote } } = this.props;
+    const {
+      selectedNote,
+      selectedNote: { isNote },
+    } = this.props;
     const link = noteStorage.getLinkToNote(selectedNote);
 
     return (
@@ -41,8 +47,7 @@ export class NotesContentEditorComponent extends Component {
             className="btn btn-primary btn-lg"
             target="_blank"
             rel="noopener noreferrer"
-            href={link}
-          >
+            href={link}>
             Open in Google Drive
           </StyledLink>
         )}
@@ -60,8 +65,8 @@ export class NotesContentEditorComponent extends Component {
     if (noteText !== state.noteText) {
       return {
         text: noteText,
-        noteText
-      }
+        noteText,
+      };
     }
     return null;
   }
@@ -76,5 +81,5 @@ export class NotesContentEditorComponent extends Component {
 NotesContentEditorComponent.propTypes = {
   selectedNote: PropTypes.object.isRequired,
   noteText: PropTypes.string.isRequired,
-  updateNoteContent: PropTypes.func.isRequired
+  updateNoteContent: PropTypes.func.isRequired,
 };

@@ -3,7 +3,7 @@ import _ from 'underscore';
 import googleDriveApi from 'api/google-drive-api';
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
 
-'use strict';
+('use strict');
 
 let APP_FOLDER_NAME = 'NeuralNotes';
 let appRootFolder;
@@ -24,7 +24,7 @@ export default {
   remove,
   move,
   updateFileName,
-  updateNoteContentFileName
+  updateNoteContentFileName,
 };
 
 function setAppRootFolder(folder) {
@@ -41,20 +41,23 @@ function scanDrive() {
   console.debug('Scan note storage...');
   return new Promise(resolve => {
     spinner.show();
-    findAppFolder().then(function (searchResult) {
-      if (searchResult.length === 0) {
-        console.info('App root folder on Google Drive not found, create a new one.');
-        createAppRootFolder()
-          .then(setAppRootFolder)
-          .then(createAppRootTextFile)
-          .then(() => resolve(appRootFolder));
-      } else {
-        console.info('App root folder found on Google Drive');
-        let searchedAppRootFolder = searchResult[0];
-        setAppRootFolder(searchedAppRootFolder);
-        resolve(searchedAppRootFolder);
-      }
-    })
+    findAppFolder()
+      .then(function(searchResult) {
+        if (searchResult.length === 0) {
+          console.info(
+            'App root folder on Google Drive not found, create a new one.',
+          );
+          createAppRootFolder()
+            .then(setAppRootFolder)
+            .then(createAppRootTextFile)
+            .then(() => resolve(appRootFolder));
+        } else {
+          console.info('App root folder found on Google Drive');
+          let searchedAppRootFolder = searchResult[0];
+          setAppRootFolder(searchedAppRootFolder);
+          resolve(searchedAppRootFolder);
+        }
+      })
       .finally(() => spinner.hide());
   });
 }
@@ -66,24 +69,25 @@ function fetchChildNotes(note) {
   spinner.show();
   return new Promise((resolve, reject) => {
     console.debug('[Get] Child notes for: "' + note.name + '"');
-    getFiles(note.id).then(function (files) {
-      const children = [];
-      _.each(files, function (file) {
-        if (file.name === note.name + '.txt') {
-          return;
-        }
-        file.isNote = isNote(file);
-        children.push(file);
+    getFiles(note.id)
+      .then(function(files) {
+        const children = [];
+        _.each(files, function(file) {
+          if (file.name === note.name + '.txt') {
+            return;
+          }
+          file.isNote = isNote(file);
+          children.push(file);
+        });
+        console.debug('[Loaded] notes for "' + note.id + '"');
+        resolve(children);
+      })
+      .catch(() => {
+        reject('Connection with Google Drive failed.\n Can not get files');
+      })
+      .finally(function() {
+        spinner.hide();
       });
-      console.debug('[Loaded] notes for "' + note.id + '"');
-      resolve(children);
-    })
-    .catch(() => {
-      reject('Connection with Google Drive failed.\n Can not get files');
-    })
-    .finally(function () {
-      spinner.hide();
-    });
   });
 }
 
@@ -99,7 +103,7 @@ function isNote(file) {
  * Fetch parent folder
  */
 function fetchParentNote(noteId) {
-  return fetchNoteById(noteId).then(function (parentNote) {
+  return fetchNoteById(noteId).then(function(parentNote) {
     return parentNote;
   });
 }
@@ -113,20 +117,19 @@ function fetchNoteById(noteId) {
 
   let request = googleDriveApi.client.files.get({
     fileId: noteId,
-    fields: googleDriveApi.FILE_FIELDS
+    fields: googleDriveApi.FILE_FIELDS,
   });
 
   return new Promise(resolve => {
-    request.execute(function (resp) {
+    request.execute(function(resp) {
       console.debug('[Loaded] Note folder for: "' + noteId + '"');
       let file = resp;
       file = googleDriveApi.parseParents(file);
       resolve(file);
     });
-  })
-    .finally(function () {
-      spinner.hide();
-    });
+  }).finally(function() {
+    spinner.hide();
+  });
 }
 
 /**
@@ -134,14 +137,14 @@ function fetchNoteById(noteId) {
  */
 function getFiles(folderId) {
   const request = gapi.client.drive.files.list({
-    'pageSize': 10,
-    'fields': googleDriveApi.FILE_LIST_FIELDS,
-    'q': '"' + folderId + '" in parents'
+    pageSize: 10,
+    fields: googleDriveApi.FILE_LIST_FIELDS,
+    q: '"' + folderId + '" in parents',
   });
 
   spinner.show();
   return new Promise((resolve, reject) => {
-    request.execute(function (resp) {
+    request.execute(function(resp) {
       console.debug('[Loaded] Files: ', resp);
       if (!resp.files) {
         spinner.hide();
@@ -165,17 +168,21 @@ function getFiles(folderId) {
 function createAppRootFolder() {
   console.info('Creating a new App root folder...');
   spinner.show();
-  return googleDriveApi.createDirectory({
-    name: APP_FOLDER_NAME
-  }).then(function (response) {
-    if (response.code && response.code === -1) {
-      throw new Error('createAppRootFolder error (code = -1)! Response: response');
-    }
-    console.info('Created App root folder');
+  return googleDriveApi
+    .createDirectory({
+      name: APP_FOLDER_NAME,
+    })
+    .then(function(response) {
+      if (response.code && response.code === -1) {
+        throw new Error(
+          'createAppRootFolder error (code = -1)! Response: response',
+        );
+      }
+      console.info('Created App root folder');
 
-    return response;
-  })
-    .finally(function () {
+      return response;
+    })
+    .finally(function() {
       spinner.hide();
     });
 }
@@ -189,13 +196,13 @@ function createAppRootTextFile({ id }) {
   return createFile({
     name: APP_FOLDER_NAME + '.txt',
     content: 'Edit this text...',
-    parents: [id]
+    parents: [id],
   })
-    .then(function (response) {
+    .then(function(response) {
       console.info('Created app root textfile');
       return response;
     })
-    .catch(function (error) {
+    .catch(function(error) {
       console.error('Failed to create App Root Text file. Error:', error);
       throw error;
     });
@@ -207,10 +214,9 @@ function createAppRootTextFile({ id }) {
 function findAppFolder() {
   return googleDriveApi.findByName({
     name: APP_FOLDER_NAME,
-    folderId: 'root'
+    folderId: 'root',
   });
 }
-
 
 /**
  * Create a file with text content on google drive.
@@ -228,20 +234,19 @@ function createFile(options) {
   spinner.show();
   return createEmptyFile({
     name: options.name,
-    parents: options.parents
+    parents: options.parents,
   })
-    .then(function (newFile) {
+    .then(function(newFile) {
       console.debug('Created a new file: ' + newFile.name);
       return updateFile(newFile, options.content);
     })
-    .then(function (updatedFile) {
+    .then(function(updatedFile) {
       console.debug('Updated file: ' + updatedFile.name);
       return updatedFile;
     })
-    .finally(function () {
+    .finally(function() {
       spinner.hide();
     });
-
 }
 
 /**
@@ -252,20 +257,18 @@ function createEmptyFile(options) {
   console.debug('Creating empty file...');
   let request = googleDriveApi.client.files.create({
     name: options.name,
-    mimeType: "text/plain",
-    parents: options.parents
-
+    mimeType: 'text/plain',
+    parents: options.parents,
   });
 
   spinner.show();
   return new Promise(resolve => {
-    request.execute(function (newFile) {
+    request.execute(function(newFile) {
       resolve(newFile);
     });
-  })
-    .finally(function () {
-      spinner.hide();
-    });
+  }).finally(function() {
+    spinner.hide();
+  });
 }
 
 /**
@@ -278,83 +281,88 @@ function updateFile(createdFile, content) {
     path: '/upload/drive/v3/files/' + createdFile.id,
     method: 'PATCH',
     params: {
-      uploadType: 'media'
+      uploadType: 'media',
     },
-    body: content
+    body: content,
   });
 
   return new Promise(resolve => {
-    request.execute(function (resp) {
+    request.execute(function(resp) {
       resolve(resp);
     });
-  })
-    .finally(function () {
-      spinner.hide();
-    });
+  }).finally(function() {
+    spinner.hide();
+  });
 }
 
 function updateFileName(options) {
   return googleDriveApi.updateFileName(options);
 }
 
-
 function getNoteContent(note) {
-
   if (!note) {
-    throw new Error('noteStorageApi.getNoteContent(): passed note is undefined');
+    throw new Error(
+      'noteStorageApi.getNoteContent(): passed note is undefined',
+    );
   }
   console.info('[Get] note content for "' + note.name + '"...');
-  return findNoteContentFile(note)
-    .then(function (noteContentFile) {
-      if (!noteContentFile) throw new Error('noteStorageApi.getNoteContent(): noteContentFile is undefined');
-      return getTextFileContents({
-        fileId: noteContentFile.id
-      });
+  return findNoteContentFile(note).then(function(noteContentFile) {
+    if (!noteContentFile)
+      throw new Error(
+        'noteStorageApi.getNoteContent(): noteContentFile is undefined',
+      );
+    return getTextFileContents({
+      fileId: noteContentFile.id,
     });
+  });
 }
 
 function findNoteContentFile(note) {
-  return googleDriveApi.findByName({
-    name: note.name + '.txt',
-    folderId: note.id
-  }).then(function (foundFiles) {
-    if (!foundFiles) {
-      throw new Error('noteStorage.getNoteContent(): no note content file found for note: "' + note.name + '"');
-    }
+  return googleDriveApi
+    .findByName({
+      name: note.name + '.txt',
+      folderId: note.id,
+    })
+    .then(function(foundFiles) {
+      if (!foundFiles) {
+        throw new Error(
+          'noteStorage.getNoteContent(): no note content file found for note: "' +
+            note.name +
+            '"',
+        );
+      }
 
-    const noteContentFile = foundFiles[0];
-    return noteContentFile;
-  });
+      const noteContentFile = foundFiles[0];
+      return noteContentFile;
+    });
 }
 
 function getTextFileContents(options) {
   const requestParams = {
     fileId: options.fileId,
-    alt: 'media'
+    alt: 'media',
   };
 
   const request = gapi.client.request({
     path: '/drive/v3/files/' + requestParams.fileId,
     method: 'GET',
     params: {
-      alt: 'media'
-    }
+      alt: 'media',
+    },
   });
-
 
   spinner.show();
   return new Promise(resolve => {
-    request.execute(function (gapiReturnsFalseHereForBlobs, responsePlain) {
+    request.execute(function(gapiReturnsFalseHereForBlobs, responsePlain) {
       const responseObject = JSON.parse(responsePlain);
       const responseBody = responseObject.gapiRequest.data.body;
       console.info('[Loaded] Text file contents for a file');
 
       resolve(responseBody);
     });
-  })
-    .finally(function () {
-      spinner.hide();
-    });
+  }).finally(function() {
+    spinner.hide();
+  });
 }
 
 /**
@@ -367,21 +375,23 @@ function create(note, parentNote) {
   }
 
   spinner.show();
-  return googleDriveApi.createDirectory({
-    name: note.name,
-    parents: [parentNote.id]
-  }).then(function (createdDirectory) {
-    note.id = createdDirectory.id;
-    return createFile({
-      name: note.name + '.txt',
-      content: note.content,
-      parents: [createdDirectory.id],
-    });
-  })
+  return googleDriveApi
+    .createDirectory({
+      name: note.name,
+      parents: [parentNote.id],
+    })
+    .then(function(createdDirectory) {
+      note.id = createdDirectory.id;
+      return createFile({
+        name: note.name + '.txt',
+        content: note.content,
+        parents: [createdDirectory.id],
+      });
+    })
     .then(() => {
       return note;
     })
-    .finally(function () {
+    .finally(function() {
       spinner.hide();
     });
 }
@@ -393,80 +403,82 @@ function update(note) {
   updateSpinner.show();
 
   return findNoteContentFile(note)
-    .then(function (noteContentFile) {
+    .then(function(noteContentFile) {
       return googleDriveApi.updateFile({
         fileId: noteContentFile.id,
-        text: note.content
+        text: note.content,
       });
     })
-    .then(function (response) {
+    .then(function(response) {
       if (response.error) {
         console.error('Failed to update file content! Response: ', response);
         throw response;
       }
     })
-    .finally(function () {
+    .finally(function() {
       updateSpinner.hide();
     });
-
 }
 
 function updateNoteContentFileName({ note, newName }) {
   return findNoteContentFile(note)
-    .then(function (noteContentFile) {
+    .then(function(noteContentFile) {
       return googleDriveApi.updateFileName({
         id: noteContentFile.id,
-        name: newName + '.txt'
+        name: newName + '.txt',
       });
-    }).catch((error) => {
-      throw new Error('noteStorageApi.updateNoteContentFileName(): could not find note content file. Error: ', error);
+    })
+    .catch(error => {
+      throw new Error(
+        'noteStorageApi.updateNoteContentFileName(): could not find note content file. Error: ',
+        error,
+      );
     });
 }
 
 function remove(note) {
   const requestParams = {
-    "fileId": note.id,
-    "mimeType": "application/vnd.google-apps.folder",
+    fileId: note.id,
+    mimeType: 'application/vnd.google-apps.folder',
   };
 
   const request = googleDriveApi.client.files.delete(requestParams);
 
   spinner.show();
   return new Promise(resolve => {
-    request.execute(function (response) {
+    request.execute(function(response) {
       if (response.error) {
         console.error('Failed to delete a note "' + note.name + '"');
       }
       resolve(response);
     });
-
-  }).finally(function () {
+  }).finally(function() {
     spinner.hide();
   });
 }
 
 function move(noteId, newParentId) {
   spinner.show();
-  const request = gapi.client.request({ 
-    path: '/drive/v2/files/' + noteId, 
-    method: 'PUT', 
-    params: { 'uploadType': 'multipart', 'alt': 'json' }, 
-    body: { parents: [{ 'id': newParentId }] }
+  const request = gapi.client.request({
+    path: '/drive/v2/files/' + noteId,
+    method: 'PUT',
+    params: { uploadType: 'multipart', alt: 'json' },
+    body: { parents: [{ id: newParentId }] },
   });
 
   return new Promise((resolve, reject) => {
-    request.execute(function (response, responseRaw) {
-      if(response) {
+    request.execute(function(response, responseRaw) {
+      if (response) {
         resolve(response);
       } else {
         reject(responseRaw);
       }
+    });
+  })
+    .catch(e => {
+      throw new Error(e);
     })
-  })
-  .catch((e) => {
-    throw new Error(e);
-  })
-  .finally(() => {
-    spinner.hide();
-  });
+    .finally(() => {
+      spinner.hide();
+    });
 }

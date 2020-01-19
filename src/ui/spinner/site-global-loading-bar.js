@@ -2,7 +2,9 @@ import './site-global-loading-bar.css';
 import './colorful-spinner.css';
 
 let backgroundSpinner = document.getElementById('background-spinner');
-let loadersContainer = document.getElementById('site-global-loading-bar-messages-container');
+let loadersContainer = document.getElementById(
+  'site-global-loading-bar-messages-container',
+);
 let loadingBar = document.getElementById('site-global-loading-bar');
 
 hideLoadingBar();
@@ -36,12 +38,12 @@ function create(name) {
   let timeoutId;
   let loaderInstance = {
     name: name,
-    create: function (subName) {
+    create: function(subName) {
       return loadingBarService.create(name + ' | ' + subName);
     },
-    show: function () {
+    show: function() {
       showLoadingBar();
-      timeoutId = setTimeout(function () {
+      timeoutId = setTimeout(function() {
         if (!isShown) {
           loadersContainer.append(msgEl);
         }
@@ -49,16 +51,16 @@ function create(name) {
         isShown = true;
       }, showDelay);
     },
-    hide: function () {
+    hide: function() {
       window.clearTimeout(timeoutId);
       msgEl.classList.add('hidden-message');
       hideLoadingBar(name);
       let REMOVE_ANIMATION_DURATION = 2000;
-      setTimeout(function () {
+      setTimeout(function() {
         msgEl.remove();
       }, REMOVE_ANIMATION_DURATION);
-    }
-  }
+    },
+  };
   loaderInstances.push(loaderInstance);
   return loaderInstance;
 }

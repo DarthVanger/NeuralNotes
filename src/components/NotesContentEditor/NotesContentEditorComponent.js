@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import _ from 'underscore';
+import { debounce } from '../../helpers/debounce';
 
 import noteStorage from 'storage/noteStorage';
 import {
@@ -19,7 +19,7 @@ export class NotesContentEditorComponent extends Component {
 
   textAreaRef = React.createRef();
 
-  debouncedUpdate = _.debounce(
+  debouncedUpdate = debounce(
     this.updateNoteContent,
     REAL_TIME_SAVING_INTERVAL_MS,
   );

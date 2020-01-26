@@ -19,7 +19,7 @@ const H2 = styled.h2`
 
 const Figure = styled.figure`
   position: relative;
-  width: 74%;
+  width: 90%;
   margin: auto;
   height: auto;
 `;

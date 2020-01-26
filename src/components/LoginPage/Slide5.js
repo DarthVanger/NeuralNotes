@@ -12,7 +12,7 @@ const Slide = styled.section`
   .hint-old-notes {
     position: absolute;
     right: 5%;
-    width: 22%;
+    width: 24%;
     height: 11%;
     top: 22%;
 
@@ -101,9 +101,9 @@ export default class Slide5 extends Component {
           <CaptionBoxSlide5
             viewBoxWidth="160"
             viewBoxHeight="40"
-            left="3%"
+            left="7%"
             top="10%"
-            width="94%"
+            width="86%"
             fontWeight="700">
             <CaptionTextSlide5
               x="6"

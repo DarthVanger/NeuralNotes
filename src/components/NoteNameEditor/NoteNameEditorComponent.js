@@ -19,7 +19,6 @@ export class NoteNameEditorComponent extends Component {
     const {
       onChangeParentClick,
       onDeleteClick,
-      onUploadFileClick,
       isChangeParentModeActive,
     } = this.props;
 
@@ -28,7 +27,6 @@ export class NoteNameEditorComponent extends Component {
         <HeaderComponent
           onChangeParentClick={onChangeParentClick}
           onDeleteClick={onDeleteClick}
-          onUploadFileClick={onUploadFileClick}
           isChangeParentModeActive={isChangeParentModeActive}
         />
         <StyledNoteEditorTextArea
@@ -60,6 +58,5 @@ NoteNameEditorComponent.propTypes = {
   onChange: PropTypes.func.isRequired,
   onChangeParentClick: PropTypes.func.isRequired,
   onDeleteClick: PropTypes.func.isRequired,
-  onUploadFileClick: PropTypes.func.isRequired,
   isChangeParentModeActive: PropTypes.bool.isRequired,
 };

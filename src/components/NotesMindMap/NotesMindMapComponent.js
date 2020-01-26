@@ -58,7 +58,6 @@ export class NotesMindMapComponent extends Component {
             onChange={this.handleNoteNameUpdate}
             onChangeParentClick={this.props.onChangeParentButtonClick}
             onDeleteClick={this.onDeleteClick}
-            onUploadFileClick={this.onUploadFileClick}
             isChangeParentModeActive={isChangeParentModeActive}
           />
         )}
@@ -156,10 +155,6 @@ export class NotesMindMapComponent extends Component {
   onDeleteClick = () => {
     let note = this.props.selectedNote;
     this.props.deleteNote({ note });
-  };
-
-  onUploadFileClick = () => {
-    window.open(noteStorage.getLinkToNote(this.props.selectedNote));
   };
 }
 

@@ -3,4 +3,5 @@ bower_components
 *.swp
 package-lock.json
 .idea
+/.vscode/
 dist

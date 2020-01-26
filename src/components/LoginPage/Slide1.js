@@ -10,7 +10,7 @@ const Slide = styled.section`
   text-align: center;
 
   img {
-    width: 74%;
+    width: 84%;
   }
 `;
 

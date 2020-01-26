@@ -1,4 +1,4 @@
-import { all } from 'redux-saga/effects';
+import { all, fork } from 'redux-saga/effects';
 import createSagaMiddleware from 'redux-saga';
 import { reducers } from 'reducers';
 import { applyMiddleware, createStore } from 'redux';
@@ -10,12 +10,26 @@ import { loginInit } from 'components/LoginPage/LoginPageSagas';
 import { notesInit } from 'components/NotesPage/NotesPageSagas';
 import { notesContentEditorInit } from 'components/NotesContentEditor/NotesContentEditorSagas';
 import { noteMindMapInit } from 'components/NotesMindMap/NotesMindMapSagas';
+import { attachmentsInit } from 'components/Attachments/AttachmentsSagas';
 
 const sagaMiddleware = createSagaMiddleware();
 
+const composeEnhancers = composeWithDevTools({
+  serialize: {
+    replacer: (__, value) => {
+      if (value instanceof File) {
+        // we want to see files in the redux-dev-tools
+        return value.name;
+      }
+
+      return value;
+    },
+  },
+});
+
 export const store = createStore(
   reducers,
-  composeWithDevTools(applyMiddleware(sagaMiddleware)),
+  composeEnhancers(applyMiddleware(sagaMiddleware)),
 );
 
 sagaMiddleware.run(rootSaga);
@@ -30,5 +44,6 @@ export function* rootSaga() {
     notesInit(),
     noteMindMapInit(),
     notesContentEditorInit(),
+    fork(attachmentsInit),
   ]);
 }

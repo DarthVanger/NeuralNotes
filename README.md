@@ -44,6 +44,22 @@ Examples:
 #### Styled Components
 - Use “Styled” prefix for styled components. It will helps you yo understand in code what kind of components you are using. For example, if you override some styles for NoteComponent, please, gave it “StyledNote” name.
 
+#### Codestyle
+
+The project uses eslint + prettier configuration. To use it fully, configure your editor. Here is a configuration example for vscode:
+
+```
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}
+```
+
+Short explanation how it works:
+
+Eslint uses `eslint-config-prettier` which uses `eslint-plugin-prettier` behind the scene as special rule and avoids conflicts with defined eslint rules.
+
 ## Launch locally
 ```
 git clone https://github.com/DarthVanger/NeuralNotes.git

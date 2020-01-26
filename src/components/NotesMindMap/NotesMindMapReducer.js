@@ -14,8 +14,8 @@ import {
 import { ROOT_NOTE_FOUND_ACTION } from 'components/App/AppActions.js';
 import {
   updateGroupOfOldParent,
-  addGroupTagToNote,
-  removeNoteFromGraph,
+  addGroupTagToNodes,
+  removeNodeFromGraph,
 } from '../../helpers/graph';
 
 const defaultState = {
@@ -23,105 +23,119 @@ const defaultState = {
   showNoteNameEditor: false,
   noteText: '',
   isChangeParentModeActive: false,
-  notes: [],
+  nodes: [],
   edges: [],
 };
 
 export const notesMindMapReducer = (state = defaultState, { type, data }) => {
   const handleSelectedNoteChildrenFetchedAction = () => {
-    let notes = [...state.notes];
+    let nodes = [...state.nodes];
     let edges = [...state.edges];
 
     const childNotes = data;
     if (childNotes.length) {
       childNotes.forEach(child => {
-        notes.push({
-          id: child.id,
-          label: child.name,
-          name: child.name,
-          isNote: child.isNote,
-          group: 'children',
-        });
+        nodes = addNoteToGraph(nodes, child);
         edges.push({ from: child.parent.id, to: child.id });
       });
-      notes = addGroupTagToNote(notes, state.selectedNote.id);
+      nodes = addGroupTagToNodes(nodes, edges);
     }
-    return { ...state, notes, edges };
+    return {
+      ...state,
+      nodes,
+      edges,
+    };
   };
 
   const handleEditNoteNameAction = () => {
     const noteToEdit = data;
-    return { ...state, showNoteNameEditor: true, selectedNote: noteToEdit };
+    return {
+      ...state,
+      showNoteNameEditor: true,
+      selectedNote: noteToEdit,
+    };
   };
 
   const handleNoteNameUpdateRequestSuccessAction = () => {
     const updatedNote = data;
-    let notes = [...state.notes];
-    notes = notes.filter(note => note.id !== updatedNote.id);
-    notes.push({
-      id: updatedNote.id,
-      label: updatedNote.name,
-      name: updatedNote.name,
-      isNote: updatedNote.isNote,
-    });
-    return { ...state, notes };
+    let nodes = [...state.nodes];
+    nodes = nodes.filter(note => note.id !== updatedNote.id);
+    return {
+      ...state,
+      nodes: addNoteToGraph(nodes, updatedNote),
+    };
   };
 
   const handleCreateNoteSuccessAction = () => {
     const newNote = data;
-    let notes = [...state.notes];
+    let nodes = [...state.nodes];
     let edges = [...state.edges];
-    notes.push({
-      id: newNote.id,
-      name: newNote.name,
-      label: newNote.name,
-      isNote: newNote.isNote,
-      group: 'children',
-    });
     edges.push({ from: newNote.parent.id, to: newNote.id });
-    notes = addGroupTagToNote(notes, state.selectedNote.id);
-    return { ...state, notes, edges };
+    nodes = addGroupTagToNodes(addNoteToGraph(nodes, newNote), edges);
+    return {
+      ...state,
+      nodes,
+      edges,
+    };
   };
 
   const handleDeleteNoteRequestSuccessAction = () => {
     const noteToDelete = data;
-    let notes = [...state.notes];
-    let edges = [...state.edges];
-    let graph = removeNoteFromGraph(notes, edges, noteToDelete);
-    notes = graph.notes;
-    edges = graph.edges;
-    return { ...state, notes, edges };
+    const { nodes, edges } = removeNodeFromGraph(
+      state.nodes,
+      state.edges,
+      noteToDelete,
+    );
+    return {
+      ...state,
+      nodes,
+      edges,
+    };
   };
 
   const handleChangeParentNoteRequestSuccess = () => {
     const noteId = data.noteId;
     const newParentId = data.newParentId;
     let edges = [...state.edges];
-    let notes = [...state.notes];
+    let nodes = [...state.nodes];
     const oldParent = edges.find(edge => edge.to === noteId);
     edges = edges.filter(edge => edge.to !== noteId);
     edges.push({ from: newParentId, to: noteId });
 
-    notes = updateGroupOfOldParent(notes, edges, newParentId, oldParent.from);
+    nodes = updateGroupOfOldParent(nodes, edges, newParentId, oldParent.from);
     return {
       ...state,
       isChangeParentModeActive: false,
       showNoteNameEditor: false,
       edges,
-      notes,
+      nodes,
     };
   };
 
   const handleChangeSelectedNoteAction = () => {
-    const newState = { ...state };
-    newState.selectedNote = data.note;
-    return { ...state, selectedNote: data.note };
+    return {
+      ...state,
+      selectedNote: data.note,
+    };
   };
 
   const addRootToGraph = () => {
-    let notes = [...state.notes];
-    notes.push({ id: data.id, label: data.name });
-    return { ...state, notes };
+    let nodes = [...state.nodes];
+    nodes.push({ id: data.id, label: data.name, name: data.name });
+    return {
+      ...state,
+      nodes,
+    };
+  };
+
+  const addNoteToGraph = (nodes, newNote) => {
+    nodes.push({
+      id: newNote.id,
+      label: newNote.name,
+      name: newNote.name,
+      isNote: newNote.isNote,
+    });
+    return nodes;
   };
 
   switch (type) {

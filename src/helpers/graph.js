@@ -1,38 +1,45 @@
-export function removeNoteFromGraph(nodes, edges, noteToDelete) {
+function doesDeletedNodeHasSiblings(edges, parentId) {
+  return edges.find(edge => edge.from === parentId);
+}
+
+function revokeParentStatus(nodes, parentId) {
+  return nodes.map(node => {
+    return node.id === parentId ? { ...node, group: 'children' } : node;
+  });
+}
+
+const hasChildren = (edges, nodeId) =>
+  Boolean(edges.find(edge => edge.from === nodeId));
+
+export function removeNodeFromGraph(nodes, edges, nodeToDelete) {
   let newNodes = [...nodes];
   let newEdges = [...edges];
-  let parentEdge = newEdges.find(edge => edge.to === noteToDelete.id);
+  let parentId = newEdges.find(edge => edge.to === nodeToDelete.id).from;
 
-  removeChild(noteToDelete.id);
-  newNodes = newEdges.find(edge => edge.from === parentEdge.from) //check if there are siblings of deleted node if not revoke parant status
+  removenode(nodeToDelete.id);
+
+  newNodes = doesDeletedNodeHasSiblings(newEdges, parentId)
     ? newNodes
-    : newNodes.map(node => {
-        return node.id === parentEdge.from
-          ? { ...node, group: 'children' }
-          : node;
-      });
-  return { notes: newNodes, edges: newEdges };
+    : revokeParentStatus(newNodes, parentId);
+  return { nodes: newNodes, edges: newEdges };
 
-  function removeChild(childNoteId) {
-    newNodes = newNodes.filter(note => note.id !== childNoteId);
-    if (newEdges.find(edge => edge.from === childNoteId)) {
-      // check if the node has children
+  function removenode(nodeId) {
+    newNodes = newNodes.filter(node => node.id !== nodeId);
+    if (hasChildren(newEdges, nodeId)) {
       newEdges.forEach(edge => {
-        if (edge.from === childNoteId) {
-          removeChild(edge.to);
-          newEdges = newEdges.filter(e => e.from !== childNoteId);
+        if (edge.from === nodeId) {
+          removenode(edge.to);
+          newEdges = newEdges.filter(e => e.from !== nodeId);
         }
       });
-      newEdges = newEdges.filter(e => e.to !== childNoteId); // remove the edge from parent to the deleted node
-    } else {
-      newEdges = newEdges.filter(e => e.to !== childNoteId);
-      return;
     }
+    newEdges = newEdges.filter(e => e.to !== nodeId); // remove the edge from parent to the deleted node
+    return;
   }
 }
 
 export function updateGroupOfOldParent(nodes, edges, newParentId, oldParentId) {
-  nodes = nodes.map(node => {
+  return nodes.map(node => {
     if (node.id === newParentId) return { ...node, group: 'parent' };
     else if (
       node.id === oldParentId &&
@@ -42,14 +49,12 @@ export function updateGroupOfOldParent(nodes, edges, newParentId, oldParentId) {
     }
     return node;
   });
-  return nodes;
 }
 
-export function addGroupTagToNote(nodes, selectedNoteId) {
-  nodes = nodes.map(note =>
-    note.isNote && note.id === selectedNoteId
-      ? { ...note, group: 'parent' }
-      : note,
+export function addGroupTagToNodes(nodes, edges) {
+  return nodes.map(node =>
+    node.isNote && hasChildren(edges, node.id)
+      ? { ...node, group: 'parent' }
+      : node,
   );
-  return nodes;
 }

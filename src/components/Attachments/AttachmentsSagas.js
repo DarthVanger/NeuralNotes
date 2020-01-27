@@ -41,7 +41,7 @@ const createUploaderCallback = emitter => (result, error) => {
   handleResult();
 };
 
-function createUploadFileChannel(file) {
+function createUploadFileChannel(file, uploadFolderId) {
   return eventChannel(emitter => {
     const fileReader = new FileReader();
     fileReader.fileName = file.name;
@@ -58,6 +58,7 @@ function createUploadFileChannel(file) {
         fileType: f.fileType,
         fileBuffer: f.result,
         accessToken: auth.getToken(),
+        folderId: uploadFolderId,
       };
       const ru = new ResumableUploadToGoogleDrive();
 
@@ -70,27 +71,34 @@ function createUploadFileChannel(file) {
   });
 }
 
-function mapChannelEventToAction(event, file) {
+function mapChannelEventToAction(event, file, uploadFolderId) {
   const mapEventToAction = {
-    initialized: () => Actions.fileUploadInitialized(file),
-    getLocation: () => Actions.fileUploadGetLocation(file),
-    started: () => Actions.fileUploadingStarted(file),
-    uploading: () => Actions.fileUploadingProgressUpdated(file, event.progress),
-    done: () => Actions.fileUploadingSuccess(file, event.result),
-    error: () => Actions.fileUploadingFailure(file, event.error),
+    initialized: () => Actions.fileUploadInitialized(file, uploadFolderId),
+    getLocation: () => Actions.fileUploadGetLocation(file, uploadFolderId),
+    started: () => Actions.fileUploadingStarted(file, uploadFolderId),
+    uploading: () =>
+      Actions.fileUploadingProgressUpdated(
+        file,
+        uploadFolderId,
+        event.progress,
+      ),
+    done: () =>
+      Actions.fileUploadingSuccess(file, uploadFolderId, event.result),
+    error: () =>
+      Actions.fileUploadingFailure(file, uploadFolderId, event.error),
   };
 
   return mapEventToAction[event.type]();
 }
 
-function* uploadFile(file) {
-  const channel = yield call(createUploadFileChannel, file);
+function* uploadFile(file, uploadFolderId) {
+  const channel = yield call(createUploadFileChannel, file, uploadFolderId);
 
   try {
     while (true) {
       const event = yield take(channel);
 
-      yield put(mapChannelEventToAction(event, file));
+      yield put(mapChannelEventToAction(event, file, uploadFolderId));
     }
   } catch (error) {
     console.log('atata error', error);
@@ -101,9 +109,9 @@ function* uploadFile(file) {
 }
 
 function* addUploadingFilesSaga(action) {
-  const { files } = action.payload;
+  const { files, uploadFolderId } = action.payload;
 
-  yield all(files.map(item => fork(uploadFile, item)));
+  yield all(files.map(item => fork(uploadFile, item, uploadFolderId)));
 }
 
 export function* attachmentsInit() {

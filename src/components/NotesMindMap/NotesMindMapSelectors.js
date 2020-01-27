@@ -7,6 +7,10 @@ export const getSelectedNote = createSelector(
   mindMapState => mindMapState.selectedNote,
 );
 
+export const getSelectedNoteId = createSelector(getSelectedNote, selectedNote =>
+  selectedNote ? selectedNote.id : null,
+);
+
 export const isSelectedNoteRealNote = createSelector(
   getSelectedNote,
   selectedNote => selectedNote && selectedNote.isNote,

@@ -1,37 +1,42 @@
 import { createAction } from 'redux-actions';
 
-export const addUploadingFiles = createAction('ADD_UPLOADING_FILES', files => ({
-  files,
-}));
+export const addUploadingFiles = createAction(
+  'ADD_UPLOADING_FILES',
+  (files, uploadFolderId) => ({
+    files,
+    uploadFolderId,
+  }),
+);
 
 export const fileUploadInitialized = createAction(
   'FILE_UPLOAD_INITIALIZED',
-  file => ({ file }),
+  (file, uploadFolderId) => ({ file, uploadFolderId }),
 );
 
 export const fileUploadGetLocation = createAction(
   'FILE_UPLOAD_GET_LOCATION',
-  file => ({ file }),
+  (file, uploadFolderId) => ({ file, uploadFolderId }),
 );
 
 export const fileUploadingStarted = createAction(
   'FILE_UPLOADING_STARTED',
-  file => ({
+  (file, uploadFolderId) => ({
     file,
+    uploadFolderId,
   }),
 );
 
 export const fileUploadingProgressUpdated = createAction(
   'FILE_UPLOADING_PROGRESSS_UPDATED',
-  (file, progress) => ({ file, progress }),
+  (file, uploadFolderId, progress) => ({ file, uploadFolderId, progress }),
 );
 
 export const fileUploadingSuccess = createAction(
   'FILE_UPLOADING_SUCCESS',
-  (file, result) => ({ file, result }),
+  (file, uploadFolderId, result) => ({ file, uploadFolderId, result }),
 );
 
 export const fileUploadingFailure = createAction(
   'FILE_UPLOADING_FAILURE',
-  (file, error) => ({ file, error }),
+  (file, uploadFolderId, error) => ({ file, uploadFolderId, error }),
 );

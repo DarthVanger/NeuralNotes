@@ -40,6 +40,7 @@ const StyledUploadButton = styled.button`
 const UploadButtonComponent = () => {
   const dispatch = useDispatch();
   const isUploadButtonVisible = useSelector(Selectors.isUploadButtonVisible);
+  const uploadFolderId = useSelector(Selectors.getUploadFolderId);
   const alreadyUploadingFiles = useSelector(Selectors.getUploadFiles);
   const fileInputRef = React.createRef();
 
@@ -52,7 +53,7 @@ const UploadButtonComponent = () => {
       const files = Array.from(event.target.files).filter(
         item => !alreadyUploadingFiles.includes(item),
       );
-      dispatch(Actions.addUploadingFiles(files));
+      dispatch(Actions.addUploadingFiles(files, uploadFolderId));
     }
   }
 

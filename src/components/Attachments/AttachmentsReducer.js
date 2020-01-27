@@ -49,19 +49,24 @@ const normalDefaultState = {
 const defaultState = debug ? debugDefaultState : normalDefaultState;
 
 function updateFile(updates) {
-  return (state, { payload: { file, ...payload } }) =>
+  return (state, { payload: { file, uploadFolderId, ...payload } }) =>
     dotProp.set(state, 'uploads', uploads =>
       uploads.map(item => {
-        if (item.file !== file) {
+        if (!(item.file === file && item.uploadFolderId === uploadFolderId)) {
           return item;
         }
 
         if (typeof updates === 'function') {
-          return updates(file, payload);
+          return {
+            file,
+            uploadFolderId,
+            ...updates(payload),
+          };
         }
 
         return {
           file,
+          uploadFolderId,
           ...updates,
         };
       }),
@@ -70,9 +75,12 @@ function updateFile(updates) {
 
 export const attachmentsReducer = handleActions(
   {
-    [Actions.addUploadingFiles]: (state, { payload: { files } }) =>
+    [Actions.addUploadingFiles]: (
+      state,
+      { payload: { files, uploadFolderId } },
+    ) =>
       dotProp.set(state, 'uploads', uploads => [
-        ...Array.from(files).map(file => ({ file })),
+        ...Array.from(files).map(file => ({ file, uploadFolderId })),
         ...uploads,
       ]),
     [Actions.fileUploadInitialized]: updateFile({ status: 'initialized' }),
@@ -81,20 +89,15 @@ export const attachmentsReducer = handleActions(
       status: 'started',
       progress: 0,
     }),
-    [Actions.fileUploadingProgressUpdated]: updateFile(
-      (file, { progress }) => ({
-        file,
-        progress,
-        status: 'uploading',
-      }),
-    ),
-    [Actions.fileUploadingSuccess]: updateFile((file, { result }) => ({
-      file,
+    [Actions.fileUploadingProgressUpdated]: updateFile(({ progress }) => ({
+      progress,
+      status: 'uploading',
+    })),
+    [Actions.fileUploadingSuccess]: updateFile(({ result }) => ({
       result,
       status: 'done',
     })),
-    [Actions.fileUploadingFailure]: updateFile((file, { error }) => ({
-      file,
+    [Actions.fileUploadingFailure]: updateFile(({ error }) => ({
       error,
       status: 'error',
     })),

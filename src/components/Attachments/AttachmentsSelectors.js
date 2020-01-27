@@ -4,6 +4,8 @@ import { NotesMindMapSelectors } from './AttachmentsImportedSelectors';
 export const isUploadButtonVisible =
   NotesMindMapSelectors.isSelectedNoteRealNote;
 
+export const getUploadFolderId = NotesMindMapSelectors.getSelectedNoteId;
+
 const getAttachmentsState = state => state.attachments;
 
 export const getUploads = createSelector(

@@ -55,7 +55,7 @@ function createUploadFileChannel(file, uploadFolderId) {
       fileReader.abort();
       emitter({
         type: 'error',
-        error: new DOMException('Cancelled by user', 'USER_CANCELLED'),
+        error: new DOMException('CANCELLED', 'CANCELLED'),
       });
       emitter(END);
     });
@@ -125,6 +125,15 @@ function* addUploadingFilesSaga(action) {
   yield all(files.map(item => fork(uploadFile, item, uploadFolderId)));
 }
 
+function* retryFileUploadSaga(action) {
+  const { file, uploadFolderId } = action.payload;
+
+  yield fork(uploadFile, file, uploadFolderId);
+}
+
 export function* attachmentsInit() {
-  yield all([takeEvery(Actions.addUploadingFiles, addUploadingFilesSaga)]);
+  yield all([
+    takeEvery(Actions.addUploadingFiles, addUploadingFilesSaga),
+    takeEvery(Actions.retryFileUpload, retryFileUploadSaga),
+  ]);
 }

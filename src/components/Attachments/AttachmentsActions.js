@@ -41,4 +41,9 @@ export const fileUploadingFailure = createAction(
   (file, uploadFolderId, error) => ({ file, uploadFolderId, error }),
 );
 
+export const retryFileUpload = createAction(
+  'RETRY_FILE_UPLOAD',
+  (file, uploadFolderId) => ({ file, uploadFolderId }),
+);
+
 export const clearList = createAction('CLEAR_LIST');

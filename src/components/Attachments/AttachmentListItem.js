@@ -1,13 +1,15 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { UploadingProgressBar } from './UploadingProgressBar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faTimesCircle,
   faCheck,
   faRedo,
 } from '@fortawesome/free-solid-svg-icons';
+import { UploadingProgressBar } from './UploadingProgressBar';
+import * as Actions from './AttachmentsActions';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -67,8 +69,15 @@ const StyledProgressLabel = styled.div`
 `;
 
 const AttachmentListItem = ({ item }) => {
+  const dispatch = useDispatch();
+
   function cancelUpload() {
     item.file.abortController.abort();
+  }
+
+  function retryUpload() {
+    item.file.abortController = new window.AbortController();
+    dispatch(Actions.retryFileUpload(item.file, item.uploadFolderId));
   }
 
   return (
@@ -100,7 +109,7 @@ const AttachmentListItem = ({ item }) => {
           </StyledIconButton>
         )}
         {item.status === 'error' && (
-          <StyledIconButton>
+          <StyledIconButton onClick={retryUpload}>
             <FontAwesomeIcon icon={faRedo} />
           </StyledIconButton>
         )}

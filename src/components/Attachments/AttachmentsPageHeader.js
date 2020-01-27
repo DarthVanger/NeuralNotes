@@ -1,10 +1,12 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import * as AppActions from 'components/App/AppActions';
 import * as AppConstants from 'components/App/AppConstants';
+import * as Actions from './AttachmentsActions';
+import * as Selectors from './AttachmentsSelectors';
 
 const StyledPageHeaderContainer = styled.div`
   background-color: #1a1a1a;
@@ -20,12 +22,17 @@ const StyledBackButton = styled.button`
 
 const AttachmentsPageHeader = () => {
   const dispatch = useDispatch();
+  const hasUncompletedUploads = useSelector(Selectors.hasUncompletedUploads);
 
   function handleBackClick() {
     dispatch({
       type: AppActions.CHANGE_PAGE_ACTION,
       data: AppConstants.PAGES_ENUM.NOTES,
     });
+
+    if (!hasUncompletedUploads) {
+      dispatch(Actions.clearList());
+    }
   }
 
   return (

@@ -40,3 +40,5 @@ export const fileUploadingFailure = createAction(
   'FILE_UPLOADING_FAILURE',
   (file, uploadFolderId, error) => ({ file, uploadFolderId, error }),
 );
+
+export const clearList = createAction('CLEAR_LIST');

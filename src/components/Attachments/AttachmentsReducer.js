@@ -101,6 +101,7 @@ export const attachmentsReducer = handleActions(
       error,
       status: 'error',
     })),
+    [Actions.clearList]: () => defaultState,
   },
   defaultState,
 );

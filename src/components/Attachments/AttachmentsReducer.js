@@ -28,10 +28,6 @@ function updateFile(updates) {
 
 export const attachmentsReducer = handleActions(
   {
-    // [Actions.addUploadingFiles]: (state, { payload: files }) => ({
-    //   ...state,
-    //   uploads: [files.map(file => ({ file })), ...state.uploads],
-    // }),
     [Actions.addUploadingFiles]: (state, { payload: { files } }) =>
       dotProp.set(state, 'uploads', uploads => [
         ...Array.from(files).map(file => ({ file })),

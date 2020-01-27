@@ -103,13 +103,7 @@ function* uploadFile(file) {
 function* addUploadingFilesSaga(action) {
   const { files } = action.payload;
 
-  const file = files[0];
-
-  if (!file) {
-    return;
-  }
-
-  yield fork(uploadFile, file);
+  yield all(files.map(item => fork(uploadFile, item)));
 }
 
 export function* attachmentsInit() {

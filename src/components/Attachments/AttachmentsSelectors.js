@@ -11,6 +11,10 @@ const getUploads = createSelector(
   attachments => attachments.uploads,
 );
 
+export const getUploadFiles = createSelector(getUploads, uploads =>
+  uploads.map(item => item.file),
+);
+
 export const hasUploadingFiles = createSelector(
   getUploads,
   uploads => uploads.length > 0,

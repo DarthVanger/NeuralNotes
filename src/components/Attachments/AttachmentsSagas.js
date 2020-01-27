@@ -47,8 +47,18 @@ function createUploadFileChannel(file, uploadFolderId) {
     fileReader.fileName = file.name;
     fileReader.fileSize = file.size;
     fileReader.fileType = file.type;
+    fileReader.abortController = file.abortController;
     fileReader.onload = startUploading;
     fileReader.readAsArrayBuffer(file);
+
+    file.abortController.signal.addEventListener('abort', () => {
+      fileReader.abort();
+      emitter({
+        type: 'error',
+        error: new DOMException('Cancelled by user', 'USER_CANCELLED'),
+      });
+      emitter(END);
+    });
 
     function startUploading(e) {
       const f = e.target;
@@ -57,6 +67,7 @@ function createUploadFileChannel(file, uploadFolderId) {
         fileSize: f.fileSize,
         fileType: f.fileType,
         fileBuffer: f.result,
+        abortController: f.abortController,
         accessToken: auth.getToken(),
         folderId: uploadFolderId,
       };
@@ -66,7 +77,7 @@ function createUploadFileChannel(file, uploadFolderId) {
     }
 
     return () => {
-      // @todo: handle channel closing
+      file.abortController.abort();
     };
   });
 }

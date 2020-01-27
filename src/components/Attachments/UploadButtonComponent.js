@@ -53,6 +53,11 @@ const UploadButtonComponent = () => {
       const files = Array.from(event.target.files).filter(
         item => !alreadyUploadingFiles.includes(item),
       );
+
+      files.forEach(item => {
+        item.abortController = new window.AbortController();
+      });
+
       dispatch(Actions.addUploadingFiles(files, uploadFolderId));
     }
   }

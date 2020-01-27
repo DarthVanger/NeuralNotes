@@ -102,6 +102,7 @@ const context = {};
             {
               method: 'GET',
               headers: { Authorization: 'Bearer ' + resource.accessToken },
+              signal: resource.abortController.signal,
             },
           )
             .then(res => {
@@ -185,6 +186,7 @@ const context = {};
           headers: {
             Authorization: 'Bearer ' + accessToken,
             'Content-Type': 'application/json',
+            signal: resource.abortController.signal,
           },
         })
           .then(res => {
@@ -203,6 +205,7 @@ const context = {};
     const doUpload = function(chunks, callback) {
       callback({ status: 'start' }, null);
       const location = this.location;
+      const abortController = this.obj.resource.abortController;
       const end = chunks.length;
       let cnt = 0;
       const doFetch = function(cnt) {
@@ -225,6 +228,7 @@ const context = {};
           headers: {
             'Content-Range': e.range,
           },
+          signal: abortController.signal,
         })
           .then(res => {
             const status = res.status;

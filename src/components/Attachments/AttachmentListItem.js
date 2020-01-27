@@ -67,6 +67,10 @@ const StyledProgressLabel = styled.div`
 `;
 
 const AttachmentListItem = ({ item }) => {
+  function cancelUpload() {
+    item.file.abortController.abort();
+  }
+
   return (
     <StyledContainer>
       <StyledLeftContainer>
@@ -86,7 +90,7 @@ const AttachmentListItem = ({ item }) => {
       </StyledLeftContainer>
       <StyledRightContainer>
         {!['error', 'done'].includes(item.status) && (
-          <StyledIconButton>
+          <StyledIconButton onClick={cancelUpload}>
             <FontAwesomeIcon icon={faTimesCircle} />
           </StyledIconButton>
         )}

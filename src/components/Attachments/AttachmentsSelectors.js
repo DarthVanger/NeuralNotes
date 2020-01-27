@@ -28,7 +28,9 @@ export const isUploadingProcessing = createSelector(
     uploads.filter(item => !['done', 'error'].includes(item.status)).length > 0,
 );
 
-export const hasUncompletedUploads = createSelector(
+export const canClearUploadList = createSelector(
   getUploads,
-  uploads => uploads.filter(item => item.status !== 'done').length > 0,
+  uploads =>
+    uploads.filter(item => !['done', 'error'].includes(item.status)).length ===
+    0,
 );

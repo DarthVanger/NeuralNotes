@@ -22,7 +22,7 @@ const StyledBackButton = styled.button`
 
 const AttachmentsPageHeader = () => {
   const dispatch = useDispatch();
-  const hasUncompletedUploads = useSelector(Selectors.hasUncompletedUploads);
+  const canClearList = useSelector(Selectors.canClearUploadList);
 
   function handleBackClick() {
     dispatch({
@@ -30,7 +30,7 @@ const AttachmentsPageHeader = () => {
       data: AppConstants.PAGES_ENUM.NOTES,
     });
 
-    if (!hasUncompletedUploads) {
+    if (canClearList) {
       dispatch(Actions.clearList());
     }
   }

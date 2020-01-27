@@ -65,10 +65,7 @@ const UploadButtonComponent = () => {
         style={{ display: 'none' }}
         onChange={handleSelectedFiles}
       />
-      <CSSTransition
-        in={true || isUploadButtonVisible}
-        timeout={200}
-        unmountOnExit>
+      <CSSTransition in={isUploadButtonVisible} timeout={200} unmountOnExit>
         <StyledUploadButton
           className="btn btn-default"
           onClick={onUploadButtonClick}>

@@ -6,7 +6,7 @@ export const isUploadButtonVisible =
 
 const getAttachmentsState = state => state.attachments;
 
-const getUploads = createSelector(
+export const getUploads = createSelector(
   getAttachmentsState,
   attachments => attachments.uploads,
 );

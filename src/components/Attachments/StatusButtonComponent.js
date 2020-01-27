@@ -1,9 +1,11 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
+import * as AppActions from 'components/App/AppActions';
+import * as AppConstants from 'components/App/AppConstants';
 import * as Selectors from './AttachmentsSelectors';
 
 const StyledStatusButton = styled.button`
@@ -60,15 +62,24 @@ const StyledStatusButton = styled.button`
  * - when has errors
  */
 const StatusButtonComponent = () => {
+  const dispatch = useDispatch();
   const isStatusButtonVisible = useSelector(Selectors.hasUploadingFiles);
   const isUploadingProcessing = useSelector(Selectors.isUploadingProcessing);
+
+  function onButtonClick() {
+    dispatch({
+      type: AppActions.CHANGE_PAGE_ACTION,
+      data: AppConstants.PAGES_ENUM.ATTACHMENTS,
+    });
+  }
 
   return (
     <CSSTransition in={isStatusButtonVisible} timeout={200} unmountOnExit>
       <StyledStatusButton
         className={`btn btn-default ${
           isUploadingProcessing ? 'processing' : ''
-        }`}>
+        }`}
+        onClick={onButtonClick}>
         <FontAwesomeIcon icon={faArrowUp} />
       </StyledStatusButton>
     </CSSTransition>

@@ -5,6 +5,7 @@ import { ControlsHelpComponent } from 'components/ControlsHelp/ControlsHelpCompo
 import { NotesContentEditorContainer } from 'components/NotesContentEditor/NotesContentEditorContainer';
 import { NotesMindMapContainer } from 'components/NotesMindMap/NotesMindMapContainer';
 import { SearchPanelContainer } from 'components/SearchPanel/SearchPanelContainer';
+import { StatusButtonComponent } from 'components/Attachments/StatusButtonComponent';
 import { UploadButtonComponent } from 'components/Attachments/UploadButtonComponent';
 
 export class NotesPageComponent extends Component {
@@ -17,6 +18,7 @@ export class NotesPageComponent extends Component {
         <NotesContentEditorContainer />
         {!isHelpViewed && <ControlsHelpComponent onClose={closeHelp} />}
         <SearchPanelContainer />
+        <StatusButtonComponent />
         <UploadButtonComponent />
       </>
     );

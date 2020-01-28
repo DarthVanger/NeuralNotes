@@ -1,5 +1,4 @@
 /* global gapi */
-import _ from 'underscore';
 import googleDriveApi from 'api/google-drive-api';
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
 
@@ -72,7 +71,7 @@ function fetchChildNotes(note) {
     getFiles(note.id)
       .then(function(files) {
         const children = [];
-        _.each(files, function(file) {
+        files.forEach(function(file) {
           if (file.name === note.name + '.txt') {
             return;
           }

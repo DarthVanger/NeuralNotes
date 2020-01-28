@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import _ from 'underscore';
+import { debounce } from '../../helpers/debounce';
 
 import { HeaderComponent } from 'components/NoteNameEditor/HeaderComponent/HeaderComponent';
 import {
@@ -13,7 +13,7 @@ export class NoteNameEditorComponent extends Component {
 
   ref = React.createRef();
 
-  debouncedOnChange = _.debounce(name => this.props.onChange(name), 1500);
+  debouncedOnChange = debounce(name => this.props.onChange(name), 1500);
 
   render() {
     const {

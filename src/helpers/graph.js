@@ -1,10 +1,10 @@
-function doesDeletedNodeHasSiblings(edges, parentId) {
-  return edges.find(edge => edge.from === parentId);
+function doesNodeHasChildren({ edges, nodeId }) {
+  return edges.find(edge => edge.from === nodeId);
 }
 
-function revokeParentStatus(nodes, parentId) {
+function revokeParentStatus({ nodes, nodeId }) {
   return nodes.map(node => {
-    return node.id === parentId ? { ...node, group: 'children' } : node;
+    return node.id === nodeId ? { ...node, group: 'children' } : node;
   });
 }
 
@@ -16,19 +16,19 @@ export function removeNodeFromGraph(nodes, edges, nodeToDelete) {
   let newEdges = [...edges];
   let parentId = newEdges.find(edge => edge.to === nodeToDelete.id).from;
 
-  removenode(nodeToDelete.id);
+  removeChildren(nodeToDelete.id);
 
-  newNodes = doesDeletedNodeHasSiblings(newEdges, parentId)
+  newNodes = doesNodeHasChildren({ edges: newEdges, nodeId: parentId })
     ? newNodes
-    : revokeParentStatus(newNodes, parentId);
+    : revokeParentStatus({ nodes: newNodes, nodeId: parentId });
   return { nodes: newNodes, edges: newEdges };
 
-  function removenode(nodeId) {
+  function removeChildren(nodeId) {
     newNodes = newNodes.filter(node => node.id !== nodeId);
     if (hasChildren(newEdges, nodeId)) {
       newEdges.forEach(edge => {
         if (edge.from === nodeId) {
-          removenode(edge.to);
+          removeChildren(edge.to);
           newEdges = newEdges.filter(e => e.from !== nodeId);
         }
       });
@@ -36,19 +36,6 @@ export function removeNodeFromGraph(nodes, edges, nodeToDelete) {
     newEdges = newEdges.filter(e => e.to !== nodeId); // remove the edge from parent to the deleted node
     return;
   }
-}
-
-export function updateGroupOfOldParent(nodes, edges, newParentId, oldParentId) {
-  return nodes.map(node => {
-    if (node.id === newParentId) return { ...node, group: 'parent' };
-    else if (
-      node.id === oldParentId &&
-      edges.find(edge => edge.from === node.id) === undefined
-    ) {
-      return { ...node, group: 'children' };
-    }
-    return node;
-  });
 }
 
 export function addGroupTagToNodes(nodes, edges) {

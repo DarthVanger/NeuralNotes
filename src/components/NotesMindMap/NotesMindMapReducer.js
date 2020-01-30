@@ -12,11 +12,7 @@ import {
   CHANGE_PARENT_REQUEST_FAIL_ACTION,
 } from 'components/NotesMindMap/NotesMindMapActions';
 import { ROOT_NOTE_FOUND_ACTION } from 'components/App/AppActions.js';
-import {
-  updateGroupOfOldParent,
-  addGroupTagToNodes,
-  removeNodeFromGraph,
-} from '../../helpers/graph';
+import { addGroupTagToNodes, removeNodeFromGraph } from '../../helpers/graph';
 
 const defaultState = {
   selectedNote: {},
@@ -35,7 +31,7 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
     const childNotes = data;
     if (childNotes.length) {
       childNotes.forEach(child => {
-        nodes = addNoteToGraph(nodes, child);
+        nodes = addNodeToGraph(nodes, child);
         edges.push({ from: child.parent.id, to: child.id });
       });
       nodes = addGroupTagToNodes(nodes, edges);
@@ -59,10 +55,12 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
   const handleNoteNameUpdateRequestSuccessAction = () => {
     const updatedNote = data;
     let nodes = [...state.nodes];
-    nodes = nodes.filter(note => note.id !== updatedNote.id);
+    nodes = nodes.map(node => {
+      return node.id === data.id ? { ...node, name: updatedNote.name } : node;
+    });
     return {
       ...state,
-      nodes: addNoteToGraph(nodes, updatedNote),
+      nodes,
     };
   };
 
@@ -71,7 +69,12 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
     let nodes = [...state.nodes];
     let edges = [...state.edges];
     edges.push({ from: newNote.parent.id, to: newNote.id });
-    nodes = addGroupTagToNodes(addNoteToGraph(nodes, newNote), edges);
+    nodes = addNodeToGraph(nodes, newNote);
+    nodes = nodes.map(node => {
+      return node.id === newNote.parent.id && node.isNote
+        ? { ...node, group: 'parent' }
+        : node;
+    });
     return {
       ...state,
       nodes,
@@ -80,11 +83,11 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
   };
 
   const handleDeleteNoteRequestSuccessAction = () => {
-    const noteToDelete = data;
+    const nodeToDelete = data;
     const { nodes, edges } = removeNodeFromGraph(
       state.nodes,
       state.edges,
-      noteToDelete,
+      nodeToDelete,
     );
     return {
       ...state,
@@ -98,11 +101,17 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
     const newParentId = data.newParentId;
     let edges = [...state.edges];
     let nodes = [...state.nodes];
-    const oldParent = edges.find(edge => edge.to === noteId);
+    const oldParentId = edges.find(edge => edge.to === noteId).from;
     edges = edges.filter(edge => edge.to !== noteId);
+    const oldParentHasChildren = edges.find(edge => edge.from === oldParentId);
     edges.push({ from: newParentId, to: noteId });
-
-    nodes = updateGroupOfOldParent(nodes, edges, newParentId, oldParent.from);
+    nodes = nodes.map(node => {
+      if (node.id === newParentId && node.isNote)
+        return { ...node, group: 'parent' };
+      else if (node.id === oldParentId && node.isNote && !oldParentHasChildren)
+        return { ...node, group: 'children' };
+      return node;
+    });
     return {
       ...state,
       isChangeParentModeActive: false,
@@ -121,14 +130,14 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
 
   const addRootToGraph = () => {
     let nodes = [...state.nodes];
-    nodes.push({ id: data.id, label: data.name, name: data.name });
+    addNodeToGraph(nodes, { ...data, isNote: false });
     return {
       ...state,
       nodes,
     };
   };
 
-  const addNoteToGraph = (nodes, newNote) => {
+  const addNodeToGraph = (nodes, newNote) => {
     nodes.push({
       id: newNote.id,
       label: newNote.name,

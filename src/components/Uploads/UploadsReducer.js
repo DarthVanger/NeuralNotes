@@ -1,7 +1,7 @@
 import { handleActions } from 'redux-actions';
 import { updateState } from 'helpers/redux';
 import { defaultState } from './UploadsReducerDefaultState';
-import { KEY } from './UploadsConstants';
+import { UPLOADS_REDUCER_KEY } from './UploadsConstants';
 import { UploadsActions } from './UploadsActions';
 
 function addFiles(list, { files }) {
@@ -16,4 +16,4 @@ export const uploadsReducer = handleActions(
   defaultState,
 );
 
-uploadsReducer.KEY = KEY;
+uploadsReducer.KEY = UPLOADS_REDUCER_KEY;

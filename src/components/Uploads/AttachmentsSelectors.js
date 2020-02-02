@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { KEY } from './UploadsConstants';
+import { UPLOADS_REDUCER_KEY } from './UploadsConstants';
 import { NotesMindMapSelectors } from './AttachmentsImportedSelectors';
 
 export const isUploadButtonVisible =
@@ -7,7 +7,7 @@ export const isUploadButtonVisible =
 
 export const getUploadFolderId = NotesMindMapSelectors.getSelectedNoteId;
 
-const getAttachmentsState = state => state[KEY];
+const getAttachmentsState = state => state[UPLOADS_REDUCER_KEY];
 
 export const getUploads = createSelector(
   getAttachmentsState,

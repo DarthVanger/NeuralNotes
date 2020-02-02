@@ -1,8 +1,8 @@
 import { eventChannel, END } from 'redux-saga';
 import { all, put, call, take, select, takeEvery } from 'redux-saga/effects';
 import throttle from 'lodash/throttle';
-// import { ResumableUploadToGoogleDrive } from 'libs/google-drive-uploader';
 import auth from 'auth';
+import { UPLOADS_REDUCER_KEY } from './UploadsConstants';
 import { UploadsActions } from './UploadsActions';
 
 const ENDPOINT =
@@ -120,7 +120,7 @@ function createFileUploadingChannel(file, session) {
 
 function* startFileUploadingSaga(file) {
   const { session } = yield select(state =>
-    state.uploads.list.find(item => item.file === file),
+    state[UPLOADS_REDUCER_KEY].list.find(item => item.file === file),
   );
 
   const fileUploadingChannel = yield call(
@@ -148,7 +148,7 @@ function* startFileUploadingSaga(file) {
 
 function* uploadFileSaga(file) {
   const state = yield select(state =>
-    state.uploads.list.find(item => item.file === file),
+    state[UPLOADS_REDUCER_KEY].list.find(item => item.file === file),
   );
 
   try {
@@ -178,7 +178,7 @@ function* cancelUploadSaga(action) {
 
 function* checkFileUploadedRange(file) {
   const { session } = yield select(state =>
-    state.uploads.list.find(item => item.file === file),
+    state[UPLOADS_REDUCER_KEY].list.find(item => item.file === file),
   );
   const response = yield call(() =>
     fetch(`${ENDPOINT}&${SESSION_PARAM}${session}`, {

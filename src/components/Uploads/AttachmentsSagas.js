@@ -2,7 +2,7 @@ import { eventChannel, END } from 'redux-saga';
 import { all, put, call, fork, take, takeEvery } from 'redux-saga/effects';
 import { ResumableUploadToGoogleDrive } from 'libs/google-drive-uploader';
 import auth from 'auth';
-import * as Actions from './AttachmentsActions';
+import * as Actions from './UploadsActions';
 
 const createUploaderCallback = emitter => (result, error) => {
   if (error) {
@@ -135,7 +135,7 @@ function* retryFileUploadSaga(action) {
 
 export function* attachmentsInit() {
   yield all([
-    takeEvery(Actions.addUploadingFiles, addUploadingFilesSaga),
-    takeEvery(Actions.retryFileUpload, retryFileUploadSaga),
+    // takeEvery(Actions.addUploadingFiles, addUploadingFilesSaga),
+    // takeEvery(Actions.retryFileUpload, retryFileUploadSaga),
   ]);
 }

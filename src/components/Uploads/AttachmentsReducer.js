@@ -1,6 +1,6 @@
 import { handleActions } from 'redux-actions';
 import dotProp from 'dot-prop-immutable';
-import * as Actions from './AttachmentsActions';
+import * as Actions from './UploadsActions';
 
 /**
  * Use it for debug when styling

@@ -9,7 +9,7 @@ import {
   faRedo,
 } from '@fortawesome/free-solid-svg-icons';
 import { UploadingProgressBar } from './UploadingProgressBar';
-import * as Actions from './AttachmentsActions';
+import * as Actions from './UploadsActions';
 
 const StyledContainer = styled.div`
   display: flex;

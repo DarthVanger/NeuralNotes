@@ -4,7 +4,7 @@ import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import * as Actions from './AttachmentsActions';
+import { UploadsActions } from './UploadsActions';
 import * as Selectors from './AttachmentsSelectors';
 
 const StyledUploadButton = styled.button`
@@ -49,16 +49,18 @@ const UploadButtonComponent = () => {
   }
 
   function handleSelectedFiles(event) {
-    if (event.target.files.length > 0) {
-      const files = Array.from(event.target.files).filter(
-        item => !alreadyUploadingFiles.includes(item),
-      );
+    const { files } = event.target;
+    if (files.length > 0) {
+      dispatch(UploadsActions.list.addedFiles(files));
+      // const files = Array.from(event.target.files).filter(
+      //   item => !alreadyUploadingFiles.includes(item),
+      // );
 
-      files.forEach(item => {
-        item.abortController = new window.AbortController();
-      });
+      // files.forEach(item => {
+      //   item.abortController = new window.AbortController();
+      // });
 
-      dispatch(Actions.addUploadingFiles(files, uploadFolderId));
+      // dispatch(Actions.addUploadingFiles(files, uploadFolderId));
     }
   }
 

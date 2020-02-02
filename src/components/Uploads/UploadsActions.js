@@ -1,4 +1,5 @@
-import { createAction } from 'redux-actions';
+import { createAction, createActions } from 'redux-actions';
+import { withPayload } from 'helpers/redux';
 
 export const addUploadingFiles = createAction(
   'ADD_UPLOADING_FILES',
@@ -47,3 +48,22 @@ export const retryFileUpload = createAction(
 );
 
 export const clearAttachmentList = createAction('CLEAR_ATTACHMENT_LIST');
+
+export const UploadsActions = createActions(
+  {
+    LIST: {
+      ADDED_FILES: withPayload('files', 'uploadFolderId'),
+      CLEAR: null,
+    },
+    FILE: {
+      CHANGED_STATUS: withPayload('file', 'uploadFolderId'),
+      UPDATED_PROGRESS: withPayload('file', 'uploadFolderId', 'progress'),
+      UPLOADED_SUCCESS: withPayload('file', 'uploadFolderId', 'result'),
+      UPLOADED_FAILURE: withPayload('file', 'uploadFolderId', 'error'),
+      RETRY_UPLOAD: withPayload('file', 'uploadFolderId'),
+    },
+  },
+  {
+    prefix: 'UPLOADS',
+  },
+);

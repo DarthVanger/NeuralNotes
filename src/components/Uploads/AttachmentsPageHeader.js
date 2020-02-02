@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import * as AppActions from 'components/App/AppActions';
 import * as AppConstants from 'components/App/AppConstants';
-import * as Actions from './AttachmentsActions';
+import * as Actions from './UploadsActions';
 import * as Selectors from './AttachmentsSelectors';
 
 const StyledPageHeaderContainer = styled.div`

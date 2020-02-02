@@ -7,7 +7,7 @@ import { UploadsActions } from './UploadsActions';
 
 const ENDPOINT =
   'https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable';
-const SESSION_TOKEN = 'upload_id=';
+const SESSION_PARAM = 'upload_id=';
 const PROGRESS_UPDATE_INTERVAL = 1000;
 const {
   sessionRetrieved,
@@ -42,19 +42,23 @@ function* fetchUploadFileSessionSaga(file) {
   const location = response.headers.get('location');
 
   return location.slice(
-    location.lastIndexOf(SESSION_TOKEN) + SESSION_TOKEN.length,
+    location.lastIndexOf(SESSION_PARAM) + SESSION_PARAM.length,
   );
 }
 
 function createFileUploadingChannel(file, session) {
   return eventChannel(emitter => {
     function onProgress(event) {
+      const uploadedLength = file.uploadedLength || 0;
+      const loaded = uploadedLength + event.loaded;
+      const total = uploadedLength + event.total;
+
       emitter({
         type: progressUpdated,
         progress: {
-          percent: Math.trunc((100 * event.loaded) / event.total),
-          loaded: event.loaded,
-          total: event.total,
+          percent: Math.trunc((100 * loaded) / total),
+          loaded,
+          total,
         },
       });
     }
@@ -81,12 +85,20 @@ function createFileUploadingChannel(file, session) {
 
     const xhr = new XMLHttpRequest();
 
-    xhr.open('PUT', `${ENDPOINT}&${SESSION_TOKEN}${session}`);
+    xhr.open('PUT', `${ENDPOINT}&${SESSION_PARAM}${session}`);
     xhr.setRequestHeader('Authorization', `Bearer ${auth.getToken()}`);
+
+    if (file.uploadedLength) {
+      // if resume upload
+      xhr.setRequestHeader(
+        'Content-Range',
+        `bytes ${file.uploadedLength + 1}-${file.size - 1}/${file.size}`,
+      );
+    }
+
     xhr.upload.onprogress = throttle(onProgress, PROGRESS_UPDATE_INTERVAL);
     xhr.onload = onSuccess;
     xhr.onerror = onFailure;
-    // @todo: add upload position
 
     file.abortController.signal.addEventListener('abort', () => {
       xhr.abort();
@@ -99,8 +111,9 @@ function createFileUploadingChannel(file, session) {
       emitter(END);
     });
 
-    xhr.send(file);
+    xhr.send(file.uploadedLength ? file.slice(file.uploadedLength + 1) : file);
 
+    // event channel should return function
     return () => {};
   });
 }
@@ -163,9 +176,41 @@ function* cancelUploadSaga(action) {
   yield call(() => file.abortController.abort());
 }
 
+function* checkFileUploadedRange(file) {
+  const { session } = yield select(state =>
+    state.uploads.list.find(item => item.file === file),
+  );
+  const response = yield call(() =>
+    fetch(`${ENDPOINT}&${SESSION_PARAM}${session}`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${auth.getToken()}`,
+        'Content-Range': `bytes */${file.size}`,
+      },
+    }),
+  );
+  return response.headers.get('Range').split('-')[1];
+}
+
+function* retryUploadSaga(action) {
+  const { file } = action.payload;
+  try {
+    file.abortController = new window.AbortController();
+    file.uploadedLength = parseInt(
+      yield call(checkFileUploadedRange, file),
+      10,
+    );
+
+    yield call(startFileUploadingSaga, file);
+  } catch (error) {
+    yield put(uploadFailure(file, error));
+  }
+}
+
 export function* uploadsInit() {
   yield all([
     takeEvery(UploadsActions.list.addedFiles, addedFilesSaga),
     takeEvery(UploadsActions.file.cancelUpload, cancelUploadSaga),
+    takeEvery(UploadsActions.file.retryUpload, retryUploadSaga),
   ]);
 }

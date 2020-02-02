@@ -120,7 +120,7 @@ const UploadsListItem = ({ item }) => {
   }
 
   function renderProgress() {
-    if (!item.progress) {
+    if (!item.progress || item.result) {
       return null;
     }
 

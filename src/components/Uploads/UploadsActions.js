@@ -14,7 +14,7 @@ export const UploadsActions = createActions(
       UPLOAD_SUCCESS: withPayload('file', 'result'),
       UPLOAD_FAILURE: withPayload('file', 'error'),
       CANCEL_UPLOAD: withPayload('file'),
-      RETRY_UPLOAD: withPayload('file'),
+      RETRY_UPLOAD: withPayload('file', { error: null }),
     },
   },
   {

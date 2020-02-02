@@ -44,6 +44,8 @@ export const uploadsReducer = handleActions(
     [UploadsActions.file.progressUpdated]: updateFile(),
     [UploadsActions.file.uploadSuccess]: updateFile(),
     [UploadsActions.file.uploadFailure]: updateFile(),
+    [UploadsActions.file.retryUpload]: updateFile(),
+    [UploadsActions.file.setUploadedLength]: updateFile(),
   },
   defaultState,
 );

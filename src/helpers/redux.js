@@ -11,11 +11,17 @@ import dotProp from 'dot-prop-immutable';
  * //   nodeId: 1001,
  * //   nextParentId: 2000,
  * // }
+ *
+ * You can pass also an object in array if you want to pass some values to payload
  */
 export const withPayload = (...keys) => {
   const createPayload = (...args) => {
     return keys.reduce((payload, property, index) => {
-      payload[property] = args[index];
+      if (typeof property === 'object') {
+        Object.assign(payload, property);
+      } else {
+        payload[property] = args[index];
+      }
 
       return payload;
     }, {});

@@ -52,7 +52,7 @@ export const clearAttachmentList = createAction('CLEAR_ATTACHMENT_LIST');
 export const UploadsActions = createActions(
   {
     LIST: {
-      ADDED_FILES: withPayload('files', 'uploadFolderId'),
+      ADDED_FILES: withPayload('files'),
       CLEAR: null,
     },
     FILE: {

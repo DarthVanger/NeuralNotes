@@ -4,8 +4,8 @@ import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { NotesMindMapSelectors } from 'selectors';
 import { UploadsActions } from './UploadsActions';
-import * as Selectors from './AttachmentsSelectors';
 
 const StyledUploadButton = styled.button`
   position: absolute;
@@ -39,9 +39,10 @@ const StyledUploadButton = styled.button`
 
 const UploadButtonComponent = () => {
   const dispatch = useDispatch();
-  const isUploadButtonVisible = useSelector(Selectors.isUploadButtonVisible);
-  const uploadFolderId = useSelector(Selectors.getUploadFolderId);
-  const alreadyUploadingFiles = useSelector(Selectors.getUploadFiles);
+  const isUploadButtonVisible = useSelector(
+    NotesMindMapSelectors.isSelectedNoteRealNote,
+  );
+  const uploadFolderId = useSelector(NotesMindMapSelectors.getSelectedNoteId);
   const fileInputRef = React.createRef();
 
   function onUploadButtonClick() {
@@ -49,18 +50,16 @@ const UploadButtonComponent = () => {
   }
 
   function handleSelectedFiles(event) {
-    const { files } = event.target;
-    if (files.length > 0) {
+    if (event.target.files.length > 0) {
+      const files = Array.from(event.target.files);
+
+      files.forEach(item => {
+        item.uploadFolderId = uploadFolderId;
+        item.abortController = new window.AbortController();
+      });
+
       dispatch(UploadsActions.list.addedFiles(files));
-      // const files = Array.from(event.target.files).filter(
-      //   item => !alreadyUploadingFiles.includes(item),
-      // );
-
-      // files.forEach(item => {
-      //   item.abortController = new window.AbortController();
-      // });
-
-      // dispatch(Actions.addUploadingFiles(files, uploadFolderId));
+      fileInputRef.current.value = null;
     }
   }
 

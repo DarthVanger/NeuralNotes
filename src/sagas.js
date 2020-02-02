@@ -19,7 +19,10 @@ const composeEnhancers = composeWithDevTools({
     replacer: (__, value) => {
       if (value instanceof File) {
         // we want to see files in the redux-dev-tools
-        return value.name;
+        return {
+          filename: value.name,
+          uploadFolderId: value.uploadFolderId,
+        };
       }
 
       return value;

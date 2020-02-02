@@ -6,6 +6,7 @@
       "helpers/*": ["src/helpers/*"],
       "libs/*": ["src/libs/*"],
       "auth": ["src/auth"],
+      "selectors": ["src/selectors"]
     }
   }
 }

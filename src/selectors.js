@@ -1,4 +1,5 @@
 import * as NotesMindMapSelectors from './components/NotesMindMap/NotesMindMapSelectors';
+import * as UploadsSelectors from './components/Uploads/UploadsSelectors';
 
 /**
  * Global selectors
@@ -7,4 +8,4 @@ import * as NotesMindMapSelectors from './components/NotesMindMap/NotesMindMapSe
  * Don't import it to local component selectors
  */
 
-export { NotesMindMapSelectors };
+export { NotesMindMapSelectors, UploadsSelectors };

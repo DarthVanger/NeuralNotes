@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import { createSelector, createStructuredSelector } from 'reselect';
 import { action } from 'sagas';
+import { UploadsSelectors } from 'selectors';
 
 import {
   CHANGE_SELECTED_NOTE_ACTION,
@@ -25,13 +26,19 @@ const createNotesMindMapPropertySelector = property =>
 const getRealNotes = createNotesMindMapPropertySelector('notes');
 const getRealEdges = createNotesMindMapPropertySelector('edges');
 
-const getUploads = state => (true ? [] : state.uploads.list);
-
-const getUploadItems = createSelector(getUploads, uploads =>
-  uploads.map(item => ({
-    name: item.file.name,
-    folderId: item.uploadFolderId,
-  })),
+const getUploadItems = createSelector(
+  UploadsSelectors.getUploadsList,
+  getRealNotes,
+  (uploads, notes) =>
+    uploads
+      .map(item => ({
+        realId: item.result ? item.result.id : null,
+        name: item.file.name,
+        folderId: item.file.uploadFolderId,
+      }))
+      .filter(item => {
+        return !notes.find(note => note.id === item.realId);
+      }),
 );
 
 const getPseudoNoteId = item => `pseudo-note-${item.name}`;

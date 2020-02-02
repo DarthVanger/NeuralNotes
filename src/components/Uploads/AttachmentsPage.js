@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { AttachmentsPageHeader } from './AttachmentsPageHeader';
-import * as Selectors from './AttachmentsSelectors';
+import * as Selectors from './UploadsSelectors';
 import { AttachmentsFileList } from './AttachmentsFileList';
 
 const StyledPageContainer = styled.div`
@@ -17,7 +17,7 @@ const StyledPageContainer = styled.div`
 `;
 
 const AttachmentsPage = () => {
-  const uploads = useSelector(Selectors.getUploads);
+  const uploads = useSelector(Selectors.getUploadsList);
 
   return (
     <StyledPageContainer>

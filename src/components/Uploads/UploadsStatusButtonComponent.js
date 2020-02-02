@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import * as AppActions from 'components/App/AppActions';
 import * as AppConstants from 'components/App/AppConstants';
-import * as Selectors from './AttachmentsSelectors';
+import * as Selectors from './UploadsSelectors';
 
 const StyledStatusButton = styled.button`
   position: absolute;
@@ -63,8 +63,8 @@ const StyledStatusButton = styled.button`
  */
 const StatusButtonComponent = () => {
   const dispatch = useDispatch();
-  const isStatusButtonVisible = useSelector(Selectors.hasUploadingFiles);
-  const isUploadingProcessing = useSelector(Selectors.isUploadingProcessing);
+  const hasUploads = useSelector(Selectors.hasUploads);
+  const hasActiveUploads = useSelector(Selectors.hasActiveUploads);
 
   function onButtonClick() {
     dispatch({
@@ -74,11 +74,9 @@ const StatusButtonComponent = () => {
   }
 
   return (
-    <CSSTransition in={isStatusButtonVisible} timeout={200} unmountOnExit>
+    <CSSTransition in={hasUploads} timeout={200} unmountOnExit>
       <StyledStatusButton
-        className={`btn btn-default ${
-          isUploadingProcessing ? 'processing' : ''
-        }`}
+        className={`btn btn-default ${hasActiveUploads ? 'processing' : ''}`}
         onClick={onButtonClick}>
         <FontAwesomeIcon icon={faArrowUp} />
       </StyledStatusButton>

@@ -6,7 +6,7 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import * as AppActions from 'components/App/AppActions';
 import * as AppConstants from 'components/App/AppConstants';
 import * as Actions from './UploadsActions';
-import * as Selectors from './AttachmentsSelectors';
+import * as Selectors from './UploadsSelectors';
 
 const StyledPageHeaderContainer = styled.div`
   background-color: #1a1a1a;

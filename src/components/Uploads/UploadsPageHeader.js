@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import * as AppActions from 'components/App/AppActions';
 import * as AppConstants from 'components/App/AppConstants';
-import * as Actions from './UploadsActions';
+import { UploadsActions } from './UploadsActions';
 import * as Selectors from './UploadsSelectors';
 
 const StyledPageHeaderContainer = styled.div`
@@ -31,7 +31,7 @@ const UploadsPageHeader = () => {
     });
 
     if (!hasActiveUploads) {
-      dispatch(Actions.clearAttachmentList());
+      dispatch(UploadsActions.list.clear());
     }
   }
 

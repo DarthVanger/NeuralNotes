@@ -27,12 +27,9 @@ const StyledContainer = styled.div`
 `;
 
 const UploadingProgressBar = ({ progress }) => {
-  console.log(`${Math.trunc(progress * 100)}%`);
   return (
     <StyledContainer>
-      <div
-        className="progress-bar"
-        style={{ width: `${Math.trunc(progress * 100)}%` }}>
+      <div className="progress-bar" style={{ width: `${progress}%` }}>
         <div className="tick" />
       </div>
     </StyledContainer>

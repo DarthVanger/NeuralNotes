@@ -32,7 +32,9 @@ export const withPayload = (...keys) => {
  */
 export const updateState = (name, updater) => {
   const reducer = (state, { payload }) => {
-    const nextState = dotProp.set(state, name, updater(state[name], payload));
+    const nextValue =
+      typeof updater === 'function' ? updater(state[name], payload) : updater;
+    const nextState = dotProp.set(state, name, nextValue);
 
     return nextState;
   };

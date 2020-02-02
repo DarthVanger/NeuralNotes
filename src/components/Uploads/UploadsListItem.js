@@ -80,44 +80,63 @@ const UploadsListItem = ({ item }) => {
     dispatch(Actions.retryFileUpload(item.file, item.uploadFolderId));
   }
 
+  function renderStatus() {
+    if (item.result) {
+      return <StyledSuccessStatus>Uploaded</StyledSuccessStatus>;
+    }
+
+    if (item.error) {
+      return <StyledFailureStatus>{item.error.message}</StyledFailureStatus>;
+    }
+
+    if (item.progress) {
+      return <UploadingProgressBar progress={item.progress.percent} />;
+    }
+
+    return <StyledInitializingStatus>Initializing</StyledInitializingStatus>;
+  }
+
+  function renderIconButton() {
+    if (item.result) {
+      return (
+        <StyledIconButton>
+          <FontAwesomeIcon icon={faCheck} />
+        </StyledIconButton>
+      );
+    }
+
+    if (item.error) {
+      return (
+        <StyledIconButton onClick={retryUpload}>
+          <FontAwesomeIcon icon={faRedo} />
+        </StyledIconButton>
+      );
+    }
+
+    return (
+      <StyledIconButton onClick={cancelUpload}>
+        <FontAwesomeIcon icon={faTimesCircle} />
+      </StyledIconButton>
+    );
+  }
+
+  function renderProgress() {
+    if (!item.progress) {
+      return null;
+    }
+
+    return <StyledProgressLabel>{item.progress.percent}%</StyledProgressLabel>;
+  }
+
   return (
     <StyledContainer>
       <StyledLeftContainer>
         <StyledFileName>{item.file.name}</StyledFileName>
-        {item.status === 'done' && (
-          <StyledSuccessStatus>Uploaded</StyledSuccessStatus>
-        )}
-        {['started', 'uploading'].includes(item.status) && (
-          <UploadingProgressBar progress={item.progress} />
-        )}
-        {item.status === 'error' && (
-          <StyledFailureStatus>{item.error.message}</StyledFailureStatus>
-        )}
-        {!['done', 'started', 'uploading', 'error'].includes(item.status) && (
-          <StyledInitializingStatus>Initializing</StyledInitializingStatus>
-        )}
+        {renderStatus()}
       </StyledLeftContainer>
       <StyledRightContainer>
-        {!['error', 'done'].includes(item.status) && (
-          <StyledIconButton onClick={cancelUpload}>
-            <FontAwesomeIcon icon={faTimesCircle} />
-          </StyledIconButton>
-        )}
-        {item.status === 'done' && (
-          <StyledIconButton>
-            <FontAwesomeIcon icon={faCheck} />
-          </StyledIconButton>
-        )}
-        {item.status === 'error' && (
-          <StyledIconButton onClick={retryUpload}>
-            <FontAwesomeIcon icon={faRedo} />
-          </StyledIconButton>
-        )}
-        {['started', 'uploading'].includes(item.status) && (
-          <StyledProgressLabel>
-            {Math.trunc(item.progress * 100)}%
-          </StyledProgressLabel>
-        )}
+        {renderIconButton()}
+        {renderProgress()}
       </StyledRightContainer>
     </StyledContainer>
   );

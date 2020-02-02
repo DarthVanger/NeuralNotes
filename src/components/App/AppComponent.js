@@ -19,7 +19,7 @@ export class AppComponent extends PureComponent {
       case PAGES_ENUM.NOTES:
         return <NotesPageContainer />;
 
-      case PAGES_ENUM.ATTACHMENTS:
+      case PAGES_ENUM.UPLOADS:
         return <UploadsPage />;
 
       default:

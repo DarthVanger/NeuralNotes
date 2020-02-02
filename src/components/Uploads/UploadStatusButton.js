@@ -69,7 +69,7 @@ const UploadStatusButton = () => {
   function onButtonClick() {
     dispatch({
       type: AppActions.CHANGE_PAGE_ACTION,
-      data: AppConstants.PAGES_ENUM.ATTACHMENTS,
+      data: AppConstants.PAGES_ENUM.UPLOADS,
     });
   }
 

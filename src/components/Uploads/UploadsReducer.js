@@ -1,7 +1,7 @@
 import { handleActions } from 'redux-actions';
 import { updateState } from 'helpers/redux';
 import { defaultState } from './UploadsReducerDefaultState';
-import { UPLOADS_REDUCER_KEY, UPLOADS_STATUS_ENUM } from './UploadsConstants';
+import { UPLOADS_REDUCER_KEY } from './UploadsConstants';
 import { UploadsActions } from './UploadsActions';
 
 function updateList(updater) {
@@ -9,13 +9,7 @@ function updateList(updater) {
 }
 
 function addFiles(list, { files }) {
-  return [
-    ...files.map(file => ({
-      file,
-      status: UPLOADS_STATUS_ENUM.NOT_INITIALIZED,
-    })),
-    ...list,
-  ];
+  return [...files.map(file => ({ file })), ...list];
 }
 
 function updateFileInList(list, { file, ...updates }) {

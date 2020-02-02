@@ -10,12 +10,29 @@ import { loginInit } from 'components/LoginPage/LoginPageSagas';
 import { notesInit } from 'components/NotesPage/NotesPageSagas';
 import { notesContentEditorInit } from 'components/NotesContentEditor/NotesContentEditorSagas';
 import { noteMindMapInit } from 'components/NotesMindMap/NotesMindMapSagas';
+import { uploadsInit } from 'components/Uploads/UploadsSagas';
 
 const sagaMiddleware = createSagaMiddleware();
 
+const composeEnhancers = composeWithDevTools({
+  serialize: {
+    replacer: (__, value) => {
+      if (value instanceof File) {
+        // we want to see files in the redux-dev-tools
+        return {
+          filename: value.name,
+          uploadFolderId: value.uploadFolderId,
+        };
+      }
+
+      return value;
+    },
+  },
+});
+
 export const store = createStore(
   reducers,
-  composeWithDevTools(applyMiddleware(sagaMiddleware)),
+  composeEnhancers(applyMiddleware(sagaMiddleware)),
 );
 
 sagaMiddleware.run(rootSaga);
@@ -30,5 +47,6 @@ export function* rootSaga() {
     notesInit(),
     noteMindMapInit(),
     notesContentEditorInit(),
+    uploadsInit(),
   ]);
 }

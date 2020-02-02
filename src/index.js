@@ -1,6 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import * as ReactDOM from 'react-dom';
+import 'abortcontroller-polyfill/dist/polyfill-patch-fetch';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.css';

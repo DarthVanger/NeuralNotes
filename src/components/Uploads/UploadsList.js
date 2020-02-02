@@ -1,30 +1,30 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { AttachmentsEmptyList } from './AttachmentsEmptyList';
-import { AttachmentListItem } from './AttachmentListItem';
+import { UploadsEmptyList } from './UploadsEmptyList';
+import { UploadsListItem } from './UploadsListItem';
 
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-const AttachmentsFileList = ({ uploads }) => {
+const UploadsFileList = ({ uploads }) => {
   if (uploads.length === 0) {
-    return <AttachmentsEmptyList />;
+    return <UploadsEmptyList />;
   }
 
   return (
     <StyledContainer>
       {uploads.map(item => (
-        <AttachmentListItem key={item.name} item={item} />
+        <UploadsListItem key={item.name} item={item} />
       ))}
     </StyledContainer>
   );
 };
 
-AttachmentsFileList.propTypes = {
+UploadsFileList.propTypes = {
   uploads: PropTypes.array.isRequired,
 };
 
-export { AttachmentsFileList };
+export { UploadsFileList };

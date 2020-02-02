@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { UploadsPageHeader } from './UploadsPageHeader';
 import * as Selectors from './UploadsSelectors';
-import { AttachmentsFileList } from './AttachmentsFileList';
+import { UploadsFileList } from './UploadsList';
 
 const StyledPageContainer = styled.div`
   position: absolute;
@@ -22,7 +22,7 @@ const UploadsPage = () => {
   return (
     <StyledPageContainer>
       <UploadsPageHeader />
-      <AttachmentsFileList uploads={uploads} />
+      <UploadsFileList uploads={uploads} />
     </StyledPageContainer>
   );
 };

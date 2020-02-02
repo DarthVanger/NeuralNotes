@@ -68,7 +68,7 @@ const StyledProgressLabel = styled.div`
   font-size: 11px;
 `;
 
-const AttachmentListItem = ({ item }) => {
+const UploadsListItem = ({ item }) => {
   const dispatch = useDispatch();
 
   function cancelUpload() {
@@ -123,8 +123,8 @@ const AttachmentListItem = ({ item }) => {
   );
 };
 
-AttachmentListItem.propTypes = {
+UploadsListItem.propTypes = {
   item: PropTypes.object.isRequired,
 };
 
-export { AttachmentListItem };
+export { UploadsListItem };

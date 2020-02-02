@@ -1,4 +1,4 @@
-import { all, fork } from 'redux-saga/effects';
+import { all } from 'redux-saga/effects';
 import createSagaMiddleware from 'redux-saga';
 import { reducers } from 'reducers';
 import { applyMiddleware, createStore } from 'redux';
@@ -10,7 +10,7 @@ import { loginInit } from 'components/LoginPage/LoginPageSagas';
 import { notesInit } from 'components/NotesPage/NotesPageSagas';
 import { notesContentEditorInit } from 'components/NotesContentEditor/NotesContentEditorSagas';
 import { noteMindMapInit } from 'components/NotesMindMap/NotesMindMapSagas';
-import { attachmentsInit } from 'components/Uploads/AttachmentsSagas';
+import { uploadsInit } from 'components/Uploads/UploadsSagas';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -47,6 +47,6 @@ export function* rootSaga() {
     notesInit(),
     noteMindMapInit(),
     notesContentEditorInit(),
-    fork(attachmentsInit),
+    uploadsInit(),
   ]);
 }

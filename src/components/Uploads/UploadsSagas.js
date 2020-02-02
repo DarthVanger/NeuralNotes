@@ -133,7 +133,7 @@ function* retryFileUploadSaga(action) {
   yield fork(uploadFile, file, uploadFolderId);
 }
 
-export function* attachmentsInit() {
+export function* uploadsInit() {
   yield all([
     // takeEvery(Actions.addUploadingFiles, addUploadingFilesSaga),
     // takeEvery(Actions.retryFileUpload, retryFileUploadSaga),

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { UploadsPageHeader } from './UploadsPageHeader';
 import * as Selectors from './UploadsSelectors';
-import { UploadsFileList } from './UploadsList';
+import { UploadsList } from './UploadsList';
 
 const StyledPageContainer = styled.div`
   position: absolute;
@@ -17,12 +17,12 @@ const StyledPageContainer = styled.div`
 `;
 
 const UploadsPage = () => {
-  const uploads = useSelector(Selectors.getUploadsList);
+  const list = useSelector(Selectors.getUploadsList);
 
   return (
     <StyledPageContainer>
       <UploadsPageHeader />
-      <UploadsFileList uploads={uploads} />
+      <UploadsList list={list} />
     </StyledPageContainer>
   );
 };

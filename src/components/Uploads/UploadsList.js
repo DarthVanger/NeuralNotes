@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { UploadsEmptyList } from './UploadsEmptyList';
+import { UploadsListEmpty } from './UploadsListEmpty';
 import { UploadsListItem } from './UploadsListItem';
 
 const StyledContainer = styled.div`
@@ -9,22 +9,22 @@ const StyledContainer = styled.div`
   flex-direction: column;
 `;
 
-const UploadsFileList = ({ uploads }) => {
-  if (uploads.length === 0) {
-    return <UploadsEmptyList />;
+const UploadsList = ({ list }) => {
+  if (list.length === 0) {
+    return <UploadsListEmpty />;
   }
 
   return (
     <StyledContainer>
-      {uploads.map(item => (
+      {list.map(item => (
         <UploadsListItem key={item.name} item={item} />
       ))}
     </StyledContainer>
   );
 };
 
-UploadsFileList.propTypes = {
-  uploads: PropTypes.array.isRequired,
+UploadsList.propTypes = {
+  list: PropTypes.array.isRequired,
 };
 
-export { UploadsFileList };
+export { UploadsList };

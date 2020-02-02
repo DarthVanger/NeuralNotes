@@ -8,8 +8,8 @@ const StyledContainer = styled.div`
   align-items: center;
 `;
 
-const UploadsEmptyList = () => {
+const UploadsListEmpty = () => {
   return <StyledContainer>No uploads</StyledContainer>;
 };
 
-export { UploadsEmptyList };
+export { UploadsListEmpty };

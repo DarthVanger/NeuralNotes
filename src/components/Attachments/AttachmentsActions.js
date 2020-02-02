@@ -46,4 +46,4 @@ export const retryFileUpload = createAction(
   (file, uploadFolderId) => ({ file, uploadFolderId }),
 );
 
-export const clearList = createAction('CLEAR_LIST');
+export const clearAttachmentList = createAction('CLEAR_ATTACHMENT_LIST');

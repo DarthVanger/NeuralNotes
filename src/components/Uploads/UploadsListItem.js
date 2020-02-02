@@ -9,7 +9,7 @@ import {
   faRedo,
 } from '@fortawesome/free-solid-svg-icons';
 import { UploadingProgressBar } from './UploadProgressBar';
-import * as Actions from './UploadsActions';
+import { UploadsActions } from './UploadsActions';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -72,12 +72,11 @@ const UploadsListItem = ({ item }) => {
   const dispatch = useDispatch();
 
   function cancelUpload() {
-    item.file.abortController.abort();
+    dispatch(UploadsActions.file.cancelUpload(item.file));
   }
 
   function retryUpload() {
-    item.file.abortController = new window.AbortController();
-    dispatch(Actions.retryFileUpload(item.file, item.uploadFolderId));
+    dispatch(UploadsActions.file.retryUpload(item.file));
   }
 
   function renderStatus() {

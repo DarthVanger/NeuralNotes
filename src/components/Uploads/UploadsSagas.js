@@ -1,13 +1,5 @@
 import { eventChannel, END } from 'redux-saga';
-import {
-  all,
-  put,
-  call,
-  fork,
-  take,
-  select,
-  takeEvery,
-} from 'redux-saga/effects';
+import { all, put, call, take, select, takeEvery } from 'redux-saga/effects';
 import throttle from 'lodash/throttle';
 // import { ResumableUploadToGoogleDrive } from 'libs/google-drive-uploader';
 import auth from 'auth';
@@ -98,11 +90,18 @@ function createFileUploadingChannel(file, session) {
 
     file.abortController.signal.addEventListener('abort', () => {
       xhr.abort();
+      const error = new Error('User cancelled');
+      error.code = 'USER_CANCELLED';
+      emitter({
+        type: uploadFailure,
+        error,
+      });
+      emitter(END);
     });
 
     xhr.send(file);
 
-    return () => file.abortController.abort();
+    return () => {};
   });
 }
 
@@ -139,13 +138,17 @@ function* uploadFileSaga(file) {
     state.uploads.list.find(item => item.file === file),
   );
 
-  if (!state.session) {
-    const session = yield call(fetchUploadFileSessionSaga, file);
+  try {
+    if (!state.session) {
+      const session = yield call(fetchUploadFileSessionSaga, file);
 
-    yield put(sessionRetrieved(file, session));
+      yield put(sessionRetrieved(file, session));
+    }
+
+    yield call(startFileUploadingSaga, file);
+  } catch (error) {
+    yield put(uploadFailure(file, error));
   }
-
-  yield call(startFileUploadingSaga, file);
 }
 
 function* addedFilesSaga(action) {
@@ -154,6 +157,15 @@ function* addedFilesSaga(action) {
   yield all(files.map(file => call(uploadFileSaga, file)));
 }
 
+function* cancelUploadSaga(action) {
+  const { file } = action.payload;
+
+  yield call(() => file.abortController.abort());
+}
+
 export function* uploadsInit() {
-  yield all([takeEvery(UploadsActions.list.addedFiles, addedFilesSaga)]);
+  yield all([
+    takeEvery(UploadsActions.list.addedFiles, addedFilesSaga),
+    takeEvery(UploadsActions.file.cancelUpload, cancelUploadSaga),
+  ]);
 }

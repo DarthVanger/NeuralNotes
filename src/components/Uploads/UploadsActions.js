@@ -13,7 +13,8 @@ export const UploadsActions = createActions(
       PROGRESS_UPDATED: withPayload('file', 'progress'),
       UPLOAD_SUCCESS: withPayload('file', 'result'),
       UPLOAD_FAILURE: withPayload('file', 'error'),
-      RETRY_UPLOAD: withPayload('file', 'uploadFolderId'),
+      CANCEL_UPLOAD: withPayload('file'),
+      RETRY_UPLOAD: withPayload('file'),
     },
   },
   {

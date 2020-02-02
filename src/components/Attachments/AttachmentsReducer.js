@@ -49,7 +49,7 @@ const normalDefaultState = {
 const defaultState = debug ? debugDefaultState : normalDefaultState;
 
 function updateFile(updates) {
-  return (state, { payload: { file, uploadFolderId, ...payload } }) =>
+  return (state, { payload: { file, uploadFolderId, ...restPayload } }) =>
     dotProp.set(state, 'uploads', uploads =>
       uploads.map(item => {
         if (!(item.file === file && item.uploadFolderId === uploadFolderId)) {
@@ -60,7 +60,7 @@ function updateFile(updates) {
           return {
             file,
             uploadFolderId,
-            ...updates(payload),
+            ...updates(restPayload),
           };
         }
 
@@ -84,7 +84,7 @@ export const attachmentsReducer = handleActions(
         ...uploads,
       ]),
     [Actions.fileUploadInitialized]: updateFile({ status: 'initialized' }),
-    [Actions.fileUploadGetLocation]: updateFile({ status: 'getLocation ' }),
+    [Actions.fileUploadGetLocation]: updateFile({ status: 'getLocation' }),
     [Actions.fileUploadingStarted]: updateFile({
       status: 'started',
       progress: 0,
@@ -101,7 +101,7 @@ export const attachmentsReducer = handleActions(
       error,
       status: 'error',
     })),
-    [Actions.clearList]: () => defaultState,
+    [Actions.clearAttachmentList]: () => defaultState,
   },
   defaultState,
 );

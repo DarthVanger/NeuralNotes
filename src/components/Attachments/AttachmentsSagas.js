@@ -112,8 +112,10 @@ function* uploadFile(file, uploadFolderId) {
       yield put(mapChannelEventToAction(event, file, uploadFolderId));
     }
   } catch (error) {
+    // @todo: handle error
     console.log('atata error', error);
   } finally {
+    // @todo: remove it
     console.log('channel closed');
     // do nothing
   }

@@ -31,7 +31,7 @@ const AttachmentsPageHeader = () => {
     });
 
     if (canClearList) {
-      dispatch(Actions.clearList());
+      dispatch(Actions.clearAttachmentList());
     }
   }
 

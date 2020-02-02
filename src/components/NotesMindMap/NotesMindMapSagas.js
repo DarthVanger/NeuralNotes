@@ -27,6 +27,7 @@ import { ROOT_NOTE_FOUND_ACTION } from 'components/App/AppActions';
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
 import { SEARCH_QUERY_CHANGED_ACTION } from 'components/SearchPanel/SearchPanelActions';
 import googleDriveApi from 'api/google-drive-api';
+import { UploadsActions } from 'components/Uploads/UploadsActions';
 
 const LOADING_NOTE_MESSAGE = 'loading note contents...';
 let spinner = siteGlobalLoadingBar.create('mind map');
@@ -127,6 +128,13 @@ function didNotAttemptToFetchChildren(note, edges) {
     : false);
 }
 
+function* uploadSuccessSaga(action) {
+  const { uploadFolderId } = action.payload.file;
+
+  // @todo: need to refresh notes for `uploadFolderId`
+  yield call(() => console.log('Need to refresh children for', uploadFolderId));
+}
+
 export function* noteMindMapInit() {
   yield all([
     takeEvery(NOTE_CHANGE_PARENT_ACTION, changeParentNote),
@@ -136,5 +144,6 @@ export function* noteMindMapInit() {
     takeEvery(DELETE_NOTE_ACTION, deleteNote),
     takeEvery(UPDATE_NOTE_NAME_ACTION, updateNoteName),
     takeEvery(SEARCH_QUERY_CHANGED_ACTION, searchNoteSaga),
+    takeEvery(UploadsActions.file.uploadSuccess, uploadSuccessSaga),
   ]);
 }

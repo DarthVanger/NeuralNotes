@@ -60,6 +60,7 @@ function createFileUploadingChannel(file, session) {
       emitter({
         type: progressUpdated,
         progress: {
+          percent: Math.trunc((100 * event.loaded) / event.total),
           loaded: event.loaded,
           total: event.total,
         },
@@ -95,7 +96,7 @@ function createFileUploadingChannel(file, session) {
     xhr.onerror = onFailure;
     // @todo: add upload position
 
-    file.abortController.addEventListener('abort', () => {
+    file.abortController.signal.addEventListener('abort', () => {
       xhr.abort();
     });
 

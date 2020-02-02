@@ -4,6 +4,10 @@ import { defaultState } from './UploadsReducerDefaultState';
 import { UPLOADS_REDUCER_KEY, UPLOADS_STATUS_ENUM } from './UploadsConstants';
 import { UploadsActions } from './UploadsActions';
 
+function updateList(updater) {
+  return updateState('list', updater);
+}
+
 function addFiles(list, { files }) {
   return [
     ...files.map(file => ({
@@ -14,7 +18,7 @@ function addFiles(list, { files }) {
   ];
 }
 
-function updateFile(list, { file, ...updates }) {
+function updateFileInList(list, { file, ...updates }) {
   return list.map(item => {
     if (item.file !== file) {
       return item;
@@ -27,14 +31,19 @@ function updateFile(list, { file, ...updates }) {
   });
 }
 
+function updateFile() {
+  return updateList(updateFileInList);
+}
+
 export const uploadsReducer = handleActions(
   {
-    [UploadsActions.list.addedFiles]: updateState('list', addFiles),
-    [UploadsActions.list.clear]: updateState('list', []),
-    [UploadsActions.file.sessionRetrieved]: updateState('list', updateFile),
-    [UploadsActions.file.progressUpdated]: updateState('list', updateFile),
-    [UploadsActions.file.uploadSuccess]: updateState('list', updateFile),
-    [UploadsActions.file.uploadFailure]: updateState('list', updateFile),
+    [UploadsActions.list.addedFiles]: updateList(addFiles),
+    [UploadsActions.list.clear]: updateList([]),
+
+    [UploadsActions.file.sessionRetrieved]: updateFile(),
+    [UploadsActions.file.progressUpdated]: updateFile(),
+    [UploadsActions.file.uploadSuccess]: updateFile(),
+    [UploadsActions.file.uploadFailure]: updateFile(),
   },
   defaultState,
 );

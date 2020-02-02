@@ -10,7 +10,7 @@ import { loginInit } from 'components/LoginPage/LoginPageSagas';
 import { notesInit } from 'components/NotesPage/NotesPageSagas';
 import { notesContentEditorInit } from 'components/NotesContentEditor/NotesContentEditorSagas';
 import { noteMindMapInit } from 'components/NotesMindMap/NotesMindMapSagas';
-import { attachmentsInit } from 'components/Attachments/AttachmentsSagas';
+import { attachmentsInit } from 'components/Uploads/AttachmentsSagas';
 
 const sagaMiddleware = createSagaMiddleware();
 

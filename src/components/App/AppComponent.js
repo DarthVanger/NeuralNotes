@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { NotesPageContainer } from 'components/NotesPage/NotesPageContainer';
 import { PAGES_ENUM } from 'components/App/AppConstants';
 import { LoginPageContainer } from 'components/LoginPage/LoginPageContainer';
-import { AttachmentsPage } from 'components/Attachments/AttachmentsPage';
+import { AttachmentsPage } from 'components/Uploads/AttachmentsPage';
 
 export class AppComponent extends PureComponent {
   render() {

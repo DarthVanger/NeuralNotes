@@ -37,6 +37,7 @@ function* fetchUploadFileSessionSaga(file) {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${auth.getToken()}`,
       },
+      signal: file.abortController.signal,
     }),
   );
 
@@ -93,9 +94,14 @@ function createFileUploadingChannel(file, session) {
     xhr.onload = onSuccess;
     xhr.onerror = onFailure;
     // @todo: add upload position
+
+    file.abortController.addEventListener('abort', () => {
+      xhr.abort();
+    });
+
     xhr.send(file);
 
-    return () => xhr.abort();
+    return () => file.abortController.abort();
   });
 }
 

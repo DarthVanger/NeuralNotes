@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { NotesPageContainer } from 'components/NotesPage/NotesPageContainer';
 import { PAGES_ENUM } from 'components/App/AppConstants';
 import { LoginPageContainer } from 'components/LoginPage/LoginPageContainer';
-import { AttachmentsPage } from 'components/Uploads/AttachmentsPage';
+import { UploadsPage } from 'components/Uploads/UploadsPage';
 
 export class AppComponent extends PureComponent {
   render() {
@@ -20,7 +20,7 @@ export class AppComponent extends PureComponent {
         return <NotesPageContainer />;
 
       case PAGES_ENUM.ATTACHMENTS:
-        return <AttachmentsPage />;
+        return <UploadsPage />;
 
       default:
         throw new Error(`unknown page: ${page}`);

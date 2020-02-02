@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { AttachmentsPageHeader } from './AttachmentsPageHeader';
+import { UploadsPageHeader } from './UploadsPageHeader';
 import * as Selectors from './UploadsSelectors';
 import { AttachmentsFileList } from './AttachmentsFileList';
 
@@ -16,15 +16,15 @@ const StyledPageContainer = styled.div`
   flex-direction: column;
 `;
 
-const AttachmentsPage = () => {
+const UploadsPage = () => {
   const uploads = useSelector(Selectors.getUploadsList);
 
   return (
     <StyledPageContainer>
-      <AttachmentsPageHeader />
+      <UploadsPageHeader />
       <AttachmentsFileList uploads={uploads} />
     </StyledPageContainer>
   );
 };
 
-export { AttachmentsPage };
+export { UploadsPage };

@@ -20,9 +20,9 @@ const StyledBackButton = styled.button`
   background: none;
 `;
 
-const AttachmentsPageHeader = () => {
+const UploadsPageHeader = () => {
   const dispatch = useDispatch();
-  const canClearList = useSelector(Selectors.canClearUploadList);
+  const hasActiveUploads = useSelector(Selectors.hasActiveUploads);
 
   function handleBackClick() {
     dispatch({
@@ -30,7 +30,7 @@ const AttachmentsPageHeader = () => {
       data: AppConstants.PAGES_ENUM.NOTES,
     });
 
-    if (canClearList) {
+    if (!hasActiveUploads) {
       dispatch(Actions.clearAttachmentList());
     }
   }
@@ -44,4 +44,4 @@ const AttachmentsPageHeader = () => {
   );
 };
 
-export { AttachmentsPageHeader };
+export { UploadsPageHeader };

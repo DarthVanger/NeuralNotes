@@ -1,141 +1,152 @@
 import { eventChannel, END } from 'redux-saga';
-import { all, put, call, fork, take, takeEvery } from 'redux-saga/effects';
-import { ResumableUploadToGoogleDrive } from 'libs/google-drive-uploader';
+import {
+  all,
+  put,
+  call,
+  fork,
+  take,
+  select,
+  takeEvery,
+} from 'redux-saga/effects';
+import throttle from 'lodash/throttle';
+// import { ResumableUploadToGoogleDrive } from 'libs/google-drive-uploader';
 import auth from 'auth';
-import * as Actions from './UploadsActions';
+import { UploadsActions } from './UploadsActions';
 
-const createUploaderCallback = emitter => (result, error) => {
-  if (error) {
-    emitter({
-      type: 'error',
-      error,
-    });
-    emitter(END);
-    return;
-  }
+const ENDPOINT =
+  'https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable';
+const SESSION_TOKEN = 'upload_id=';
+const PROGRESS_UPDATE_INTERVAL = 1000;
+const {
+  sessionRetrieved,
+  progressUpdated,
+  uploadSuccess,
+  uploadFailure,
+} = UploadsActions.file;
 
-  const handlersMap = {
-    initialize: () => emitter({ type: 'initialized' }),
-    getLocation: () => emitter({ type: 'getLocation' }),
-    start: () => emitter({ type: 'started' }),
-    Uploading: () =>
-      emitter({
-        type: 'uploading',
-        progress: result.progressNumber.current / result.progressNumber.end,
+function* fetchUploadFileSessionSaga(file) {
+  const response = yield call(() =>
+    fetch(ENDPOINT, {
+      method: 'POST',
+      body: JSON.stringify({
+        mimeType: file.type,
+        name: file.name,
+        parents: [file.uploadFolderId],
       }),
-    Done: () => {
-      emitter({
-        type: 'done',
-        result: result.result,
-      });
-      emitter(END);
-    },
-  };
-  const handleResult = handlersMap[result.status];
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${auth.getToken()}`,
+      },
+    }),
+  );
 
-  if (!handleResult) {
-    // @note: we don't need really handle this exception
-    throw new Error('Unable to handle this case');
+  if (response.status !== 200) {
+    const error = new Error('Fetch session error');
+    error.code = 'FETCH_SESSION_ERROR';
+    throw error;
   }
 
-  handleResult();
-};
+  const location = response.headers.get('location');
 
-function createUploadFileChannel(file, uploadFolderId) {
+  return location.slice(
+    location.lastIndexOf(SESSION_TOKEN) + SESSION_TOKEN.length,
+  );
+}
+
+function createFileUploadingChannel(file, session) {
   return eventChannel(emitter => {
-    const fileReader = new FileReader();
-    fileReader.fileName = file.name;
-    fileReader.fileSize = file.size;
-    fileReader.fileType = file.type;
-    fileReader.abortController = file.abortController;
-    fileReader.onload = startUploading;
-    fileReader.readAsArrayBuffer(file);
-
-    file.abortController.signal.addEventListener('abort', () => {
-      fileReader.abort();
+    function onProgress(event) {
       emitter({
-        type: 'error',
-        error: new DOMException('CANCELLED', 'CANCELLED'),
+        type: progressUpdated,
+        progress: {
+          loaded: event.loaded,
+          total: event.total,
+        },
       });
-      emitter(END);
-    });
-
-    function startUploading(e) {
-      const f = e.target;
-      const resource = {
-        fileName: f.fileName,
-        fileSize: f.fileSize,
-        fileType: f.fileType,
-        fileBuffer: f.result,
-        abortController: f.abortController,
-        accessToken: auth.getToken(),
-        folderId: uploadFolderId,
-      };
-      const ru = new ResumableUploadToGoogleDrive();
-
-      ru.Do(resource, createUploaderCallback(emitter));
     }
 
-    return () => {
-      file.abortController.abort();
-    };
+    function onSuccess(event) {
+      // check response for failure
+      emitter({
+        type: uploadSuccess,
+        result: JSON.parse(event.target.responseText),
+      });
+      emitter(END);
+    }
+
+    function onFailure() {
+      const error = new Error('Network error');
+      error.code = 'NETWORK_ERROR';
+
+      emitter({
+        type: uploadFailure,
+        error,
+      });
+      emitter(END);
+    }
+
+    const xhr = new XMLHttpRequest();
+
+    xhr.open('PUT', `${ENDPOINT}&${SESSION_TOKEN}${session}`);
+    xhr.setRequestHeader('Authorization', `Bearer ${auth.getToken()}`);
+    xhr.upload.onprogress = throttle(onProgress, PROGRESS_UPDATE_INTERVAL);
+    xhr.onload = onSuccess;
+    xhr.onerror = onFailure;
+    // @todo: add upload position
+    xhr.send(file);
+
+    return () => xhr.abort();
   });
 }
 
-function mapChannelEventToAction(event, file, uploadFolderId) {
-  const mapEventToAction = {
-    initialized: () => Actions.fileUploadInitialized(file, uploadFolderId),
-    getLocation: () => Actions.fileUploadGetLocation(file, uploadFolderId),
-    started: () => Actions.fileUploadingStarted(file, uploadFolderId),
-    uploading: () =>
-      Actions.fileUploadingProgressUpdated(
-        file,
-        uploadFolderId,
-        event.progress,
-      ),
-    done: () =>
-      Actions.fileUploadingSuccess(file, uploadFolderId, event.result),
-    error: () =>
-      Actions.fileUploadingFailure(file, uploadFolderId, event.error),
-  };
+function* startFileUploadingSaga(file) {
+  const { session } = yield select(state =>
+    state.uploads.list.find(item => item.file === file),
+  );
 
-  return mapEventToAction[event.type]();
-}
+  const fileUploadingChannel = yield call(
+    createFileUploadingChannel,
+    file,
+    session,
+  );
 
-function* uploadFile(file, uploadFolderId) {
-  const channel = yield call(createUploadFileChannel, file, uploadFolderId);
+  while (true) {
+    const event = yield take(fileUploadingChannel);
 
-  try {
-    while (true) {
-      const event = yield take(channel);
-
-      yield put(mapChannelEventToAction(event, file, uploadFolderId));
+    switch (event.type) {
+      case progressUpdated:
+        yield put(progressUpdated(file, event.progress));
+        break;
+      case uploadSuccess:
+        yield put(uploadSuccess(file, event.result));
+        break;
+      case uploadFailure:
+        yield put(uploadFailure(file, event.error));
+        break;
     }
-  } catch (error) {
-    // @todo: handle error
-    console.log('atata error', error);
-  } finally {
-    // @todo: remove it
-    console.log('channel closed');
-    // do nothing
   }
 }
 
-function* addUploadingFilesSaga(action) {
-  const { files, uploadFolderId } = action.payload;
+function* uploadFileSaga(file) {
+  const state = yield select(state =>
+    state.uploads.list.find(item => item.file === file),
+  );
 
-  yield all(files.map(item => fork(uploadFile, item, uploadFolderId)));
+  if (!state.session) {
+    const session = yield call(fetchUploadFileSessionSaga, file);
+
+    yield put(sessionRetrieved(file, session));
+  }
+
+  yield call(startFileUploadingSaga, file);
 }
 
-function* retryFileUploadSaga(action) {
-  const { file, uploadFolderId } = action.payload;
+function* addedFilesSaga(action) {
+  const { files } = action.payload;
 
-  yield fork(uploadFile, file, uploadFolderId);
+  yield all(files.map(file => call(uploadFileSaga, file)));
 }
 
 export function* uploadsInit() {
-  yield all([
-    // takeEvery(Actions.addUploadingFiles, addUploadingFilesSaga),
-    // takeEvery(Actions.retryFileUpload, retryFileUploadSaga),
-  ]);
+  yield all([takeEvery(UploadsActions.list.addedFiles, addedFilesSaga)]);
 }

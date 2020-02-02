@@ -1,3 +1,5 @@
+import { UPLOADS_STATUS_ENUM } from 'components/Uploads/UploadsConstants';
+
 /**
  * Unfortunately, Google is not providing the client for uploading files
  * and we didn't found cool library for this feature
@@ -31,7 +33,7 @@ const context = {};
       resource,
       callback,
     ) {
-      callback({ status: 'initialize' }, null);
+      callback({ status: UPLOADS_STATUS_ENUM.INITIALIZED }, null);
       try {
         this.obj = await init.call(this, resource);
       } catch (err) {
@@ -54,7 +56,10 @@ const context = {};
       try {
         const head = await getLocation.call(this);
         this.location = head.get('location');
-        callback({ status: 'getLocation' }, null);
+        callback(
+          { status: UPLOADS_STATUS_ENUM.UPLOAD_SESSION_RETRIEVED },
+          null,
+        );
         doUpload.call(this, chunks, function(res, err) {
           if (err) {
             callback(null, err);
@@ -203,7 +208,6 @@ const context = {};
     };
 
     const doUpload = function(chunks, callback) {
-      callback({ status: 'start' }, null);
       const location = this.location;
       const abortController = this.obj.resource.abortController;
       const end = chunks.length;
@@ -212,7 +216,7 @@ const context = {};
         const e = chunks[cnt];
         callback(
           {
-            status: 'Uploading',
+            status: UPLOADS_STATUS_ENUM.UPLOADING,
             progressNumber: { current: cnt, end: end },
             progressByte: {
               current: e.startByte,
@@ -238,7 +242,12 @@ const context = {};
             } else if (status == 200) {
               res
                 .json()
-                .then(r => callback({ status: 'Done', result: r }, null));
+                .then(r =>
+                  callback(
+                    { status: UPLOADS_STATUS_ENUM.SUCCESS, result: r },
+                    null,
+                  ),
+                );
             } else {
               res.json().then(err => {
                 err.additionalInformation =

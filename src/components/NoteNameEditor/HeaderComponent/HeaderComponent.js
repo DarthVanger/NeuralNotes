@@ -9,7 +9,6 @@ import {
 export const HeaderComponent = ({
   onChangeParentClick,
   onDeleteClick,
-  onUploadFileClick,
   isChangeParentModeActive,
 }) => (
   <StyledHeader>
@@ -25,16 +24,12 @@ export const HeaderComponent = ({
       <button className="btn btn-danger" onClick={onDeleteClick}>
         Delete
       </button>
-      <button className="btn btn-default" onClick={onUploadFileClick}>
-        Upload files
-      </button>
     </StyledButtonContainer>
   </StyledHeader>
 );
 
 HeaderComponent.propTypes = {
   onDeleteClick: PropTypes.func.isRequired,
-  onUploadFileClick: PropTypes.func.isRequired,
   onChangeParentClick: PropTypes.func.isRequired,
   isChangeParentModeActive: PropTypes.bool.isRequired,
 };

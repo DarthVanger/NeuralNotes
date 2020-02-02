@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import { KEY } from './UploadsConstants';
 import { NotesMindMapSelectors } from './AttachmentsImportedSelectors';
 
 export const isUploadButtonVisible =
@@ -6,11 +7,11 @@ export const isUploadButtonVisible =
 
 export const getUploadFolderId = NotesMindMapSelectors.getSelectedNoteId;
 
-const getAttachmentsState = state => state.attachments;
+const getAttachmentsState = state => state[KEY];
 
 export const getUploads = createSelector(
   getAttachmentsState,
-  attachments => attachments.uploads,
+  attachments => attachments.list,
 );
 
 export const getUploadFiles = createSelector(getUploads, uploads =>

@@ -25,7 +25,7 @@ const createNotesMindMapPropertySelector = property =>
 const getRealNotes = createNotesMindMapPropertySelector('notes');
 const getRealEdges = createNotesMindMapPropertySelector('edges');
 
-const getUploads = state => state.attachments.uploads;
+const getUploads = state => state.uploads.list;
 
 const getUploadItems = createSelector(getUploads, uploads =>
   uploads.map(item => ({

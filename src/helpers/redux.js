@@ -1,3 +1,5 @@
+import dotProp from 'dot-prop-immutable';
+
 /**
  * Creates a function which transforms arg list to objekt with followed keys
  *
@@ -20,4 +22,20 @@ export const withPayload = (...keys) => {
   };
 
   return createPayload;
+};
+
+/**
+ * Shorthand to update substate
+ *
+ * @param {*} name - property name to update
+ * @param {*|Function} updater - next value or function to update
+ */
+export const updateState = (name, updater) => {
+  const reducer = (state, { payload }) => {
+    const nextState = dotProp.set(state, name, updater(state[name], payload));
+
+    return nextState;
+  };
+
+  return reducer;
 };

@@ -1,5 +1,6 @@
 import { createAction, createActions } from 'redux-actions';
 import { withPayload } from 'helpers/redux';
+import { KEY } from './UploadsConstants';
 
 export const addUploadingFiles = createAction(
   'ADD_UPLOADING_FILES',
@@ -64,6 +65,6 @@ export const UploadsActions = createActions(
     },
   },
   {
-    prefix: 'UPLOADS',
+    prefix: KEY.toUpperCase(),
   },
 );

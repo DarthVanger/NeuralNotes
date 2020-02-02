@@ -61,7 +61,7 @@ const StyledStatusButton = styled.button`
  * - when partial success
  * - when has errors
  */
-const StatusButtonComponent = () => {
+const UploadStatusButton = () => {
   const dispatch = useDispatch();
   const hasUploads = useSelector(Selectors.hasUploads);
   const hasActiveUploads = useSelector(Selectors.hasActiveUploads);
@@ -84,4 +84,4 @@ const StatusButtonComponent = () => {
   );
 };
 
-export { StatusButtonComponent };
+export { UploadStatusButton };

@@ -8,7 +8,7 @@ import {
   faCheck,
   faRedo,
 } from '@fortawesome/free-solid-svg-icons';
-import { UploadingProgressBar } from './UploadingProgressBar';
+import { UploadingProgressBar } from './UploadProgressBar';
 import * as Actions from './UploadsActions';
 
 const StyledContainer = styled.div`

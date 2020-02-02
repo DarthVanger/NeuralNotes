@@ -37,7 +37,7 @@ const StyledUploadButton = styled.button`
   }
 `;
 
-const UploadButtonComponent = () => {
+const UploadButton = () => {
   const dispatch = useDispatch();
   const isUploadButtonVisible = useSelector(
     NotesMindMapSelectors.isSelectedNoteRealNote,
@@ -83,4 +83,4 @@ const UploadButtonComponent = () => {
   );
 };
 
-export { UploadButtonComponent };
+export { UploadButton };

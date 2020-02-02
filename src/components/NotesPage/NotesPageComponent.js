@@ -5,8 +5,8 @@ import { ControlsHelpComponent } from 'components/ControlsHelp/ControlsHelpCompo
 import { NotesContentEditorContainer } from 'components/NotesContentEditor/NotesContentEditorContainer';
 import { NotesMindMapContainer } from 'components/NotesMindMap/NotesMindMapContainer';
 import { SearchPanelContainer } from 'components/SearchPanel/SearchPanelContainer';
-import { StatusButtonComponent } from 'components/Uploads/UploadsStatusButtonComponent';
-import { UploadButtonComponent } from 'components/Uploads/UploadButtonComponent';
+import { UploadStatusButton } from 'components/Uploads/UploadStatusButton';
+import { UploadButton } from 'components/Uploads/UploadButton';
 
 export class NotesPageComponent extends Component {
   render() {
@@ -18,8 +18,8 @@ export class NotesPageComponent extends Component {
         <NotesContentEditorContainer />
         {!isHelpViewed && <ControlsHelpComponent onClose={closeHelp} />}
         <SearchPanelContainer />
-        <StatusButtonComponent />
-        <UploadButtonComponent />
+        <UploadStatusButton />
+        <UploadButton />
       </>
     );
   }

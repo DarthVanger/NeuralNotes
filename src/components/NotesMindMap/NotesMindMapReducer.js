@@ -69,12 +69,8 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
     let nodes = [...state.nodes];
     let edges = [...state.edges];
     edges.push({ from: newNote.parent.id, to: newNote.id });
-    nodes = addNodeToGraph(nodes, newNote);
-    nodes = nodes.map(node => {
-      return node.id === newNote.parent.id && node.isNote
-        ? { ...node, group: 'parent' }
-        : node;
-    });
+    nodes = addNodeToGraph(nodes, { ...newNote, group: 'children' });
+    nodes = addGroupTagToNodes(nodes, edges);
     return {
       ...state,
       nodes,
@@ -101,17 +97,9 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
     const newParentId = data.newParentId;
     let edges = [...state.edges];
     let nodes = [...state.nodes];
-    const oldParentId = edges.find(edge => edge.to === noteId).from;
     edges = edges.filter(edge => edge.to !== noteId);
-    const oldParentHasChildren = edges.find(edge => edge.from === oldParentId);
     edges.push({ from: newParentId, to: noteId });
-    nodes = nodes.map(node => {
-      if (node.id === newParentId && node.isNote)
-        return { ...node, group: 'parent' };
-      else if (node.id === oldParentId && node.isNote && !oldParentHasChildren)
-        return { ...node, group: 'children' };
-      return node;
-    });
+    nodes = addGroupTagToNodes(nodes, edges);
     return {
       ...state,
       isChangeParentModeActive: false,
@@ -129,22 +117,22 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
   };
 
   const addRootToGraph = () => {
-    let nodes = [...state.nodes];
-    addNodeToGraph(nodes, { ...data, isNote: false });
+    let nodes = state.nodes;
     return {
       ...state,
-      nodes,
+      nodes: addNodeToGraph(nodes, { ...data, isNote: false }),
     };
   };
 
   const addNodeToGraph = (nodes, newNote) => {
-    nodes.push({
+    let newNodes = [...nodes];
+    newNodes.push({
       id: newNote.id,
       label: newNote.name,
       name: newNote.name,
       isNote: newNote.isNote,
     });
-    return nodes;
+    return newNodes;
   };
 
   switch (type) {

@@ -1,4 +1,4 @@
-function doesNodeHasChildren({ edges, nodeId }) {
+function doesNodeHasChildren(edges, nodeId) {
   return edges.find(edge => edge.from === nodeId);
 }
 
@@ -8,9 +8,6 @@ function revokeParentStatus({ nodes, nodeId }) {
   });
 }
 
-const hasChildren = (edges, nodeId) =>
-  Boolean(edges.find(edge => edge.from === nodeId));
-
 export function removeNodeFromGraph(nodes, edges, nodeToDelete) {
   let newNodes = [...nodes];
   let newEdges = [...edges];
@@ -18,14 +15,14 @@ export function removeNodeFromGraph(nodes, edges, nodeToDelete) {
 
   removeChildren(nodeToDelete.id);
 
-  newNodes = doesNodeHasChildren({ edges: newEdges, nodeId: parentId })
+  newNodes = doesNodeHasChildren(newEdges, parentId)
     ? newNodes
     : revokeParentStatus({ nodes: newNodes, nodeId: parentId });
   return { nodes: newNodes, edges: newEdges };
 
   function removeChildren(nodeId) {
     newNodes = newNodes.filter(node => node.id !== nodeId);
-    if (hasChildren(newEdges, nodeId)) {
+    if (doesNodeHasChildren(newEdges, nodeId)) {
       newEdges.forEach(edge => {
         if (edge.from === nodeId) {
           removeChildren(edge.to);
@@ -40,8 +37,10 @@ export function removeNodeFromGraph(nodes, edges, nodeToDelete) {
 
 export function addGroupTagToNodes(nodes, edges) {
   return nodes.map(node =>
-    node.isNote && hasChildren(edges, node.id)
+    node.isNote && doesNodeHasChildren(edges, node.id)
       ? { ...node, group: 'parent' }
+      : node.isNote
+      ? { ...node, group: 'children' }
       : node,
   );
 }

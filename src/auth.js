@@ -3,6 +3,7 @@ export default {
   saveToken: saveToken,
   getToken: getToken,
   signedIn: signedIn,
+  logout: logout,
 };
 
 function signedIn() {
@@ -39,4 +40,10 @@ function saveToken(tokenObject) {
 
 function getToken() {
   return window.localStorage.getItem('gapiAccessToken');
+}
+
+function logout() {
+  window.localStorage.removeItem('gapiAccessToken');
+  window.localStorage.removeItem('gapiAccessTokenExpirationDate');
+  window.location.reload();
 }

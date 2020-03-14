@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { ControlsHelpComponent } from 'components/ControlsHelp/ControlsHelpComponent';
 import { NotesContentEditorContainer } from 'components/NotesContentEditor/NotesContentEditorContainer';
 import { NotesMindMapContainer } from 'components/NotesMindMap/NotesMindMapContainer';
+import { LogoutButtonContainer } from 'components/LogoutButton/LogoutButtonContainer';
 import { SearchPanelContainer } from 'components/SearchPanel/SearchPanelContainer';
 import { UploadStatusButton } from 'components/Uploads/UploadStatusButton';
 import { UploadButton } from 'components/Uploads/UploadButton';
@@ -18,6 +19,7 @@ export class NotesPageComponent extends Component {
         <NotesContentEditorContainer />
         {!isHelpViewed && <ControlsHelpComponent onClose={closeHelp} />}
         <SearchPanelContainer />
+        <LogoutButtonContainer />
         <UploadStatusButton />
         <UploadButton />
       </>

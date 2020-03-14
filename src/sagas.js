@@ -7,6 +7,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { spinnerInit } from 'components/Spinner/SpinnerSagas';
 import { appInit } from 'components/App/AppSagas';
 import { loginInit } from 'components/LoginPage/LoginPageSagas';
+import { logoutButtonInit } from 'components/LogoutButton/LogoutButtonSagas';
 import { notesInit } from 'components/NotesPage/NotesPageSagas';
 import { notesContentEditorInit } from 'components/NotesContentEditor/NotesContentEditorSagas';
 import { noteMindMapInit } from 'components/NotesMindMap/NotesMindMapSagas';
@@ -44,6 +45,7 @@ export function* rootSaga() {
     appInit(),
     spinnerInit(),
     loginInit(),
+    logoutButtonInit(),
     notesInit(),
     noteMindMapInit(),
     notesContentEditorInit(),

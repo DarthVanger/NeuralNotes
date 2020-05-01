@@ -23,7 +23,7 @@ const createNotesMindMapPropertySelector = property =>
     notesMindMapState => notesMindMapState[property],
   );
 
-const getRealNotes = createNotesMindMapPropertySelector('notes');
+const getRealNotes = createNotesMindMapPropertySelector('nodes');
 const getRealEdges = createNotesMindMapPropertySelector('edges');
 
 const getUploadItems = createSelector(
@@ -78,7 +78,7 @@ const mapStateToProps = createStructuredSelector({
   isChangeParentModeActive: createNotesMindMapPropertySelector(
     'isChangeParentModeActive',
   ),
-  notes: getComputedNotes,
+  nodes: getComputedNotes,
   edges: getComputedEdges,
 });
 

@@ -13,12 +13,11 @@ export class NotesMindMapComponent extends Component {
       selectedNote,
       showNoteNameEditor,
       isChangeParentModeActive,
+      nodes,
+      edges,
     } = this.props;
 
-    let visGraph = {
-      nodes: [...this.props.notes],
-      edges: [...this.props.edges],
-    };
+    const visGraph = { nodes, edges };
 
     const visOptions = {
       interaction: {
@@ -71,9 +70,9 @@ export class NotesMindMapComponent extends Component {
     // if clicking on the current note, do nothing.
     if (targetNoteId === selectedNote.id) return;
 
-    const notes = this.props.notes;
+    const nodes = this.props.nodes;
 
-    const targetNote = notes.find(note => note.id === targetNoteId);
+    const targetNote = nodes.find(note => note.id === targetNoteId);
 
     if (!targetNote) {
       throw new Error(
@@ -96,7 +95,7 @@ export class NotesMindMapComponent extends Component {
     this.props.onMindMapClick();
     if (VisNetworkHelper.clickedOnNote(event)) {
       let targetNoteId = VisNetworkHelper.getTargetNoteId(event);
-      const targetNote = this.props.notes.find(
+      const targetNote = this.props.nodes.find(
         note => note.id === targetNoteId,
       );
 
@@ -119,26 +118,26 @@ export class NotesMindMapComponent extends Component {
   };
 
   visNetworkDoubleClickHandler = event => {
-    const { notes } = this.props;
+    const { nodes } = this.props;
     if (VisNetworkHelper.clickedOnNote(event)) {
       let targetNoteId = VisNetworkHelper.getTargetNoteId(event);
-      const targetNote = notes.find(node => node.id === targetNoteId);
+      const targetNote = nodes.find(node => node.id === targetNoteId);
       this.props.createEmptyChild({ parent: targetNote });
     }
   };
 
   visNetworkHoldHandler = event => {
-    const { notes } = this.props;
+    const { nodes } = this.props;
     if (VisNetworkHelper.clickedOnNote(event)) {
       let targetNoteId = VisNetworkHelper.getTargetNoteId(event);
-      const targetNote = notes.find(node => node.id === targetNoteId);
+      const targetNote = nodes.find(node => node.id === targetNoteId);
       this.editNote(targetNote);
     }
   };
 
   editNote(targetNote) {
-    const { notes } = this.props;
-    const note = notes.find(node => node.id === targetNote.id);
+    const { nodes } = this.props;
+    const note = nodes.find(node => node.id === targetNote.id);
 
     if (note.name === noteStorage.APP_FOLDER_NAME || !note.isNote) {
       return;
@@ -166,7 +165,7 @@ NotesMindMapComponent.propTypes = {
   isChangeParentModeActive: PropTypes.bool.isRequired,
   changeParentNote: PropTypes.func.isRequired,
   showNoteNameEditor: PropTypes.bool.isRequired,
-  notes: PropTypes.array.isRequired,
+  nodes: PropTypes.array.isRequired,
   edges: PropTypes.array.isRequired,
   onMindMapClick: PropTypes.func.isRequired,
   editNote: PropTypes.func.isRequired,

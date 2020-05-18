@@ -2,8 +2,6 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { NotesMindMapSelectors } from 'selectors';
 import { UploadsActions } from './UploadsActions';
 
@@ -76,7 +74,7 @@ const UploadButton = () => {
         <StyledUploadButton
           className="btn btn-default"
           onClick={onUploadButtonClick}>
-          <FontAwesomeIcon icon={faPlus} />
+          &#10010;
         </StyledUploadButton>
       </CSSTransition>
     </>

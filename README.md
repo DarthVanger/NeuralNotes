@@ -9,8 +9,10 @@ There is no DB, it's just files:
 - basically it's a folder tree displayed as a mind map
 - notes are just txt files inside the folders
 
-## Kanban board (github project)
-[Board](https://github.com/users/DarthVanger/projects/1)
+## Boards (Kanban)
+- [v1 features](https://github.com/DarthVanger/NeuralNotes/projects/4): lacking features for v1
+- [v1 UX](https://github.com/DarthVanger/NeuralNotes/projects/4): implement new design and UX
+- [Bugs and refactoring](https://github.com/DarthVanger/NeuralNotes/projects/4): tracker for bugs and technical debt (refactoring)
 
 ## Code style / Architecture
 We are using React, Redux and Sagas there. 

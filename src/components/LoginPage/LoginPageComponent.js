@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Slide1 from 'components/LoginPage/Slide1';
 import Slide2 from 'components/LoginPage/Slide2';
 import Slide3 from 'components/LoginPage/Slide3';
@@ -34,10 +34,9 @@ const H3 = styled.h3`
 // 92% - image height without vertical indention
 // 4% - vertical indention
 // 0.75% - horizontal indention
-const GoogleLoginButton = styled.button`
+const Button = css`
   color: ${COLORS.white};
   background-color: ${COLORS.blue};
-  margin: auto;
   position: relative;
   border: none;
   border-radius: 0.4vmin;
@@ -58,6 +57,16 @@ const GoogleLoginButton = styled.button`
     line-height: 100%;
     font-size: 3vmin;
   }
+`;
+
+const GoogleLoginButton = styled.button`
+  ${Button}
+  float: right;
+`;
+
+const GoogleSignUp = styled.button`
+  ${Button}
+  margin: auto;
 `;
 
 const Footer = styled.footer`
@@ -84,6 +93,10 @@ export class LoginPageComponent extends Component {
     return (
       <Main>
         <Article>
+          <GoogleLoginButton type="button" onClick={authHandler}>
+            <img src={iconGoogle} />
+            <span>Login</span>
+          </GoogleLoginButton>
           <Slide1 />
           <Slide2 />
           <Slide3 />
@@ -93,10 +106,10 @@ export class LoginPageComponent extends Component {
             <H3>
               <span>Neural</span>Notes is open source and free
             </H3>
-            <GoogleLoginButton type="button" onClick={authHandler}>
+            <GoogleSignUp type="button" onClick={authHandler}>
               <img src={iconGoogle} />
               <span>Sign up with Google</span>
-            </GoogleLoginButton>
+            </GoogleSignUp>
           </Footer>
         </Article>
       </Main>

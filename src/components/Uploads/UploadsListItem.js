@@ -2,12 +2,6 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faTimesCircle,
-  faCheck,
-  faRedo,
-} from '@fortawesome/free-solid-svg-icons';
 import { UploadingProgressBar } from './UploadProgressBar';
 import { UploadsActions } from './UploadsActions';
 
@@ -97,26 +91,16 @@ const UploadsListItem = ({ item }) => {
 
   function renderIconButton() {
     if (item.result) {
-      return (
-        <StyledIconButton>
-          <FontAwesomeIcon icon={faCheck} />
-        </StyledIconButton>
-      );
+      return <StyledIconButton>&#10004;</StyledIconButton>;
     }
 
     if (item.error) {
       return (
-        <StyledIconButton onClick={retryUpload}>
-          <FontAwesomeIcon icon={faRedo} />
-        </StyledIconButton>
+        <StyledIconButton onClick={retryUpload}>&#11097;</StyledIconButton>
       );
     }
 
-    return (
-      <StyledIconButton onClick={cancelUpload}>
-        <FontAwesomeIcon icon={faTimesCircle} />
-      </StyledIconButton>
-    );
+    return <StyledIconButton onClick={cancelUpload}>&#10006;</StyledIconButton>;
   }
 
   function renderProgress() {

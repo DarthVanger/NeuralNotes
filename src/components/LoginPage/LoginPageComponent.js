@@ -15,6 +15,33 @@ const Main = styled.main`
   width: 100%;
   background-color: ${COLORS.rainfull};
   font-family: Roboto;
+
+  .h1,
+  .h2,
+  .h3,
+  h1,
+  h2,
+  h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+
+  figure {
+    margin: auto;
+  }
+
+  .h2,
+  .h3,
+  .h4,
+  .h5,
+  .h6,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 500;
+  }
 `;
 
 const Article = styled.article`
@@ -50,6 +77,7 @@ const Button = css`
     left: 0.75%;
     top: 4%;
     border-radius: 0.4vmin;
+    box-sizing: border-box;
   }
 
   span {

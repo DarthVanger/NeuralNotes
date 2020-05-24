@@ -1,8 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import * as AppActions from 'components/App/AppActions';
 import * as AppConstants from 'components/App/AppConstants';
 import { UploadsActions } from './UploadsActions';
@@ -37,9 +35,7 @@ const UploadsPageHeader = () => {
 
   return (
     <StyledPageHeaderContainer>
-      <StyledBackButton onClick={handleBackClick}>
-        <FontAwesomeIcon icon={faArrowLeft} />
-      </StyledBackButton>
+      <StyledBackButton onClick={handleBackClick}>&#10502;</StyledBackButton>
     </StyledPageHeaderContainer>
   );
 };

@@ -2,8 +2,6 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import * as AppActions from 'components/App/AppActions';
 import * as AppConstants from 'components/App/AppConstants';
 import * as Selectors from './UploadsSelectors';
@@ -78,7 +76,7 @@ const UploadStatusButton = () => {
       <StyledStatusButton
         className={`btn btn-default ${hasActiveUploads ? 'processing' : ''}`}
         onClick={onButtonClick}>
-        <FontAwesomeIcon icon={faArrowUp} />
+        &#11105;
       </StyledStatusButton>
     </CSSTransition>
   );

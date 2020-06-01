@@ -37,9 +37,8 @@ const StyledUploadButton = styled.button`
 `;
 
 const StyledIcon = styled.img`
-  position: relative;
-  width: ${props => props.width || '24px'};
-  height: ${props => props.height || '24px'};
+  width: 24px;
+  height: 24px;
 `;
 
 const UploadButton = () => {

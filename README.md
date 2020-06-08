@@ -11,8 +11,8 @@ There is no DB, it's just files:
 
 ## Boards (Kanban)
 - [v1 features](https://github.com/DarthVanger/NeuralNotes/projects/4): lacking features for v1
-- [v1 UX](https://github.com/DarthVanger/NeuralNotes/projects/4): implement new design and UX
-- [Bugs and refactoring](https://github.com/DarthVanger/NeuralNotes/projects/4): tracker for bugs and technical debt (refactoring)
+- [v1 UX](https://github.com/DarthVanger/NeuralNotes/projects/1): implement new design and UX
+- [Bugs and refactoring](https://github.com/DarthVanger/NeuralNotes/projects/2): tracker for bugs and technical debt (refactoring)
 
 ## Code style / Architecture
 We are using React, Redux and Sagas there. 

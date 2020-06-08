@@ -4,15 +4,16 @@ import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 import { NotesMindMapSelectors } from 'selectors';
 import { UploadsActions } from './UploadsActions';
+import PlusIcon from 'components/Uploads/images/icon-plus.svg';
 
 const StyledUploadButton = styled.button`
   position: absolute;
-  right: 5px;
-  bottom: 5px;
-  width: 40px;
-  height: 40px;
+  right: 16px;
+  bottom: 16px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
-  background-color: #46d1df;
+  background-color: #3c78c8;
   border: none;
   outline: none;
 
@@ -33,6 +34,11 @@ const StyledUploadButton = styled.button`
     opacity: 0;
     transition: opacity 200ms;
   }
+`;
+
+const StyledIcon = styled.img`
+  width: 24px;
+  height: 24px;
 `;
 
 const UploadButton = () => {
@@ -71,10 +77,8 @@ const UploadButton = () => {
         onChange={handleSelectedFiles}
       />
       <CSSTransition in={isUploadButtonVisible} timeout={200} unmountOnExit>
-        <StyledUploadButton
-          className="btn btn-default"
-          onClick={onUploadButtonClick}>
-          &#10010;
+        <StyledUploadButton onClick={onUploadButtonClick}>
+          <StyledIcon src={PlusIcon} />
         </StyledUploadButton>
       </CSSTransition>
     </>

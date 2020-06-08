@@ -6,6 +6,7 @@ import { NotesContentEditorContainer } from 'components/NotesContentEditor/Notes
 import { NotesMindMapContainer } from 'components/NotesMindMap/NotesMindMapContainer';
 import { LogoutButtonContainer } from 'components/LogoutButton/LogoutButtonContainer';
 import { SearchPanelContainer } from 'components/SearchPanel/SearchPanelContainer';
+import { TopBarComponent } from 'components/TopBar/TopBarComponent';
 import { UploadStatusButton } from 'components/Uploads/UploadStatusButton';
 import { UploadButton } from 'components/Uploads/UploadButton';
 
@@ -16,6 +17,7 @@ export class NotesPageComponent extends Component {
     return (
       <>
         <NotesMindMapContainer />
+        <TopBarComponent />
         <NotesContentEditorContainer />
         {!isHelpViewed && <ControlsHelpComponent onClose={closeHelp} />}
         <SearchPanelContainer />

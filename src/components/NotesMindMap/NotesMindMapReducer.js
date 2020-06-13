@@ -50,10 +50,13 @@ export const notesMindMapReducer = (
     const childNotes = data;
     if (childNotes.length) {
       childNotes.forEach(child => {
-        if (!nodes.find(node => node.id === child.id)) {
-          nodes = addNodeToGraph(nodes, child);
-          edges.push({ from: child.parent.id, to: child.id });
-        }
+        nodes = addNodeToGraph(nodes, child);
+        edges.push({
+          from: child.parent.id,
+          to: child.id,
+          fromNode: child.parent,
+          toNode: child,
+        });
       });
       nodes = addGroupTagToNodes(nodes, edges);
     }

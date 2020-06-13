@@ -1,114 +1,117 @@
 import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
-import VisGraph from 'react-graph-vis';
+import MindMap, { Node, Edge } from './MindMap/MindMap.js';
 
 import { StyledNotesMindMap } from 'components/NotesMindMap/NotesMindMapStyles';
+import { getDepth } from 'helpers/graph';
 
-import { VisNetworkHelper } from 'helpers/visNetworkHelper';
+const scrollByMouseDrag = (() => el => {
+  const element = el.current;
+  let isMouseDown = false;
+  const clickPosition = {};
+
+  const scroll = e => {
+    element.scroll(e.pageX - clickPosition.x, e.pageY - clickPosition.y);
+  };
+
+  const pauseEvent = e => {
+    e.stopPropagation();
+    e.preventDefault();
+    e.cancelBubble = true;
+    e.returnValue = false;
+    return false;
+  };
+
+  return {
+    onMouseMove: e => {
+      pauseEvent(e);
+      isMouseDown && scroll(e);
+    },
+    onMouseDown: e => {
+      e.persist();
+      pauseEvent(e);
+      const isClickOnSvg = e.target == element.querySelector('svg');
+      if (isClickOnSvg) {
+        isMouseDown = true;
+        clickPosition.y = e.pageY - element.scrollTop;
+        clickPosition.x = e.pageX - element.scrollLeft;
+        element.style.cursor = 'grab';
+      }
+    },
+    onMouseUp: e => {
+      isMouseDown = false;
+      element.style.cursor = 'auto';
+    },
+  };
+})();
 
 export class NotesMindMapComponent extends Component {
+  constructor(props) {
+    super(props);
+    this.mindMapContainerRef = React.createRef();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.nodes.length !== this.props.nodes.length) {
+      const el = this.mindMapContainerRef.current;
+      const depth = getDepth(this.props.nodes, this.props.edges);
+
+      el && depth > 1 && el.scroll(el.scrollLeft + 250, el.scrollTop + 250);
+    }
+  }
+
   render() {
-    const { nodes, edges } = this.props;
+    const { selectedNote, nodes, edges } = this.props;
 
-    const visNodes = nodes.map(node => ({
-      ...node,
-      label: node.name,
-    }));
-
-    const visGraph = { nodes: visNodes, edges };
-
-    const visOptions = {
-      interaction: {
-        keyboard: false,
-      },
-      edges: {
-        arrows: {
-          to: {
-            enabled: false,
-          },
-        },
-        color: '#F2F2F2',
-        smooth: true,
-      },
-      nodes: {
-        borderWidth: 2,
-        shape: 'box',
-        color: '#BB86FC',
-        margin: 10,
-        font: {
-          color: '#F2F2F2',
-          size: 15,
-          face: 'raleway',
-        },
-      },
-
-      groups: {
-        children: {
-          borderWidth: 2,
-          shape: 'box',
-          color: '#5dbcaf',
-          margin: 10,
-          font: {
-            color: '#F2F2F2',
-            size: 15,
-            face: 'raleway',
-          },
-        },
-        parent: {
-          borderWidth: 2,
-          shape: 'box',
-          color: '#BB86FC',
-          margin: 10,
-          font: {
-            color: '#F2F2F2',
-            size: 15,
-            face: 'raleway',
-          },
-        },
-      },
-    };
-
-    const visEvents = {
-      click: this.visNetworkClickHandler,
-    };
+    if (!nodes?.length) return null;
 
     return (
-      <StyledNotesMindMap>
-        <VisGraph graph={visGraph} events={visEvents} options={visOptions} />
-      </StyledNotesMindMap>
+      <>
+        <StyledNotesMindMap
+          {...scrollByMouseDrag(this.mindMapContainerRef)}
+          ref={this.mindMapContainerRef}>
+          <MindMap
+            nodes={nodes.map(n => (
+              <Node
+                id={n.id}
+                label={n.name}
+                onClick={() => this.handleNodeClick(n)}
+              />
+            ))}
+            edges={edges.map(e => (
+              <Edge {...e} />
+            ))}
+          />
+        </StyledNotesMindMap>
+      </>
     );
   }
 
-  visNetworkClickHandler = event => {
-    const { selectedNote } = this.props;
-    const { edges } = this.props;
-    const { isChangeParentModeActive } = this.props;
-
+  handleNodeClick(targetNode) {
     this.props.onMindMapClick();
-    if (VisNetworkHelper.clickedOnNote(event)) {
-      let targetNoteId = VisNetworkHelper.getTargetNoteId(event);
-      const targetNote = this.props.nodes.find(
-        note => note.id === targetNoteId,
-      );
+    console.log('node clicked', targetNode);
+    const { selectedNote } = this.props;
 
-      if (isChangeParentModeActive) {
-        this.props.changeParentNote({
-          noteId: selectedNote.id,
-          currentParentId: edges.find(edge => edge.to === selectedNote.id).id,
-          newParent: targetNote,
-          edges,
-        });
-      } else {
-        if (targetNote.id !== selectedNote.id) {
-          this.props.changeSelectedNote({
-            note: targetNote,
-            edges: this.props.edges,
-          });
-        }
-      }
+    // if clicking on the current note, do nothing.
+    if (targetNode.id === selectedNote.id) return;
+
+    const nodes = this.props.nodes;
+
+    const targetNote = nodes.find(note => note.id === targetNode.id);
+
+    if (!targetNote) {
+      throw new Error(
+        "noteClickHandler(): couldn't find targetNode: ",
+        targetNode,
+      );
     }
-  };
+
+    this.props.changeSelectedNote({
+      note: targetNote,
+      edges: this.props.edges,
+    });
+  }
 }
 
 NotesMindMapComponent.propTypes = {
@@ -119,5 +122,4 @@ NotesMindMapComponent.propTypes = {
   nodes: PropTypes.array.isRequired,
   edges: PropTypes.array.isRequired,
   onMindMapClick: PropTypes.func.isRequired,
-  updateNoteName: PropTypes.func.isRequired,
 };

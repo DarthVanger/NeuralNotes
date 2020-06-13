@@ -48,3 +48,20 @@ export function addGroupTagToNodes(nodes, edges) {
       : node,
   );
 }
+
+export function getDepth(nodes, edges) {
+  const depths = edges.map(edge => {
+    return depthOfNode(edge.to);
+  });
+
+  return Math.max.apply(Math, depths);
+
+  function depthOfNode(nodeId) {
+    const edge = edges.find(e => e.from === nodeId);
+    if (edge) {
+      return 1 + depthOfNode(edge.to);
+    } else {
+      return 1;
+    }
+  }
+}

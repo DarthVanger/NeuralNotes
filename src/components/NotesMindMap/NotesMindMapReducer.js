@@ -50,10 +50,20 @@ export const notesMindMapReducer = (
     const childNotes = data;
     if (childNotes.length) {
       childNotes.forEach(child => {
-        if (!nodes.find(node => node.id === child.id)) {
-          nodes = addNodeToGraph(nodes, child);
-          edges.push({ from: child.parent.id, to: child.id });
-        }
+        // when a an initial note is loaded, its parent is loaded
+        // but without children. When the parent is clicked,
+        // the children are fetched, including the initial note,
+        // which is already present in the graph. Omit it
+        // when adding nodes and edges, to avoid having it twice.
+        if (nodes.find(node => node.id === child.id)) return;
+
+        nodes = addNodeToGraph(nodes, child);
+        edges.push({
+          from: child.parent.id,
+          to: child.id,
+          fromNode: child.parent,
+          toNode: child,
+        });
       });
       nodes = addGroupTagToNodes(nodes, edges);
     }

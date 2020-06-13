@@ -1,115 +1,63 @@
 import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
-import VisGraph from 'react-graph-vis';
-
+import MindMap, { Node, Edge } from './MindMap/MindMap.js';
 import { StyledNotesMindMap } from 'components/NotesMindMap/NotesMindMapStyles';
 
-import { VisNetworkHelper } from 'helpers/visNetworkHelper';
-import { colors } from 'colors';
+import { getDepth } from 'helpers/graph';
 
 export class NotesMindMapComponent extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
-    const { nodes, edges } = this.props;
+    const { selectedNote, nodes, edges } = this.props;
 
-    const visNodes = nodes.map(node => ({
-      ...node,
-      label: node.name,
+    if (!nodes?.length) return null;
+
+    const mindMapNodes = nodes.map(n => ({
+      id: n.id,
+      key: n.id,
+      label: n.name,
+      onClick: () => this.handleNodeClick(n),
     }));
-
-    const visGraph = { nodes: visNodes, edges };
-
-    const visOptions = {
-      interaction: {
-        keyboard: false,
-      },
-      edges: {
-        arrows: {
-          to: {
-            enabled: false,
-          },
-        },
-        color: colors.titleColor,
-        smooth: true,
-      },
-      nodes: {
-        borderWidth: 2,
-        shape: 'box',
-        color: colors.primaryColor,
-        margin: 10,
-        font: {
-          color: colors.titleColor,
-          size: 15,
-          face: 'raleway',
-        },
-      },
-
-      groups: {
-        children: {
-          borderWidth: 2,
-          shape: 'box',
-          color: colors.secondaryColor,
-          margin: 10,
-          font: {
-            color: colors.titleColor,
-            size: 15,
-            face: 'raleway',
-          },
-        },
-        parent: {
-          borderWidth: 2,
-          shape: 'box',
-          color: colors.primaryColor,
-          margin: 10,
-          font: {
-            color: colors.titleColor,
-            size: 15,
-            face: 'raleway',
-          },
-        },
-      },
-    };
-
-    const visEvents = {
-      click: this.visNetworkClickHandler,
-    };
 
     return (
       <StyledNotesMindMap>
-        <VisGraph graph={visGraph} events={visEvents} options={visOptions} />
+        <MindMap
+          nodes={mindMapNodes}
+          edges={edges}
+          focusNodeId={selectedNote.id}
+        />
       </StyledNotesMindMap>
     );
   }
 
-  visNetworkClickHandler = event => {
-    const { selectedNote } = this.props;
-    const { edges } = this.props;
-    const { isChangeParentModeActive } = this.props;
-
+  handleNodeClick(targetNode) {
     this.props.onMindMapClick();
-    if (VisNetworkHelper.clickedOnNote(event)) {
-      let targetNoteId = VisNetworkHelper.getTargetNoteId(event);
-      const targetNote = this.props.nodes.find(
-        note => note.id === targetNoteId,
-      );
+    console.log('node clicked', targetNode);
+    const { selectedNote } = this.props;
 
-      if (isChangeParentModeActive) {
-        this.props.changeParentNote({
-          noteId: selectedNote.id,
-          currentParentId: edges.find(edge => edge.to === selectedNote.id).id,
-          newParent: targetNote,
-          edges,
-        });
-      } else {
-        if (targetNote.id !== selectedNote.id) {
-          this.props.changeSelectedNote({
-            note: targetNote,
-            edges: this.props.edges,
-          });
-        }
-      }
+    // if clicking on the current note, do nothing.
+    if (targetNode.id === selectedNote.id) return;
+
+    const nodes = this.props.nodes;
+
+    const targetNote = nodes.find(note => note.id === targetNode.id);
+
+    if (!targetNote) {
+      throw new Error(
+        "noteClickHandler(): couldn't find targetNode: ",
+        targetNode,
+      );
     }
-  };
+
+    this.props.changeSelectedNote({
+      note: targetNote,
+      edges: this.props.edges,
+    });
+  }
 }
 
 NotesMindMapComponent.propTypes = {
@@ -120,5 +68,4 @@ NotesMindMapComponent.propTypes = {
   nodes: PropTypes.array.isRequired,
   edges: PropTypes.array.isRequired,
   onMindMapClick: PropTypes.func.isRequired,
-  updateNoteName: PropTypes.func.isRequired,
 };

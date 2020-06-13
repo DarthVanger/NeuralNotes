@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import VisGraph from 'react-graph-vis';
+import { MindMap, Node, Edge } from 'circular-mind-map-react';
 
 import { VisNetworkHelper } from 'helpers/visNetworkHelper';
 import noteStorage from 'storage/noteStorage';
@@ -18,41 +18,22 @@ export class NotesMindMapComponent extends Component {
       edges,
     } = this.props;
 
-    const visGraph = { nodes, edges };
-
-    const visOptions = {
-      interaction: {
-        keyboard: false,
-      },
-      edges: {
-        arrows: { to: true },
-        smooth: true,
-      },
-      groups: {
-        children: {
-          color: {
-            background: '#eef',
-            borderWidth: 3,
-          },
-        },
-        parent: {
-          color: {
-            background: '#faa',
-          },
-        },
-      },
-    };
-
-    const visEvents = {
-      click: this.visNetworkClickHandler,
-      doubleClick: this.visNetworkDoubleClickHandler,
-      hold: this.visNetworkHoldHandler,
-    };
-
     return (
       <StyledNotesMindMap>
         {selectedNote && <NoteDetailsContainer />}
-        <VisGraph graph={visGraph} events={visEvents} options={visOptions} />
+        <MindMap
+          nodes={nodes.map(n => (
+            <Node
+              id={n.id}
+              label={n.label}
+              onClick={() => this.handleNodeClick(n)}
+              onDoubleClick={() => this.doubleClickHandler(n)}
+            />
+          ))}
+          edges={edges.map(e => (
+            <Edge id={e.id} from={e.from} to={e.to} />
+          ))}
+        />
         {showNoteNameEditor && (
           <NoteNameEditorComponent
             note={selectedNote}
@@ -66,20 +47,22 @@ export class NotesMindMapComponent extends Component {
     );
   }
 
-  noteClickHandler = targetNoteId => {
+  handleNodeClick(targetNode) {
+    this.props.onMindMapClick();
+    console.log('node clicked', targetNode);
     const { selectedNote } = this.props;
 
     // if clicking on the current note, do nothing.
-    if (targetNoteId === selectedNote.id) return;
+    if (targetNode.id === selectedNote.id) return;
 
     const nodes = this.props.nodes;
 
-    const targetNote = nodes.find(note => note.id === targetNoteId);
+    const targetNote = nodes.find(note => note.id === targetNode.id);
 
     if (!targetNote) {
       throw new Error(
-        "noteClickHandler(): couldn't find targetNote: ",
-        targetNoteId,
+        "noteClickHandler(): couldn't find targetNode: ",
+        targetNode,
       );
     }
 
@@ -87,14 +70,13 @@ export class NotesMindMapComponent extends Component {
       note: targetNote,
       edges: this.props.edges,
     });
-  };
+  }
 
   visNetworkClickHandler = event => {
     const { selectedNote } = this.props;
     const { edges } = this.props;
     const { isChangeParentModeActive } = this.props;
 
-    this.props.onMindMapClick();
     if (VisNetworkHelper.clickedOnNote(event)) {
       let targetNoteId = VisNetworkHelper.getTargetNoteId(event);
       const targetNote = this.props.nodes.find(
@@ -119,13 +101,10 @@ export class NotesMindMapComponent extends Component {
     }
   };
 
-  visNetworkDoubleClickHandler = event => {
+  doubleClickHandler = targetNode => {
     const { nodes } = this.props;
-    if (VisNetworkHelper.clickedOnNote(event)) {
-      let targetNoteId = VisNetworkHelper.getTargetNoteId(event);
-      const targetNote = nodes.find(node => node.id === targetNoteId);
-      this.props.createEmptyChild({ parent: targetNote });
-    }
+    const targetNote = nodes.find(node => node.id === targetNode.id);
+    this.props.createEmptyChild({ parent: targetNote });
   };
 
   visNetworkHoldHandler = event => {

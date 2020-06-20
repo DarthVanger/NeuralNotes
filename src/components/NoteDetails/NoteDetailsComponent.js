@@ -2,12 +2,19 @@ import React, { Component } from 'react';
 import {
   StyledNoteNameEditor,
   StyledDetailsScreen,
+  StyledNoteContentEditor,
 } from 'components/NoteDetails/NoteDetailsStyles';
 
 export class NoteDetailsComponent extends Component {
-  handleChange(e) {
+  handleChangeNoteName(e) {
     console.log('props.onNoteNameChange: ', this.props.onNoteNameChange);
     this.props.onNoteNameChange(e.target.value);
+  }
+
+  handleChangeNoteContent(e) {
+    console.log('props.onNoteContentChange: ', this.props.onNoteContentChange);
+    console.log('propsText', this.props);
+    this.props.onNoteContentChange(e.target.value);
   }
 
   render() {
@@ -16,11 +23,18 @@ export class NoteDetailsComponent extends Component {
       <StyledDetailsScreen>
         <StyledNoteNameEditor
           onChange={e => {
-            this.handleChange(e);
+            this.handleChangeNoteName(e);
           }}
           value={this.props.noteName}
           placeholder="Title"
           rows="1"
+        />
+        <StyledNoteContentEditor
+          onChange={e => {
+            this.handleChangeNoteContent(e);
+          }}
+          value={this.props.noteText}
+          rows="5"
         />
       </StyledDetailsScreen>
     );

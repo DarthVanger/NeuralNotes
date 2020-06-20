@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { StyledNoteNameEditor } from 'components/NoteDetails/NoteDetailsStyles';
+import {
+  StyledNoteNameEditor,
+  StyledDetailsScreen,
+} from 'components/NoteDetails/NoteDetailsStyles';
 
 export class NoteDetailsComponent extends Component {
   handleChange(e) {
@@ -10,12 +13,16 @@ export class NoteDetailsComponent extends Component {
   render() {
     console.log('props', this.props);
     return (
-      <StyledNoteNameEditor
-        onChange={e => {
-          this.handleChange(e);
-        }}
-        value={this.props.noteName}
-      />
+      <StyledDetailsScreen>
+        <StyledNoteNameEditor
+          onChange={e => {
+            this.handleChange(e);
+          }}
+          value={this.props.noteName}
+          placeholder="Title"
+          rows="1"
+        />
+      </StyledDetailsScreen>
     );
   }
 }

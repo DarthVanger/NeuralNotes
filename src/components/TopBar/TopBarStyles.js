@@ -5,6 +5,7 @@ const topBarHeight = 56;
 
 export const StyledHeader = styled.header`
   position: absolute;
+  z-index: 2;
   top: 0;
   right: 0;
   width: 100%;

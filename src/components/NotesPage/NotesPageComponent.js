@@ -16,8 +16,8 @@ export class NotesPageComponent extends Component {
 
     return (
       <>
-        <NotesMindMapContainer />
         <TopBarComponent />
+        <NotesMindMapContainer />
         <NotesContentEditorContainer />
         {!isHelpViewed && <ControlsHelpComponent onClose={closeHelp} />}
         <SearchPanelContainer />

@@ -15,5 +15,5 @@ export const StyledNoteEditorTextArea = styled.textarea`
   width: 100%;
   height: 100%;
   padding: 0.5em;
-  background-color: black;
+  background-color: white;
 `;

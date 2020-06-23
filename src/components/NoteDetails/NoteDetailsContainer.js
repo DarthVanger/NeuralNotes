@@ -8,8 +8,8 @@ import {
 import { NoteDetailsComponent } from 'components/NoteDetails/NoteDetailsComponent';
 
 const mapStateToProps = ({
-  notesMindMap: { selectedNote, noteText },
-  noteDetails: { noteName },
+  notesMindMap: { selectedNote },
+  noteDetails: { noteName, noteText },
 }) => {
   return {
     selectedNote,

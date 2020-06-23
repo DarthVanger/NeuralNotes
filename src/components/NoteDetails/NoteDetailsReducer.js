@@ -12,7 +12,6 @@ const defaultState = {
 export const noteDetailsReducer = (state = defaultState, { type, data }) => {
   switch (type) {
     case EDITOR_NOTE_NAME_CHANGED_ACTION:
-      console.log('checkData', data);
       return {
         ...state,
         noteName: data.value,

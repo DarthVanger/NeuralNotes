@@ -11,7 +11,6 @@ export const StyledHeader = styled.header`
   width: 100%;
   height: ${topBarHeight + bottomLineHeight}px;
   background-color: #2a2a2a;
-  padding: 16px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -25,13 +24,14 @@ export const StyledLogo = styled.div`
   font-style: normal;
   font-weight: 500;
   font-size: 19px;
-  padding-left: 53px;
+  padding: 16px 16px 16px 69px;
   line-height: 22px;
   color: #3c78c8;
 `;
 
 export const StyledControls = styled.nav`
   width: 115px;
+  padding: 16px;
   display: flex;
   flex-direction: row;
   justify-content: space-around;

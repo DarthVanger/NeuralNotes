@@ -8,7 +8,10 @@ import {
 export class NoteDetailsComponent extends Component {
   handleChangeNoteName(e) {
     console.log('props.onNoteNameChange: ', this.props.onNoteNameChange);
-    this.props.onNoteNameChange(e.target.value);
+    this.props.onNoteNameChange({
+      newNoteName: e.target.value,
+      note: this.props.selectedNote,
+    });
   }
 
   handleChangeNoteContent(e) {

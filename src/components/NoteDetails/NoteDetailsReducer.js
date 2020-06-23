@@ -17,7 +17,7 @@ export const noteDetailsReducer = (state = defaultState, { type, data }) => {
     case EDITOR_NOTE_NAME_CHANGED_ACTION:
       return {
         ...state,
-        noteName: data,
+        noteName: data.newNoteName,
       };
     case CHANGE_SELECTED_NOTE_ACTION:
       return {

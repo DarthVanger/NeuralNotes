@@ -19,9 +19,8 @@ const mapStateToProps = ({
 };
 
 const mapDispatchToProps = () => ({
-  onNoteNameChange: noteName => {
-    console.log('noteName_beforeAction:', noteName);
-    action(EDITOR_NOTE_NAME_CHANGED_ACTION, noteName);
+  onNoteNameChange: ({ note, newNoteName }) => {
+    action(EDITOR_NOTE_NAME_CHANGED_ACTION, { note, newNoteName });
   },
   onNoteContentChange: noteText => {
     console.log('noteContent_beforeAction:', noteText);

@@ -31,7 +31,7 @@ export class NotesMindMapComponent extends Component {
             />
           ))}
           edges={edges.map(e => (
-            <Edge id={e.id} from={e.from} to={e.to} />
+            <Edge {...e} />
           ))}
         />
         {showNoteNameEditor && (

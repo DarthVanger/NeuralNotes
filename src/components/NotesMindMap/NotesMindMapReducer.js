@@ -32,7 +32,12 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
     if (childNotes.length) {
       childNotes.forEach(child => {
         nodes = addNodeToGraph(nodes, child);
-        edges.push({ from: child.parent.id, to: child.id });
+        edges.push({
+          from: child.parent.id,
+          to: child.id,
+          fromNode: child.parent,
+          toNode: child,
+        });
       });
       nodes = addGroupTagToNodes(nodes, edges);
     }

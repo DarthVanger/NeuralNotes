@@ -6,4 +6,9 @@ export const StyledNotesMindMap = styled.div`
   height: calc(100% - 125px);
   width: 100%;
   overflow: scroll;
+
+  svg {
+    background: red;
+    pointer-events: none;
+  }
 `;

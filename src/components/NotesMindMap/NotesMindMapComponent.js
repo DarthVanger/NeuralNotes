@@ -8,17 +8,24 @@ import { NoteNameEditorComponent } from 'components/NoteNameEditor/NoteNameEdito
 import { StyledNotesMindMap } from 'components/NotesMindMap/NotesMindMapStyles';
 import { NoteDetailsContainer } from 'components/NoteDetails/NoteDetailsContainer';
 
-const scrollByMouseDrag = (() => {
+const scrollByMouseDrag = (() => el => {
+  const element = el.current;
   let isMouseDown = false;
   const clickPosition = {};
   console.log('hash1');
 
   const scroll = e => {
-    const scrollX = e.target.scrollLeft;
-    const scrollY = e.target.scrollTop + clickPosition.y - e.pageY;
+    const scrollIncrease = e.pageY - clickPosition.y;
+    const scrollX = element.scrollLeft;
+    const scrollY = scrollIncrease;
+    console.log('e.pageY: ', e.pageY);
+    console.log('clickPosition.y:', clickPosition.y);
+    console.log('element.scrollTop:', element.scrollTop);
     console.log('scrollX', scrollX);
+    console.log('increaseing scroll by: ', scrollIncrease);
     console.log('scrollY', scrollY);
-    e.target.parentElement.scroll(scrollX, scrollY);
+    element.scroll(scrollX, scrollY);
+    //clickPosition.y = scrollY;
   };
 
   return {
@@ -30,13 +37,14 @@ const scrollByMouseDrag = (() => {
       isMouseDown && scroll(e);
     },
     onMouseDown: e => {
+      e.persist();
       isMouseDown = true;
-      clickPosition.y = e.pageY;
-      e.target.style.cursor = 'row-resize';
+      clickPosition.y = e.pageY - element.scrollTop;
+      element.style.cursor = 'row-resize';
     },
     onMouseUp: e => {
       isMouseDown = false;
-      e.target.style.cursor = 'auto';
+      element.style.cursor = 'auto';
     },
   };
 })();
@@ -64,6 +72,11 @@ var updateScrollPos = function(e) {
 */
 
 export class NotesMindMapComponent extends Component {
+  constructor(props) {
+    super(props);
+    this.mindMapContainerRef = React.createRef();
+  }
+
   render() {
     const {
       selectedNote,
@@ -74,7 +87,9 @@ export class NotesMindMapComponent extends Component {
     } = this.props;
 
     return (
-      <StyledNotesMindMap {...scrollByMouseDrag}>
+      <StyledNotesMindMap
+        {...scrollByMouseDrag(this.mindMapContainerRef)}
+        ref={this.mindMapContainerRef}>
         {selectedNote && <NoteDetailsContainer />}
         <MindMap
           nodes={nodes.map(n => (

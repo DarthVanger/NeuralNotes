@@ -7,6 +7,7 @@ import noteStorage from 'storage/noteStorage';
 import { NoteNameEditorComponent } from 'components/NoteNameEditor/NoteNameEditorComponent';
 import { StyledNotesMindMap } from 'components/NotesMindMap/NotesMindMapStyles';
 import { NoteDetailsContainer } from 'components/NoteDetails/NoteDetailsContainer';
+import { getDepth } from 'helpers/graph';
 
 const scrollByMouseDrag = (() => el => {
   const element = el.current;
@@ -52,6 +53,15 @@ export class NotesMindMapComponent extends Component {
   constructor(props) {
     super(props);
     this.mindMapContainerRef = React.createRef();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.nodes.length !== this.props.nodes.length) {
+      const el = this.mindMapContainerRef.current;
+      const depth = getDepth(this.props.nodes, this.props.edges);
+
+      el && depth > 1 && el.scroll(el.scrollLeft + 250, el.scrollTop + 250);
+    }
   }
 
   render() {

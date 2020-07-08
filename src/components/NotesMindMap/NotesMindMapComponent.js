@@ -64,23 +64,26 @@ export class NotesMindMapComponent extends Component {
     } = this.props;
 
     return (
-      <StyledNotesMindMap
-        {...scrollByMouseDrag(this.mindMapContainerRef)}
-        ref={this.mindMapContainerRef}>
-        {selectedNote && <NoteDetailsContainer />}
-        <MindMap
-          nodes={nodes.map(n => (
-            <Node
-              id={n.id}
-              label={n.label}
-              onClick={() => this.handleNodeClick(n)}
-              onDoubleClick={() => this.doubleClickHandler(n)}
-            />
-          ))}
-          edges={edges.map(e => (
-            <Edge {...e} />
-          ))}
-        />
+      <>
+        <StyledNotesMindMap
+          {...scrollByMouseDrag(this.mindMapContainerRef)}
+          ref={this.mindMapContainerRef}>
+          {selectedNote && <NoteDetailsContainer />}
+          <MindMap
+            nodes={nodes.map(n => (
+              <Node
+                id={n.id}
+                label={n.label}
+                onClick={() => this.handleNodeClick(n)}
+                onDoubleClick={() => this.doubleClickHandler(n)}
+              />
+            ))}
+            edges={edges.map(e => (
+              <Edge {...e} />
+            ))}
+          />
+        </StyledNotesMindMap>
+
         {showNoteNameEditor && (
           <NoteNameEditorComponent
             note={selectedNote}
@@ -90,7 +93,7 @@ export class NotesMindMapComponent extends Component {
             isChangeParentModeActive={isChangeParentModeActive}
           />
         )}
-      </StyledNotesMindMap>
+      </>
     );
   }
 

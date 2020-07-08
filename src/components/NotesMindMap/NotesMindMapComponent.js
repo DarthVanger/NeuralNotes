@@ -8,6 +8,61 @@ import { NoteNameEditorComponent } from 'components/NoteNameEditor/NoteNameEdito
 import { StyledNotesMindMap } from 'components/NotesMindMap/NotesMindMapStyles';
 import { NoteDetailsContainer } from 'components/NoteDetails/NoteDetailsContainer';
 
+const scrollByMouseDrag = (() => {
+  let isMouseDown = false;
+  const clickPosition = {};
+  console.log('hash1');
+
+  const scroll = e => {
+    const scrollX = e.target.scrollLeft;
+    const scrollY = e.target.scrollTop + clickPosition.y - e.pageY;
+    console.log('scrollX', scrollX);
+    console.log('scrollY', scrollY);
+    e.target.parentElement.scroll(scrollX, scrollY);
+  };
+
+  return {
+    onClick: e => {
+      console.log('testo');
+    },
+    onMouseMove: e => {
+      console.log('isMouseDown: ', isMouseDown);
+      isMouseDown && scroll(e);
+    },
+    onMouseDown: e => {
+      isMouseDown = true;
+      clickPosition.y = e.pageY;
+      e.target.style.cursor = 'row-resize';
+    },
+    onMouseUp: e => {
+      isMouseDown = false;
+      e.target.style.cursor = 'auto';
+    },
+  };
+})();
+
+/*
+var clicked = false, clickY;
+$(document).on({
+      'mousemove': function(e) {
+                clicked && updateScrollPos(e);
+            },
+      'mousedown': function(e) {
+                clicked = true;
+                clickY = e.pageY;
+            },
+      'mouseup': function() {
+                clicked = false;
+                $('html').css('cursor', 'auto');
+            }
+});
+
+var updateScrollPos = function(e) {
+      $('html').css('cursor', 'row-resize');
+      $(window).scrollTop($(window).scrollTop() + (clickY - e.pageY));
+}
+*/
+
 export class NotesMindMapComponent extends Component {
   render() {
     const {
@@ -19,7 +74,7 @@ export class NotesMindMapComponent extends Component {
     } = this.props;
 
     return (
-      <StyledNotesMindMap>
+      <StyledNotesMindMap {...scrollByMouseDrag}>
         {selectedNote && <NoteDetailsContainer />}
         <MindMap
           nodes={nodes.map(n => (

@@ -14,19 +14,16 @@ const scrollByMouseDrag = (() => el => {
   const clickPosition = {};
 
   const scroll = e => {
-    const scrollIncrease = e.pageY - clickPosition.y;
-    const scrollX = element.scrollLeft;
-    const scrollY = scrollIncrease;
-    element.scroll(scrollX, scrollY);
+    element.scroll(e.pageX - clickPosition.x, e.pageY - clickPosition.y);
   };
 
-  function pauseEvent(e) {
-    if (e.stopPropagation) e.stopPropagation();
-    if (e.preventDefault) e.preventDefault();
+  const pauseEvent = e => {
+    e.stopPropagation();
+    e.preventDefault();
     e.cancelBubble = true;
     e.returnValue = false;
     return false;
-  }
+  };
 
   return {
     onMouseMove: e => {
@@ -40,7 +37,8 @@ const scrollByMouseDrag = (() => el => {
       if (isClickOnSvg) {
         isMouseDown = true;
         clickPosition.y = e.pageY - element.scrollTop;
-        element.style.cursor = 'row-resize';
+        clickPosition.x = e.pageX - element.scrollLeft;
+        element.style.cursor = 'grab';
       }
     },
     onMouseUp: e => {
@@ -49,28 +47,6 @@ const scrollByMouseDrag = (() => el => {
     },
   };
 })();
-
-/*
-var clicked = false, clickY;
-$(document).on({
-      'mousemove': function(e) {
-                clicked && updateScrollPos(e);
-            },
-      'mousedown': function(e) {
-                clicked = true;
-                clickY = e.pageY;
-            },
-      'mouseup': function() {
-                clicked = false;
-                $('html').css('cursor', 'auto');
-            }
-});
-
-var updateScrollPos = function(e) {
-      $('html').css('cursor', 'row-resize');
-      $(window).scrollTop($(window).scrollTop() + (clickY - e.pageY));
-}
-*/
 
 export class NotesMindMapComponent extends Component {
   constructor(props) {

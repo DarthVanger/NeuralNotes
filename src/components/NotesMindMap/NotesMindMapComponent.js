@@ -12,20 +12,12 @@ const scrollByMouseDrag = (() => el => {
   const element = el.current;
   let isMouseDown = false;
   const clickPosition = {};
-  console.log('hash1');
 
   const scroll = e => {
     const scrollIncrease = e.pageY - clickPosition.y;
     const scrollX = element.scrollLeft;
     const scrollY = scrollIncrease;
-    console.log('e.pageY: ', e.pageY);
-    console.log('clickPosition.y:', clickPosition.y);
-    console.log('element.scrollTop:', element.scrollTop);
-    console.log('scrollX', scrollX);
-    console.log('increaseing scroll by: ', scrollIncrease);
-    console.log('scrollY', scrollY);
     element.scroll(scrollX, scrollY);
-    //clickPosition.y = scrollY;
   };
 
   function pauseEvent(e) {
@@ -37,21 +29,14 @@ const scrollByMouseDrag = (() => el => {
   }
 
   return {
-    onClick: e => {
-      console.log('testo');
-    },
     onMouseMove: e => {
       pauseEvent(e);
-      console.log('isMouseDown: ', isMouseDown);
       isMouseDown && scroll(e);
     },
     onMouseDown: e => {
       e.persist();
       pauseEvent(e);
-      console.log('target element: ', e.target);
-      console.log("element.querySelector('svg')", element.querySelector('svg'));
       const isClickOnSvg = e.target == element.querySelector('svg');
-      console.log('isClickOnSvg: ', isClickOnSvg);
       if (isClickOnSvg) {
         isMouseDown = true;
         clickPosition.y = e.pageY - element.scrollTop;

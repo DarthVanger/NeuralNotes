@@ -28,19 +28,35 @@ const scrollByMouseDrag = (() => el => {
     //clickPosition.y = scrollY;
   };
 
+  function pauseEvent(e) {
+    if (e.stopPropagation) e.stopPropagation();
+    if (e.preventDefault) e.preventDefault();
+    e.cancelBubble = true;
+    e.returnValue = false;
+    return false;
+  }
+
   return {
     onClick: e => {
       console.log('testo');
     },
     onMouseMove: e => {
+      pauseEvent(e);
       console.log('isMouseDown: ', isMouseDown);
       isMouseDown && scroll(e);
     },
     onMouseDown: e => {
       e.persist();
-      isMouseDown = true;
-      clickPosition.y = e.pageY - element.scrollTop;
-      element.style.cursor = 'row-resize';
+      pauseEvent(e);
+      console.log('target element: ', e.target);
+      console.log("element.querySelector('svg')", element.querySelector('svg'));
+      const isClickOnSvg = e.target == element.querySelector('svg');
+      console.log('isClickOnSvg: ', isClickOnSvg);
+      if (isClickOnSvg) {
+        isMouseDown = true;
+        clickPosition.y = e.pageY - element.scrollTop;
+        element.style.cursor = 'row-resize';
+      }
     },
     onMouseUp: e => {
       isMouseDown = false;

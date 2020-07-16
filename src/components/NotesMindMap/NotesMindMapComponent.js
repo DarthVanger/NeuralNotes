@@ -49,8 +49,6 @@ export class NotesMindMapComponent extends Component {
       hold: this.visNetworkHoldHandler,
     };
 
-    console.log('selectedNote', selectedNote);
-
     return (
       <StyledNotesMindMap>
         {selectedNote && <NoteDetailsContainer />}

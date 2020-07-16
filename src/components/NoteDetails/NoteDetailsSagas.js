@@ -24,7 +24,6 @@ function* updateNoteName({ data: { note, newNoteName } }) {
 
 function* updateNoteContent({ data: { note, noteText } }) {
   let newNote = { ...note, content: noteText };
-  console.debug('NoteContentController.updateNoteContent()');
   let savingNoteContentSpinner = spinner.create('saving note');
   savingNoteContentSpinner.show();
 

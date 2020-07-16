@@ -30,8 +30,6 @@ export const noteDetailsReducer = (state = defaultState, { type, data }) => {
         noteText: data.noteText,
       };
     case CHANGE_NOTE_TEXT_ACTION:
-      console.log('State', state);
-      console.log('Data', data);
       return {
         ...state,
         noteText: data,

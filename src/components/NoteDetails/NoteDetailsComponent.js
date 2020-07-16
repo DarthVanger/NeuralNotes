@@ -7,7 +7,6 @@ import {
 
 export class NoteDetailsComponent extends Component {
   handleChangeNoteName(e) {
-    console.log('props.onNoteNameChange: ', this.props.onNoteNameChange);
     this.props.onNoteNameChange({
       newNoteName: e.target.value,
       note: this.props.selectedNote,
@@ -15,8 +14,6 @@ export class NoteDetailsComponent extends Component {
   }
 
   handleChangeNoteContent(e) {
-    console.log('props.onNoteContentChange: ', this.props.onNoteContentChange);
-    console.log('propsText', this.props);
     this.props.onNoteContentChange({
       note: this.props.selectedNote,
       noteText: e.target.value,
@@ -24,7 +21,6 @@ export class NoteDetailsComponent extends Component {
   }
 
   render() {
-    console.log('props', this.props);
     return (
       <StyledDetailsScreen>
         <StyledNoteNameEditor

@@ -1,8 +1,15 @@
-import { EDITOR_NOTE_NAME_CHANGED_ACTION } from 'components/NoteDetails/NoteDetailsActions';
-import { CHANGE_SELECTED_NOTE_ACTION } from 'components/NotesMindMap/NotesMindMapActions';
+import {
+  EDITOR_NOTE_NAME_CHANGED_ACTION,
+  EDITOR_NOTE_CONTENT_CHANGED_ACTION,
+} from 'components/NoteDetails/NoteDetailsActions';
+import {
+  CHANGE_SELECTED_NOTE_ACTION,
+  CHANGE_NOTE_TEXT_ACTION,
+} from 'components/NotesMindMap/NotesMindMapActions';
 
 const defaultState = {
   noteName: '',
+  noteContent: '',
 };
 
 export const noteDetailsReducer = (state = defaultState, { type, data }) => {
@@ -10,12 +17,22 @@ export const noteDetailsReducer = (state = defaultState, { type, data }) => {
     case EDITOR_NOTE_NAME_CHANGED_ACTION:
       return {
         ...state,
-        noteName: data.value,
+        noteName: data.newNoteName,
       };
     case CHANGE_SELECTED_NOTE_ACTION:
       return {
         ...state,
         noteName: data.note.name,
+      };
+    case EDITOR_NOTE_CONTENT_CHANGED_ACTION:
+      return {
+        ...state,
+        noteContent: data.noteContent,
+      };
+    case CHANGE_NOTE_TEXT_ACTION:
+      return {
+        ...state,
+        noteContent: data,
       };
     default:
       return state;

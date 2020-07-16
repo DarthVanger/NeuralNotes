@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const StyledSelectedNotesContent = styled.div`
   position: absolute;
-  z-index: 1;
+  z-index: 0;
   top: 65px;
   height: 4em;
   padding: 0;

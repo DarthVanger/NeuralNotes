@@ -10,7 +10,7 @@ import { noteDetailsReducer } from 'components/NoteDetails/NoteDetailsReducer';
 export const reducers = combineReducers({
   app: appReducer,
   notes: notesReducer,
-  neteDetails: noteDetailsReducer,
+  noteDetails: noteDetailsReducer,
   notesMindMap: notesMindMapReducer,
   searchPanel: searchPanelReducer,
   [uploadsReducer.KEY]: uploadsReducer,

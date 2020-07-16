@@ -1,23 +1,29 @@
 import { connect } from 'react-redux';
 import { action } from 'sagas';
 
-import { EDITOR_NOTE_NAME_CHANGED_ACTION } from 'components/NoteDetails/NoteDetailsActions';
+import {
+  EDITOR_NOTE_NAME_CHANGED_ACTION,
+  EDITOR_NOTE_CONTENT_CHANGED_ACTION,
+} from 'components/NoteDetails/NoteDetailsActions';
 import { NoteDetailsComponent } from 'components/NoteDetails/NoteDetailsComponent';
 
 const mapStateToProps = ({
-  notesMindMap: { selectedNote, noteText },
-  neteDetails: { noteName },
+  notesMindMap: { selectedNote },
+  noteDetails: { noteName, noteContent },
 }) => {
   return {
     selectedNote,
-    noteText,
+    noteContent,
     noteName,
   };
 };
 
 const mapDispatchToProps = () => ({
-  onNoteNameChange: noteName => {
-    action(EDITOR_NOTE_NAME_CHANGED_ACTION, noteName);
+  onNoteNameChange: ({ note, newNoteName }) => {
+    action(EDITOR_NOTE_NAME_CHANGED_ACTION, { note, newNoteName });
+  },
+  onNoteContentChange: ({ note, noteContent }) => {
+    action(EDITOR_NOTE_CONTENT_CHANGED_ACTION, { note, noteContent });
   },
 });
 

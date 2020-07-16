@@ -17,7 +17,10 @@ export class NoteDetailsComponent extends Component {
   handleChangeNoteContent(e) {
     console.log('props.onNoteContentChange: ', this.props.onNoteContentChange);
     console.log('propsText', this.props);
-    this.props.onNoteContentChange(e.target.value);
+    this.props.onNoteContentChange({
+      note: this.props.selectedNote,
+      noteText: e.target.value,
+    });
   }
 
   render() {

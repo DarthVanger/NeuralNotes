@@ -22,9 +22,8 @@ const mapDispatchToProps = () => ({
   onNoteNameChange: ({ note, newNoteName }) => {
     action(EDITOR_NOTE_NAME_CHANGED_ACTION, { note, newNoteName });
   },
-  onNoteContentChange: noteText => {
-    console.log('noteContent_beforeAction:', noteText);
-    action(EDITOR_NOTE_CONTENT_CHANGED_ACTION, noteText);
+  onNoteContentChange: ({ note, noteText }) => {
+    action(EDITOR_NOTE_CONTENT_CHANGED_ACTION, { note, noteText });
   },
 });
 

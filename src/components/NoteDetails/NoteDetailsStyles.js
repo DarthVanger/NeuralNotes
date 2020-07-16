@@ -1,19 +1,23 @@
 import styled from 'styled-components';
 
-export const StyledNoteNameEditor = styled.textarea`
+export const DefaultTextarea = styled.textarea`
   background-color: #181818;
-  height: 40px;
-  width: 100%;
-  line-height: 40px;
   padding: 0 16px;
+  width: 100%;
+  border: none;
+  resize: none;
   border-radius: 4px;
+  outline: none;
+  box-shadow: none;
+`;
+
+export const StyledNoteNameEditor = styled(DefaultTextarea)`
+  text-align: center;
+  height: 40px;
+  line-height: 40px;
   color: #dfdfdf;
   font-size: 18px;
-  resize: none;
   overflow: hidden;
-  border: none;
-  box-shadow: 0px 0px 8px rgba(255, 255, 255, 0.05),
-    inset -1px 1px 2px rgba(0, 0, 0, 0.2), inset 1px -1px 2px rgba(0, 0, 0, 0.2);
 `;
 
 export const StyledDetailsScreen = styled.div`
@@ -23,20 +27,12 @@ export const StyledDetailsScreen = styled.div`
   left: 0;
   right: 0;
   padding: 16px;
-  background-color: #202020;
+  background-color: #181818;
 `;
 
-export const StyledNoteContentEditor = styled.textarea`
-  background-color: #181818;
-  width: 100%;
-  padding: 8px 16px;
-  border-radius: 4px;
+export const StyledNoteContentEditor = styled(DefaultTextarea)`
+  height: 100%;
+  line-height: 16px;
   color: #959595;
   font-size: 14px;
-  line-height: 16px;
-  resize: none;
-  height: 100%;
-  border: none;
-  box-shadow: 0px 0px 8px rgba(255, 255, 255, 0.05),
-    inset -1px 1px 2px rgba(0, 0, 0, 0.2), inset 1px -1px 2px rgba(0, 0, 0, 0.2);
 `;

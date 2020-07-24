@@ -12,6 +12,7 @@ import { notesInit } from 'components/NotesPage/NotesPageSagas';
 import { notesContentEditorInit } from 'components/NotesContentEditor/NotesContentEditorSagas';
 import { noteMindMapInit } from 'components/NotesMindMap/NotesMindMapSagas';
 import { uploadsInit } from 'components/Uploads/UploadsSagas';
+import { noteDetailsInit } from 'components/NoteDetails/NoteDetailsSagas';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -50,5 +51,6 @@ export function* rootSaga() {
     noteMindMapInit(),
     notesContentEditorInit(),
     uploadsInit(),
+    noteDetailsInit(),
   ]);
 }

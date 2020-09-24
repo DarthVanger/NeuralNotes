@@ -30,14 +30,14 @@ We are using React, Redux and Sagas there.
 - Saga file - this file contains business logic and action handlers. Use it also to work with asynchronous stuff.
 - Styles file - javascript file that exports Styled Components.
 
-#### React:
+### React:
 Components are living in `src/components/${componentName}` folders. For example `Note` component you will find in `src/components/Note/NoteComponent.js`
 
 `NoteComponent.js` should export React component with exact name as filename like `NoteComponent`. 
 
 The same for containers - `NoteContainer`. 
 
-#### Structure
+### Structure
 All files are using their type as filename postfix. 
 Examples: 
 
@@ -51,10 +51,10 @@ Examples:
         ├── NoteSagas.js
         └── NoteStyles.js
 
-#### Styled Components
+### Styled Components
 - Use `Styled` prefix for styled components. It will help you yo understand in code what kind of components you are using. For example, if you override some styles for `NoteComponent`, please, gave it `StyledNote` name.
 
-#### Codestyle
+### Codestyle
 
 The project uses eslint + prettier configuration. To use it fully, configure your editor. Here is a configuration example for vscode:
 

@@ -30,7 +30,7 @@ We are using React, Redux and Sagas there.
 - Saga file - this file contains business logic and action handlers. Use it also to work with asynchronous stuff.
 - Styles file - javascript file that exports Styled Components.
 
-### React:
+### React
 Components are living in `src/components/${componentName}` folders. For example `Note` component you will find in `src/components/Note/NoteComponent.js`
 
 `NoteComponent.js` should export React component with exact name as filename like `NoteComponent`. 

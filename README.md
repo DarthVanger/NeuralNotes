@@ -14,6 +14,14 @@ There is no DB, it's just files:
 - [v1 UX](https://github.com/DarthVanger/NeuralNotes/projects/1): implement new design and UX
 - [Bugs and refactoring](https://github.com/DarthVanger/NeuralNotes/projects/2): tracker for bugs and technical debt (refactoring)
 
+## Launch locally
+```
+git clone https://github.com/DarthVanger/NeuralNotes.git
+cd NeuralNotes
+npm install
+npm start # launches a server at localhost:3000
+```
+
 ## Code style / Architecture
 We are using React, Redux and Sagas there. 
 
@@ -23,14 +31,14 @@ We are using React, Redux and Sagas there.
 - Styles file - javascript file that exports Styled Components.
 
 #### React:
-Components are living in “/components” in componentName folder. For example “Note” component you will find in “/components/Note/NoteComponent.js”
+Components are living in `src/components/${componentName}` folders. For example `Note` component you will find in `src/components/Note/NoteComponent.js`
 
-NoteComponent.js should export React component with exact name as filename like “NoteComponent”. 
+`NoteComponent.js` should export React component with exact name as filename like `NoteComponent`. 
 
-The same for containers - “NoteContainer”. 
+The same for containers - `NoteContainer`. 
 
 #### Structure
-All file types using their names as filename postfix. 
+All files are using their type as filename postfix. 
 Examples: 
 
     components
@@ -44,7 +52,7 @@ Examples:
         └── NoteStyles.js
 
 #### Styled Components
-- Use “Styled” prefix for styled components. It will helps you yo understand in code what kind of components you are using. For example, if you override some styles for NoteComponent, please, gave it “StyledNote” name.
+- Use `Styled` prefix for styled components. It will help you yo understand in code what kind of components you are using. For example, if you override some styles for `NoteComponent`, please, gave it `StyledNote` name.
 
 #### Codestyle
 
@@ -61,14 +69,6 @@ The project uses eslint + prettier configuration. To use it fully, configure you
 Short explanation how it works:
 
 Eslint uses `eslint-config-prettier` which uses `eslint-plugin-prettier` behind the scene as special rule and avoids conflicts with defined eslint rules.
-
-## Launch locally
-```
-git clone https://github.com/DarthVanger/NeuralNotes.git
-cd NeuralNotes
-npm install
-npm start # launches a server at localhost:3000
-```
 
 ## Production build
 ```
@@ -93,5 +93,3 @@ npx http-server -p 3000 ./dist/
 
 Visit <http://localhost:3000> to see the website.
 
-## Jenkins
-http://neural-notes.com:8080/

@@ -5,7 +5,7 @@ import { NotesPageContainer } from 'components/NotesPage/NotesPageContainer';
 import { PAGES_ENUM } from 'components/App/AppConstants';
 import { LoginPageContainer } from 'components/LoginPage/LoginPageContainer';
 import { UploadsPage } from 'components/Uploads/UploadsPage';
-import SearchPageComponent from 'components/SearchPage/SearchPageComponent';
+import { SearchPageComponent } from 'components/SearchPage/SearchPageComponent';
 
 export class AppComponent extends PureComponent {
   render() {

@@ -21,11 +21,12 @@ import {
   deleteNoteRequestSuccessAction,
   changeParentRequestSuccessAction,
   changeParentRequestFailAction,
+  saveSearchResults,
 } from 'components/NotesMindMap/NotesMindMapActions';
 import noteStorage from 'storage/noteStorage';
 import { ROOT_NOTE_FOUND_ACTION } from 'components/App/AppActions';
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
-import { SEARCH_QUERY_CHANGED_ACTION } from 'components/SearchPanel/SearchPanelActions';
+import { SEARCH_QUERY_CHANGED_ACTION } from 'components/SearchPage/SearchPageAction';
 import googleDriveApi from 'api/google-drive-api';
 import { UploadsActions } from 'components/Uploads/UploadsActions';
 
@@ -114,12 +115,14 @@ function* changeParentNote({ data: { noteId, newParent, edges } }) {
 }
 
 function* searchNoteSaga({ data }) {
+  console.log(data);
   const results = yield googleDriveApi.findNotesByName(data);
-  yield call(
-    [toast, toast.error],
-    'Search is not implemented yet :) See search results in console',
-  );
+  // yield call(
+  //   [toast, toast.error],
+  //   'Search is not implemented yet :) See search results in console',
+  // );
   console.log('Search results: ', results);
+  yield put(saveSearchResults(results));
 }
 
 function didNotAttemptToFetchChildren(note, edges) {

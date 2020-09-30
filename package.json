@@ -38,6 +38,7 @@
     "redux-saga": "^1.0.2",
     "socket.io": "^1.4.6",
     "styled-components": "^4.3.1",
+    "use-debounce": "^5.0.1",
     "vis-network": "^6.4.8"
   },
   "devDependencies": {

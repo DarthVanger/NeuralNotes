@@ -3,4 +3,5 @@ export const PAGES_ENUM = {
   LOGIN: Symbol('login'),
   NOTES: Symbol('notes'),
   UPLOADS: Symbol('uploads'),
+  SEARCH: Symbol('search'),
 };

@@ -18,6 +18,8 @@
     "@babel/node": "^7.7.4",
     "@babel/preset-env": "^7.7.4",
     "@babel/preset-react": "^7.7.4",
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
     "abortcontroller-polyfill": "^1.4.0",
     "babel-eslint": "^10.0.3",
     "babel-loader": "^8.0.6",
@@ -36,6 +38,7 @@
     "redux-saga": "^1.0.2",
     "socket.io": "^1.4.6",
     "styled-components": "^4.3.1",
+    "use-debounce": "^5.0.1",
     "vis-network": "^6.4.8"
   },
   "devDependencies": {

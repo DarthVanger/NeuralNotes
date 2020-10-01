@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { searchQueryChangeAction } from '../SearchPage/SearchPageAction';
 
 export function SearchPageComponent() {
-  const results = useSelector(state => state.notesMindMap.data);
+  const results = useSelector(state => state.searchPage.results);
   const dispatch = useDispatch();
   const defaultValue = '';
   const [query, setQuery] = useState(defaultValue);

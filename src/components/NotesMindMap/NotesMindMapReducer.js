@@ -10,7 +10,6 @@ import {
   CHANGE_PARENT_BUTTON_CLICKED_ACTION,
   CHANGE_PARENT_REQUEST_SUCCESS_ACTION,
   CHANGE_PARENT_REQUEST_FAIL_ACTION,
-  SAVE_SEARCH_RESULTS,
 } from 'components/NotesMindMap/NotesMindMapActions';
 import { ROOT_NOTE_FOUND_ACTION } from 'components/App/AppActions.js';
 import { addGroupTagToNodes, removeNodeFromGraph } from '../../helpers/graph';
@@ -25,8 +24,6 @@ const defaultState = {
 };
 
 export const notesMindMapReducer = (state = defaultState, { type, data }) => {
-  console.log(type, data);
-
   const handleSelectedNoteChildrenFetchedAction = () => {
     let nodes = [...state.nodes];
     let edges = [...state.edges];
@@ -167,8 +164,6 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
       return handleChangeParentNoteRequestSuccess();
     case CHANGE_PARENT_REQUEST_FAIL_ACTION:
       return { ...state, isChangeParentModeActive: false };
-    case SAVE_SEARCH_RESULTS:
-      return { ...state, data };
     default:
       return state;
   }

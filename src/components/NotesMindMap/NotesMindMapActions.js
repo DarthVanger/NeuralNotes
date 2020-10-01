@@ -21,7 +21,6 @@ export const CHANGE_PARENT_REQUEST_SUCCESS_ACTION =
   'CHANGE_PARENT_REQUEST_SUCCESS_ACTION';
 export const CHANGE_PARENT_REQUEST_FAIL_ACTION =
   'CHANGE_PARENT_REQUEST_FAIL_ACTION';
-export const SAVE_SEARCH_RESULTS = 'SAVE_SEARCH_RESULTS';
 
 export const changeNoteTextAction = data => ({
   type: CHANGE_NOTE_TEXT_ACTION,
@@ -69,9 +68,5 @@ export const changeParentRequestFailAction = data => ({
 });
 export const changeParentButtonClickedAction = data => ({
   type: CHANGE_PARENT_BUTTON_CLICKED_ACTION,
-  data,
-});
-export const saveSearchResults = data => ({
-  type: SAVE_SEARCH_RESULTS,
   data,
 });

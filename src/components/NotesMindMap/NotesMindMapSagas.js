@@ -21,13 +21,10 @@ import {
   deleteNoteRequestSuccessAction,
   changeParentRequestSuccessAction,
   changeParentRequestFailAction,
-  saveSearchResults,
 } from 'components/NotesMindMap/NotesMindMapActions';
 import noteStorage from 'storage/noteStorage';
 import { ROOT_NOTE_FOUND_ACTION } from 'components/App/AppActions';
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
-import { SEARCH_QUERY_CHANGED_ACTION } from 'components/SearchPage/SearchPageAction';
-import googleDriveApi from 'api/google-drive-api';
 import { UploadsActions } from 'components/Uploads/UploadsActions';
 
 const LOADING_NOTE_MESSAGE = 'loading note contents...';
@@ -114,17 +111,6 @@ function* changeParentNote({ data: { noteId, newParent, edges } }) {
   }
 }
 
-function* searchNoteSaga({ data }) {
-  console.log(data);
-  const results = yield googleDriveApi.findNotesByName(data);
-  // yield call(
-  //   [toast, toast.error],
-  //   'Search is not implemented yet :) See search results in console',
-  // );
-  console.log('Search results: ', results);
-  yield put(saveSearchResults(results));
-}
-
 function didNotAttemptToFetchChildren(note, edges) {
   return !(edges
     ? edges.filter(edge => edge.from === note.id).length > 0
@@ -146,7 +132,6 @@ export function* noteMindMapInit() {
     takeEvery(CREATE_EMPTY_CHILD_ACTION, createEmptyChild),
     takeEvery(DELETE_NOTE_ACTION, deleteNote),
     takeEvery(UPDATE_NOTE_NAME_ACTION, updateNoteName),
-    takeEvery(SEARCH_QUERY_CHANGED_ACTION, searchNoteSaga),
     takeEvery(UploadsActions.file.uploadSuccess, uploadSuccessSaga),
   ]);
 }

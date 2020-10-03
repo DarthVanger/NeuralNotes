@@ -2,8 +2,8 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { UploadingProgressBar } from './UploadProgressBar';
 import { UploadsActions } from './UploadsActions';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -83,7 +83,9 @@ const UploadsListItem = ({ item }) => {
     }
 
     if (item.progress) {
-      return <UploadingProgressBar progress={item.progress.percent} />;
+      return (
+        <LinearProgress value={item.progress.percent} variant="determinate" />
+      );
     }
 
     return <StyledInitializingStatus>Initializing</StyledInitializingStatus>;

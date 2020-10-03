@@ -4,7 +4,7 @@
 const debug = false;
 
 const debugDefaultState = {
-  uploads: [
+  list: [
     {
       file: {
         name: 'File uploaded',

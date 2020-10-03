@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { UploadsActions } from './UploadsActions';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import RetryIcon from '@material-ui/icons/Sync';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -98,7 +99,9 @@ const UploadsListItem = ({ item }) => {
 
     if (item.error) {
       return (
-        <StyledIconButton onClick={retryUpload}>&#11097;</StyledIconButton>
+        <StyledIconButton onClick={retryUpload}>
+          <RetryIcon />
+        </StyledIconButton>
       );
     }
 

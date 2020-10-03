@@ -19,7 +19,9 @@ const debugDefaultState = {
         name: 'File uploading',
       },
       status: 'uploading',
-      progress: 0.47,
+      progress: {
+        percent: 47,
+      },
     },
     {
       file: {

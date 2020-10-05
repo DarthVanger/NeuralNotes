@@ -11,6 +11,12 @@ const StyledContainer = styled.div`
   flex-direction: row;
   padding: 0.5em 1em;
   height: 60px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.25px;
 
   & + div {
     border-top: solid 1px gray;
@@ -32,22 +38,21 @@ const StyledRightContainer = styled.div`
 `;
 
 const StyledFileName = styled.div`
-  font-size: 14px;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.15px;
   color: black;
 `;
 
 const StyledSuccessStatus = styled.div`
-  font-size: 12px;
   color: lightgreen;
 `;
 
 const StyledFailureStatus = styled.div`
-  font-size: 12px;
   color: red;
 `;
 
 const StyledInitializingStatus = styled.div`
-  font-size: 12px;
   color: gray;
 `;
 
@@ -60,7 +65,7 @@ const StyledIconButton = styled.button`
 `;
 
 const StyledProgressLabel = styled.div`
-  font-size: 11px;
+  font-size: 14px;
 `;
 
 const UploadsListItem = ({ item }) => {

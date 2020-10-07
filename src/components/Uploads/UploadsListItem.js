@@ -4,7 +4,9 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { UploadsActions } from './UploadsActions';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import RetryIcon from '@material-ui/icons/Sync';
+import { colors } from '../../colors';
+import RetryIcon from '@material-ui/icons/CachedRounded';
+import PauseRoundedIcon from '@material-ui/icons/PauseRounded';
 
 const StyledContainer = styled.div`
   display: flex;
@@ -17,6 +19,8 @@ const StyledContainer = styled.div`
   font-size: 14px;
   line-height: 20px;
   letter-spacing: 0.25px;
+  color: ${colors.white60};
+  background: ${colors.dialodsGray};
 
   & + div {
     border-top: solid 1px gray;
@@ -41,19 +45,19 @@ const StyledFileName = styled.div`
   font-size: 16px;
   line-height: 24px;
   letter-spacing: 0.15px;
-  color: black;
+  color: ${colors.white87};
 `;
 
 const StyledSuccessStatus = styled.div`
-  color: lightgreen;
+  color: ${colors.white60};
 `;
 
 const StyledFailureStatus = styled.div`
-  color: red;
+  color: ${colors.white60};
 `;
 
 const StyledInitializingStatus = styled.div`
-  color: gray;
+  color: ${colors.white60};
 `;
 
 const StyledIconButton = styled.button`
@@ -62,6 +66,7 @@ const StyledIconButton = styled.button`
   background: none;
   border: none;
   outline: none;
+  color: ${colors.white60};
 `;
 
 const StyledProgressLabel = styled.div`
@@ -98,8 +103,9 @@ const UploadsListItem = ({ item }) => {
   }
 
   function renderIconButton() {
-    if (item.result) {
-      return <StyledIconButton>&#10004;</StyledIconButton>;
+    console.log('item', item);
+    if (item.initializing || item.result) {
+      return null;
     }
 
     if (item.error) {
@@ -110,7 +116,11 @@ const UploadsListItem = ({ item }) => {
       );
     }
 
-    return <StyledIconButton onClick={cancelUpload}>&#10006;</StyledIconButton>;
+    return (
+      <StyledIconButton onClick={cancelUpload}>
+        <PauseRoundedIcon />
+      </StyledIconButton>
+    );
   }
 
   function renderProgress() {

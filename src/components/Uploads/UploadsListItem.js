@@ -103,7 +103,6 @@ const UploadsListItem = ({ item }) => {
   }
 
   function renderIconButton() {
-    console.log('item', item);
     if (item.initializing || item.result) {
       return null;
     }

@@ -1,25 +1,13 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
-import { colors } from '../../colors';
 
 import { NotesPageContainer } from 'components/NotesPage/NotesPageContainer';
 import { PAGES_ENUM } from 'components/App/AppConstants';
 import { LoginPageContainer } from 'components/LoginPage/LoginPageContainer';
 import { UploadsPage } from 'components/Uploads/UploadsPage';
 import { SearchPageComponent } from 'components/SearchPage/SearchPageComponent';
-
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: colors.violet,
-    },
-    secondary: {
-      main: colors.turquoise,
-    },
-  },
-});
+import { theme } from '../../theme';
 
 export class AppComponent extends PureComponent {
   render() {

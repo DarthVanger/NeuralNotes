@@ -21,11 +21,14 @@ import {
   deleteNoteRequestSuccessAction,
   changeParentRequestSuccessAction,
   changeParentRequestFailAction,
+  SEARCH_RESULT_CLICKED,
 } from 'components/NotesMindMap/NotesMindMapActions';
 import noteStorage from 'storage/noteStorage';
 import { ROOT_NOTE_FOUND_ACTION } from 'components/App/AppActions';
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
 import { UploadsActions } from 'components/Uploads/UploadsActions';
+import { setPageAction } from 'components/App/AppSagas';
+import { PAGES_ENUM } from 'components/App/AppConstants';
 
 const LOADING_NOTE_MESSAGE = 'loading note contents...';
 let spinner = siteGlobalLoadingBar.create('mind map');
@@ -48,6 +51,21 @@ function* changeSelectedNote({ data: { note, edges } }) {
   const targetNote = note;
   if (didNotAttemptToFetchChildren(targetNote, edges)) {
     const childNotes = yield fetchChildNotes(targetNote);
+    yield put(selectedNoteChildrenFetchedAction(childNotes));
+  } else {
+    console.log('not fetching child notes');
+  }
+
+  if (targetNote.isNote) {
+    yield requestNoteText(targetNote);
+  }
+}
+
+function* handleSearchResultClick({ data: { note, edges } }) {
+  const targetNote = note;
+  if (didNotAttemptToFetchChildren(targetNote, edges)) {
+    const childNotes = yield fetchChildNotes(targetNote);
+    yield setPageAction(PAGES_ENUM.NOTES);
     yield put(selectedNoteChildrenFetchedAction(childNotes));
   } else {
     console.log('not fetching child notes');
@@ -132,6 +150,7 @@ export function* noteMindMapInit() {
     takeEvery(CREATE_EMPTY_CHILD_ACTION, createEmptyChild),
     takeEvery(DELETE_NOTE_ACTION, deleteNote),
     takeEvery(UPDATE_NOTE_NAME_ACTION, updateNoteName),
+    takeEvery(SEARCH_RESULT_CLICKED, handleSearchResultClick),
     takeEvery(UploadsActions.file.uploadSuccess, uploadSuccessSaga),
   ]);
 }

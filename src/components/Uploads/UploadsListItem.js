@@ -20,7 +20,7 @@ const StyledContainer = styled.div`
   line-height: 20px;
   letter-spacing: 0.25px;
   color: ${colors.white60};
-  background: ${colors.dialodsGray};
+  background: ${colors.dialogsGray};
 
   & + div {
     border-top: solid 1px gray;

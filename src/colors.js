@@ -1,6 +1,6 @@
 export const colors = {
   mainGray: '#373737',
-  dialodsGray:
+  dialogsGray:
     'linear-gradient(0deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.12)), #121212;',
   lightGray: '#888',
   darkGray: '#333',

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch, useSelector } from 'react-redux';
 import { searchQueryChangeAction } from '../SearchPage/SearchPageAction';
+import { searchResultClickedAction } from 'components/NotesMindMap/NotesMindMapActions';
 
 export function SearchPageComponent() {
   const results = useSelector(state => state.searchPage.results);
@@ -18,6 +19,11 @@ export function SearchPageComponent() {
     1000,
   );
 
+  const handleClick = note => {
+    const data = { ...note, label: note.name };
+    dispatch(searchResultClickedAction({ note: data, edges: [] }));
+  };
+
   return (
     <div>
       <input
@@ -27,8 +33,11 @@ export function SearchPageComponent() {
       {results &&
         results.map(result => (
           <>
-            <h2>{result.name}</h2>
-            <h3>{result.mimeType}</h3>
+            <h2
+              style={{ 'border-top': '1px solid black' }}
+              onClick={() => handleClick(result)}>
+              {result.name}
+            </h2>
           </>
         ))}
     </div>

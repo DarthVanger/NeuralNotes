@@ -61,15 +61,11 @@ function* changeSelectedNote({ data: { note, edges } }) {
   }
 }
 
-function* handleSearchResultClick({ data: { note, edges } }) {
+function* handleSearchResultClick({ data: { note } }) {
   const targetNote = note;
-  if (didNotAttemptToFetchChildren(targetNote, edges)) {
-    const childNotes = yield fetchChildNotes(targetNote);
-    yield setPageAction(PAGES_ENUM.NOTES);
-    yield put(selectedNoteChildrenFetchedAction(childNotes));
-  } else {
-    console.log('not fetching child notes');
-  }
+  const childNotes = yield fetchChildNotes(targetNote);
+  yield setPageAction(PAGES_ENUM.NOTES);
+  yield put(selectedNoteChildrenFetchedAction(childNotes));
 
   if (targetNote.isNote) {
     yield requestNoteText(targetNote);

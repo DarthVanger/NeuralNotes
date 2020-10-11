@@ -5,7 +5,7 @@ import { searchQueryChangeAction } from '../SearchPage/SearchPageAction';
 import { searchResultClickedAction } from 'components/NotesMindMap/NotesMindMapActions';
 
 export function SearchPageComponent() {
-  const results = useSelector(state => state.searchPage.results);
+  const searchResults = useSelector(state => state.searchPage.results);
   const dispatch = useDispatch();
   const defaultValue = '';
   const [query, setQuery] = useState(defaultValue);
@@ -19,9 +19,9 @@ export function SearchPageComponent() {
     1000,
   );
 
-  const handleClick = note => {
-    const data = { ...note, label: note.name };
-    dispatch(searchResultClickedAction({ note: data, edges: [] }));
+  const handleClick = searchResult => {
+    const note = { ...searchResult, label: searchResult.name };
+    dispatch(searchResultClickedAction({ note }));
   };
 
   return (
@@ -30,13 +30,13 @@ export function SearchPageComponent() {
         defaultValue={defaultValue}
         onChange={e => debounced.callback(e.target.value, setQuery)}
       />
-      {results &&
-        results.map(result => (
+      {searchResults &&
+        searchResults.map(searchResult => (
           <>
             <h2
               style={{ 'border-top': '1px solid black' }}
-              onClick={() => handleClick(result)}>
-              {result.name}
+              onClick={() => handleClick(searchResult)}>
+              {searchResult.name}
             </h2>
           </>
         ))}

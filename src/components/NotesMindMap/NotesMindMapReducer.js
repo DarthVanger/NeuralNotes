@@ -168,7 +168,7 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
     case SEARCH_RESULT_CLICKED:
       return {
         nodes: [data.note],
-        edges: data.edges,
+        edges: [],
         selectedNote: data.note,
       };
     default:

@@ -20,7 +20,11 @@ export class AppComponent extends PureComponent {
         return <LoginPageContainer />;
 
       case PAGES_ENUM.NOTES:
-        return <NotesPageContainer />;
+        return (
+          <ThemeProvider theme={theme}>
+            <NotesPageContainer />;
+          </ThemeProvider>
+        );
 
       case PAGES_ENUM.UPLOADS:
         return (

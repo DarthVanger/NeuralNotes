@@ -53,4 +53,12 @@ export const theme = createMuiTheme({
       textTransform: 'uppercase',
     },
   },
+  overrides: {
+    MuiAppBar: {
+      colorPrimary: {
+        backgroundColor: null,
+        background: colors.elevationOverlay04dp,
+      },
+    },
+  },
 });

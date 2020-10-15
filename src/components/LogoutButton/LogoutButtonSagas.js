@@ -9,6 +9,7 @@ import { LOGOUT_ACTION } from 'components/LogoutButton/LogoutButtonAction';
 
 function* logout() {
   console.log('logout');
+  localStorage.clear();
   yield call(auth.logout);
 }
 

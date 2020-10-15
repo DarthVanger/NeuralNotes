@@ -21,6 +21,7 @@ var self = {
   client: client,
   findByName,
   findNotesByName,
+  findNotesById,
   updateFile: updateFile,
   updateFileName: updateFileName,
   parseParents: parseParents,
@@ -211,6 +212,18 @@ function findNotesByName(name = '') {
     request.execute(function(resp) {
       resolve(resp.files);
       spinner.hide();
+    });
+  });
+}
+
+function findNotesById(lastViewedNoteId) {
+  const request = gapi.client.drive.files.get({
+    fileId: lastViewedNoteId,
+  });
+
+  return new Promise(resolve => {
+    request.execute(function(resp) {
+      resolve(resp);
     });
   });
 }

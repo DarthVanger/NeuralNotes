@@ -63,6 +63,7 @@ function* changeSelectedNote({ data: { note, edges } }) {
 
 function* handleSearchResultClick({ data: { note } }) {
   const targetNote = note;
+  localStorage.setItem('lastViewedNoteId', targetNote.id);
   const childNotes = yield fetchChildNotes(targetNote);
   yield setPageAction(PAGES_ENUM.NOTES);
   yield put(selectedNoteChildrenFetchedAction(childNotes));

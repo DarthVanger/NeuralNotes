@@ -7,18 +7,13 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import { colors } from '../../colors';
 import RetryIcon from '@material-ui/icons/CachedRounded';
 import PauseRoundedIcon from '@material-ui/icons/PauseRounded';
+import { Typography } from '@material-ui/core';
 
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: row;
   padding: 0.5em 1em;
   height: 60px;
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 20px;
-  letter-spacing: 0.25px;
   color: ${colors.white60};
   background: ${colors.dialogsGray};
 
@@ -42,21 +37,10 @@ const StyledRightContainer = styled.div`
 `;
 
 const StyledFileName = styled.div`
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: 0.15px;
   color: ${colors.white87};
 `;
 
-const StyledSuccessStatus = styled.div`
-  color: ${colors.white60};
-`;
-
-const StyledFailureStatus = styled.div`
-  color: ${colors.white60};
-`;
-
-const StyledInitializingStatus = styled.div`
+const StyledStatus = styled.div`
   color: ${colors.white60};
 `;
 
@@ -67,10 +51,6 @@ const StyledIconButton = styled.button`
   border: none;
   outline: none;
   color: ${colors.white60};
-`;
-
-const StyledProgressLabel = styled.div`
-  font-size: 14px;
 `;
 
 const UploadsListItem = ({ item }) => {
@@ -86,11 +66,19 @@ const UploadsListItem = ({ item }) => {
 
   function renderStatus() {
     if (item.result) {
-      return <StyledSuccessStatus>Uploaded</StyledSuccessStatus>;
+      return (
+        <StyledStatus>
+          <Typography variant="body2">Uploaded</Typography>
+        </StyledStatus>
+      );
     }
 
     if (item.error) {
-      return <StyledFailureStatus>{item.error.message}</StyledFailureStatus>;
+      return (
+        <StyledStatus>
+          <Typography variant="body2">{item.error.message}</Typography>
+        </StyledStatus>
+      );
     }
 
     if (item.progress) {
@@ -99,7 +87,11 @@ const UploadsListItem = ({ item }) => {
       );
     }
 
-    return <StyledInitializingStatus>Initializing</StyledInitializingStatus>;
+    return (
+      <StyledStatus>
+        <Typography variant="body2">Initializing</Typography>
+      </StyledStatus>
+    );
   }
 
   function renderIconButton() {
@@ -127,13 +119,15 @@ const UploadsListItem = ({ item }) => {
       return null;
     }
 
-    return <StyledProgressLabel>{item.progress.percent}%</StyledProgressLabel>;
+    return <Typography variant="body2">{item.progress.percent}%</Typography>;
   }
 
   return (
     <StyledContainer>
       <StyledLeftContainer>
-        <StyledFileName>{item.file.name}</StyledFileName>
+        <StyledFileName>
+          <Typography variant="subtitle1">{item.file.name}</Typography>
+        </StyledFileName>
         {renderStatus()}
       </StyledLeftContainer>
       <StyledRightContainer>

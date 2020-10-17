@@ -1,6 +1,8 @@
 import React from 'react';
-
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
+import { PAGES_ENUM } from 'components/App/AppConstants';
+import { CHANGE_PAGE_ACTION } from 'components/App/AppActions';
 
 const FlexContainer = styled.div`
   position: absolute;
@@ -22,9 +24,14 @@ const StyledButton = styled.button`
 `;
 
 export const NoteDetailsButtonComponent = () => {
+  const dispatch = useDispatch();
+
+  const handleClick = () => {
+    dispatch({ type: CHANGE_PAGE_ACTION, data: PAGES_ENUM.NOTE_DETAILS });
+  };
   return (
     <FlexContainer>
-      <StyledButton>View/Edit Note</StyledButton>;
+      <StyledButton onClick={handleClick}>View/Edit Note</StyledButton>;
     </FlexContainer>
   );
 };

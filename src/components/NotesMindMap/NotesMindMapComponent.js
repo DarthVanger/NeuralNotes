@@ -51,7 +51,7 @@ export class NotesMindMapComponent extends Component {
 
     return (
       <StyledNotesMindMap>
-        {selectedNote && <NoteDetailsContainer />}
+        {/* {selectedNote && <NoteDetailsContainer />} */}
         <VisGraph graph={visGraph} events={visEvents} options={visOptions} />
         {showNoteNameEditor && (
           <NoteNameEditorComponent

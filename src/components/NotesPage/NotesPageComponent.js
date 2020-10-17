@@ -18,9 +18,9 @@ export class NotesPageComponent extends Component {
     return (
       <>
         <TopBarComponent />
-        <OpenFileButtonComponent />
+        {/* <OpenFileButtonComponent /> */}
         <NotesMindMapContainer />
-        <NotesContentEditorContainer />
+        {/* <NotesContentEditorContainer /> */}
         {!isHelpViewed && <ControlsHelpComponent onClose={closeHelp} />}
         <SearchPanelContainer />
         <LogoutButtonContainer />

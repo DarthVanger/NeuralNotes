@@ -6,6 +6,8 @@ import { VisNetworkHelper } from 'helpers/visNetworkHelper';
 import noteStorage from 'storage/noteStorage';
 import { NoteNameEditorComponent } from 'components/NoteNameEditor/NoteNameEditorComponent';
 import { StyledNotesMindMap } from 'components/NotesMindMap/NotesMindMapStyles';
+import { NoteDetailsButtonComponent } from 'components/NoteDetailsButton/NoteDetailsButtonComponent';
+
 // import { NoteDetailsContainer } from 'components/NoteDetails/NoteDetailsContainer';
 
 export class NotesMindMapComponent extends Component {
@@ -52,6 +54,8 @@ export class NotesMindMapComponent extends Component {
     return (
       <StyledNotesMindMap>
         {/* {selectedNote && <NoteDetailsContainer />} */}
+        {selectedNote && <NoteDetailsButtonComponent />}
+
         <VisGraph graph={visGraph} events={visEvents} options={visOptions} />
         {showNoteNameEditor && (
           <NoteNameEditorComponent

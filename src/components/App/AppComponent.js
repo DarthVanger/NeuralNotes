@@ -6,6 +6,7 @@ import { PAGES_ENUM } from 'components/App/AppConstants';
 import { LoginPageContainer } from 'components/LoginPage/LoginPageContainer';
 import { UploadsPage } from 'components/Uploads/UploadsPage';
 import { SearchPageComponent } from 'components/SearchPage/SearchPageComponent';
+import { NoteDetailsPage } from 'components/NoteDetailsPage/NoteDetailsPage';
 
 export class AppComponent extends PureComponent {
   render() {
@@ -21,7 +22,7 @@ export class AppComponent extends PureComponent {
         return <NotesPageContainer />;
 
       case PAGES_ENUM.NOTE_DETAILS:
-        return <h1>Note details</h1>;
+        return <NoteDetailsPage />;
 
       case PAGES_ENUM.UPLOADS:
         return <UploadsPage />;

@@ -8,8 +8,6 @@ import { NoteNameEditorComponent } from 'components/NoteNameEditor/NoteNameEdito
 import { StyledNotesMindMap } from 'components/NotesMindMap/NotesMindMapStyles';
 import { NoteDetailsButtonComponent } from 'components/NoteDetailsButton/NoteDetailsButtonComponent';
 
-// import { NoteDetailsContainer } from 'components/NoteDetails/NoteDetailsContainer';
-
 export class NotesMindMapComponent extends Component {
   render() {
     const {

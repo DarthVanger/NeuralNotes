@@ -5,7 +5,7 @@ import { ControlsHelpComponent } from 'components/ControlsHelp/ControlsHelpCompo
 // import { NotesContentEditorContainer } from 'components/NotesContentEditor/NotesContentEditorContainer';
 import { NotesMindMapContainer } from 'components/NotesMindMap/NotesMindMapContainer'; // Notes tree view
 import { LogoutButtonContainer } from 'components/LogoutButton/LogoutButtonContainer';
-import { SearchPanelContainer } from 'components/SearchPanel/SearchPanelContainer';
+// import { SearchPanelContainer } from 'components/SearchPanel/SearchPanelContainer';
 import { TopBarComponent } from 'components/TopBar/TopBarComponent';
 import { UploadStatusButton } from 'components/Uploads/UploadStatusButton';
 import { UploadButton } from 'components/Uploads/UploadButton';
@@ -22,7 +22,7 @@ export class NotesPageComponent extends Component {
         <NotesMindMapContainer />
         {/* <NotesContentEditorContainer /> */}
         {!isHelpViewed && <ControlsHelpComponent onClose={closeHelp} />}
-        <SearchPanelContainer />
+        {/* <SearchPanelContainer /> */}
         <LogoutButtonContainer />
         <UploadStatusButton />
         <UploadButton />

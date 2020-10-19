@@ -25,19 +25,42 @@ export class NotesMindMapComponent extends Component {
         keyboard: false,
       },
       edges: {
-        arrows: { to: true },
+        // arrows: { to: true },
         smooth: true,
       },
+      nodes: {
+        borderWidth: 2,
+        shape: 'box',
+        color: '#BB86FC',
+        margin: 10,
+        font: {
+          color: '#F2F2F2',
+          size: 15,
+          face: 'raleway',
+        },
+      },
+
       groups: {
         children: {
-          color: {
-            background: '#eef',
-            borderWidth: 3,
+          borderWidth: 2,
+          shape: 'box',
+          color: '#5dbcaf',
+          margin: 10,
+          font: {
+            color: '#F2F2F2',
+            size: 15,
+            face: 'raleway',
           },
         },
         parent: {
-          color: {
-            background: '#faa',
+          borderWidth: 2,
+          shape: 'box',
+          color: '#BB86FC',
+          margin: 10,
+          font: {
+            color: '#F2F2F2',
+            size: 15,
+            face: 'raleway',
           },
         },
       },

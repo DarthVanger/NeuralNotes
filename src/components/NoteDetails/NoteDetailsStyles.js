@@ -37,4 +37,24 @@ export const StyledNoteContentEditor = styled(DefaultTextarea)`
   font-size: 14px;
   font-weight: normal;
   letter-spacing: 0.25px;
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #1c191f;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #4a3d57;
+    border-radius: 1rem;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #6a5580;
+  }
 `;

@@ -38,6 +38,8 @@ export const StyledNoteContentEditor = styled(DefaultTextarea)`
   font-weight: normal;
   letter-spacing: 0.25px;
 
+  padding: 1rem;
+
   ::-webkit-scrollbar {
     width: 10px;
   }

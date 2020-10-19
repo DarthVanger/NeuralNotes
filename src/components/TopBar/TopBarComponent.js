@@ -10,6 +10,7 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { useDispatch } from 'react-redux';
 import { PAGES_ENUM } from 'components/App/AppConstants';
 import { CHANGE_PAGE_ACTION } from 'components/App/AppActions';
+import { LogoutButtonContainer } from 'components/LogoutButton/LogoutButtonContainer';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -49,12 +50,15 @@ export function TopBarComponent() {
             aria-label="menu">
             <MenuIcon />
           </IconButton>
+
           <Typography
             style={{ color: '#BB86FC' }}
             variant="h6"
             className={classes.title}>
             Neural Notes
           </Typography>
+          <LogoutButtonContainer />
+
           <CloudUploadIcon
             style={{ color: '#BB86FC', 'margin-right': '10px' }}
           />

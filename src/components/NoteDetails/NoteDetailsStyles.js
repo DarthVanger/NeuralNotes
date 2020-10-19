@@ -31,7 +31,7 @@ export const StyledNoteDetailsScreen = styled.div`
 `;
 
 export const StyledNoteContentEditor = styled(DefaultTextarea)`
-  height: 100%;
+  height: 90%;
   line-height: 20px;
   color: ${colors.white60};
   font-size: 14px;

@@ -25,11 +25,7 @@ export const StyledNoteNameEditor = styled(DefaultTextarea)`
 `;
 
 export const StyledNoteDetailsScreen = styled.div`
-  position: absolute;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  right: 0;
+  height: 100vh;
   padding: 24px;
   background-color: ${colors.darkViolet};
 `;

@@ -15,6 +15,8 @@ const FlexContainer = styled.div`
   bottom: 5rem;
 `;
 
+const Wrapper = styled.div``;
+
 // const StyledButton = styled.button`
 //   width: 10rem;
 //   height: 2rem;
@@ -32,11 +34,10 @@ export const NoteDetailsPage = () => {
   // };
   return (
     <>
-      <NoteDetailsContainer />
-
-      <FlexContainer>
+      <Wrapper>
+        <NoteDetailsContainer />
         {/* <StyledButton onClick={handleClick}>View/Edit Note</StyledButton>; */}
-      </FlexContainer>
+      </Wrapper>
     </>
   );
 };

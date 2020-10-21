@@ -10,8 +10,6 @@ import AddIcon from '@material-ui/icons/Add';
 import LaunchOutlinedIcon from '@material-ui/icons/LaunchOutlined';
 import styled from 'styled-components';
 
-import { colors } from '../../colors';
-
 const useStyles = makeStyles(() => ({
   appBar: {
     top: 'auto',
@@ -29,7 +27,6 @@ const useStyles = makeStyles(() => ({
 }));
 
 const StyledLabel = styled.div`
-  color: ${colors.white60};
   position: absolute;
   left: 0;
   right: 0;

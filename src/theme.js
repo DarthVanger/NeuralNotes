@@ -34,6 +34,7 @@ export const theme = createMuiTheme({
       fontSize: 14,
       lineHeight: '24px',
       letterSpacing: 0.1,
+      color: 'rgba(255, 255, 255, 0.6)',
     },
     body2: {
       fontFamily: 'Roboto',
@@ -42,6 +43,7 @@ export const theme = createMuiTheme({
       fontSize: 14,
       lineHeight: '20px',
       letterSpacing: 0.25,
+      color: 'rgba(255, 255, 255, 0.6)',
     },
     button: {
       fontFamily: 'Roboto',

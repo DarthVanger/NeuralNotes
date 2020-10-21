@@ -22,7 +22,7 @@ const useStyles = makeStyles(() => ({
     position: 'absolute',
     zIndex: 1,
     top: -30,
-    right: 16,
+    right: 90,
   },
 }));
 

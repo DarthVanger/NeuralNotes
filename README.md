@@ -88,6 +88,7 @@ dist/index.html         dist/index.js           dist/index.js.map
 
 To test the production build locally, simply serve files from the `dist/` folder.
 
+
 For example you can easily launch a [nodejs http-server](https://www.npmjs.com/package/http-server) on port 3000 like this:
 ```
 npx http-server -p 3000 ./dist/

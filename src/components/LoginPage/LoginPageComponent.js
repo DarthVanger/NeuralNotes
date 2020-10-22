@@ -89,9 +89,11 @@ const Button = css`
 
 const GoogleLoginButton = styled.button`
   ${Button}
+
   position: absolute;
   right: 2rem;
   top: 1rem;
+
 `;
 
 const GoogleSignUp = styled.button`

@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { UploadsPageHeader } from './UploadsPageHeader';
 import * as Selectors from './UploadsSelectors';
 import { UploadsList } from './UploadsList';
+import { colors } from '../../colors';
+
 
 const StyledPageContainer = styled.div`
   position: absolute;
@@ -11,7 +13,8 @@ const StyledPageContainer = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: white;
+  background-color: ${colors.mainGray};
+
   display: flex;
   flex-direction: column;
 `;

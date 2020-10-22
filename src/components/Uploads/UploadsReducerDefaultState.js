@@ -4,7 +4,9 @@
 const debug = false;
 
 const debugDefaultState = {
-  uploads: [
+
+  list: [
+
     {
       file: {
         name: 'File uploaded',
@@ -19,7 +21,11 @@ const debugDefaultState = {
         name: 'File uploading',
       },
       status: 'uploading',
-      progress: 0.47,
+
+      progress: {
+        percent: 47,
+      },
+
     },
     {
       file: {

@@ -2,14 +2,23 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { UploadingProgressBar } from './UploadProgressBar';
+
 import { UploadsActions } from './UploadsActions';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import { colors } from '../../colors';
+import RetryIcon from '@material-ui/icons/CachedRounded';
+import PauseRoundedIcon from '@material-ui/icons/PauseRounded';
+import { Typography } from '@material-ui/core';
+
 
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: row;
   padding: 0.5em 1em;
   height: 60px;
+
+  color: ${colors.white60};
+  background: ${colors.dialogsGray};
 
   & + div {
     border-top: solid 1px gray;
@@ -47,7 +56,11 @@ const StyledFailureStatus = styled.div`
 
 const StyledInitializingStatus = styled.div`
   font-size: 12px;
-  color: gray;
+  color: ${colors.white87};
+`;
+
+const StyledStatus = styled.div`
+  color: ${colors.white60};
 `;
 
 const StyledIconButton = styled.button`
@@ -60,6 +73,7 @@ const StyledIconButton = styled.button`
 
 const StyledProgressLabel = styled.div`
   font-size: 11px;
+  color: ${colors.white60};
 `;
 
 const UploadsListItem = ({ item }) => {
@@ -75,32 +89,54 @@ const UploadsListItem = ({ item }) => {
 
   function renderStatus() {
     if (item.result) {
-      return <StyledSuccessStatus>Uploaded</StyledSuccessStatus>;
-    }
-
-    if (item.error) {
-      return <StyledFailureStatus>{item.error.message}</StyledFailureStatus>;
-    }
-
-    if (item.progress) {
-      return <UploadingProgressBar progress={item.progress.percent} />;
-    }
-
-    return <StyledInitializingStatus>Initializing</StyledInitializingStatus>;
-  }
-
-  function renderIconButton() {
-    if (item.result) {
-      return <StyledIconButton>&#10004;</StyledIconButton>;
+      return (
+        <StyledStatus>
+          <Typography variant="body2">Uploaded</Typography>
+        </StyledStatus>
+      );
     }
 
     if (item.error) {
       return (
-        <StyledIconButton onClick={retryUpload}>&#11097;</StyledIconButton>
+        <StyledStatus>
+          <Typography variant="body2">{item.error.message}</Typography>
+        </StyledStatus>
       );
     }
 
-    return <StyledIconButton onClick={cancelUpload}>&#10006;</StyledIconButton>;
+    if (item.progress) {
+      return (
+        <LinearProgress value={item.progress.percent} variant="determinate" />
+      );
+    }
+
+    return (
+      <StyledStatus>
+        <Typography variant="body2">Initializing</Typography>
+      </StyledStatus>
+    );
+  }
+
+  function renderIconButton() {
+    if (item.initializing || item.result) {
+      return null;
+
+    }
+
+    if (item.error) {
+      return (
+        <StyledIconButton onClick={retryUpload}>
+          <RetryIcon />
+        </StyledIconButton>
+      );
+    }
+
+    return (
+      <StyledIconButton onClick={cancelUpload}>
+        <PauseRoundedIcon />
+      </StyledIconButton>
+    );
+
   }
 
   function renderProgress() {
@@ -108,13 +144,17 @@ const UploadsListItem = ({ item }) => {
       return null;
     }
 
-    return <StyledProgressLabel>{item.progress.percent}%</StyledProgressLabel>;
+
+    return <Typography variant="body2">{item.progress.percent}%</Typography>;
   }
 
   return (
     <StyledContainer>
       <StyledLeftContainer>
-        <StyledFileName>{item.file.name}</StyledFileName>
+        <StyledFileName>
+          <Typography variant="subtitle1">{item.file.name}</Typography>
+        </StyledFileName>
+
         {renderStatus()}
       </StyledLeftContainer>
       <StyledRightContainer>

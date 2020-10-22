@@ -12,7 +12,7 @@ const logger = new (winston.Logger)({
     ]
 });
 
-logger.info('yo niggas :) im your logger');
+logger.info('Logger initiated...');
 
 module.exports = logger;
 

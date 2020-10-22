@@ -10,7 +10,6 @@ import RetryIcon from '@material-ui/icons/CachedRounded';
 import PauseRoundedIcon from '@material-ui/icons/PauseRounded';
 import { Typography } from '@material-ui/core';
 
-
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -44,20 +43,20 @@ const StyledFileName = styled.div`
   color: black;
 `;
 
-const StyledSuccessStatus = styled.div`
-  font-size: 12px;
-  color: lightgreen;
-`;
+// const StyledSuccessStatus = styled.div`
+//   font-size: 12px;
+//   color: lightgreen;
+// `;
 
-const StyledFailureStatus = styled.div`
-  font-size: 12px;
-  color: red;
-`;
+// const StyledFailureStatus = styled.div`
+//   font-size: 12px;
+//   color: red;
+// `;
 
-const StyledInitializingStatus = styled.div`
-  font-size: 12px;
-  color: ${colors.white87};
-`;
+// const StyledInitializingStatus = styled.div`
+//   font-size: 12px;
+//   color: ${colors.white87};
+// `;
 
 const StyledStatus = styled.div`
   color: ${colors.white60};
@@ -71,10 +70,10 @@ const StyledIconButton = styled.button`
   outline: none;
 `;
 
-const StyledProgressLabel = styled.div`
-  font-size: 11px;
-  color: ${colors.white60};
-`;
+// const StyledProgressLabel = styled.div`
+//   font-size: 11px;
+//   color: ${colors.white60};
+// `;
 
 const UploadsListItem = ({ item }) => {
   const dispatch = useDispatch();
@@ -120,7 +119,6 @@ const UploadsListItem = ({ item }) => {
   function renderIconButton() {
     if (item.initializing || item.result) {
       return null;
-
     }
 
     if (item.error) {
@@ -136,14 +134,12 @@ const UploadsListItem = ({ item }) => {
         <PauseRoundedIcon />
       </StyledIconButton>
     );
-
   }
 
   function renderProgress() {
     if (!item.progress || item.result) {
       return null;
     }
-
 
     return <Typography variant="body2">{item.progress.percent}%</Typography>;
   }

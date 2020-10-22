@@ -1,5 +1,4 @@
 export const colors = {
-
   mainGray: '#373737',
   dialogsGray:
     'linear-gradient(0deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.12)), #121212;',

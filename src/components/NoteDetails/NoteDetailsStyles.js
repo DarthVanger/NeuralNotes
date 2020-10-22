@@ -25,7 +25,6 @@ export const StyledNoteNameEditor = styled(DefaultTextarea)`
 `;
 
 export const StyledNoteDetailsScreen = styled.div`
-
   height: 100vh;
 
   padding: 24px;
@@ -33,7 +32,6 @@ export const StyledNoteDetailsScreen = styled.div`
 `;
 
 export const StyledNoteContentEditor = styled(DefaultTextarea)`
-
   height: 90%;
 
   line-height: 20px;
@@ -63,5 +61,4 @@ export const StyledNoteContentEditor = styled(DefaultTextarea)`
   ::-webkit-scrollbar-thumb:hover {
     background: #6a5580;
   }
-
 `;

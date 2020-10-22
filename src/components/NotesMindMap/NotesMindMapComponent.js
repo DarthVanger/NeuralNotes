@@ -9,9 +9,6 @@ import { StyledNotesMindMap } from 'components/NotesMindMap/NotesMindMapStyles';
 
 import { NoteDetailsButtonComponent } from 'components/NoteDetailsButton/NoteDetailsButtonComponent';
 
-import { NoteDetailsContainer } from 'components/NoteDetails/NoteDetailsContainer';
-
-
 export class NotesMindMapComponent extends Component {
   render() {
     const {
@@ -55,10 +52,7 @@ export class NotesMindMapComponent extends Component {
 
     return (
       <StyledNotesMindMap>
-
-        {/* {selectedNote && <NoteDetailsContainer />} */}
         {selectedNote && <NoteDetailsButtonComponent />}
-
 
         <VisGraph graph={visGraph} events={visEvents} options={visOptions} />
         {showNoteNameEditor && (

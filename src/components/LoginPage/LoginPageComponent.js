@@ -93,7 +93,6 @@ const GoogleLoginButton = styled.button`
   position: absolute;
   right: 2rem;
   top: 1rem;
-
 `;
 
 const GoogleSignUp = styled.button`

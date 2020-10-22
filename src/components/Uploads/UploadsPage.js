@@ -6,7 +6,6 @@ import * as Selectors from './UploadsSelectors';
 import { UploadsList } from './UploadsList';
 import { colors } from '../../colors';
 
-
 const StyledPageContainer = styled.div`
   position: absolute;
   top: 0;

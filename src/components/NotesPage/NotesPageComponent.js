@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import { ControlsHelpComponent } from 'components/ControlsHelp/ControlsHelpComponent';
 
-
 import { NotesMindMapContainer } from 'components/NotesMindMap/NotesMindMapContainer'; // Notes tree view
 import { LogoutButtonContainer } from 'components/LogoutButton/LogoutButtonContainer';
 
@@ -13,7 +12,6 @@ import { UploadButton } from 'components/Uploads/UploadButton';
 
 import BottomBarComponent from 'components/BottomBar/BottomBarComponent';
 
-
 export class NotesPageComponent extends Component {
   render() {
     const { isHelpViewed, closeHelp } = this.props;
@@ -22,18 +20,15 @@ export class NotesPageComponent extends Component {
       <>
         <TopBarComponent />
 
-
         <NotesMindMapContainer />
-  
+
         {!isHelpViewed && <ControlsHelpComponent onClose={closeHelp} />}
 
         <LogoutButtonContainer />
         <UploadStatusButton />
         <UploadButton />
 
-        
         <BottomBarComponent />
-
       </>
     );
   }

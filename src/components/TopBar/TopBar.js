@@ -37,7 +37,7 @@ const TopBarWrapper = styled.div`
   height: 5rem;
 `;
 
-export function TopBarComponent() {
+export function TopBar() {
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -65,10 +65,14 @@ export function TopBarComponent() {
           </Typography>
           <LogoutButtonContainer />
 
-          <CloudUploadIcon
-            style={{ color: '#BB86FC', 'margin-right': '10px' }}
-          />
-          <SearchIcon onClick={showSearchPanel} />
+          <IconButton>
+            <CloudUploadIcon
+              style={{ color: '#BB86FC', 'margin-right': '10px' }}
+            />
+          </IconButton>
+          <IconButton>
+            <SearchIcon onClick={showSearchPanel} />
+          </IconButton>
         </Toolbar>
       </AppBar>
     </TopBarWrapper>

@@ -16,15 +16,6 @@ const FlexContainer = styled.div`
   bottom: 5rem;
 `;
 
-// const StyledButton = styled.button`
-//   width: 10rem;
-//   height: 2rem;
-//   color: #bb86fc;
-//   background-color: #232323;
-//   border: 1px solid #bb86fc;
-//   font-size: 1rem;
-// `;
-
 export const NoteDetailsButtonComponent = () => {
   return (
     <FlexContainer>

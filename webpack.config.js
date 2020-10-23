@@ -8,7 +8,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const webpack = require('webpack');
 
-const ASSET_PATH = process.env.ASSET_PATH || '/';
+// const ASSET_PATH = process.env.ASSET_PATH || '/';
 
 module.exports = {
   entry: './src/index.js',

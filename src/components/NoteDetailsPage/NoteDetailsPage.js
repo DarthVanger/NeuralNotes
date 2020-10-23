@@ -30,7 +30,6 @@ export const NoteDetailsPage = () => {
         </IconButton>
       </BackButtonWrapper>
       <NoteDetailsContainer />
-      {/* <StyledButton onClick={handleClick}>View/Edit Note</StyledButton>; */}
     </Wrapper>
   );
 };

@@ -3,6 +3,17 @@ import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch, useSelector } from 'react-redux';
 import { searchQueryChangeAction } from '../SearchPage/SearchPageAction';
 import { searchResultClickedAction } from 'components/NotesMindMap/NotesMindMapActions';
+import styled from 'styled-components';
+
+import IconButton from '@material-ui/core/IconButton';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { PAGES_ENUM } from 'components/App/AppConstants';
+import { CHANGE_PAGE_ACTION } from 'components/App/AppActions';
+
+const BackButtonWrapper = styled.div`
+  color: red !important;
+  padding: 1rem;
+`;
 
 export function SearchPageComponent() {
   const searchResults = useSelector(state => state.searchPage.results);
@@ -24,8 +35,17 @@ export function SearchPageComponent() {
     dispatch(searchResultClickedAction({ note }));
   };
 
+  const goToNotesPage = () => {
+    dispatch({ type: CHANGE_PAGE_ACTION, data: PAGES_ENUM.NOTES });
+  };
+
   return (
     <div>
+      <BackButtonWrapper>
+        <IconButton onClick={goToNotesPage} aria-label="back">
+          <ArrowBackIcon style={{ fill: '#BB86FC' }} />
+        </IconButton>
+      </BackButtonWrapper>
       <input
         defaultValue={defaultValue}
         onChange={e => debounced.callback(e.target.value, setQuery)}

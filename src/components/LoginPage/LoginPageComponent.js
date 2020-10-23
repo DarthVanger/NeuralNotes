@@ -89,7 +89,9 @@ const Button = css`
 
 const GoogleLoginButton = styled.button`
   ${Button}
-  float: right;
+  position: absolute;
+  right: 2rem;
+  top: 1rem;
 `;
 
 const GoogleSignUp = styled.button`
@@ -115,9 +117,7 @@ const Footer = styled.footer`
 
 export class LoginPageComponent extends Component {
   render() {
-    const authHandler = this.props.isGoogleApiInitialized
-      ? this.props.requestAuthorization
-      : null;
+    const authHandler = this.props.requestAuthorization;
     return (
       <Main>
         <Article>

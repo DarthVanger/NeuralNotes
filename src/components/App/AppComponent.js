@@ -21,7 +21,7 @@ export const App = () => {
         <Route exact path="/note">
           <NoteDetailsPage />
         </Route>
-        <Route path="/upload">
+        <Route path="/uploads">
           <UploadsPage />
         </Route>
         <Route path="/search">

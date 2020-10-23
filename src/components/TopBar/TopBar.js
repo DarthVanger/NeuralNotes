@@ -7,11 +7,11 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import { useDispatch } from 'react-redux';
-import { PAGES_ENUM } from 'components/App/AppConstants';
-import { CHANGE_PAGE_ACTION } from 'components/App/AppActions';
+
 import { LogoutButtonContainer } from 'components/LogoutButton/LogoutButtonContainer';
 import styled from 'styled-components';
+
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,13 +25,6 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const setPageActionHooks = data => {
-  return {
-    type: CHANGE_PAGE_ACTION,
-    data,
-  };
-};
-
 const TopBarWrapper = styled.div`
   display: flex;
   height: 5rem;
@@ -39,11 +32,6 @@ const TopBarWrapper = styled.div`
 
 export function TopBar() {
   const classes = useStyles();
-  const dispatch = useDispatch();
-
-  const showSearchPanel = () => {
-    dispatch(setPageActionHooks(PAGES_ENUM.SEARCH));
-  };
 
   return (
     <TopBarWrapper>
@@ -70,9 +58,11 @@ export function TopBar() {
               style={{ color: '#BB86FC', 'margin-right': '10px' }}
             />
           </IconButton>
-          <IconButton>
-            <SearchIcon onClick={showSearchPanel} />
-          </IconButton>
+          <Link to="search">
+            <IconButton>
+              <SearchIcon style={{ color: '#BB86FC' }} />
+            </IconButton>
+          </Link>
         </Toolbar>
       </AppBar>
     </TopBarWrapper>

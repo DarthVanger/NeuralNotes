@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import { PAGES_ENUM } from 'components/App/AppConstants';
 import { CHANGE_PAGE_ACTION } from 'components/App/AppActions';
 import { LogoutButtonContainer } from 'components/LogoutButton/LogoutButtonContainer';
+import styled from 'styled-components';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -31,6 +32,11 @@ const setPageActionHooks = data => {
   };
 };
 
+const TopBarWrapper = styled.div`
+  display: flex;
+  height: 5rem;
+`;
+
 export function TopBarComponent() {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -40,8 +46,8 @@ export function TopBarComponent() {
   };
 
   return (
-    <div className={classes.root}>
-      <AppBar style={{ background: '#272727' }} position="static">
+    <TopBarWrapper>
+      <AppBar style={{ background: '#272727' }}>
         <Toolbar>
           <IconButton
             edge="start"
@@ -65,6 +71,6 @@ export function TopBarComponent() {
           <SearchIcon onClick={showSearchPanel} />
         </Toolbar>
       </AppBar>
-    </div>
+    </TopBarWrapper>
   );
 }

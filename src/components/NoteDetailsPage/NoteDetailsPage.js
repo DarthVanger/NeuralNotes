@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { PAGES_ENUM } from 'components/App/AppConstants';
 import { CHANGE_PAGE_ACTION } from 'components/App/AppActions';
 import { NoteDetailsContainer } from 'components/NoteDetails/NoteDetailsContainer';
+import { Link } from 'react-router-dom';
 
 const Wrapper = styled.div`
   background-color: #2b2630;
@@ -25,9 +26,11 @@ export const NoteDetailsPage = () => {
   return (
     <Wrapper>
       <BackButtonWrapper>
-        <IconButton onClick={handleClick} aria-label="back">
-          <ArrowBackIcon style={{ fill: '#E4E3E4' }} />
-        </IconButton>
+        <Link to="/notes">
+          <IconButton onClick={handleClick} aria-label="back">
+            <ArrowBackIcon style={{ fill: '#E4E3E4' }} />
+          </IconButton>
+        </Link>
       </BackButtonWrapper>
       <NoteDetailsContainer />
     </Wrapper>

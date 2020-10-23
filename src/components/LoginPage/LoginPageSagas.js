@@ -8,7 +8,6 @@ import { toast } from 'react-toastify';
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
 import { gapiAuthorize } from 'api/google-login';
 import {
-  googleApiInitializedAction,
   REQUEST_AUTHORIZATION_ACTION,
   authSuccessAction,
 } from 'components/LoginPage/LoginPagesActions';
@@ -34,6 +33,6 @@ export function* handleAuth() {
 
 export function* loginInit() {
   yield googleApiLoader.load();
-  yield put(googleApiInitializedAction());
+  // yield put(googleApiInitializedAction());
   yield takeEvery(REQUEST_AUTHORIZATION_ACTION, handleAuth);
 }

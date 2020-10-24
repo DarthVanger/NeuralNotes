@@ -1,9 +1,9 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
-import * as AppActions from 'components/App/AppActions';
-import * as AppConstants from 'components/App/AppConstants';
+// import * as AppActions from 'components/App/AppActions';
+// import * as AppConstants from 'components/App/AppConstants';
 import * as Selectors from './UploadsSelectors';
 
 const StyledStatusButton = styled.button`
@@ -60,15 +60,15 @@ const StyledStatusButton = styled.button`
  * - when has errors
  */
 const UploadStatusButton = () => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const hasUploads = useSelector(Selectors.hasUploads);
   const hasActiveUploads = useSelector(Selectors.hasActiveUploads);
 
   function onButtonClick() {
-    dispatch({
-      type: AppActions.CHANGE_PAGE_ACTION,
-      data: AppConstants.PAGES_ENUM.UPLOADS,
-    });
+    // dispatch({
+    //   type: AppActions.CHANGE_PAGE_ACTION,
+    //   data: AppConstants.PAGES_ENUM.UPLOADS,
+    // });
   }
 
   return (

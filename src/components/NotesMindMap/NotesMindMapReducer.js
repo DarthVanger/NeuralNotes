@@ -11,8 +11,8 @@ import {
   CHANGE_PARENT_REQUEST_SUCCESS_ACTION,
   CHANGE_PARENT_REQUEST_FAIL_ACTION,
   SEARCH_RESULT_CLICKED,
+  ROOT_NOTE_FOUND_ACTION,
 } from 'components/NotesMindMap/NotesMindMapActions';
-import { ROOT_NOTE_FOUND_ACTION } from 'components/App/AppActions.js';
 import { addGroupTagToNodes, removeNodeFromGraph } from '../../helpers/graph';
 
 const defaultState = {

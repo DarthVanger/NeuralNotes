@@ -6,10 +6,7 @@ import {
 import { toast } from 'react-toastify';
 
 import auth from 'auth';
-import {
-  rootNoteFoundAction,
-  CHANGE_PAGE_ACTION,
-} from 'components/App/AppActions';
+import { rootNoteFoundAction } from 'components/NotesMindMap/NotesMindMapActions';
 import { AUTH_SUCCESS_ACTION } from 'components/LoginPage/LoginPagesActions.js';
 // import { PAGES_ENUM } from 'components/App/AppConstants';
 import noteStorage from 'storage/noteStorage';
@@ -19,9 +16,9 @@ import googleApiLoader from 'api/google-api-loader';
 
 import { push } from 'connected-react-router';
 
-export function setPageAction(data) {
-  return put({ type: CHANGE_PAGE_ACTION, data });
-}
+// export function setPageAction(data) {
+//   return put({ type: CHANGE_PAGE_ACTION, data });
+// }
 
 export function* loadApp() {
   console.info('Loading app...');

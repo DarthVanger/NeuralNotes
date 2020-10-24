@@ -1,11 +1,8 @@
 // import { CHANGE_PAGE_ACTION } from 'components/App/AppActions';
-import { PAGES_ENUM } from 'components/App/AppConstants';
+// import { PAGES_ENUM } from 'components/App/AppConstants';
 import { GOOGLE_API_INITIALIZED_ACTION } from 'components/LoginPage/LoginPagesActions';
 
-const defaultState = {
-  page: PAGES_ENUM.LOADING,
-  isGoogleApiInitialized: false,
-};
+const defaultState = {};
 
 export const appReducer = (state = defaultState, { type }) => {
   switch (type) {

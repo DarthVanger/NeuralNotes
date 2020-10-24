@@ -146,6 +146,5 @@ export class LoginPageComponent extends Component {
 }
 
 LoginPageComponent.propTypes = {
-  isGoogleApiInitialized: PropTypes.bool.isRequired,
   requestAuthorization: PropTypes.func.isRequired,
 };

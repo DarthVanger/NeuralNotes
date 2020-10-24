@@ -3,9 +3,7 @@ import { REQUEST_AUTHORIZATION_ACTION } from 'components/LoginPage/LoginPagesAct
 import { LoginPageComponent } from 'components/LoginPage/LoginPageComponent';
 import { action } from 'sagas';
 
-const mapStateToProps = ({ app: { isGoogleApiInitialized } }) => ({
-  isGoogleApiInitialized,
-});
+const mapStateToProps = () => ({});
 
 const mapDispatchToProps = () => ({
   requestAuthorization() {

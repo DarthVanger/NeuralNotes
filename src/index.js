@@ -6,7 +6,7 @@ import 'abortcontroller-polyfill/dist/polyfill-patch-fetch';
 import 'vis-network/dist/vis-network.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'sagas';
-import { AppContainer } from 'components/App/AppContainer';
+import { App } from 'components/App/App';
 import { store, history } from 'sagas';
 import { GlobalStyle } from 'globalStyles';
 
@@ -16,7 +16,7 @@ ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
       <GlobalStyle />
-      <AppContainer />
+      <App />
     </ConnectedRouter>
   </Provider>,
   document.getElementById('app-root'),

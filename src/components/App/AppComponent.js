@@ -34,7 +34,11 @@ export class AppComponent extends PureComponent {
         );
 
       case PAGES_ENUM.SEARCH:
-        return <SearchPageComponent />;
+        return (
+          <ThemeProvider theme={theme}>
+            <SearchPageComponent />
+          </ThemeProvider>
+        );
 
       default:
         throw new Error(`unknown page: ${page}`);

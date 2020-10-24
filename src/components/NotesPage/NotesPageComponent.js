@@ -6,7 +6,7 @@ import { NotesMindMapContainer } from 'components/NotesMindMap/NotesMindMapConta
 import { TopBar } from 'components/TopBar/TopBar';
 import { UploadStatusButton } from 'components/Uploads/UploadStatusButton';
 // import { UploadButton } from 'components/Uploads/UploadButton';
-import BottomBarComponent from 'components/BottomBar/BottomBarComponent';
+import { BottomBar } from 'components/BottomBar/BottomBar';
 
 export class NotesPageComponent extends Component {
   render() {
@@ -19,7 +19,7 @@ export class NotesPageComponent extends Component {
         {/* {!isHelpViewed && <ControlsHelpComponent onClose={closeHelp} />} */}
         <UploadStatusButton />
         {/* <UploadButton /> */}
-        <BottomBarComponent />
+        <BottomBar />
       </>
     );
   }

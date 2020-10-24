@@ -82,7 +82,7 @@ const UploadFileButton = () => {
   );
 };
 
-export default function BottomBarComponent() {
+export const BottomBar = () => {
   const classes = useStyles();
 
   return (
@@ -102,4 +102,4 @@ export default function BottomBarComponent() {
       </Toolbar>
     </AppBar>
   );
-}
+};

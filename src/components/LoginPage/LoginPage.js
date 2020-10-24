@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 import Slide1 from 'components/LoginPage/Slide1';
@@ -10,6 +11,7 @@ import iconGoogle from 'components/LoginPage/images/icon-google.svg';
 import COLORS from 'components/LoginPage/colors';
 import { ASPECT_RATIO } from 'components/LoginPage/slideComponents';
 import { FONT_SIZE } from 'components/LoginPage/slideComponents';
+import { REQUEST_AUTHORIZATION_ACTION } from 'components/LoginPage/LoginPagesActions';
 
 const Main = styled.main`
   width: 100%;
@@ -115,36 +117,41 @@ const Footer = styled.footer`
   }
 `;
 
-export class LoginPageComponent extends Component {
-  render() {
-    const authHandler = this.props.requestAuthorization;
-    return (
-      <Main>
-        <Article>
-          <GoogleLoginButton type="button" onClick={authHandler}>
-            <img src={iconGoogle} />
-            <span>Login</span>
-          </GoogleLoginButton>
-          <Slide1 />
-          <Slide2 />
-          <Slide3 />
-          <Slide4 />
-          <Slide5 />
-          <Footer>
-            <H3>
-              <span>Neural</span>Notes is open source and free
-            </H3>
-            <GoogleSignUp type="button" onClick={authHandler}>
-              <img src={iconGoogle} />
-              <span>Sign up with Google</span>
-            </GoogleSignUp>
-          </Footer>
-        </Article>
-      </Main>
-    );
-  }
-}
+export const LoginPage = () => {
+  // const authHandler = this.props.requestAuthorization;
 
-LoginPageComponent.propTypes = {
+  const dispatch = useDispatch();
+
+  const authHandler = () => {
+    dispatch({ type: REQUEST_AUTHORIZATION_ACTION });
+  };
+
+  return (
+    <Main>
+      <Article>
+        <GoogleLoginButton type="button" onClick={authHandler}>
+          <img src={iconGoogle} />
+          <span>Login</span>
+        </GoogleLoginButton>
+        <Slide1 />
+        <Slide2 />
+        <Slide3 />
+        <Slide4 />
+        <Slide5 />
+        <Footer>
+          <H3>
+            <span>Neural</span>Notes is open source and free
+          </H3>
+          <GoogleSignUp type="button" onClick={authHandler}>
+            <img src={iconGoogle} />
+            <span>Sign up with Google</span>
+          </GoogleSignUp>
+        </Footer>
+      </Article>
+    </Main>
+  );
+};
+
+LoginPage.propTypes = {
   requestAuthorization: PropTypes.func.isRequired,
 };

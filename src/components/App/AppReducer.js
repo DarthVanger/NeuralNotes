@@ -7,7 +7,7 @@ const defaultState = {
   isGoogleApiInitialized: false,
 };
 
-export const appReducer = (state = defaultState, { type, data }) => {
+export const appReducer = (state = defaultState, { type }) => {
   switch (type) {
     // case CHANGE_PAGE_ACTION:
     //   return Object.assign({}, state, { page: data });

@@ -2,9 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import { useDispatch } from 'react-redux';
-import { PAGES_ENUM } from 'components/App/AppConstants';
-import { CHANGE_PAGE_ACTION } from 'components/App/AppActions';
 import { NoteDetailsContainer } from 'components/NoteDetails/NoteDetailsContainer';
 import { Link } from 'react-router-dom';
 

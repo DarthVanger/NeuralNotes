@@ -117,7 +117,9 @@ const Footer = styled.footer`
 
 export class LoginPageComponent extends Component {
   render() {
-    const authHandler = this.props.requestAuthorization;
+    const authHandler = this.props.isGoogleApiInitialized
+      ? this.props.requestAuthorization
+      : null;
     return (
       <Main>
         <Article>

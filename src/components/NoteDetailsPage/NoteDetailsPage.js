@@ -18,16 +18,11 @@ const BackButtonWrapper = styled.div`
 `;
 
 export const NoteDetailsPage = () => {
-  const dispatch = useDispatch();
-
-  const handleClick = () => {
-    dispatch({ type: CHANGE_PAGE_ACTION, data: PAGES_ENUM.NOTES });
-  };
   return (
     <Wrapper>
       <BackButtonWrapper>
         <Link to="/notes">
-          <IconButton onClick={handleClick} aria-label="back">
+          <IconButton aria-label="back">
             <ArrowBackIcon style={{ fill: '#E4E3E4' }} />
           </IconButton>
         </Link>

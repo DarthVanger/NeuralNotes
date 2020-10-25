@@ -50,7 +50,7 @@ export const theme = createMuiTheme({
       fontStyle: 'normal',
       fontWeight: 500,
       fontSize: 14,
-      // lineHeight: 16, don't change line height as it's mess up markup
+      lineHeight: '16px',
       letterSpacing: '1.25px',
       textTransform: 'uppercase',
     },

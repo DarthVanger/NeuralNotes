@@ -5,6 +5,7 @@ export const colors = {
   elevationOverlay04dp:
     'linear-gradient(0deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.09)), #121212;',
   lightGray: '#888',
+  buttonGray: '#c5c5c5',
   darkGray: '#333',
   darkViolet: '#2B2630',
   violet: '#BB86FC',

@@ -1,54 +1,22 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CSSTransition } from 'react-transition-group';
-import styled from 'styled-components';
+import { makeStyles } from '@material-ui/core/styles';
 import { NotesMindMapSelectors } from 'selectors';
 import { UploadsActions } from './UploadsActions';
-import PlusIcon from 'components/Uploads/images/icon-plus.svg';
+import Fab from '@material-ui/core/Fab';
+import PublishIcon from '@material-ui/icons/Publish';
 
-const StyledUploadButton = styled.button`
-  position: absolute;
-  right: 16px;
-  bottom: 16px;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background-color: #3c78c8;
-  border: none;
-  outline: none;
+const useStyles = makeStyles(() => ({
+  fabButton: {
+    position: 'absolute',
+    zIndex: 1,
+    top: -98,
+    right: 12,
+  },
+}));
 
-  &.enter {
-    opacity: 0;
-  }
-
-  &.enter-active {
-    opacity: 1;
-    transition: opacity 200ms;
-  }
-
-  &.exit {
-    opacity: 1;
-  }
-
-  &.exit-active {
-    opacity: 0;
-    transition: opacity 200ms;
-  }
-`;
-
-const StyledIcon = styled.img`
-  width: 24px;
-  height: 24px;
-`;
-
-const UploadButton = () => {
-  const dispatch = useDispatch();
-  const isUploadButtonVisible = useSelector(
-    NotesMindMapSelectors.isSelectedNoteRealNote,
-  );
-  const uploadFolderId = useSelector(NotesMindMapSelectors.getSelectedNoteId);
-  const fileInputRef = React.createRef();
-
+export function UploadButton() {
   function onUploadButtonClick() {
     fileInputRef.current.click();
   }
@@ -66,6 +34,13 @@ const UploadButton = () => {
       fileInputRef.current.value = null;
     }
   }
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const isUploadButtonVisible = useSelector(
+    NotesMindMapSelectors.isSelectedNoteRealNote,
+  );
+  const uploadFolderId = useSelector(NotesMindMapSelectors.getSelectedNoteId);
+  const fileInputRef = React.createRef();
 
   return (
     <>
@@ -77,12 +52,14 @@ const UploadButton = () => {
         onChange={handleSelectedFiles}
       />
       <CSSTransition in={isUploadButtonVisible} timeout={200} unmountOnExit>
-        <StyledUploadButton onClick={onUploadButtonClick}>
-          <StyledIcon src={PlusIcon} />
-        </StyledUploadButton>
+        <Fab
+          aria-label="upload"
+          onClick={onUploadButtonClick}
+          className={classes.fabButton}
+          color="secondary.button">
+          <PublishIcon />
+        </Fab>
       </CSSTransition>
     </>
   );
-};
-
-export { UploadButton };
+}

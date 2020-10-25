@@ -8,7 +8,6 @@ import { LogoutButtonContainer } from 'components/LogoutButton/LogoutButtonConta
 import { SearchPanelContainer } from 'components/SearchPanel/SearchPanelContainer';
 import { TopBarComponent } from 'components/TopBar/TopBarComponent';
 import { UploadStatusButton } from 'components/Uploads/UploadStatusButton';
-import { UploadButton } from 'components/Uploads/UploadButton';
 import { OpenFileButtonComponent } from 'components/OpenFileButton/OpenFileButtonComponent';
 import BottomBarComponent from 'components/BottomBar/BottomBarComponent';
 
@@ -26,7 +25,6 @@ export class NotesPageComponent extends Component {
         <SearchPanelContainer />
         <LogoutButtonContainer />
         <UploadStatusButton />
-        <UploadButton />
         <BottomBarComponent />
       </>
     );

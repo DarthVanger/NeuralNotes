@@ -9,6 +9,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import AddIcon from '@material-ui/icons/Add';
 import LaunchOutlinedIcon from '@material-ui/icons/LaunchOutlined';
 import styled from 'styled-components';
+import { UploadButton } from 'components/Uploads/UploadButton';
 
 const useStyles = makeStyles(() => ({
   appBar: {
@@ -22,7 +23,7 @@ const useStyles = makeStyles(() => ({
     position: 'absolute',
     zIndex: 1,
     top: -30,
-    right: 90,
+    right: 12,
   },
 }));
 
@@ -51,6 +52,7 @@ export default function BottomBarComponent() {
         <Fab aria-label="add" className={classes.fabButton} color="primary">
           <AddIcon />
         </Fab>
+        <UploadButton />
         <div className={classes.grow} />
       </Toolbar>
     </AppBar>

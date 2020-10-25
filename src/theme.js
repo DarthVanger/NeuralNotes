@@ -9,6 +9,7 @@ export const theme = createMuiTheme({
     },
     secondary: {
       main: colors.turquoise,
+      button: colors.buttonGray,
     },
   },
   typography: {

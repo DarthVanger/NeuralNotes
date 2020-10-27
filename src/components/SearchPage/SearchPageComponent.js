@@ -43,7 +43,6 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-
 export function SearchPageComponent() {
   const searchResults = useSelector(state => state.searchPage.results);
   const dispatch = useDispatch();
@@ -68,7 +67,6 @@ export function SearchPageComponent() {
 
   return (
     <>
-    <div>
       <BackButtonWrapper>
         <Link to="notes">
           <IconButton aria-label="back">

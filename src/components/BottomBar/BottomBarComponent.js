@@ -11,10 +11,6 @@ import LaunchOutlinedIcon from '@material-ui/icons/LaunchOutlined';
 import styled from 'styled-components';
 import { UploadButton } from 'components/Uploads/UploadButton';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { UploadsActions } from 'components/Uploads/UploadsActions';
-import { NotesMindMapSelectors } from 'selectors';
-
 const useStyles = makeStyles(() => ({
   appBar: {
     top: 'auto',

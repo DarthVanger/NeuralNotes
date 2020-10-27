@@ -1,14 +1,18 @@
 import { all } from 'redux-saga/effects';
 import createSagaMiddleware from 'redux-saga';
-import { reducers } from 'reducers';
+import { createRootReducer } from 'reducers';
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { createBrowserHistory } from 'history';
+// import { compose } from 'redux';
+
+import { routerMiddleware } from 'connected-react-router';
 
 import { spinnerInit } from 'components/Spinner/SpinnerSagas';
 import { appInit } from 'components/App/AppSagas';
 import { loginInit } from 'components/LoginPage/LoginPageSagas';
 import { logoutButtonInit } from 'components/LogoutButton/LogoutButtonSagas';
-import { notesInit } from 'components/NotesPage/NotesPageSagas';
+// import { notesInit } from 'components/NotesPage/NotesPageSagas';
 import { notesContentEditorInit } from 'components/NotesContentEditor/NotesContentEditorSagas';
 import { noteMindMapInit } from 'components/NotesMindMap/NotesMindMapSagas';
 import { uploadsInit } from 'components/Uploads/UploadsSagas';
@@ -33,10 +37,27 @@ const composeEnhancers = composeWithDevTools({
   },
 });
 
-export const store = createStore(
-  reducers,
-  composeEnhancers(applyMiddleware(sagaMiddleware)),
-);
+export const history = createBrowserHistory();
+
+const configureStore = preloadedState => {
+  const store = createStore(
+    createRootReducer(history),
+    preloadedState,
+    composeEnhancers(
+      applyMiddleware(sagaMiddleware),
+      applyMiddleware(routerMiddleware(history)),
+    ),
+  );
+
+  return store;
+};
+
+export const store = configureStore();
+
+// export const store = createStore(
+//   reducers,
+//   composeEnhancers(applyMiddleware(sagaMiddleware)),
+// );
 
 sagaMiddleware.run(rootSaga);
 
@@ -48,7 +69,7 @@ export function* rootSaga() {
     spinnerInit(),
     loginInit(),
     logoutButtonInit(),
-    notesInit(),
+    // notesInit(),
     noteMindMapInit(),
     notesContentEditorInit(),
     uploadsInit(),

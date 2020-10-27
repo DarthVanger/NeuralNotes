@@ -1,52 +1,33 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import { ThemeProvider } from '@material-ui/styles';
-
 import { NotesPageContainer } from 'components/NotesPage/NotesPageContainer';
-import { PAGES_ENUM } from 'components/App/AppConstants';
 import { LoginPageContainer } from 'components/LoginPage/LoginPageContainer';
 import { UploadsPage } from 'components/Uploads/UploadsPage';
 import { SearchPageComponent } from 'components/SearchPage/SearchPageComponent';
+import { NoteDetailsPage } from 'components/NoteDetailsPage/NoteDetailsPage';
+
+import { Switch, Route } from 'react-router-dom';
 import { theme } from '../../theme';
-
-export class AppComponent extends PureComponent {
-  render() {
-    const { page } = this.props;
-    switch (page) {
-      case PAGES_ENUM.LOADING:
-        return null;
-
-      case PAGES_ENUM.LOGIN:
-        return <LoginPageContainer />;
-
-      case PAGES_ENUM.NOTES:
-        return (
-          <ThemeProvider theme={theme}>
-            <NotesPageContainer />;
-          </ThemeProvider>
-        );
-
-      case PAGES_ENUM.UPLOADS:
-        return (
-          <ThemeProvider theme={theme}>
-            <UploadsPage />
-          </ThemeProvider>
-        );
-
-      case PAGES_ENUM.SEARCH:
-        return (
-          <ThemeProvider theme={theme}>
-            <SearchPageComponent />
-          </ThemeProvider>
-        );
-
-      default:
-        throw new Error(`unknown page: ${page}`);
-    }
-  }
-}
-
-AppComponent.propTypes = {
-  page: PropTypes.symbol.isRequired,
-  changePage: PropTypes.func.isRequired,
+export const App = () => {
+  return (
+    <ThemeProvider theme={theme}>
+      <Switch>
+        <Route exact path="/">
+          <LoginPageContainer />
+        </Route>
+        <Route exact path="/notes">
+          <NotesPageContainer />
+        </Route>
+        <Route exact path="/note">
+          <NoteDetailsPage />
+        </Route>
+        <Route path="/uploads">
+          <UploadsPage />
+        </Route>
+        <Route path="/search">
+          <SearchPageComponent />
+        </Route>
+      </Switch>
+    </ThemeProvider>
+  );
 };

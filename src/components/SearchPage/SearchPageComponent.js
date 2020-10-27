@@ -3,6 +3,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { useDispatch, useSelector } from 'react-redux';
 import { searchQueryChangeAction } from '../SearchPage/SearchPageAction';
 import { searchResultClickedAction } from 'components/NotesMindMap/NotesMindMapActions';
+
 import { Typography } from '@material-ui/core';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -12,6 +13,16 @@ import InsertDriveFileRoundedIcon from '@material-ui/icons/InsertDriveFileRounde
 import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
 import { colors } from 'colors';
+import styled from 'styled-components';
+
+import IconButton from '@material-ui/core/IconButton';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { Link } from 'react-router-dom';
+
+const BackButtonWrapper = styled.div`
+  color: red !important;
+  padding: 1rem;
+`;
 
 const useStyles = makeStyles(() => ({
   list: {
@@ -31,6 +42,7 @@ const useStyles = makeStyles(() => ({
     color: colors.iconColor,
   },
 }));
+
 
 export function SearchPageComponent() {
   const searchResults = useSelector(state => state.searchPage.results);
@@ -56,6 +68,14 @@ export function SearchPageComponent() {
 
   return (
     <>
+    <div>
+      <BackButtonWrapper>
+        <Link to="notes">
+          <IconButton aria-label="back">
+            <ArrowBackIcon style={{ fill: '#BB86FC' }} />
+          </IconButton>
+        </Link>
+      </BackButtonWrapper>
       <input
         defaultValue={defaultValue}
         onChange={e => debounced.callback(e.target.value, setQuery)}

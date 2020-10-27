@@ -25,20 +25,38 @@ export const StyledNoteNameEditor = styled(DefaultTextarea)`
 `;
 
 export const StyledNoteDetailsScreen = styled.div`
-  position: absolute;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  right: 0;
+  height: 100vh;
   padding: 24px;
   background-color: ${colors.darkViolet};
 `;
 
 export const StyledNoteContentEditor = styled(DefaultTextarea)`
-  height: 100%;
+  height: 90%;
   line-height: 20px;
   color: ${colors.white60};
   font-size: 14px;
   font-weight: normal;
   letter-spacing: 0.25px;
+
+  padding: 1rem;
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #1c191f;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #4a3d57;
+    border-radius: 1rem;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #6a5580;
+  }
 `;

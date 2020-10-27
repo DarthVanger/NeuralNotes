@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { AppComponent } from 'components/App/AppComponent';
+import { App } from 'components/App/AppComponent';
 import { action } from 'sagas';
 import { CHANGE_PAGE_ACTION } from 'components/App/AppActions';
 
@@ -13,7 +13,4 @@ const mapDispatchToProps = () => ({
   },
 });
 
-export const AppContainer = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(AppComponent);
+export const AppContainer = connect(mapStateToProps, mapDispatchToProps)(App);

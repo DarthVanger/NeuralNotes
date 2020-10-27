@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
 
-import { loginReducer } from 'components/LoginPage/LoginSlice';
+import { loginReducer } from 'components/LoginPage/LoginPageSlice';
 import { notesReducer } from 'components/NotesPage/NotesPageReducer';
 import { notesMindMapReducer } from 'components/NotesMindMap/NotesMindMapReducer';
 import { searchPageReducer } from 'components/SearchPage/SearchPageReducer';

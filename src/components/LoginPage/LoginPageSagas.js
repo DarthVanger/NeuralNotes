@@ -12,7 +12,7 @@ import {
   initGapi,
   requestAuth,
   authSuccess,
-} from 'components/LoginPage/LoginSlice';
+} from 'components/LoginPage/LoginPageSlice';
 import googleApiLoader from 'api/google-api-loader';
 
 export function* handleAuth() {

@@ -14,7 +14,7 @@ import { FONT_SIZE } from 'components/LoginPage/slideComponents';
 import {
   selectIsGapiInitialized,
   requestAuth,
-} from 'components/LoginPage/LoginSlice';
+} from 'components/LoginPage/LoginPageSlice';
 
 const Main = styled.main`
   width: 100%;

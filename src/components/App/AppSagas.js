@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 
 import auth from 'auth';
 import { rootNoteFoundAction } from 'components/NotesMindMap/NotesMindMapActions';
-import { authSuccess } from 'components/LoginPage/LoginSlice';
+import { authSuccess } from 'components/LoginPage/LoginPageSlice';
 import noteStorage from 'storage/noteStorage';
 import googleDriveApi from 'api/google-drive-api';
 import googleApiLoader from 'api/google-api-loader';

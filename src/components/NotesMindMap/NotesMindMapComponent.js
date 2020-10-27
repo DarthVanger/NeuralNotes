@@ -6,7 +6,7 @@ import { VisNetworkHelper } from 'helpers/visNetworkHelper';
 import noteStorage from 'storage/noteStorage';
 import { NoteNameEditorComponent } from 'components/NoteNameEditor/NoteNameEditorComponent';
 import { StyledNotesMindMap } from 'components/NotesMindMap/NotesMindMapStyles';
-import { NoteDetailsContainer } from 'components/NoteDetails/NoteDetailsContainer';
+import { NoteDetailsButtonComponent } from 'components/NoteDetailsButton/NoteDetailsButtonComponent';
 
 export class NotesMindMapComponent extends Component {
   render() {
@@ -25,19 +25,49 @@ export class NotesMindMapComponent extends Component {
         keyboard: false,
       },
       edges: {
-        arrows: { to: true },
+        // arrows: { to: true },
+        arrows: {
+          to: {
+            enabled: false,
+          },
+        },
+        color: '#F2F2F2',
+        // dashes: true,
         smooth: true,
       },
+      nodes: {
+        borderWidth: 2,
+        shape: 'box',
+        color: '#BB86FC',
+        margin: 10,
+        font: {
+          color: '#F2F2F2',
+          size: 15,
+          face: 'raleway',
+        },
+      },
+
       groups: {
         children: {
-          color: {
-            background: '#eef',
-            borderWidth: 3,
+          borderWidth: 2,
+          shape: 'box',
+          color: '#5dbcaf',
+          margin: 10,
+          font: {
+            color: '#F2F2F2',
+            size: 15,
+            face: 'raleway',
           },
         },
         parent: {
-          color: {
-            background: '#faa',
+          borderWidth: 2,
+          shape: 'box',
+          color: '#BB86FC',
+          margin: 10,
+          font: {
+            color: '#F2F2F2',
+            size: 15,
+            face: 'raleway',
           },
         },
       },
@@ -51,7 +81,9 @@ export class NotesMindMapComponent extends Component {
 
     return (
       <StyledNotesMindMap>
-        {selectedNote && <NoteDetailsContainer />}
+        {/* {selectedNote && <NoteDetailsContainer />} */}
+        {selectedNote && <NoteDetailsButtonComponent />}
+
         <VisGraph graph={visGraph} events={visEvents} options={visOptions} />
         {showNoteNameEditor && (
           <NoteNameEditorComponent

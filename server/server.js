@@ -9,11 +9,16 @@ const options = {
   publicPath: path.resolve(__dirname, '/dist'),
   port: 3000,
   host: 'localhost',
+  historyApiFallback: {
+    index: '/index.html',
+  },
 };
 
 log.info('Starting dev server');
 
 WebpackDevServer.addDevServerEntrypoints(webpackConfig, options);
 
-const server = new WebpackDevServer(webpack(webpackConfig), { disableHostCheck: true });
+const server = new WebpackDevServer(webpack(webpackConfig), {
+  disableHostCheck: true,
+});
 server.listen(options.port, () => log.info('listening on *:3000'));

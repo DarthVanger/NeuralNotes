@@ -11,6 +11,10 @@ import LaunchOutlinedIcon from '@material-ui/icons/LaunchOutlined';
 import styled from 'styled-components';
 import { UploadButton } from 'components/Uploads/UploadButton';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { UploadsActions } from 'components/Uploads/UploadsActions';
+import { NotesMindMapSelectors } from 'selectors';
+
 const useStyles = makeStyles(() => ({
   appBar: {
     top: 'auto',
@@ -34,6 +38,51 @@ const StyledLabel = styled.div`
   text-align: center;
 `;
 
+const UploadFileButton = () => {
+  const classes = useStyles();
+  const dispatch = useDispatch();
+
+  const uploadFolderId = useSelector(NotesMindMapSelectors.getSelectedNoteId);
+  const fileInputRef = React.createRef();
+
+  function onUploadButtonClick() {
+    fileInputRef.current.click();
+  }
+
+  function handleSelectedFiles(event) {
+    if (event.target.files.length > 0) {
+      const files = Array.from(event.target.files);
+
+      files.forEach(item => {
+        item.uploadFolderId = uploadFolderId;
+        item.abortController = new window.AbortController();
+      });
+
+      dispatch(UploadsActions.list.addedFiles(files));
+      fileInputRef.current.value = null;
+    }
+  }
+
+  return (
+    <>
+      <input
+        ref={fileInputRef}
+        type="file"
+        multiple
+        style={{ display: 'none' }}
+        onChange={handleSelectedFiles}
+      />
+      <Fab
+        onClick={onUploadButtonClick}
+        aria-label="add"
+        className={classes.fabButton}
+        color="primary">
+        <AddIcon />
+      </Fab>
+    </>
+  );
+};
+
 export default function BottomBarComponent() {
   const classes = useStyles();
 
@@ -49,10 +98,13 @@ export default function BottomBarComponent() {
         <StyledLabel>
           <Typography variant="subtitle2">Neural Notes</Typography>
         </StyledLabel>
+
         <Fab aria-label="add" className={classes.fabButton} color="primary">
           <AddIcon />
         </Fab>
-        <UploadButton />
+
+        <UploadFileButton></UploadFileButton>
+
         <div className={classes.grow} />
       </Toolbar>
     </AppBar>

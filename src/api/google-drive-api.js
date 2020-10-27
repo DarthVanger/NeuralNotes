@@ -216,9 +216,9 @@ function findNotesByName(name = '') {
   });
 }
 
-function findNoteById(lastViewedNoteId) {
+function findNoteById(noteId) {
   const request = gapi.client.drive.files.get({
-    fileId: lastViewedNoteId,
+    fileId: noteId,
   });
 
   return new Promise(resolve => {

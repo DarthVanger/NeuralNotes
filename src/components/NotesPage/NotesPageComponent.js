@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { NotesMindMapContainer } from 'components/NotesMindMap/NotesMindMapContainer'; // Notes tree view
 import { TopBar } from 'components/TopBar/TopBar';
 import { UploadStatusButton } from 'components/Uploads/UploadStatusButton';
+
 // import { UploadButton } from 'components/Uploads/UploadButton';
 import { BottomBar } from 'components/BottomBar/BottomBar';
 

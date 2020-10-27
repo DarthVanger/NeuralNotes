@@ -7,11 +7,12 @@ import { toast } from 'react-toastify';
 
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
 import { gapiAuthorize } from 'api/google-login';
+
 import {
-  googleApiInitializedAction,
-  REQUEST_AUTHORIZATION_ACTION,
-  authSuccessAction,
-} from 'components/LoginPage/LoginPagesActions';
+  initGapi,
+  requestAuth,
+  authSuccess,
+} from 'components/LoginPage/LoginPageSlice';
 import googleApiLoader from 'api/google-api-loader';
 
 export function* handleAuth() {
@@ -20,7 +21,7 @@ export function* handleAuth() {
   yield call(siteGlobalLoadingBar.show, spinnerName);
   try {
     yield gapiAuthorize();
-    yield put(authSuccessAction());
+    yield put(authSuccess());
   } catch (e) {
     console.error('googleLogin.gapiAuthorize(): authError: ', e);
     yield call(
@@ -34,6 +35,6 @@ export function* handleAuth() {
 
 export function* loginInit() {
   yield googleApiLoader.load();
-  yield put(googleApiInitializedAction());
-  yield takeEvery(REQUEST_AUTHORIZATION_ACTION, handleAuth);
+  yield put(initGapi());
+  yield takeEvery(requestAuth().type, handleAuth);
 }

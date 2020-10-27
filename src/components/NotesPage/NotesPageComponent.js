@@ -5,7 +5,9 @@ import PropTypes from 'prop-types';
 import { NotesMindMapContainer } from 'components/NotesMindMap/NotesMindMapContainer'; // Notes tree view
 import { TopBar } from 'components/TopBar/TopBar';
 import { UploadStatusButton } from 'components/Uploads/UploadStatusButton';
-import BottomBarComponent from 'components/BottomBar/BottomBarComponent';
+
+// import { UploadButton } from 'components/Uploads/UploadButton';
+import { BottomBar } from 'components/BottomBar/BottomBar';
 
 export class NotesPageComponent extends Component {
   render() {
@@ -17,7 +19,8 @@ export class NotesPageComponent extends Component {
         <NotesMindMapContainer />
         {/* {!isHelpViewed && <ControlsHelpComponent onClose={closeHelp} />} */}
         <UploadStatusButton />
-        <BottomBarComponent />
+        {/* <UploadButton /> */}
+        <BottomBar />
       </>
     );
   }

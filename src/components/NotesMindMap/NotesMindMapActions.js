@@ -75,3 +75,10 @@ export const searchResultClickedAction = data => ({
   type: SEARCH_RESULT_CLICKED,
   data,
 });
+
+export const ROOT_NOTE_FOUND_ACTION = 'ROOT_NOTE_FOUND_ACTION';
+
+export const rootNoteFoundAction = data => ({
+  type: ROOT_NOTE_FOUND_ACTION,
+  data,
+});

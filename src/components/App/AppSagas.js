@@ -27,15 +27,15 @@ export function* loadApp() {
   yield showSpinner('Loading Google Api');
   yield googleApiLoader.load();
   yield googleDriveApi.loadDriveApi();
-  let rootNote;
+  let initialNote;
   const lastViewedNoteId = localStorage.getItem('lastViewedNoteId');
   if (lastViewedNoteId) {
-    rootNote = yield googleDriveApi.findNotesById(lastViewedNoteId);
+    initialNote = yield googleDriveApi.findNoteById(lastViewedNoteId);
   } else {
-    rootNote = yield noteStorage.scanDrive();
+    initialNote = yield noteStorage.scanDrive();
   }
 
-  yield put(rootNoteFoundAction(rootNote));
+  yield put(rootNoteFoundAction(initialNote));
   yield setPageAction(PAGES_ENUM.NOTES);
   yield hideSpinner();
 }

@@ -49,6 +49,7 @@ function* requestNoteText(note) {
  */
 function* changeSelectedNote({ data: { note, edges } }) {
   const targetNote = note;
+  localStorage.setItem('lastViewedNoteId', targetNote.id);
   if (didNotAttemptToFetchChildren(targetNote, edges)) {
     const childNotes = yield fetchChildNotes(targetNote);
     yield put(selectedNoteChildrenFetchedAction(childNotes));

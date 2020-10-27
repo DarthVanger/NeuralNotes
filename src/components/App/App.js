@@ -4,7 +4,7 @@ import { NotesPageContainer } from 'components/NotesPage/NotesPageContainer';
 import { LoginPage } from 'components/LoginPage/LoginPage';
 import { UploadsPage } from 'components/Uploads/UploadsPage';
 import { SearchPageComponent } from 'components/SearchPage/SearchPageComponent';
-import { NoteDetailsPage } from 'components/NoteDetailsPage/NoteDetailsPage';
+import { NoteDetailsPage } from 'components/NoteDetails/NoteDetailsPage';
 
 import { Switch, Route } from 'react-router-dom';
 import { theme } from '../../theme';

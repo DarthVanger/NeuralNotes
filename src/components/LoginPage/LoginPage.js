@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 import Slide1 from 'components/LoginPage/Slide1';
@@ -11,7 +11,10 @@ import iconGoogle from 'components/LoginPage/images/icon-google.svg';
 import COLORS from 'components/LoginPage/colors';
 import { ASPECT_RATIO } from 'components/LoginPage/slideComponents';
 import { FONT_SIZE } from 'components/LoginPage/slideComponents';
-import { REQUEST_AUTHORIZATION_ACTION } from 'components/LoginPage/LoginPagesActions';
+import {
+  selectIsGapiInitialized,
+  requestAuth,
+} from 'components/LoginPage/LoginSlice';
 
 const Main = styled.main`
   width: 100%;
@@ -119,12 +122,14 @@ const Footer = styled.footer`
 
 export const LoginPage = () => {
   // const authHandler = this.props.requestAuthorization;
-
+  const isGapiInitialized = useSelector(selectIsGapiInitialized);
   const dispatch = useDispatch();
 
-  const authHandler = () => {
-    dispatch({ type: REQUEST_AUTHORIZATION_ACTION });
+  const dispatchAuth = () => {
+    dispatch(requestAuth());
   };
+
+  const authHandler = isGapiInitialized ? dispatchAuth : null;
 
   return (
     <Main>

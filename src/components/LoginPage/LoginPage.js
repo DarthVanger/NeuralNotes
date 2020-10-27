@@ -121,7 +121,6 @@ const Footer = styled.footer`
 `;
 
 export const LoginPage = () => {
-  // const authHandler = this.props.requestAuthorization;
   const isGapiInitialized = useSelector(selectIsGapiInitialized);
   const dispatch = useDispatch();
 

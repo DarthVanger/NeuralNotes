@@ -10,10 +10,11 @@ const slice = createSlice({
       state.gapiInitialized = true;
     },
     requestAuth: state => state,
+    authSuccess: state => state,
   },
 });
 
-export const { initGapi, requestAuth } = slice.actions;
+export const { initGapi, requestAuth, authSuccess } = slice.actions;
 
 export const selectIsGapiInitialized = state => state.login.gapiInitialized;
 

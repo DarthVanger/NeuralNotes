@@ -32,7 +32,6 @@ export function* loadApp() {
   yield put(rootNoteFoundAction(initialNote));
   yield put(push('/notes'));
   // yield hideSpinner();
-
 }
 
 export function* appInit() {

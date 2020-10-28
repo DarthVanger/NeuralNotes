@@ -1,11 +1,10 @@
 {
-  "name": "Brain",
+  "name": "neural-notes",
   "version": "0.0.0",
   "description": "Note managment tool",
   "main": "server.js",
   "scripts": {
     "start": "webpack-dev-server --port 3000",
-    "start:old": "babel-node server/server.js",
     "lint": "eslint src",
     "build": "webpack",
     "pre-commit": "lint-staged",

@@ -21,8 +21,15 @@ export function* loadApp() {
   // yield showSpinner('Loading Google Api');
   yield googleApiLoader.load();
   yield googleDriveApi.loadDriveApi();
-  const rootNote = yield noteStorage.scanDrive();
-  yield put(rootNoteFoundAction(rootNote));
+  let initialNote;
+  const lastViewedNoteId = localStorage.getItem('lastViewedNoteId');
+  if (lastViewedNoteId) {
+    initialNote = yield googleDriveApi.findNoteById(lastViewedNoteId);
+  } else {
+    initialNote = yield noteStorage.scanDrive();
+  }
+
+  yield put(rootNoteFoundAction(initialNote));
   yield put(push('/notes'));
   // yield hideSpinner();
 }

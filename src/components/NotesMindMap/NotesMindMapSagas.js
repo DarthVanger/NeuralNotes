@@ -22,13 +22,13 @@ import {
   changeParentRequestSuccessAction,
   changeParentRequestFailAction,
   SEARCH_RESULT_CLICKED,
+  ROOT_NOTE_FOUND_ACTION,
 } from 'components/NotesMindMap/NotesMindMapActions';
 import noteStorage from 'storage/noteStorage';
-import { ROOT_NOTE_FOUND_ACTION } from 'components/App/AppActions';
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
 import { UploadsActions } from 'components/Uploads/UploadsActions';
-import { setPageAction } from 'components/App/AppSagas';
-import { PAGES_ENUM } from 'components/App/AppConstants';
+// import { setPageAction } from 'components/App/AppSagas';
+// import { PAGES_ENUM } from 'components/App/AppConstants';
 
 const LOADING_NOTE_MESSAGE = 'loading note contents...';
 let spinner = siteGlobalLoadingBar.create('mind map');
@@ -66,7 +66,7 @@ function* handleSearchResultClick({ data: { note } }) {
   const targetNote = note;
   localStorage.setItem('lastViewedNoteId', targetNote.id);
   const childNotes = yield fetchChildNotes(targetNote);
-  yield setPageAction(PAGES_ENUM.NOTES);
+  // yield setPageAction(PAGES_ENUM.NOTES);
   yield put(selectedNoteChildrenFetchedAction(childNotes));
 
   if (targetNote.isNote) {

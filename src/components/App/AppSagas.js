@@ -6,25 +6,19 @@ import {
 import { toast } from 'react-toastify';
 
 import auth from 'auth';
-import {
-  rootNoteFoundAction,
-  CHANGE_PAGE_ACTION,
-} from 'components/App/AppActions';
-import { AUTH_SUCCESS_ACTION } from 'components/LoginPage/LoginPagesActions.js';
-import { PAGES_ENUM } from 'components/App/AppConstants';
+import { rootNoteFoundAction } from 'components/NotesMindMap/NotesMindMapActions';
+import { authSuccess } from 'components/LoginPage/LoginPageSlice';
 import noteStorage from 'storage/noteStorage';
 import googleDriveApi from 'api/google-drive-api';
 import googleApiLoader from 'api/google-api-loader';
-import { hideSpinner, showSpinner } from 'components/Spinner/SpinnerSagas';
+// import { hideSpinner, showSpinner } from 'components/Spinner/SpinnerSagas';
 
-export function setPageAction(data) {
-  return put({ type: CHANGE_PAGE_ACTION, data });
-}
+import { push } from 'connected-react-router';
 
 export function* loadApp() {
   console.info('Loading app...');
 
-  yield showSpinner('Loading Google Api');
+  // yield showSpinner('Loading Google Api');
   yield googleApiLoader.load();
   yield googleDriveApi.loadDriveApi();
   let initialNote;
@@ -36,8 +30,9 @@ export function* loadApp() {
   }
 
   yield put(rootNoteFoundAction(initialNote));
-  yield setPageAction(PAGES_ENUM.NOTES);
-  yield hideSpinner();
+  yield put(push('/notes'));
+  // yield hideSpinner();
+
 }
 
 export function* appInit() {
@@ -48,7 +43,7 @@ export function* appInit() {
     console.info('User is signed in');
     yield loadApp();
   } else {
-    yield takeEvery(AUTH_SUCCESS_ACTION, loadApp),
-      yield setPageAction(PAGES_ENUM.LOGIN);
+    yield takeEvery(authSuccess().type, loadApp);
+    // yield put(push('/'));
   }
 }

@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 import Slide1 from 'components/LoginPage/Slide1';
@@ -10,6 +11,10 @@ import iconGoogle from 'components/LoginPage/images/icon-google.svg';
 import COLORS from 'components/LoginPage/colors';
 import { ASPECT_RATIO } from 'components/LoginPage/slideComponents';
 import { FONT_SIZE } from 'components/LoginPage/slideComponents';
+import {
+  selectIsGapiInitialized,
+  requestAuth,
+} from 'components/LoginPage/LoginPageSlice';
 
 const Main = styled.main`
   width: 100%;
@@ -89,7 +94,9 @@ const Button = css`
 
 const GoogleLoginButton = styled.button`
   ${Button}
-  float: right;
+  position: absolute;
+  right: 2rem;
+  top: 1rem;
 `;
 
 const GoogleSignUp = styled.button`
@@ -113,39 +120,42 @@ const Footer = styled.footer`
   }
 `;
 
-export class LoginPageComponent extends Component {
-  render() {
-    const authHandler = this.props.isGoogleApiInitialized
-      ? this.props.requestAuthorization
-      : null;
-    return (
-      <Main>
-        <Article>
-          <GoogleLoginButton type="button" onClick={authHandler}>
-            <img src={iconGoogle} />
-            <span>Login</span>
-          </GoogleLoginButton>
-          <Slide1 />
-          <Slide2 />
-          <Slide3 />
-          <Slide4 />
-          <Slide5 />
-          <Footer>
-            <H3>
-              <span>Neural</span>Notes is open source and free
-            </H3>
-            <GoogleSignUp type="button" onClick={authHandler}>
-              <img src={iconGoogle} />
-              <span>Sign up with Google</span>
-            </GoogleSignUp>
-          </Footer>
-        </Article>
-      </Main>
-    );
-  }
-}
+export const LoginPage = () => {
+  const isGapiInitialized = useSelector(selectIsGapiInitialized);
+  const dispatch = useDispatch();
 
-LoginPageComponent.propTypes = {
-  isGoogleApiInitialized: PropTypes.bool.isRequired,
+  const dispatchAuth = () => {
+    dispatch(requestAuth());
+  };
+
+  const authHandler = isGapiInitialized ? dispatchAuth : null;
+
+  return (
+    <Main>
+      <Article>
+        <GoogleLoginButton type="button" onClick={authHandler}>
+          <img src={iconGoogle} />
+          <span>Login</span>
+        </GoogleLoginButton>
+        <Slide1 />
+        <Slide2 />
+        <Slide3 />
+        <Slide4 />
+        <Slide5 />
+        <Footer>
+          <H3>
+            <span>Neural</span>Notes is open source and free
+          </H3>
+          <GoogleSignUp type="button" onClick={authHandler}>
+            <img src={iconGoogle} />
+            <span>Sign up with Google</span>
+          </GoogleSignUp>
+        </Footer>
+      </Article>
+    </Main>
+  );
+};
+
+LoginPage.propTypes = {
   requestAuthorization: PropTypes.func.isRequired,
 };

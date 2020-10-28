@@ -1,8 +1,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import * as AppActions from 'components/App/AppActions';
-import * as AppConstants from 'components/App/AppConstants';
+// import * as AppActions from 'components/App/AppActions';
+// import * as AppConstants from 'components/App/AppConstants';
 import { UploadsActions } from './UploadsActions';
 import * as Selectors from './UploadsSelectors';
 
@@ -23,10 +23,10 @@ const UploadsPageHeader = () => {
   const hasActiveUploads = useSelector(Selectors.hasActiveUploads);
 
   function handleBackClick() {
-    dispatch({
-      type: AppActions.CHANGE_PAGE_ACTION,
-      data: AppConstants.PAGES_ENUM.NOTES,
-    });
+    // dispatch({
+    //   type: AppActions.CHANGE_PAGE_ACTION,
+    //   data: AppConstants.PAGES_ENUM.NOTES,
+    // });
 
     if (!hasActiveUploads) {
       dispatch(UploadsActions.list.clear());

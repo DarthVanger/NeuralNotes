@@ -78,8 +78,7 @@
     "webpack-cli": "^3.2.3",
     "webpack-dev-middleware": "^3.5.2",
     "webpack-dev-server": "^3.2.1",
-    "webpack-livereload-plugin": "^2.2.0",
-    "winston": "^2.3.0"
+    "webpack-livereload-plugin": "^2.2.0"
   },
   "husky": {
     "hooks": {

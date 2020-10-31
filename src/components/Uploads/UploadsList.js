@@ -1,25 +1,31 @@
 import React from 'react';
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { UploadsListEmpty } from './UploadsListEmpty';
 import { UploadsListItem } from './UploadsListItem';
+import { List } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
-const StyledContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
+const useStyles = makeStyles(() => ({
+  list: {
+    width: '100%',
+    height: '100%',
+    paddingLeft: 16,
+  },
+}));
 
 const UploadsList = ({ list }) => {
   if (list.length === 0) {
     return <UploadsListEmpty />;
   }
 
+  const classes = useStyles();
+
   return (
-    <StyledContainer>
+    <List className={classes.list}>
       {list.map(item => (
         <UploadsListItem key={item.name} item={item} />
       ))}
-    </StyledContainer>
+    </List>
   );
 };
 

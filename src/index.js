@@ -11,7 +11,7 @@ import { GlobalStyle } from 'globalStyles';
 import { ConnectedRouter } from 'connected-react-router';
 
 // The app flow is following:
-// 1) The global code is executed. So it you have for example console.log() at the root of file it will execute
+// 1) The global code is executed. So if you have for example console.log() at the root of file it will execute
 // 2) redux-saga is imported before React, so saga's run() function will execute, and all effects will run in parallel
 // 3) The code inside React components will execute
 // 4) Saga's effects finish executing

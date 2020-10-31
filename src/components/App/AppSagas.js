@@ -17,10 +17,8 @@ import { push } from 'connected-react-router';
 
 export function* loadApp() {
   console.info('Loading app...');
-
   // yield showSpinner('Loading Google Api');
-  yield googleApiLoader.load();
-  yield googleDriveApi.loadDriveApi();
+
   let initialNote;
   const lastViewedNoteId = localStorage.getItem('lastViewedNoteId');
   if (lastViewedNoteId) {
@@ -35,6 +33,9 @@ export function* loadApp() {
 }
 
 export function* appInit() {
+  yield googleApiLoader.load();
+  yield googleDriveApi.loadDriveApi();
+
   yield call([toast, toast.configure], {
     position: toast.POSITION.BOTTOM_RIGHT,
   });

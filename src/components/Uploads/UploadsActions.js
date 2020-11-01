@@ -1,4 +1,5 @@
 import { createActions } from 'redux-actions';
+
 import { UPLOADS_REDUCER_KEY } from './UploadsConstants';
 
 export const UploadsActions = createActions(

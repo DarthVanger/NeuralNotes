@@ -1,20 +1,22 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+
 import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
+
+import COLORS from 'components/LoginPage/colors';
+import iconGoogle from 'components/LoginPage/images/icon-google.svg';
+import {
+  selectIsGapiInitialized,
+  requestAuth,
+} from 'components/LoginPage/LoginPageSlice';
 import Slide1 from 'components/LoginPage/Slide1';
 import Slide2 from 'components/LoginPage/Slide2';
 import Slide3 from 'components/LoginPage/Slide3';
 import Slide4 from 'components/LoginPage/Slide4';
 import Slide5 from 'components/LoginPage/Slide5';
-import iconGoogle from 'components/LoginPage/images/icon-google.svg';
-import COLORS from 'components/LoginPage/colors';
 import { ASPECT_RATIO } from 'components/LoginPage/slideComponents';
 import { FONT_SIZE } from 'components/LoginPage/slideComponents';
-import {
-  selectIsGapiInitialized,
-  requestAuth,
-} from 'components/LoginPage/LoginPageSlice';
 
 const Main = styled.main`
   width: 100%;

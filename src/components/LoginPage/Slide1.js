@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+
 import styled from 'styled-components';
+
+import COLORS from 'components/LoginPage/colors';
 import imageBrain from 'components/LoginPage/images/slide-1-brain.svg';
 import { Img } from 'components/LoginPage/slideComponents';
-import COLORS from 'components/LoginPage/colors';
 import { FONT_SIZE } from 'components/LoginPage/slideComponents';
 
 const Slide = styled.section`

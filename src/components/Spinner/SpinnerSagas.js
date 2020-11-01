@@ -2,7 +2,6 @@ import {
   put,
   takeEvery,
 } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
-
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
 
 const SHOW_SPINNER_ACTION = 'SHOW_SPINNER_ACTION';

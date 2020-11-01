@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { useDebouncedCallback } from 'use-debounce';
-import { useDispatch, useSelector } from 'react-redux';
-import { searchQueryChangeAction } from '../SearchPage/SearchPageAction';
-import { searchResultClickedAction } from 'components/NotesMindMap/NotesMindMapActions';
 
 import { Typography } from '@material-ui/core';
+import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import InsertDriveFileRoundedIcon from '@material-ui/icons/InsertDriveFileRounded';
-import Divider from '@material-ui/core/Divider';
+import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles } from '@material-ui/core/styles';
-import { colors } from 'colors';
-import styled from 'styled-components';
-
-import IconButton from '@material-ui/core/IconButton';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import InsertDriveFileRoundedIcon from '@material-ui/icons/InsertDriveFileRounded';
+import { colors } from 'colors';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { useDebouncedCallback } from 'use-debounce';
+
+import { searchResultClickedAction } from 'components/NotesMindMap/NotesMindMapActions';
+
+import { searchQueryChangeAction } from '../SearchPage/SearchPageAction';
 
 const BackButtonWrapper = styled.div`
   color: red !important;

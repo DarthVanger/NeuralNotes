@@ -1,6 +1,6 @@
-import styled from 'styled-components';
 import { colors } from 'colors';
 import { SearchIcon } from 'icons/Search/SearchIcon';
+import styled from 'styled-components';
 
 const CONTAINER_PADDING = 6;
 const ICON_PADDING = CONTAINER_PADDING + 4;

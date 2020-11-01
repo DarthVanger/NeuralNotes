@@ -1,5 +1,5 @@
-import styled from 'styled-components';
 import { colors } from 'colors';
+import styled from 'styled-components';
 
 export const DefaultTextarea = styled.textarea`
   background-color: ${colors.darkViolet};

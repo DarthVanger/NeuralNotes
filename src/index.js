@@ -1,14 +1,16 @@
 import React from 'react';
-import { Provider } from 'react-redux';
+
+import { ConnectedRouter } from 'connected-react-router';
+import { GlobalStyle } from 'globalStyles';
 import * as ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { store, history } from 'sagas';
+
+import { App } from 'components/App/App';
+
 import 'abortcontroller-polyfill/dist/polyfill-patch-fetch';
 import 'vis-network/dist/vis-network.css';
 import 'react-toastify/dist/ReactToastify.css';
-import 'sagas';
-import { App } from 'components/App/App';
-import { store, history } from 'sagas';
-import { GlobalStyle } from 'globalStyles';
-import { ConnectedRouter } from 'connected-react-router';
 
 // The app flow is following:
 // 1) The global code is executed. So if you have first line in js file like console.log() it will be execute

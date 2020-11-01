@@ -1,10 +1,12 @@
+import { toast } from 'react-toastify';
 import {
   all,
   call,
   put,
   takeEvery,
 } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
-import { toast } from 'react-toastify';
+import noteStorage from 'storage/noteStorage';
+import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
 
 import {
   CHANGE_SELECTED_NOTE_ACTION,
@@ -24,8 +26,6 @@ import {
   SEARCH_RESULT_CLICKED,
   ROOT_NOTE_FOUND_ACTION,
 } from 'components/NotesMindMap/NotesMindMapActions';
-import noteStorage from 'storage/noteStorage';
-import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
 import { UploadsActions } from 'components/Uploads/UploadsActions';
 // import { setPageAction } from 'components/App/AppSagas';
 // import { PAGES_ENUM } from 'components/App/AppConstants';

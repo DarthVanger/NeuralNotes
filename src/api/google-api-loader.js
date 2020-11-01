@@ -1,6 +1,5 @@
 /* global gapi */
 console.debug('cloid-api-loader.js');
-import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
 import {
   clientId,
   apiKey,
@@ -9,6 +8,7 @@ import {
 } from 'api/google-client-config';
 import auth from 'auth';
 import scriptJS from 'scriptjs';
+import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
 
 const promise = loadGoogleClient();
 

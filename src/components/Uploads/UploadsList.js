@@ -1,6 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
+
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+
 import { UploadsListEmpty } from './UploadsListEmpty';
 import { UploadsListItem } from './UploadsListItem';
 

@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+
 import styled from 'styled-components';
-import imageMindmap from 'components/LoginPage/images/slide-5-mindmap.svg';
-import arrow from 'components/LoginPage/images/arrow.svg';
-import { Img, Caption } from 'components/LoginPage/slideComponents';
+
 import COLORS from 'components/LoginPage/colors';
+import arrow from 'components/LoginPage/images/arrow.svg';
+import imageMindmap from 'components/LoginPage/images/slide-5-mindmap.svg';
+import { Img, Caption } from 'components/LoginPage/slideComponents';
 import { FONT_SIZE } from 'components/LoginPage/slideComponents';
 
 const Slide = styled.section`

@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+
 import { UPLOADS_REDUCER_KEY } from './UploadsConstants';
 
 const getUploadsState = state => state[UPLOADS_REDUCER_KEY];

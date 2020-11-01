@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { debounce } from '../../helpers/debounce';
 
+import PropTypes from 'prop-types';
 import noteStorage from 'storage/noteStorage';
+
 import {
   StyledLink,
   StyledSelectedNotesContent,
   StyledTextArea,
 } from 'components/NotesContentEditor/NotesContentEditorStyles';
+
+import { debounce } from '../../helpers/debounce';
 
 const REAL_TIME_SAVING_INTERVAL_MS = 1000;
 

@@ -11,6 +11,7 @@ import LaunchOutlinedIcon from '@material-ui/icons/LaunchOutlined';
 import styled from 'styled-components';
 
 import { UploadButton } from 'components/Uploads/UploadButton';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles(() => ({
   appBar: {
@@ -38,6 +39,8 @@ const StyledLabel = styled.div`
 export const BottomBar = () => {
   const classes = useStyles();
 
+  const selectedNote = useSelector(state => state.notesMindMap.selectedNote);
+
   return (
     <AppBar position="fixed" className={classes.appBar}>
       <Toolbar>
@@ -48,13 +51,17 @@ export const BottomBar = () => {
           <LaunchOutlinedIcon />
         </IconButton>
         <StyledLabel>
-          <Typography variant="subtitle2">Neural Notes</Typography>
+          <Typography variant="subtitle2">{selectedNote.name}</Typography>
         </StyledLabel>
 
-        <Fab aria-label="add" className={classes.fabButton} color="primary">
-          <AddIcon />
-        </Fab>
-        <UploadButton></UploadButton>
+        {selectedNote.isNote && (
+          <>
+            <Fab aria-label="add" className={classes.fabButton} color="primary">
+              <AddIcon />
+            </Fab>
+            <UploadButton></UploadButton>
+          </>
+        )}
 
         <div className={classes.grow} />
       </Toolbar>

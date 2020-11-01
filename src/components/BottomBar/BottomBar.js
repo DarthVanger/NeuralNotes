@@ -53,10 +53,14 @@ export const BottomBar = () => {
           <Typography variant="subtitle2">{selectedNote.name}</Typography>
         </StyledLabel>
 
-        <Fab aria-label="add" className={classes.fabButton} color="primary">
-          <AddIcon />
-        </Fab>
-        <UploadButton></UploadButton>
+        {selectedNote.isNote && (
+          <>
+            <Fab aria-label="add" className={classes.fabButton} color="primary">
+              <AddIcon />
+            </Fab>
+            <UploadButton></UploadButton>
+          </>
+        )}
 
         <div className={classes.grow} />
       </Toolbar>

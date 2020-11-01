@@ -1,12 +1,12 @@
-import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
+import { combineReducers } from 'redux';
 
 import { loginReducer } from 'components/LoginPage/LoginPageSlice';
-import { notesReducer } from 'components/NotesPage/NotesPageReducer';
+import { noteDetailsReducer } from 'components/NoteDetails/NoteDetailsReducer';
 import { notesMindMapReducer } from 'components/NotesMindMap/NotesMindMapReducer';
+import { notesReducer } from 'components/NotesPage/NotesPageReducer';
 import { searchPageReducer } from 'components/SearchPage/SearchPageReducer';
 import { uploadsReducer } from 'components/Uploads/UploadsReducer';
-import { noteDetailsReducer } from 'components/NoteDetails/NoteDetailsReducer';
 
 export const createRootReducer = history =>
   combineReducers({

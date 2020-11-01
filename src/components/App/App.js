@@ -1,12 +1,14 @@
 import React from 'react';
-import { ThemeProvider } from '@material-ui/styles';
-import { NotesPageContainer } from 'components/NotesPage/NotesPageContainer';
-import { LoginPage } from 'components/LoginPage/LoginPage';
-import { UploadsPage } from 'components/Uploads/UploadsPage';
-import { SearchPageComponent } from 'components/SearchPage/SearchPageComponent';
-import { NoteDetailsPage } from 'components/NoteDetails/NoteDetailsPage';
 
+import { ThemeProvider } from '@material-ui/styles';
 import { Switch, Route } from 'react-router-dom';
+
+import { LoginPage } from 'components/LoginPage/LoginPage';
+import { NoteDetailsPage } from 'components/NoteDetails/NoteDetailsPage';
+import { NotesPageContainer } from 'components/NotesPage/NotesPageContainer';
+import { SearchPageComponent } from 'components/SearchPage/SearchPageComponent';
+import { UploadsPage } from 'components/Uploads/UploadsPage';
+
 import { theme } from '../../theme';
 export const App = () => {
   return (

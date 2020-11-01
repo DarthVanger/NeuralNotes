@@ -1,16 +1,14 @@
-import { all, takeEvery, put } from 'redux-saga/effects';
 import { toast } from 'react-toastify';
+import { all, takeEvery, put } from 'redux-saga/effects';
+import noteStorage from 'storage/noteStorage';
+import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
+
+import { noteNameUpdateRequestSuccessAction } from 'components/NotesMindMap/NotesMindMapActions';
 
 import {
   EDITOR_NOTE_NAME_CHANGED_ACTION,
   EDITOR_NOTE_CONTENT_CHANGED_ACTION,
 } from './NoteDetailsActions';
-
-import noteStorage from 'storage/noteStorage';
-
-import { noteNameUpdateRequestSuccessAction } from 'components/NotesMindMap/NotesMindMapActions';
-
-import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
 
 const spinner = siteGlobalLoadingBar.create('note text editor');
 

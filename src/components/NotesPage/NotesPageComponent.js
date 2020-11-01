@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
+
 import PropTypes from 'prop-types';
 
 // import { ControlsHelpComponent } from 'components/ControlsHelp/ControlsHelpComponent';
+import { BottomBar } from 'components/BottomBar/BottomBar';
 import { NotesMindMapContainer } from 'components/NotesMindMap/NotesMindMapContainer'; // Notes tree view
 import { TopBar } from 'components/TopBar/TopBar';
 import { UploadStatusButton } from 'components/Uploads/UploadStatusButton';
 
 // import { UploadButton } from 'components/Uploads/UploadButton';
-import { BottomBar } from 'components/BottomBar/BottomBar';
 
 export class NotesPageComponent extends Component {
   render() {

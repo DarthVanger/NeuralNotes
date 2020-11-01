@@ -1,9 +1,9 @@
+import auth from 'auth';
 import {
   call,
   all,
   takeEvery,
 } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
-import auth from 'auth';
 
 import { LOGOUT_ACTION } from 'components/LogoutButton/LogoutButtonAction';
 

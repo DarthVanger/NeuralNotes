@@ -1,17 +1,17 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+
 import AppBar from '@material-ui/core/AppBar';
+import IconButton from '@material-ui/core/IconButton';
+import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-
-import { LogoutButtonContainer } from 'components/LogoutButton/LogoutButtonContainer';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Link } from 'react-router-dom';
+import { LogoutButtonContainer } from 'components/LogoutButton/LogoutButtonContainer';
 
 const useStyles = makeStyles(theme => ({
   root: {

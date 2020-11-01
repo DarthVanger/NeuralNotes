@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import { StyledOpenFileButton } from 'components/OpenFileButton/OpenFileButtonStyles';
 
 export class OpenFileButtonComponent extends Component {

@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+
 import styled from 'styled-components';
-import arrow from 'components/LoginPage/images/arrow.svg';
-import imageNoteContent from 'components/LoginPage/images/slide-3-note-content.svg';
-import imageMindmapExplanation from 'components/LoginPage/images/slide-3-mindmap-explanation.svg';
-import { Img, Caption } from 'components/LoginPage/slideComponents';
+
 import COLORS from 'components/LoginPage/colors';
+import arrow from 'components/LoginPage/images/arrow.svg';
+import imageMindmapExplanation from 'components/LoginPage/images/slide-3-mindmap-explanation.svg';
+import imageNoteContent from 'components/LoginPage/images/slide-3-note-content.svg';
+import { Img, Caption } from 'components/LoginPage/slideComponents';
 import { FONT_SIZE } from 'components/LoginPage/slideComponents';
 
 const Slide = styled.section`

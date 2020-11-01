@@ -1,10 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
 
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
-
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 const FlexContainer = styled.div`
   position: absolute;

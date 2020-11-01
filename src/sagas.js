@@ -1,23 +1,22 @@
-import { all } from 'redux-saga/effects';
-import createSagaMiddleware from 'redux-saga';
+import { routerMiddleware } from 'connected-react-router';
+import { createBrowserHistory } from 'history';
 import { createRootReducer } from 'reducers';
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { createBrowserHistory } from 'history';
+import createSagaMiddleware from 'redux-saga';
 // import { compose } from 'redux';
+import { all } from 'redux-saga/effects';
 
-import { routerMiddleware } from 'connected-react-router';
-
-import { spinnerInit } from 'components/Spinner/SpinnerSagas';
 import { appInit } from 'components/App/AppSagas';
 import { loginInit } from 'components/LoginPage/LoginPageSagas';
 import { logoutButtonInit } from 'components/LogoutButton/LogoutButtonSagas';
 // import { notesInit } from 'components/NotesPage/NotesPageSagas';
+import { noteDetailsInit } from 'components/NoteDetails/NoteDetailsSagas';
 import { notesContentEditorInit } from 'components/NotesContentEditor/NotesContentEditorSagas';
 import { noteMindMapInit } from 'components/NotesMindMap/NotesMindMapSagas';
-import { uploadsInit } from 'components/Uploads/UploadsSagas';
-import { noteDetailsInit } from 'components/NoteDetails/NoteDetailsSagas';
 import { searchPageInit } from 'components/SearchPage/SearchPageSagas';
+import { spinnerInit } from 'components/Spinner/SpinnerSagas';
+import { uploadsInit } from 'components/Uploads/UploadsSagas';
 
 const sagaMiddleware = createSagaMiddleware();
 

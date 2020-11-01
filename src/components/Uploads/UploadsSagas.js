@@ -1,9 +1,10 @@
+import auth from 'auth';
+import throttle from 'lodash/throttle';
 import { eventChannel, END } from 'redux-saga';
 import { all, put, call, take, select, takeEvery } from 'redux-saga/effects';
-import throttle from 'lodash/throttle';
-import auth from 'auth';
-import { UPLOADS_REDUCER_KEY } from './UploadsConstants';
+
 import { UploadsActions } from './UploadsActions';
+import { UPLOADS_REDUCER_KEY } from './UploadsConstants';
 
 const ENDPOINT =
   'https://www.googleapis.com/upload/drive/v3/files?uploadType=resumable';

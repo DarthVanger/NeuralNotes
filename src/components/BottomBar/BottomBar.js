@@ -9,6 +9,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import AddIcon from '@material-ui/icons/Add';
 import LaunchOutlinedIcon from '@material-ui/icons/LaunchOutlined';
 import styled from 'styled-components';
+
 import { UploadButton } from 'components/Uploads/UploadButton';
 
 const useStyles = makeStyles(() => ({

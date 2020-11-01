@@ -1,12 +1,11 @@
+import { gapiAuthorize } from 'api/google-login';
+import { toast } from 'react-toastify';
 import {
   call,
   put,
   takeEvery,
 } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
-import { toast } from 'react-toastify';
-
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
-import { gapiAuthorize } from 'api/google-login';
 
 import {
   initGapi,

@@ -1,13 +1,16 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import styled from 'styled-components';
-import PropTypes from 'prop-types';
-import { UploadsActions } from './UploadsActions';
+
+import { Typography } from '@material-ui/core';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import { colors } from '../../colors';
 import RetryIcon from '@material-ui/icons/CachedRounded';
 import PauseRoundedIcon from '@material-ui/icons/PauseRounded';
-import { Typography } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import styled from 'styled-components';
+
+import { colors } from '../../colors';
+
+import { UploadsActions } from './UploadsActions';
 
 const StyledContainer = styled.div`
   display: flex;

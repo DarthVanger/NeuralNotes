@@ -8,10 +8,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import AddIcon from '@material-ui/icons/Add';
 import LaunchOutlinedIcon from '@material-ui/icons/LaunchOutlined';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { UploadButton } from 'components/Uploads/UploadButton';
-import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles(() => ({
   appBar: {

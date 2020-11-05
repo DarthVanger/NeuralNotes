@@ -45,9 +45,13 @@ export const BottomBar = () => {
   return (
     <AppBar position="fixed" className={classes.appBar}>
       <Toolbar>
-        <Link to="/note" className={classes.left}>
-          <EditIcon />
-        </Link>
+        {selectedNote.isNote && (
+          <>
+            <Link to="/note" className={classes.left}>
+              <EditIcon />
+            </Link>
+          </>
+        )}
         <StyledLabel>
           <Typography variant="subtitle2">{selectedNote.name}</Typography>
         </StyledLabel>

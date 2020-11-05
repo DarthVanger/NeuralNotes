@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import VisGraph from 'react-graph-vis';
 import noteStorage from 'storage/noteStorage';
 
-import { NoteDetailsButtonComponent } from 'components/NoteDetails/NoteDetailsButtonComponent';
 import { NoteNameEditorComponent } from 'components/NoteNameEditor/NoteNameEditorComponent';
 import { StyledNotesMindMap } from 'components/NotesMindMap/NotesMindMapStyles';
 
@@ -83,8 +82,6 @@ export class NotesMindMapComponent extends Component {
 
     return (
       <StyledNotesMindMap>
-        {selectedNote && <NoteDetailsButtonComponent />}
-
         <VisGraph graph={visGraph} events={visEvents} options={visOptions} />
         {showNoteNameEditor && (
           <NoteNameEditorComponent

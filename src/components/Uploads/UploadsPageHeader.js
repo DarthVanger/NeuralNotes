@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 // import * as AppActions from 'components/App/AppActions';
@@ -23,12 +24,10 @@ const StyledBackButton = styled.button`
 const UploadsPageHeader = () => {
   const dispatch = useDispatch();
   const hasActiveUploads = useSelector(Selectors.hasActiveUploads);
+  let history = useHistory();
 
   function handleBackClick() {
-    // dispatch({
-    //   type: AppActions.CHANGE_PAGE_ACTION,
-    //   data: AppConstants.PAGES_ENUM.NOTES,
-    // });
+    history.push('/notes');
 
     if (!hasActiveUploads) {
       dispatch(UploadsActions.list.clear());

@@ -1,12 +1,14 @@
 import React, { useCallback, useState } from 'react';
+
 import PropTypes from 'prop-types';
-import { debounce } from '../../helpers/debounce';
 
 import {
   StyledIcon,
   StyledInput,
   StyledSearchPanelWrapper,
 } from 'components/SearchPanel/SearchPanelStyles';
+
+import { debounce } from '../../helpers/debounce';
 
 export const SearchPanelComponent = props => {
   const [query, setQuery] = useState('');

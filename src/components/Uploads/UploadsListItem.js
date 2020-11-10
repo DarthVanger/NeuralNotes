@@ -1,17 +1,20 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import styled from 'styled-components';
-import PropTypes from 'prop-types';
-import { UploadsActions } from './UploadsActions';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import { colors } from '../../colors';
-import RetryIcon from '@material-ui/icons/CachedRounded';
-import PauseRoundedIcon from '@material-ui/icons/PauseRounded';
+
 import { Typography } from '@material-ui/core';
+import Divider from '@material-ui/core/Divider';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
+import RetryIcon from '@material-ui/icons/CachedRounded';
+import PauseRoundedIcon from '@material-ui/icons/PauseRounded';
+import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import styled from 'styled-components';
+
+import { colors } from '../../colors';
+
+import { UploadsActions } from './UploadsActions';
 
 const useStyles = makeStyles(() => ({
   listItem: {

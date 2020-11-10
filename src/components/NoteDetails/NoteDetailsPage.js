@@ -1,9 +1,11 @@
 import React from 'react';
-import styled from 'styled-components';
+
 import IconButton from '@material-ui/core/IconButton';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import { NoteDetailsContainer } from 'components/NoteDetails/NoteDetailsContainer';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+
+import { NoteDetailsContainer } from 'components/NoteDetails/NoteDetailsContainer';
 
 const Wrapper = styled.div`
   background-color: #2b2630;

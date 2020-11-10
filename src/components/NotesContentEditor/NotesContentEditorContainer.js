@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 import { action } from 'sagas';
 
-import { NotesContentEditorComponent } from 'components/NotesContentEditor/NotesContentEditorComponent';
 import { SAVE_NOTE_CONTENT_ACTION } from 'components/NotesContentEditor/NotesContentEditorActions';
+import { NotesContentEditorComponent } from 'components/NotesContentEditor/NotesContentEditorComponent';
 
 const mapStateToProps = ({ notesMindMap: { selectedNote, noteText } }) => {
   return {

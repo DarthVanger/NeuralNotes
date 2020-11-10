@@ -13,6 +13,7 @@ import {
   SEARCH_RESULT_CLICKED,
   ROOT_NOTE_FOUND_ACTION,
 } from 'components/NotesMindMap/NotesMindMapActions';
+
 import { addGroupTagToNodes, removeNodeFromGraph } from '../../helpers/graph';
 
 const defaultState = {

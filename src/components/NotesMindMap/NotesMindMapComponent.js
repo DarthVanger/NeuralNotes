@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
+
 import PropTypes from 'prop-types';
 import VisGraph from 'react-graph-vis';
-
-import { VisNetworkHelper } from 'helpers/visNetworkHelper';
 import noteStorage from 'storage/noteStorage';
+
 import { NoteNameEditorComponent } from 'components/NoteNameEditor/NoteNameEditorComponent';
 import { StyledNotesMindMap } from 'components/NotesMindMap/NotesMindMapStyles';
-import { NoteDetailsButtonComponent } from 'components/NoteDetails/NoteDetailsButtonComponent';
+
+import { VisNetworkHelper } from 'helpers/visNetworkHelper';
 
 export class NotesMindMapComponent extends Component {
   render() {
@@ -81,8 +82,6 @@ export class NotesMindMapComponent extends Component {
 
     return (
       <StyledNotesMindMap>
-        {selectedNote && <NoteDetailsButtonComponent />}
-
         <VisGraph graph={visGraph} events={visEvents} options={visOptions} />
         {showNoteNameEditor && (
           <NoteNameEditorComponent

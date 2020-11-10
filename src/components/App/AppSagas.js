@@ -1,26 +1,23 @@
+import googleApiLoader from 'api/google-api-loader';
+import googleDriveApi from 'api/google-drive-api';
+import auth from 'auth';
+import { push } from 'connected-react-router';
+import { toast } from 'react-toastify';
 import {
   put,
   call,
   takeEvery,
 } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
-import { toast } from 'react-toastify';
-
-import auth from 'auth';
-import { rootNoteFoundAction } from 'components/NotesMindMap/NotesMindMapActions';
-import { authSuccess } from 'components/LoginPage/LoginPageSlice';
 import noteStorage from 'storage/noteStorage';
-import googleDriveApi from 'api/google-drive-api';
-import googleApiLoader from 'api/google-api-loader';
-// import { hideSpinner, showSpinner } from 'components/Spinner/SpinnerSagas';
 
-import { push } from 'connected-react-router';
+import { authSuccess } from 'components/LoginPage/LoginPageSlice';
+import { rootNoteFoundAction } from 'components/NotesMindMap/NotesMindMapActions';
+// import { hideSpinner, showSpinner } from 'components/Spinner/SpinnerSagas';
 
 export function* loadApp() {
   console.info('Loading app...');
-
   // yield showSpinner('Loading Google Api');
-  yield googleApiLoader.load();
-  yield googleDriveApi.loadDriveApi();
+
   let initialNote;
   const lastViewedNoteId = localStorage.getItem('lastViewedNoteId');
   if (lastViewedNoteId) {
@@ -35,6 +32,9 @@ export function* loadApp() {
 }
 
 export function* appInit() {
+  yield googleApiLoader.load();
+  yield googleDriveApi.loadDriveApi();
+
   yield call([toast, toast.configure], {
     position: toast.POSITION.BOTTOM_RIGHT,
   });

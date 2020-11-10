@@ -1,8 +1,10 @@
 import { handleActions } from 'redux-actions';
+
 import { updateState } from 'helpers/redux';
-import { defaultState } from './UploadsReducerDefaultState';
-import { UPLOADS_REDUCER_KEY } from './UploadsConstants';
+
 import { UploadsActions } from './UploadsActions';
+import { UPLOADS_REDUCER_KEY } from './UploadsConstants';
+import { defaultState } from './UploadsReducerDefaultState';
 
 function updateList(updater) {
   return updateState('list', updater);

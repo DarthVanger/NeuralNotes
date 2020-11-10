@@ -1,19 +1,17 @@
+import { gapiAuthorize } from 'api/google-login';
+import { toast } from 'react-toastify';
 import {
   call,
   put,
   takeEvery,
 } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
-import { toast } from 'react-toastify';
-
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
-import { gapiAuthorize } from 'api/google-login';
 
 import {
   initGapi,
   requestAuth,
   authSuccess,
 } from 'components/LoginPage/LoginPageSlice';
-import googleApiLoader from 'api/google-api-loader';
 
 export function* handleAuth() {
   const spinnerName = 'Loading google auth';
@@ -34,7 +32,6 @@ export function* handleAuth() {
 }
 
 export function* loginInit() {
-  yield googleApiLoader.load();
   yield put(initGapi());
   yield takeEvery(requestAuth().type, handleAuth);
 }

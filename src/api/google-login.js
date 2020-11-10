@@ -1,6 +1,6 @@
 /* global gapi */
-import auth from 'auth';
 import { clientId, scopes } from 'api/google-client-config';
+import auth from 'auth';
 
 /**
  * Check if current user has authorized this application.

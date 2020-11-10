@@ -1,11 +1,13 @@
 import React from 'react';
+
+import Fab from '@material-ui/core/Fab';
+import { makeStyles } from '@material-ui/core/styles';
+import PublishIcon from '@material-ui/icons/Publish';
 import { useDispatch, useSelector } from 'react-redux';
 import { CSSTransition } from 'react-transition-group';
-import { makeStyles } from '@material-ui/core/styles';
 import { NotesMindMapSelectors } from 'selectors';
+
 import { UploadsActions } from './UploadsActions';
-import Fab from '@material-ui/core/Fab';
-import PublishIcon from '@material-ui/icons/Publish';
 
 const useStyles = makeStyles(() => ({
   fabButton: {

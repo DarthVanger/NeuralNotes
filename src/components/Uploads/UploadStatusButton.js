@@ -1,7 +1,9 @@
 import React from 'react';
+
 import { useSelector } from 'react-redux';
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
+
 // import * as AppActions from 'components/App/AppActions';
 // import * as AppConstants from 'components/App/AppConstants';
 import * as Selectors from './UploadsSelectors';

@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
+
 import PropTypes from 'prop-types';
-import { debounce } from '../../helpers/debounce';
 
 import { HeaderComponent } from 'components/NoteNameEditor/HeaderComponent/HeaderComponent';
 import {
   StyledNoteEditorTextArea,
   StyledNoteNameEditor,
 } from 'components/NoteNameEditor/NoteNameEditorStyles';
+
+import { debounce } from '../../helpers/debounce';
 
 export class NoteNameEditorComponent extends Component {
   state = { name: '', propName: '' };

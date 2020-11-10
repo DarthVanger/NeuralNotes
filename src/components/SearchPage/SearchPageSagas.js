@@ -1,13 +1,14 @@
+import googleDriveApi from 'api/google-drive-api';
 import {
   all,
   put,
   takeEvery,
 } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
+
 import {
   searchRequestSuccess,
   SEARCH_QUERY_CHANGED_ACTION,
 } from 'components/SearchPage/SearchPageAction';
-import googleDriveApi from 'api/google-drive-api';
 
 function* searchNoteSaga({ data }) {
   const results = yield googleDriveApi.findNotesByName(data);

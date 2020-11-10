@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 import { action } from 'sagas';
 
-import { NotesPageComponent } from 'components/NotesPage/NotesPageComponent';
 import { CHANGE_USER_HELP_SEEN_ACTION } from 'components/NotesPage/NotesPageActions';
+import { NotesPageComponent } from 'components/NotesPage/NotesPageComponent';
 
 const mapStateToProps = ({ notes: { isHelpViewed } }) => {
   return {

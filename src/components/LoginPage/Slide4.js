@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+
 import styled from 'styled-components';
-import imageMindmap from 'components/LoginPage/images/slide-4-mindmap.svg';
-import imageCloudScreenshot from 'components/LoginPage/images/slide-4-cloud-screenshot.svg';
-import { Img, Caption } from 'components/LoginPage/slideComponents';
+
 import COLORS from 'components/LoginPage/colors';
+import imageCloudScreenshot from 'components/LoginPage/images/slide-4-cloud-screenshot.svg';
+import imageMindmap from 'components/LoginPage/images/slide-4-mindmap.svg';
+import { Img, Caption } from 'components/LoginPage/slideComponents';
 
 const Slide = styled.section`
   padding-bottom: 10%;

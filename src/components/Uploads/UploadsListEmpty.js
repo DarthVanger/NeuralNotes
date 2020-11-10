@@ -1,6 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
+
 import { Typography } from '@material-ui/core';
+import styled from 'styled-components';
 
 const StyledContainer = styled.div`
   flex: 1;

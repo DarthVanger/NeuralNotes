@@ -1,10 +1,13 @@
 import React from 'react';
+
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+
+import { colors } from '../../colors';
+
+import { UploadsList } from './UploadsList';
 import { UploadsPageHeader } from './UploadsPageHeader';
 import * as Selectors from './UploadsSelectors';
-import { UploadsList } from './UploadsList';
-import { colors } from '../../colors';
 
 const StyledPageContainer = styled.div`
   position: absolute;

@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Typography } from '@material-ui/core';
 import styled from 'styled-components';
 
 const StyledContainer = styled.div`
@@ -10,7 +11,11 @@ const StyledContainer = styled.div`
 `;
 
 const UploadsListEmpty = () => {
-  return <StyledContainer>No uploads</StyledContainer>;
+  return (
+    <StyledContainer>
+      <Typography variant="subtitle1">No uploads</Typography>
+    </StyledContainer>
+  );
 };
 
 export { UploadsListEmpty };

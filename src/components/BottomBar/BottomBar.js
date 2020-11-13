@@ -27,12 +27,13 @@ const useStyles = makeStyles(() => ({
   left: {
     position: 'absolute',
     color: colors.iconColor,
-    marginLeft: '30px',
+    left: '46px',
   },
   moreIcon: {
     position: 'absolute',
     color: colors.iconColor,
-    padding: 0,
+    left: 0,
+    padding: '12px',
   },
   fabButton: {
     position: 'absolute',
@@ -47,10 +48,6 @@ const StyledLabel = styled.div`
   text-align: center;
 `;
 
-const options = ['Edit', 'Cange parent', 'Delete'];
-
-const ITEM_HEIGHT = 38;
-
 export const BottomBar = () => {
   const classes = useStyles();
 
@@ -58,14 +55,6 @@ export const BottomBar = () => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-
-  const getMenuItems = () => {
-    if (!selectedNote.isNote) {
-      return options.slice(1);
-    }
-
-    return options;
-  };
 
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
@@ -81,31 +70,43 @@ export const BottomBar = () => {
         <IconButton
           className={classes.moreIcon}
           aria-label="more"
-          aria-controls="long-menu"
           aria-haspopup="true"
           onClick={handleClick}>
           <MoreVertIcon />
         </IconButton>
         <Menu
-          id="long-menu"
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+          transformOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
           anchorEl={anchorEl}
           keepMounted
           open={open}
           onClose={handleClose}
           PaperProps={{
             style: {
-              maxHeight: ITEM_HEIGHT * 4.5,
               width: '168px',
             },
           }}>
-          {getMenuItems().map(option => (
-            <MenuItem
-              key={option}
-              selected={option === 'Edit'}
-              onClick={handleClose}>
-              <Typography variant="subtitle1">{option}</Typography>
-            </MenuItem>
-          ))}
+          {selectedNote.isNote && (
+            <>
+              <Link to="/note" style={{ textDecoration: 'none' }}>
+                <MenuItem>
+                  <Typography variant="subtitle1">Edit</Typography>
+                </MenuItem>
+              </Link>
+            </>
+          )}
+          <MenuItem>
+            <Typography variant="subtitle1">Change parent</Typography>
+          </MenuItem>
+          <MenuItem>
+            <Typography variant="subtitle1">Delete</Typography>
+          </MenuItem>
         </Menu>
 
         {selectedNote.isNote && (

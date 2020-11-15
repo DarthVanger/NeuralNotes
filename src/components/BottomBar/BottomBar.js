@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { OpenFileButtonContainer } from 'components/OpenFileButton/OpenFileButtonContainer';
 import { UploadButton } from 'components/Uploads/UploadButton';
 
 import { colors } from '../../colors';
@@ -64,6 +65,7 @@ export const BottomBar = () => {
             <UploadButton></UploadButton>
           </>
         )}
+        {!selectedNote.isNote && <OpenFileButtonContainer />}
       </Toolbar>
     </AppBar>
   );

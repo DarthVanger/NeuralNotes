@@ -1,7 +1,6 @@
 import React from 'react';
 
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
 import styled, { css } from 'styled-components';
 
 import COLORS from 'components/LoginPage/colors';

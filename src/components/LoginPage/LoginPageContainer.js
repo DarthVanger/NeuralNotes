@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
+import { action } from 'sagas';
+
 import { REQUEST_AUTHORIZATION_ACTION } from 'components/LoginPage/LoginPageActions';
 import { LoginPageComponent } from 'components/LoginPage/LoginPageComponent';
-import { action } from 'sagas';
 
 const mapStateToProps = ({ login: { isGoogleApiInitialized } }) => ({
   isGoogleApiInitialized,

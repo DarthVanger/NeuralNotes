@@ -4,7 +4,7 @@ const defaultState = {
   isGoogleApiInitialized: false,
 };
 
-export const loginPageReducer = (state = defaultState, { type, data }) => {
+export const loginPageReducer = (state = defaultState, { type }) => {
   switch (type) {
     case GOOGLE_API_INITIALIZED_ACTION:
       return Object.assign({}, state, { isGoogleApiInitialized: true });

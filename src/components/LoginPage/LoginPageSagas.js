@@ -12,6 +12,7 @@ import {
   requestAuth,
   authSuccess,
 } from 'components/LoginPage/LoginPageSlice';
+import googleApiLoader from 'api/google-api-loader';
 
 export function* handleAuth() {
   const spinnerName = 'Loading google auth';
@@ -32,6 +33,7 @@ export function* handleAuth() {
 }
 
 export function* loginInit() {
+  yield googleApiLoader.load();
   yield put(initGapi());
   yield takeEvery(requestAuth().type, handleAuth);
 }

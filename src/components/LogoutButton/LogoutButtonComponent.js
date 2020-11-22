@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 
-// import { StyledLogoutButton } from 'components/LogoutButton/LogoutButtonStyles';
 import Button from '@material-ui/core/Button';
 
 export class LogoutButtonComponent extends Component {

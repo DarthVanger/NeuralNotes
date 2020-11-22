@@ -6,10 +6,6 @@ import styled, { css } from 'styled-components';
 
 import COLORS from 'components/LoginPage/colors';
 import iconGoogle from 'components/LoginPage/images/icon-google.svg';
-import {
-  selectIsGapiInitialized,
-  requestAuth,
-} from 'components/LoginPage/LoginPageSlice';
 import Slide1 from 'components/LoginPage/Slide1';
 import Slide2 from 'components/LoginPage/Slide2';
 import Slide3 from 'components/LoginPage/Slide3';
@@ -122,15 +118,20 @@ const Footer = styled.footer`
   }
 `;
 
-export const LoginPage = () => {
-  const isGapiInitialized = useSelector(selectIsGapiInitialized);
-  const dispatch = useDispatch();
-
-  const dispatchAuth = () => {
-    dispatch(requestAuth());
+export const LoginPageComponent = ({
+  isGoogleApiInitialized,
+  requestAuthorization,
+}) => {
+  const authHandler = () => {
+    console.log('isGoogleApiInitialized: ', isGoogleApiInitialized);
+    if (isGoogleApiInitialized) {
+      requestAuthorization();
+    } else {
+      console.log(
+        "Google api is not yet initialized, can't authorize user yet!",
+      );
+    }
   };
-
-  const authHandler = isGapiInitialized ? dispatchAuth : null;
 
   return (
     <Main>
@@ -158,6 +159,6 @@ export const LoginPage = () => {
   );
 };
 
-LoginPage.propTypes = {
+LoginPageComponent.propTypes = {
   requestAuthorization: PropTypes.func.isRequired,
 };

@@ -9,10 +9,10 @@ import {
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
 
 import {
-  initGapi,
-  requestAuth,
-  authSuccess,
-} from 'components/LoginPage/LoginPageSlice';
+  googleApiInitializedAction,
+  REQUEST_AUTHORIZATION_ACTION,
+  authSuccessAction,
+} from 'components/LoginPage/LoginPageActions';
 
 export function* handleAuth() {
   const spinnerName = 'Loading google auth';
@@ -20,7 +20,7 @@ export function* handleAuth() {
   yield call(siteGlobalLoadingBar.show, spinnerName);
   try {
     yield gapiAuthorize();
-    yield put(authSuccess());
+    yield put(authSuccessAction());
   } catch (e) {
     console.error('googleLogin.gapiAuthorize(): authError: ', e);
     yield call(
@@ -34,6 +34,6 @@ export function* handleAuth() {
 
 export function* loginInit() {
   yield googleApiLoader.load();
-  yield put(initGapi());
-  yield takeEvery(requestAuth().type, handleAuth);
+  yield put(googleApiInitializedAction());
+  yield takeEvery(REQUEST_AUTHORIZATION_ACTION, handleAuth);
 }

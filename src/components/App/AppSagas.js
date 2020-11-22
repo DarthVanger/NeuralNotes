@@ -10,7 +10,7 @@ import {
 } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
 import noteStorage from 'storage/noteStorage';
 
-import { authSuccess } from 'components/LoginPage/LoginPageSlice';
+import { AUTH_SUCCESS_ACTION } from 'components/LoginPage/LoginPageActions.js';
 import { rootNoteFoundAction } from 'components/NotesMindMap/NotesMindMapActions';
 import { hideSpinner, showSpinner } from 'components/Spinner/SpinnerSagas';
 
@@ -42,6 +42,6 @@ export function* appInit() {
     console.info('User is signed in');
     yield loadApp();
   } else {
-    yield takeEvery(authSuccess().type, loadApp);
+    yield takeEvery(AUTH_SUCCESS_ACTION, loadApp);
   }
 }

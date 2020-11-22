@@ -1,3 +1,4 @@
+import { push } from 'connected-react-router';
 import { toast } from 'react-toastify';
 import {
   all,
@@ -27,8 +28,6 @@ import {
   ROOT_NOTE_FOUND_ACTION,
 } from 'components/NotesMindMap/NotesMindMapActions';
 import { UploadsActions } from 'components/Uploads/UploadsActions';
-// import { setPageAction } from 'components/App/AppSagas';
-// import { PAGES_ENUM } from 'components/App/AppConstants';
 
 const LOADING_NOTE_MESSAGE = 'loading note contents...';
 let spinner = siteGlobalLoadingBar.create('mind map');
@@ -66,7 +65,7 @@ function* handleSearchResultClick({ data: { note } }) {
   const targetNote = note;
   localStorage.setItem('lastViewedNoteId', targetNote.id);
   const childNotes = yield fetchChildNotes(targetNote);
-  // yield setPageAction(PAGES_ENUM.NOTES);
+  yield put(push('/notes'));
   yield put(selectedNoteChildrenFetchedAction(childNotes));
 
   if (targetNote.isNote) {

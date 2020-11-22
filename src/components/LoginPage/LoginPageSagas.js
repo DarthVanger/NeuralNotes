@@ -1,3 +1,4 @@
+import googleApiLoader from 'api/google-api-loader';
 import { gapiAuthorize } from 'api/google-login';
 import { toast } from 'react-toastify';
 import {
@@ -12,7 +13,6 @@ import {
   requestAuth,
   authSuccess,
 } from 'components/LoginPage/LoginPageSlice';
-import googleApiLoader from 'api/google-api-loader';
 
 export function* handleAuth() {
   const spinnerName = 'Loading google auth';

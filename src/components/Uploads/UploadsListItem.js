@@ -1,7 +1,11 @@
 import React from 'react';
 
 import { Typography } from '@material-ui/core';
+import Divider from '@material-ui/core/Divider';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import { makeStyles } from '@material-ui/core/styles';
 import RetryIcon from '@material-ui/icons/CachedRounded';
 import PauseRoundedIcon from '@material-ui/icons/PauseRounded';
 import PropTypes from 'prop-types';
@@ -12,18 +16,12 @@ import { colors } from '../../colors';
 
 import { UploadsActions } from './UploadsActions';
 
-const StyledContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  padding: 0.5em 1em;
-  height: 60px;
-  color: ${colors.white60};
-  background: ${colors.dialogsGray};
-
-  & + div {
-    border-top: solid 1px gray;
-  }
-`;
+const useStyles = makeStyles(() => ({
+  listItem: {
+    padding: 0,
+    height: '64px',
+  },
+}));
 
 const StyledLeftContainer = styled.div`
   flex: 1;
@@ -37,14 +35,8 @@ const StyledRightContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-`;
-
-const StyledFileName = styled.div`
-  color: ${colors.white87};
-`;
-
-const StyledStatus = styled.div`
-  color: ${colors.white60};
+  padding-right: 16px;
+  padding-left: 16px;
 `;
 
 const StyledIconButton = styled.button`
@@ -69,19 +61,11 @@ const UploadsListItem = ({ item }) => {
 
   function renderStatus() {
     if (item.result) {
-      return (
-        <StyledStatus>
-          <Typography variant="body2">Uploaded</Typography>
-        </StyledStatus>
-      );
+      return <Typography variant="body2">Uploaded</Typography>;
     }
 
     if (item.error) {
-      return (
-        <StyledStatus>
-          <Typography variant="body2">{item.error.message}</Typography>
-        </StyledStatus>
-      );
+      return <Typography variant="body2">{item.error.message}</Typography>;
     }
 
     if (item.progress) {
@@ -90,11 +74,7 @@ const UploadsListItem = ({ item }) => {
       );
     }
 
-    return (
-      <StyledStatus>
-        <Typography variant="body2">Initializing</Typography>
-      </StyledStatus>
-    );
+    return <Typography variant="body2">Initializing</Typography>;
   }
 
   function renderIconButton() {
@@ -125,19 +105,24 @@ const UploadsListItem = ({ item }) => {
     return <Typography variant="body2">{item.progress.percent}%</Typography>;
   }
 
+  const classes = useStyles();
+
   return (
-    <StyledContainer>
-      <StyledLeftContainer>
-        <StyledFileName>
-          <Typography variant="subtitle1">{item.file.name}</Typography>
-        </StyledFileName>
-        {renderStatus()}
-      </StyledLeftContainer>
-      <StyledRightContainer>
-        {renderIconButton()}
-        {renderProgress()}
-      </StyledRightContainer>
-    </StyledContainer>
+    <>
+      <ListItem className={classes.listItem}>
+        <StyledLeftContainer>
+          <ListItemText>
+            <Typography variant="subtitle1">{item.file.name}</Typography>
+          </ListItemText>
+          {renderStatus()}
+        </StyledLeftContainer>
+        <StyledRightContainer>
+          {renderIconButton()}
+          {renderProgress()}
+        </StyledRightContainer>
+      </ListItem>
+      <Divider component="li" />
+    </>
   );
 };
 

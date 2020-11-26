@@ -3,7 +3,7 @@ import React from 'react';
 import { ThemeProvider } from '@material-ui/styles';
 import { Switch, Route } from 'react-router-dom';
 
-import { LoginPage } from 'components/LoginPage/LoginPage';
+import { LoginPageContainer } from 'components/LoginPage/LoginPageContainer';
 import { NoteDetailsPage } from 'components/NoteDetails/NoteDetailsPage';
 import { NotesPageContainer } from 'components/NotesPage/NotesPageContainer';
 import { SearchPageComponent } from 'components/SearchPage/SearchPageComponent';
@@ -15,7 +15,7 @@ export const App = () => {
     <ThemeProvider theme={theme}>
       <Switch>
         <Route exact path="/">
-          <LoginPage />
+          <LoginPageContainer />
         </Route>
         <Route exact path="/notes">
           <NotesPageContainer />

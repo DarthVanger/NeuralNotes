@@ -2,26 +2,20 @@ import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
 
-// import { ControlsHelpComponent } from 'components/ControlsHelp/ControlsHelpComponent';
 import { BottomBar } from 'components/BottomBar/BottomBar';
-import { NotesMindMapContainer } from 'components/NotesMindMap/NotesMindMapContainer'; // Notes tree view
+import { ControlsHelpComponent } from 'components/ControlsHelp/ControlsHelpComponent';
+import { NotesMindMapContainer } from 'components/NotesMindMap/NotesMindMapContainer';
 import { TopBar } from 'components/TopBar/TopBar';
-import { UploadStatusButton } from 'components/Uploads/UploadStatusButton';
-
-// import { UploadButton } from 'components/Uploads/UploadButton';
 
 export class NotesPageComponent extends Component {
   render() {
-    // const { isHelpViewed, closeHelp } = this.props;
-
+    const { isHelpViewed, closeHelp } = this.props;
     return (
       <>
         <TopBar />
         <NotesMindMapContainer />
-        {/* {!isHelpViewed && <ControlsHelpComponent onClose={closeHelp} />} */}
-        <UploadStatusButton />
-        {/* <UploadButton /> */}
         <BottomBar />
+        {!isHelpViewed && <ControlsHelpComponent onClose={closeHelp} />}
       </>
     );
   }

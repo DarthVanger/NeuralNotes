@@ -26,14 +26,12 @@ export class NotesMindMapComponent extends Component {
         keyboard: false,
       },
       edges: {
-        // arrows: { to: true },
         arrows: {
           to: {
             enabled: false,
           },
         },
         color: '#F2F2F2',
-        // dashes: true,
         smooth: true,
       },
       nodes: {

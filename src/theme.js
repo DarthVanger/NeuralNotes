@@ -68,10 +68,20 @@ export const theme = createMuiTheme({
       root: {
         background: colors.elevationOverlay02dp,
       },
+      padding: {
+        paddingTop: 0,
+        paddingBottom: 0,
+      },
     },
     MuiDivider: {
       root: {
         backgroundColor: colors.darkGray,
+      },
+    },
+    MuiMenuItem: {
+      root: {
+        background: colors.dialogsGray,
+        minHeight: '32px',
       },
     },
   },

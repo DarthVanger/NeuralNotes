@@ -16,6 +16,8 @@ import { UploadButton } from 'components/Uploads/UploadButton';
 
 import { colors } from '../../colors';
 
+import { BottomBarMenu } from './BottomBarMenu';
+
 const useStyles = makeStyles(() => ({
   appBar: {
     top: 'auto',
@@ -24,6 +26,7 @@ const useStyles = makeStyles(() => ({
   left: {
     position: 'absolute',
     color: colors.iconColor,
+    left: '46px',
   },
   fabButton: {
     position: 'absolute',
@@ -46,6 +49,7 @@ export const BottomBar = () => {
   return (
     <AppBar position="fixed" className={classes.appBar}>
       <Toolbar>
+        <BottomBarMenu />
         {selectedNote.isNote && (
           <>
             <Link to="/note" className={classes.left}>

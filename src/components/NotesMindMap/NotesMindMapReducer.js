@@ -2,6 +2,7 @@ import {
   CHANGE_NOTE_TEXT_ACTION,
   CHANGE_SELECTED_NOTE_ACTION,
   SELECTED_NOTE_CHILDREN_FETCHED_ACTION,
+  SELECTED_NOTE_PARENT_FETCHED_ACTION,
   EDIT_NOTE_NAME_ACTION,
   NOTE_NAME_UPDATE_REQUEST_SUCCESS_ACTION,
   CREATE_NOTE_SUCCESS_ACTION,
@@ -36,6 +37,23 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
         nodes = addNodeToGraph(nodes, child);
         edges.push({ from: child.parent.id, to: child.id });
       });
+      nodes = addGroupTagToNodes(nodes, edges);
+    }
+    return {
+      ...state,
+      nodes,
+      edges,
+    };
+  };
+
+  const handleSelectedNoteParentFetchedAction = () => {
+    let nodes = [...state.nodes];
+    let edges = [...state.edges];
+
+    const parentNote = data;
+    if (parentNote) {
+      nodes = addNodeToGraph(nodes, parentNote);
+      edges.push({ from: parentNote.id, to: state.selectedNote.id });
       nodes = addGroupTagToNodes(nodes, edges);
     }
     return {
@@ -144,6 +162,8 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
       return handleChangeSelectedNoteAction();
     case SELECTED_NOTE_CHILDREN_FETCHED_ACTION:
       return handleSelectedNoteChildrenFetchedAction(data);
+    case SELECTED_NOTE_PARENT_FETCHED_ACTION:
+      return handleSelectedNoteParentFetchedAction(data);
     case CHANGE_NOTE_TEXT_ACTION:
       return { ...state, noteText: data };
     case EDIT_NOTE_NAME_ACTION:

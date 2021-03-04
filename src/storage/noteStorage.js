@@ -23,8 +23,8 @@ function fetchChildNotes(note) {
   return noteStorageApi.fetchChildNotes(note);
 }
 
-function fetchParentNote(noteId) {
-  return noteStorageApi.fetchParentNote(noteId);
+function fetchParentNote(note) {
+  return noteStorageApi.fetchParentNote(note);
 }
 
 /**

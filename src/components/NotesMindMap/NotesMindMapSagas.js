@@ -15,6 +15,7 @@ import {
   changeSelectedNoteAction,
   NOTE_CHANGE_PARENT_ACTION,
   selectedNoteChildrenFetchedAction,
+  selectedNoteParentFetchedAction,
   CREATE_EMPTY_CHILD_ACTION,
   DELETE_NOTE_ACTION,
   UPDATE_NOTE_NAME_ACTION,
@@ -56,6 +57,9 @@ function* changeSelectedNote({ data: { note, edges } }) {
     console.log('not fetching child notes');
   }
 
+  const parentNote = yield fetchParentNote(targetNote);
+  yield put(selectedNoteParentFetchedAction(parentNote));
+
   if (targetNote.isNote) {
     yield requestNoteText(targetNote);
   }
@@ -82,6 +86,22 @@ function* fetchChildNotes(note) {
     return childNotes;
   } catch (e) {
     yield call([toast, toast.error], e);
+  }
+}
+
+function* fetchParentNote(note) {
+  const fetchingNotesSpinner = spinner.create('loading parent note');
+  fetchingNotesSpinner.show();
+  console.info(`Loading parent note for "${note.name}"...`);
+  try {
+    const parentNote = yield call(noteStorage.fetchParentNote, note);
+    console.info(
+      `[Loaded] Parent note for "${note.name}": "${parentNote.name}"`,
+    );
+    fetchingNotesSpinner.hide();
+    return parentNote;
+  } catch (e) {
+    yield call([toast, toast.error], e.message);
   }
 }
 

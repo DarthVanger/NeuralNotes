@@ -170,6 +170,8 @@ function parseParents(file) {
         '", because it has no "parents" property',
     );
   }
+
+  return file;
 }
 
 /**
@@ -219,11 +221,12 @@ function findNotesByName(name = '') {
 function findNoteById(noteId) {
   const request = gapi.client.drive.files.get({
     fileId: noteId,
+    fields: FILE_FIELDS,
   });
-
   return new Promise(resolve => {
     request.execute(function(resp) {
-      resolve(resp);
+      const file = parseParents(resp);
+      resolve(file);
     });
   });
 }

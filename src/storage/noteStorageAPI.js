@@ -101,8 +101,9 @@ function isNote(file) {
 /**
  * Fetch parent folder
  */
-function fetchParentNote(noteId) {
-  return fetchNoteById(noteId).then(function(parentNote) {
+function fetchParentNote(note) {
+  console.debug(`fetchParentNote for: `, note);
+  return fetchNoteById(note.parent.id).then(function(parentNote) {
     return parentNote;
   });
 }

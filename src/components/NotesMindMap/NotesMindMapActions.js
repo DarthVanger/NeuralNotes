@@ -13,6 +13,9 @@ export const NOTE_NAME_UPDATE_REQUEST_SUCCESS_ACTION =
 export const UPDATE_NOTE_NAME_ACTION = 'UPDATE_NOTE_NAME_ACTION';
 export const SELECTED_NOTE_CHILDREN_FETCHED_ACTION =
   'SELECTED_NOTE_CHILDREN_FETCHED_ACTION';
+export const SELECTED_NOTE_PARENT_FETCHED_ACTION =
+  'SELECTED_NOTE_PARENT_FETCHED_ACTION';
+
 export const CREATE_NOTE_SUCCESS_ACTION = 'CREATE_NOTE_SUCCESS_ACTION';
 export const MIND_MAP_CLICKED_ACTION = 'MIND_MAP_CLICKED_ACTION';
 export const CHANGE_PARENT_BUTTON_CLICKED_ACTION =
@@ -33,6 +36,10 @@ export const changeSelectedNoteAction = data => ({
 });
 export const selectedNoteChildrenFetchedAction = data => ({
   type: SELECTED_NOTE_CHILDREN_FETCHED_ACTION,
+  data,
+});
+export const selectedNoteParentFetchedAction = data => ({
+  type: SELECTED_NOTE_PARENT_FETCHED_ACTION,
   data,
 });
 export const updateNoteNameAction = data => ({

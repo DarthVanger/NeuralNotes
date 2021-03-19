@@ -139,7 +139,7 @@ function getFiles(folderId) {
   const request = gapi.client.drive.files.list({
     pageSize: 10,
     fields: googleDriveApi.FILE_LIST_FIELDS,
-    q: '"' + folderId + '" in parents',
+    q: 'trashed = false and "' + folderId + '" in parents',
   });
 
   spinner.show();

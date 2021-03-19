@@ -102,7 +102,8 @@ function* fetchParentNote(note) {
     fetchingNotesSpinner.hide();
     return parentNote;
   } catch (e) {
-    yield call([toast, toast.error], e.message);
+    yield call([toast, toast.error], 'Someting went wrong :(');
+    throw e;
   }
 }
 

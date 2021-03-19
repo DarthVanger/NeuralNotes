@@ -3,7 +3,6 @@ import {
   CHANGE_SELECTED_NOTE_ACTION,
   SELECTED_NOTE_CHILDREN_FETCHED_ACTION,
   SELECTED_NOTE_PARENT_FETCHED_ACTION,
-  EDIT_NOTE_NAME_ACTION,
   NOTE_NAME_UPDATE_REQUEST_SUCCESS_ACTION,
   CREATE_NOTE_SUCCESS_ACTION,
   MIND_MAP_CLICKED_ACTION,
@@ -19,7 +18,6 @@ import { addGroupTagToNodes, removeNodeFromGraph } from '../../helpers/graph';
 
 const defaultState = {
   selectedNote: {},
-  showNoteNameEditor: false,
   noteText: '',
   isChangeParentModeActive: false,
   nodes: [],
@@ -60,15 +58,6 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
       ...state,
       nodes,
       edges,
-    };
-  };
-
-  const handleEditNoteNameAction = () => {
-    const noteToEdit = data;
-    return {
-      ...state,
-      showNoteNameEditor: true,
-      selectedNote: noteToEdit,
     };
   };
 
@@ -123,7 +112,6 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
     return {
       ...state,
       isChangeParentModeActive: false,
-      showNoteNameEditor: false,
       edges,
       nodes,
     };
@@ -166,18 +154,10 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
       return handleSelectedNoteParentFetchedAction(data);
     case CHANGE_NOTE_TEXT_ACTION:
       return { ...state, noteText: data };
-    case EDIT_NOTE_NAME_ACTION:
-      return handleEditNoteNameAction({ state, data });
     case NOTE_NAME_UPDATE_REQUEST_SUCCESS_ACTION:
       return handleNoteNameUpdateRequestSuccessAction({ state, data });
     case CREATE_NOTE_SUCCESS_ACTION:
       return handleCreateNoteSuccessAction({ state, data });
-    case MIND_MAP_CLICKED_ACTION:
-      if (state.isChangeParentModeActive) {
-        return state;
-      } else {
-        return { ...state, showNoteNameEditor: false };
-      }
     case DELETE_NOTE_REQUEST_SUCCESS_ACTION:
       return handleDeleteNoteRequestSuccessAction({ state, data });
     case CHANGE_PARENT_BUTTON_CLICKED_ACTION:

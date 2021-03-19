@@ -7,7 +7,6 @@ export const CREATE_EMPTY_CHILD_ACTION = 'CREATE_EMPTY_CHILD_ACTION';
 export const DELETE_NOTE_ACTION = 'DELETE_NOTE_ACTION';
 export const DELETE_NOTE_REQUEST_SUCCESS_ACTION =
   'DELETE_NOTE_REQUEST_SUCCESS_ACTION';
-export const EDIT_NOTE_NAME_ACTION = 'EDIT_NOTE_NAME_ACTION';
 export const NOTE_NAME_UPDATE_REQUEST_SUCCESS_ACTION =
   'NOTE_NAME_UPDATE_REQUEST_SUCCESS_ACTION';
 export const UPDATE_NOTE_NAME_ACTION = 'UPDATE_NOTE_NAME_ACTION';
@@ -52,10 +51,6 @@ export const noteNameUpdateRequestSuccessAction = data => ({
 });
 export const createNoteSuccessAction = data => ({
   type: CREATE_NOTE_SUCCESS_ACTION,
-  data,
-});
-export const editNoteNameAction = data => ({
-  type: EDIT_NOTE_NAME_ACTION,
   data,
 });
 export const mindMapClickedAction = data => ({

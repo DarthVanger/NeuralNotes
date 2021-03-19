@@ -8,7 +8,6 @@ import {
   NOTE_CHANGE_PARENT_ACTION,
   DELETE_NOTE_ACTION,
   CREATE_EMPTY_CHILD_ACTION,
-  EDIT_NOTE_NAME_ACTION,
   UPDATE_NOTE_NAME_ACTION,
   MIND_MAP_CLICKED_ACTION,
   CHANGE_PARENT_BUTTON_CLICKED_ACTION,
@@ -74,7 +73,6 @@ const getComputedEdges = createSelector(
 const mapStateToProps = createStructuredSelector({
   selectedNote: createNotesMindMapPropertySelector('selectedNote'),
   noteText: createNotesMindMapPropertySelector('noteText'),
-  showNoteNameEditor: createNotesMindMapPropertySelector('showNoteNameEditor'),
   isChangeParentModeActive: createNotesMindMapPropertySelector(
     'isChangeParentModeActive',
   ),
@@ -87,7 +85,6 @@ const mapDispatchToProps = () => ({
   changeParentNote: data => action(NOTE_CHANGE_PARENT_ACTION, data),
   createEmptyChild: data => action(CREATE_EMPTY_CHILD_ACTION, data),
   deleteNote: data => action(DELETE_NOTE_ACTION, data),
-  editNote: data => action(EDIT_NOTE_NAME_ACTION, data),
   updateNoteName: data => action(UPDATE_NOTE_NAME_ACTION, data),
   onMindMapClick: data => action(MIND_MAP_CLICKED_ACTION, data),
   onChangeParentButtonClick: data =>

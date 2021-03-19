@@ -11,13 +11,7 @@ import { VisNetworkHelper } from 'helpers/visNetworkHelper';
 
 export class NotesMindMapComponent extends Component {
   render() {
-    const {
-      selectedNote,
-      showNoteNameEditor,
-      isChangeParentModeActive,
-      nodes,
-      edges,
-    } = this.props;
+    const { selectedNote, isChangeParentModeActive, nodes, edges } = this.props;
 
     const visGraph = { nodes, edges };
 
@@ -81,15 +75,6 @@ export class NotesMindMapComponent extends Component {
     return (
       <StyledNotesMindMap>
         <VisGraph graph={visGraph} events={visEvents} options={visOptions} />
-        {showNoteNameEditor && (
-          <NoteNameEditorComponent
-            note={selectedNote}
-            onChange={this.handleNoteNameUpdate}
-            onChangeParentClick={this.props.onChangeParentButtonClick}
-            onDeleteClick={this.onDeleteClick}
-            isChangeParentModeActive={isChangeParentModeActive}
-          />
-        )}
       </StyledNotesMindMap>
     );
   }
@@ -156,26 +141,6 @@ export class NotesMindMapComponent extends Component {
     }
   };
 
-  visNetworkHoldHandler = event => {
-    const { nodes } = this.props;
-    if (VisNetworkHelper.clickedOnNote(event)) {
-      let targetNoteId = VisNetworkHelper.getTargetNoteId(event);
-      const targetNote = nodes.find(node => node.id === targetNoteId);
-      this.editNote(targetNote);
-    }
-  };
-
-  editNote(targetNote) {
-    const { nodes } = this.props;
-    const note = nodes.find(node => node.id === targetNote.id);
-
-    if (note.name === noteStorage.APP_FOLDER_NAME || !note.isNote) {
-      return;
-    }
-
-    this.props.editNote(note);
-  }
-
   handleNoteNameUpdate = newName => {
     const note = this.props.selectedNote;
     this.props.updateNoteName({ note, newName });
@@ -194,11 +159,9 @@ NotesMindMapComponent.propTypes = {
   deleteNote: PropTypes.func.isRequired,
   isChangeParentModeActive: PropTypes.bool.isRequired,
   changeParentNote: PropTypes.func.isRequired,
-  showNoteNameEditor: PropTypes.bool.isRequired,
   nodes: PropTypes.array.isRequired,
   edges: PropTypes.array.isRequired,
   onMindMapClick: PropTypes.func.isRequired,
-  editNote: PropTypes.func.isRequired,
   updateNoteName: PropTypes.func.isRequired,
   onChangeParentButtonClick: PropTypes.func.isRequired,
 };

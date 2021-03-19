@@ -139,6 +139,7 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
       label: newNote.name,
       name: newNote.name,
       isNote: newNote.isNote,
+      parent: newNote.parent,
     });
     return newNodes;
   };

@@ -17,7 +17,12 @@ export default {
   move,
   updateNoteName,
   getLinkToNote,
+  isAppFolder,
 };
+
+function isAppFolder(note) {
+  return note.name === noteStorageApi.APP_FOLDER_NAME;
+}
 
 function fetchChildNotes(note) {
   return noteStorageApi.fetchChildNotes(note);

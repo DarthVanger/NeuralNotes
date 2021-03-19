@@ -84,8 +84,6 @@ dist/index.html         dist/index.js           dist/index.js.map
 
 ### Testing production build locally
 
-*Don't use this if you want to run project locally, use **Lauch locally** instructions instead*
-
 To test the production build locally, simply serve files from the `dist/` folder.
 
 For example you can easily launch a [nodejs http-server](https://www.npmjs.com/package/http-server) on port 3000 like this:

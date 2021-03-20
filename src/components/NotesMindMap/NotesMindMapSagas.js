@@ -50,7 +50,7 @@ function* requestNoteText(note) {
 function* changeSelectedNote({ data: { note, edges } }) {
   const targetNote = note;
   localStorage.setItem('lastViewedNoteId', targetNote.id);
-  if (didNotAttemptToFetchChildren(targetNote, edges)) {
+  if (!targetNote.wereChildrenFetched) {
     const childNotes = yield fetchChildNotes(targetNote);
     yield put(selectedNoteChildrenFetchedAction(childNotes));
   } else {
@@ -125,7 +125,7 @@ function* updateNoteName({ data: { note, newName } }) {
 
 function* changeParentNote({ data: { noteId, newParent, edges } }) {
   try {
-    if (didNotAttemptToFetchChildren(newParent, edges)) {
+    if (newParent.wereChildrenFetched) {
       yield* fetchChildNotes(newParent);
     }
     yield call(noteStorage.move, { noteId, newParentId: newParent.id });
@@ -139,12 +139,6 @@ function* changeParentNote({ data: { noteId, newParent, edges } }) {
     yield call([toast, toast.error], 'Changing note has parent failed');
     throw Error(e);
   }
-}
-
-function didNotAttemptToFetchChildren(note, edges) {
-  return !(edges
-    ? edges.filter(edge => edge.from === note.id).length > 0
-    : false);
 }
 
 function* uploadSuccessSaga(action) {

@@ -30,11 +30,21 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
     let nodes = [...state.nodes];
     let edges = [...state.edges];
 
+    const selectedNoteInNodes = nodes.find(
+      node => node.id === state.selectedNote.id,
+    );
+    nodes[nodes.indexOf(selectedNoteInNodes)] = {
+      ...selectedNoteInNodes,
+      wereChildrenFetched: true,
+    };
+
     const childNotes = data;
     if (childNotes.length) {
       childNotes.forEach(child => {
-        nodes = addNodeToGraph(nodes, child);
-        edges.push({ from: child.parent.id, to: child.id });
+        if (!nodes.find(node => node.id === child.id)) {
+          nodes = addNodeToGraph(nodes, child);
+          edges.push({ from: child.parent.id, to: child.id });
+        }
       });
       nodes = addGroupTagToNodes(nodes, edges);
     }

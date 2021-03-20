@@ -61,13 +61,11 @@ export const BottomBarMenu = () => {
           },
         }}>
         {selectedNote.isNote && (
-          <>
-            <Link to="/note" style={{ textDecoration: 'none' }}>
-              <MenuItem>
-                <Typography variant="subtitle1">Edit</Typography>
-              </MenuItem>
-            </Link>
-          </>
+          <Link to="/note" style={{ textDecoration: 'none' }}>
+            <MenuItem>
+              <Typography variant="subtitle1">Edit</Typography>
+            </MenuItem>
+          </Link>
         )}
         <MenuItem>
           <Typography variant="subtitle1">Change parent</Typography>

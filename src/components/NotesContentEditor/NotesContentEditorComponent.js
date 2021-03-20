@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
-import noteStorage from 'storage/noteStorage';
 
 import {
-  StyledLink,
   StyledSelectedNotesContent,
   StyledTextArea,
 } from 'components/NotesContentEditor/NotesContentEditorStyles';
@@ -28,9 +26,6 @@ export class NotesContentEditorComponent extends Component {
 
   render() {
     const { text } = this.state;
-
-    const { selectedNote } = this.props;
-    const link = noteStorage.getLinkToNote(selectedNote);
 
     return (
       <StyledSelectedNotesContent>

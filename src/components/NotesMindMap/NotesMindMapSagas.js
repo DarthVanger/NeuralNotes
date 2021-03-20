@@ -11,7 +11,6 @@ import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
 
 import {
   CHANGE_SELECTED_NOTE_ACTION,
-  changeNoteTextAction,
   changeSelectedNoteAction,
   NOTE_CHANGE_PARENT_ACTION,
   selectedNoteChildrenFetchedAction,
@@ -30,17 +29,10 @@ import {
 import { UploadsActions } from 'components/Uploads/UploadsActions';
 import { doesNodeHasParent } from 'helpers/graph';
 
-const LOADING_NOTE_MESSAGE = 'loading note contents...';
 let spinner = siteGlobalLoadingBar.create('mind map');
 
 function* selectRootNote({ data }) {
   yield put(changeSelectedNoteAction({ note: data, edges: [] }));
-}
-
-function* requestNoteText(note) {
-  yield put(changeNoteTextAction(LOADING_NOTE_MESSAGE));
-  const noteText = yield call(noteStorage.getNoteContent, note);
-  yield put(changeNoteTextAction(noteText));
 }
 
 /**
@@ -123,7 +115,7 @@ function* updateNoteName({ data: { note, newName } }) {
   yield put(noteNameUpdateRequestSuccessAction(newNote));
 }
 
-function* changeParentNote({ data: { noteId, newParent, edges } }) {
+function* changeParentNote({ data: { noteId, newParent } }) {
   try {
     if (newParent.wereChildrenFetched) {
       yield* fetchChildNotes(newParent);

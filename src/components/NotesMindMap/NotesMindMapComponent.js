@@ -115,16 +115,6 @@ export class NotesMindMapComponent extends Component {
       this.props.createEmptyChild({ parent: targetNote });
     }
   };
-
-  handleNoteNameUpdate = newName => {
-    const note = this.props.selectedNote;
-    this.props.updateNoteName({ note, newName });
-  };
-
-  onDeleteClick = () => {
-    let note = this.props.selectedNote;
-    this.props.deleteNote({ note });
-  };
 }
 
 NotesMindMapComponent.propTypes = {

@@ -29,55 +29,11 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module',
   },
-  plugins: ['react', 'class-property', 'import'],
+  plugins: ['react', 'class-property'],
   rules: {
     'no-console': 'off',
     'react/prop-types': 0,
     'object-curly-spacing': ['error', 'always'],
     'brace-style': ['error', '1tbs', { allowSingleLine: true }],
-    'import/order': [
-      'error',
-      {
-        'groups': ["builtin", "external", "parent", "sibling", "index"],
-        'pathGroups': [
-          {
-            'pattern': 'react',
-            'group': 'external',
-            'position': 'before'
-          },
-          {
-            'pattern': 'auth/**',
-            'group': 'external',
-            'position': 'after'
-          },
-          {
-            'pattern': 'components/**',
-            'group': 'external',
-            'position': 'after'
-          },
-          {
-            'pattern': 'selectors/**',
-            'group': 'external',
-            'position': 'after'
-          },
-          {
-            'pattern': 'libs/**',
-            'group': 'external',
-            'position': 'after'
-          },
-          {
-            'pattern': 'helpers/**',
-            'group': 'external',
-            'position': 'after'
-          }
-        ],
-        'pathGroupsExcludedImportTypes': ['react'],
-        'newlines-between': 'always',
-        'alphabetize': {
-          'order': 'asc',
-          'caseInsensitive': true
-        }
-      }
-    ],
   },
 };

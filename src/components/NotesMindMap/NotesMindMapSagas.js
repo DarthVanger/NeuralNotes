@@ -28,6 +28,7 @@ import {
   ROOT_NOTE_FOUND_ACTION,
 } from 'components/NotesMindMap/NotesMindMapActions';
 import { UploadsActions } from 'components/Uploads/UploadsActions';
+import { doesNodeHasParent } from 'helpers/graph';
 
 const LOADING_NOTE_MESSAGE = 'loading note contents...';
 let spinner = siteGlobalLoadingBar.create('mind map');
@@ -56,8 +57,12 @@ function* changeSelectedNote({ data: { note, edges } }) {
     console.log('not fetching child notes');
   }
 
-  const parentNote = yield fetchParentNote(targetNote);
-  yield put(selectedNoteParentFetchedAction(parentNote));
+  if (!doesNodeHasParent(note, edges) && !noteStorage.isAppFolder(note)) {
+    const parentNote = yield fetchParentNote(targetNote);
+    yield put(selectedNoteParentFetchedAction(parentNote));
+  } else {
+    console.log('not fetching parent note');
+  }
 }
 
 function* handleSearchResultClick({ data: { note } }) {
@@ -81,8 +86,6 @@ function* fetchChildNotes(note) {
 }
 
 function* fetchParentNote(note) {
-  if (noteStorage.isAppFolder(note)) return;
-
   const fetchingNotesSpinner = spinner.create('loading parent note');
   fetchingNotesSpinner.show();
   console.info(`Loading parent note for "${note.name}"...`);

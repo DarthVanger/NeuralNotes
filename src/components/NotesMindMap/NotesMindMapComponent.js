@@ -77,29 +77,6 @@ export class NotesMindMapComponent extends Component {
     );
   }
 
-  noteClickHandler = targetNoteId => {
-    const { selectedNote } = this.props;
-
-    // if clicking on the current note, do nothing.
-    if (targetNoteId === selectedNote.id) return;
-
-    const nodes = this.props.nodes;
-
-    const targetNote = nodes.find(note => note.id === targetNoteId);
-
-    if (!targetNote) {
-      throw new Error(
-        "noteClickHandler(): couldn't find targetNote: ",
-        targetNoteId,
-      );
-    }
-
-    this.props.changeSelectedNote({
-      note: targetNote,
-      edges: this.props.edges,
-    });
-  };
-
   visNetworkClickHandler = event => {
     const { selectedNote } = this.props;
     const { edges } = this.props;

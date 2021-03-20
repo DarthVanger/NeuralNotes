@@ -50,7 +50,7 @@ function* requestNoteText(note) {
 function* changeSelectedNote({ data: { note, edges } }) {
   const targetNote = note;
   localStorage.setItem('lastViewedNoteId', targetNote.id);
-  if (!targetNote.wereChildrenFetched) {
+  if (!targetNote.wereChildrenFetched && !targetNote.isUploadedFile) {
     const childNotes = yield fetchChildNotes(targetNote);
     yield put(selectedNoteChildrenFetchedAction(childNotes));
   } else {

@@ -38,10 +38,8 @@ export function* appInit() {
   yield call([toast, toast.configure], {
     position: toast.POSITION.BOTTOM_RIGHT,
   });
+  yield takeEvery(AUTH_SUCCESS_ACTION, loadApp);
   if (auth.signedIn()) {
-    console.info('User is signed in');
-    yield loadApp();
-  } else {
-    yield takeEvery(AUTH_SUCCESS_ACTION, loadApp);
+    yield put({ type: AUTH_SUCCESS_ACTION });
   }
 }

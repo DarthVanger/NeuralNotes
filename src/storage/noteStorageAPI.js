@@ -24,6 +24,7 @@ export default {
   move,
   updateFileName,
   updateNoteContentFileName,
+  getNoteById,
 };
 
 function setAppRootFolder(folder) {
@@ -420,10 +421,12 @@ function updateNoteContentFileName({ note, newName }) {
       });
     })
     .catch(error => {
-      throw new Error(
-        'noteStorageApi.updateNoteContentFileName(): could not find note content file. Error: ',
-        error,
+      console.error(
+        'noteStorageApi.updateNoteContentFileName(): could not find note content file for note "' +
+          note.name +
+          '"',
       );
+      throw error;
     });
 }
 
@@ -472,4 +475,8 @@ function move(noteId, newParentId) {
     .finally(() => {
       spinner.hide();
     });
+}
+
+function getNoteById(noteId) {
+  return googleDriveApi.findNoteById(noteId);
 }

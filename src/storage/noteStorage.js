@@ -54,14 +54,19 @@ function create(note, parentNote) {
 }
 
 function updateNoteName({ note, newName }) {
-  return Promise.all([
-    noteStorageApi.updateFileName({ id: note.id, name: newName }),
-    noteStorageApi.updateNoteContentFileName({ note, newName }),
-  ]).then(function(responses) {
-    console.log('resonses for note name update: ', responses);
-    const newNote = { ...note };
-    newNote.name = newName;
-    return newNote;
+  return noteStorageApi.getNoteById(note.id).then(noteInStorage => {
+    return Promise.all([
+      noteStorageApi.updateFileName({ id: note.id, name: newName }),
+      noteStorageApi.updateNoteContentFileName({
+        note: noteInStorage,
+        newName,
+      }),
+    ]).then(function(responses) {
+      console.log('resonses for note name update: ', responses);
+      const newNote = { ...note };
+      newNote.name = newName;
+      return newNote;
+    });
   });
 }
 

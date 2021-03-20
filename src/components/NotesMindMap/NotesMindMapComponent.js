@@ -2,16 +2,14 @@ import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
 import VisGraph from 'react-graph-vis';
-import noteStorage from 'storage/noteStorage';
 
-import { NoteNameEditorComponent } from 'components/NoteNameEditor/NoteNameEditorComponent';
 import { StyledNotesMindMap } from 'components/NotesMindMap/NotesMindMapStyles';
 
 import { VisNetworkHelper } from 'helpers/visNetworkHelper';
 
 export class NotesMindMapComponent extends Component {
   render() {
-    const { selectedNote, isChangeParentModeActive, nodes, edges } = this.props;
+    const { nodes, edges } = this.props;
 
     const visGraph = { nodes, edges };
 

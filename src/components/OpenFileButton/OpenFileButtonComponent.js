@@ -25,7 +25,7 @@ export function OpenFileButtonComponent(props) {
       href={link}
       target="_blank"
       className={classes.buttonLink}
-      rel="noreferrer">
+      rel="noopener noreferrer">
       <Button
         variant="contained"
         color="primary"

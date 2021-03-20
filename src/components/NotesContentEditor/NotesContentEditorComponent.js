@@ -29,30 +29,17 @@ export class NotesContentEditorComponent extends Component {
   render() {
     const { text } = this.state;
 
-    const {
-      selectedNote,
-      selectedNote: { isNote },
-    } = this.props;
+    const { selectedNote } = this.props;
     const link = noteStorage.getLinkToNote(selectedNote);
 
     return (
       <StyledSelectedNotesContent>
-        {isNote ? (
-          <StyledTextArea
-            ref={this.textAreaRef}
-            onChange={this.onChange}
-            placeholder="Your note..."
-            value={text}
-          />
-        ) : (
-          <StyledLink
-            className="btn btn-primary btn-lg"
-            target="_blank"
-            rel="noopener noreferrer"
-            href={link}>
-            Open in Google Drive
-          </StyledLink>
-        )}
+        <StyledTextArea
+          ref={this.textAreaRef}
+          onChange={this.onChange}
+          placeholder="Your note..."
+          value={text}
+        />
       </StyledSelectedNotesContent>
     );
   }

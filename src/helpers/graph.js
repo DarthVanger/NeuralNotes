@@ -37,9 +37,9 @@ export function removeNodeFromGraph(nodes, edges, nodeToDelete) {
 
 export function addGroupTagToNodes(nodes, edges) {
   return nodes.map(node =>
-    node.isNote && doesNodeHasChildren(edges, node.id)
+    !node.isUploadedFile && doesNodeHasChildren(edges, node.id)
       ? { ...node, group: 'parent' }
-      : node.isNote
+      : !node.isUploadedFile
       ? { ...node, group: 'children' }
       : node,
   );

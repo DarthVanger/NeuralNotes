@@ -18,7 +18,12 @@ export default {
   updateNoteName,
   getLinkToNote,
   isAppFolder,
+  isUploadedFile,
 };
+
+function isUploadedFile(file) {
+  return file.mimeType !== 'application/vnd.google-apps.folder';
+}
 
 function isAppFolder(note) {
   return note.name === noteStorageApi.APP_FOLDER_NAME;

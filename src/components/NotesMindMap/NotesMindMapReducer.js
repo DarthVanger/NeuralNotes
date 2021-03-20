@@ -15,6 +15,8 @@ import {
 
 import { addGroupTagToNodes, removeNodeFromGraph } from '../../helpers/graph';
 
+import noteStorage from 'storage/noteStorage';
+
 const defaultState = {
   selectedNote: {},
   noteText: '',
@@ -127,7 +129,7 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
     let nodes = state.nodes;
     return {
       ...state,
-      nodes: addNodeToGraph(nodes, { ...data, isNote: false }),
+      nodes: addNodeToGraph(nodes, { ...data }),
     };
   };
 
@@ -137,7 +139,7 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
       id: newNote.id,
       label: newNote.name,
       name: newNote.name,
-      isNote: newNote.isNote,
+      isUploadedFile: noteStorage.isUploadedFile(newNote),
       parent: newNote.parent,
     });
     return newNodes;

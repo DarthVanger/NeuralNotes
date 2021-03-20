@@ -58,10 +58,6 @@ function* changeSelectedNote({ data: { note, edges } }) {
 
   const parentNote = yield fetchParentNote(targetNote);
   yield put(selectedNoteParentFetchedAction(parentNote));
-
-  if (targetNote.isNote) {
-    yield requestNoteText(targetNote);
-  }
 }
 
 function* handleSearchResultClick({ data: { note } }) {
@@ -70,10 +66,6 @@ function* handleSearchResultClick({ data: { note } }) {
   const childNotes = yield fetchChildNotes(targetNote);
   yield put(push('/notes'));
   yield put(selectedNoteChildrenFetchedAction(childNotes));
-
-  if (targetNote.isNote) {
-    yield requestNoteText(targetNote);
-  }
 }
 
 function* fetchChildNotes(note) {
@@ -111,7 +103,6 @@ function* createEmptyChild({ data: { parent } }) {
   const note = {
     name: 'new2',
     content: '',
-    isNote: true,
   };
 
   const newNote = yield noteStorage.create(note, parent);

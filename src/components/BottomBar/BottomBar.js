@@ -50,7 +50,7 @@ export const BottomBar = () => {
     <AppBar position="fixed" className={classes.appBar}>
       <Toolbar>
         <BottomBarMenu />
-        {selectedNote.isNote && (
+        {!selectedNote.isUploadedFile && (
           <>
             <Link to="/note" className={classes.left}>
               <EditIcon />
@@ -61,7 +61,7 @@ export const BottomBar = () => {
           <Typography variant="subtitle2">{selectedNote.name}</Typography>
         </StyledLabel>
 
-        {selectedNote.isNote && (
+        {!selectedNote.isUploadedFile && (
           <>
             <Fab aria-label="add" className={classes.fabButton} color="primary">
               <AddIcon />
@@ -69,7 +69,7 @@ export const BottomBar = () => {
             <UploadButton></UploadButton>
           </>
         )}
-        {!selectedNote.isNote && <OpenFileButtonContainer />}
+        {selectedNote.isUploadedFile && <OpenFileButtonContainer />}
       </Toolbar>
     </AppBar>
   );

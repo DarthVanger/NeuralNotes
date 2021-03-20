@@ -75,7 +75,6 @@ function fetchChildNotes(note) {
           if (file.name === note.name + '.txt') {
             return;
           }
-          file.isNote = isNote(file);
           children.push(file);
         });
         console.debug('[Loaded] notes for "' + note.id + '"');
@@ -88,14 +87,6 @@ function fetchChildNotes(note) {
         spinner.hide();
       });
   });
-}
-
-/**
- * Whether a file is a note createad by app,
- * or a user uploaded file (e.g. a "jpeg" image).
- */
-function isNote(file) {
-  return file.mimeType === 'application/vnd.google-apps.folder';
 }
 
 /**

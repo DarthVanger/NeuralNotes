@@ -60,7 +60,7 @@ export const BottomBarMenu = () => {
             width: '168px',
           },
         }}>
-        {selectedNote.isNote && (
+        {!selectedNote.isUploadedFile && (
           <Link to="/note" style={{ textDecoration: 'none' }}>
             <MenuItem>
               <Typography variant="subtitle1">Edit</Typography>

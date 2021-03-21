@@ -7,6 +7,22 @@ export const EDITOR_NOTE_CONTENT_CHANGED_ACTION =
 export const NOTE_CONTENT_FETCH_SUCCESS_ACTION =
   'NOTE_CONTENT_FETCH_SUCCESS_ACTION';
 
+export const NOTE_NAME_UPDATE_REQUEST_SUCCESS_ACTION =
+  'NOTE_NAME_UPDATE_REQUEST_SUCCESS_ACTION';
+
+export const NOTE_CONTENT_UPDATE_REQUEST_SUCCESS_ACTION =
+  'NOTE_CONTENT_UPDATE_REQUEST_SUCCESS_ACTION';
+
+export const noteNameUpdateRequestSuccessAction = data => ({
+  type: NOTE_NAME_UPDATE_REQUEST_SUCCESS_ACTION,
+  data,
+});
+
+export const noteContentUpdateRequestSuccessAction = data => ({
+  type: NOTE_CONTENT_UPDATE_REQUEST_SUCCESS_ACTION,
+  data,
+});
+
 export const noteContentFetchSuccessAction = noteContent => ({
   type: NOTE_CONTENT_FETCH_SUCCESS_ACTION,
   data: noteContent,

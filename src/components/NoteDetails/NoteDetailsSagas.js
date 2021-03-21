@@ -3,9 +3,12 @@ import { all, takeEvery, put, call } from 'redux-saga/effects';
 import noteStorage from 'storage/noteStorage';
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
 
-import { noteNameUpdateRequestSuccessAction } from 'components/NotesMindMap/NotesMindMapActions';
 import { EDIT_NOTE_BUTTON_CLICKED_ACTION } from 'components/BottomBar/BottomBarActions';
-import { noteContentFetchSuccessAction } from './NoteDetailsActions';
+import {
+  noteNameUpdateRequestSuccessAction,
+  noteContentUpdateRequestSuccessAction,
+  noteContentFetchSuccessAction,
+} from './NoteDetailsActions';
 import { push } from 'connected-react-router';
 
 import {
@@ -34,7 +37,8 @@ function* updateNoteContent({ data: { note, noteContent } }) {
   );
 
   try {
-    yield noteStorage.update(newNote);
+    const returnedNote = yield noteStorage.update(newNote);
+    yield put(noteContentUpdateRequestSuccessAction(returnedNote));
     savingNoteContentSpinner.hide();
   } catch (error) {
     toast.error('Failed to save note content');

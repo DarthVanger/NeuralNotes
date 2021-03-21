@@ -6,8 +6,6 @@ export const CREATE_EMPTY_CHILD_ACTION = 'CREATE_EMPTY_CHILD_ACTION';
 export const DELETE_NOTE_ACTION = 'DELETE_NOTE_ACTION';
 export const DELETE_NOTE_REQUEST_SUCCESS_ACTION =
   'DELETE_NOTE_REQUEST_SUCCESS_ACTION';
-export const NOTE_NAME_UPDATE_REQUEST_SUCCESS_ACTION =
-  'NOTE_NAME_UPDATE_REQUEST_SUCCESS_ACTION';
 export const UPDATE_NOTE_NAME_ACTION = 'UPDATE_NOTE_NAME_ACTION';
 export const SELECTED_NOTE_CHILDREN_FETCHED_ACTION =
   'SELECTED_NOTE_CHILDREN_FETCHED_ACTION';
@@ -38,10 +36,6 @@ export const selectedNoteParentFetchedAction = data => ({
 });
 export const updateNoteNameAction = data => ({
   type: UPDATE_NOTE_NAME_ACTION,
-  data,
-});
-export const noteNameUpdateRequestSuccessAction = data => ({
-  type: NOTE_NAME_UPDATE_REQUEST_SUCCESS_ACTION,
   data,
 });
 export const createNoteSuccessAction = data => ({

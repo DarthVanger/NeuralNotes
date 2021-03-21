@@ -14,10 +14,15 @@ export const NoteDetailsComponent = props => {
   const [noteContent, setNoteContent] = useState(props.noteContent);
   const [debouncedNoteName] = useDebounce(noteName, 1000);
   const [debouncedNoteContent] = useDebounce(noteContent, 1000);
+  const [areChangesSaved, setAreChangesSaved] = useState(true);
 
   useEffect(() => {
     setNoteContent(props.noteContent);
   }, [props.noteContent]);
+
+  useEffect(() => {
+    setAreChangesSaved(props.areChangesSaved);
+  }, [props.areChangesSaved]);
 
   useEffect(() => {
     if (debouncedNoteName === props.noteName) return;
@@ -37,14 +42,18 @@ export const NoteDetailsComponent = props => {
 
   const handleNoteNameChange = e => {
     setNoteName(e.target.value);
+    setAreChangesSaved(false);
   };
 
   const handleNoteContentChange = e => {
     setNoteContent(e.target.value);
+    setAreChangesSaved(false);
   };
 
   return (
     <StyledNoteDetailsScreen>
+      {areChangesSaved && 'Saved to Google Drive'}
+      {!areChangesSaved && 'Saving...'}
       <StyledNoteNameEditor
         onChange={handleNoteNameChange}
         value={noteName}

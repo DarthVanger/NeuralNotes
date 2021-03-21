@@ -3,3 +3,11 @@ export const EDITOR_NOTE_NAME_CHANGED_ACTION =
 
 export const EDITOR_NOTE_CONTENT_CHANGED_ACTION =
   'EDITOR_NOTE_CONTENT_CHANGED_ACTION';
+
+export const NOTE_CONTENT_FETCH_SUCCESS_ACTION =
+  'NOTE_CONTENT_FETCH_SUCCESS_ACTION';
+
+export const noteContentFetchSuccessAction = noteContent => ({
+  type: NOTE_CONTENT_FETCH_SUCCESS_ACTION,
+  data: noteContent,
+});

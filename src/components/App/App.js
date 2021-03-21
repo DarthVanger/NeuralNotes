@@ -26,7 +26,7 @@ export const App = () => {
         <Route exact path="/notes">
           <NotesPageContainer />
         </Route>
-        <Route exact path="/note">
+        <Route exact path="/note/:id">
           <NoteDetailsPage />
         </Route>
         <Route path="/uploads">

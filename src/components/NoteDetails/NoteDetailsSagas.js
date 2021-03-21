@@ -1,9 +1,12 @@
 import { toast } from 'react-toastify';
-import { all, takeEvery, put } from 'redux-saga/effects';
+import { all, takeEvery, put, call } from 'redux-saga/effects';
 import noteStorage from 'storage/noteStorage';
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
 
 import { noteNameUpdateRequestSuccessAction } from 'components/NotesMindMap/NotesMindMapActions';
+import { EDIT_NOTE_BUTTON_CLICKED_ACTION } from 'components/BottomBar/BottomBarActions';
+import { noteContentFetchSuccessAction } from './NoteDetailsActions';
+import { push } from 'connected-react-router';
 
 import {
   EDITOR_NOTE_NAME_CHANGED_ACTION,
@@ -39,7 +42,16 @@ function* updateNoteContent({ data: { note, noteContent } }) {
   }
 }
 
+function* handleEditNoteButtonClick({ data: { note } }) {
+  yield put(push(`/note/${note.id}`));
+  const noteContent = yield call(noteStorage.getNoteContent, note);
+  yield put(noteContentFetchSuccessAction(noteContent));
+}
+
 export function* noteDetailsInit() {
   yield all([takeEvery(EDITOR_NOTE_NAME_CHANGED_ACTION, updateNoteName)]);
   yield all([takeEvery(EDITOR_NOTE_CONTENT_CHANGED_ACTION, updateNoteContent)]);
+  yield all([
+    takeEvery(EDIT_NOTE_BUTTON_CLICKED_ACTION, handleEditNoteButtonClick),
+  ]);
 }

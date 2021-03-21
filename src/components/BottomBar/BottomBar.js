@@ -7,7 +7,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
-import { useSelector } from 'react-redux';
+import IconButton from '@material-ui/core/IconButton';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -17,6 +18,8 @@ import { UploadButton } from 'components/Uploads/UploadButton';
 import { colors } from '../../colors';
 
 import { BottomBarMenu } from './BottomBarMenu';
+
+import { editNoteButtonClickedAction } from './BottomBarActions';
 
 const useStyles = makeStyles(() => ({
   appBar: {
@@ -45,6 +48,11 @@ export const BottomBar = () => {
   const classes = useStyles();
 
   const selectedNote = useSelector(state => state.notesMindMap.selectedNote);
+  const dispatch = useDispatch();
+
+  const handleEditButtonClick = event => {
+    dispatch(editNoteButtonClickedAction(selectedNote));
+  };
 
   return (
     <AppBar position="fixed" className={classes.appBar}>
@@ -52,9 +60,12 @@ export const BottomBar = () => {
         <BottomBarMenu />
         {!selectedNote.isUploadedFile && (
           <>
-            <Link to="/note" className={classes.left}>
+            <IconButton
+              aria-label="edit"
+              onClick={handleEditButtonClick}
+              className={classes.left}>
               <EditIcon />
-            </Link>
+            </IconButton>
           </>
         )}
         <StyledLabel>

@@ -9,7 +9,6 @@ import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { OpenFileButtonContainer } from 'components/OpenFileButton/OpenFileButtonContainer';
@@ -50,7 +49,7 @@ export const BottomBar = () => {
   const selectedNote = useSelector(state => state.notesMindMap.selectedNote);
   const dispatch = useDispatch();
 
-  const handleEditButtonClick = event => {
+  const handleEditButtonClick = () => {
     dispatch(editNoteButtonClickedAction(selectedNote));
   };
 

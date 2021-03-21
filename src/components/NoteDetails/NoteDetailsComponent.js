@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDebounce } from 'use-debounce';
 
 import {
@@ -6,8 +6,6 @@ import {
   StyledNoteDetailsScreen,
   StyledNoteContentEditor,
 } from 'components/NoteDetails/NoteDetailsStyles';
-
-import { debounce } from 'helpers/debounce';
 
 export const NoteDetailsComponent = props => {
   const [noteName, setNoteName] = useState(props.noteName);

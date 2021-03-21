@@ -10,7 +10,6 @@ import { appInit } from 'components/App/AppSagas';
 import { loginInit } from 'components/LoginPage/LoginPageSagas';
 import { logoutButtonInit } from 'components/LogoutButton/LogoutButtonSagas';
 import { noteDetailsInit } from 'components/NoteDetails/NoteDetailsSagas';
-import { notesContentEditorInit } from 'components/NotesContentEditor/NotesContentEditorSagas';
 import { noteMindMapInit } from 'components/NotesMindMap/NotesMindMapSagas';
 import { notesInit } from 'components/NotesPage/NotesPageSagas';
 import { searchPageInit } from 'components/SearchPage/SearchPageSagas';
@@ -64,7 +63,6 @@ export function* rootSaga() {
     logoutButtonInit(),
     notesInit(),
     noteMindMapInit(),
-    notesContentEditorInit(),
     uploadsInit(),
     noteDetailsInit(),
     searchPageInit(),

@@ -40,14 +40,6 @@ export class NoteNameEditorComponent extends Component {
     );
   }
 
-  static getDerivedStateFromProps({ note }, state) {
-    const { name } = note;
-    if (name !== state.propName) {
-      return { name, propName: name };
-    }
-    return null;
-  }
-
   onChange = () => {
     const name = this.ref.current.value;
     this.debouncedOnChange(name);

@@ -72,7 +72,6 @@ const getComputedEdges = createSelector(
 
 const mapStateToProps = createStructuredSelector({
   selectedNote: createNotesMindMapPropertySelector('selectedNote'),
-  noteText: createNotesMindMapPropertySelector('noteText'),
   isChangeParentModeActive: createNotesMindMapPropertySelector(
     'isChangeParentModeActive',
   ),

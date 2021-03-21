@@ -2,10 +2,7 @@ import {
   EDITOR_NOTE_NAME_CHANGED_ACTION,
   EDITOR_NOTE_CONTENT_CHANGED_ACTION,
 } from 'components/NoteDetails/NoteDetailsActions';
-import {
-  CHANGE_SELECTED_NOTE_ACTION,
-  CHANGE_NOTE_TEXT_ACTION,
-} from 'components/NotesMindMap/NotesMindMapActions';
+import { CHANGE_SELECTED_NOTE_ACTION } from 'components/NotesMindMap/NotesMindMapActions';
 
 const defaultState = {
   noteName: '',
@@ -28,11 +25,6 @@ export const noteDetailsReducer = (state = defaultState, { type, data }) => {
       return {
         ...state,
         noteContent: data.noteContent,
-      };
-    case CHANGE_NOTE_TEXT_ACTION:
-      return {
-        ...state,
-        noteContent: data,
       };
     default:
       return state;

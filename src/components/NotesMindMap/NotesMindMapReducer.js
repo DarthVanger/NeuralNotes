@@ -1,5 +1,4 @@
 import {
-  CHANGE_NOTE_TEXT_ACTION,
   CHANGE_SELECTED_NOTE_ACTION,
   SELECTED_NOTE_CHILDREN_FETCHED_ACTION,
   SELECTED_NOTE_PARENT_FETCHED_ACTION,
@@ -19,7 +18,6 @@ import noteStorage from 'storage/noteStorage';
 
 const defaultState = {
   selectedNote: {},
-  noteText: '',
   isChangeParentModeActive: false,
   nodes: [],
   edges: [],
@@ -164,8 +162,6 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
       return handleSelectedNoteChildrenFetchedAction(data);
     case SELECTED_NOTE_PARENT_FETCHED_ACTION:
       return handleSelectedNoteParentFetchedAction(data);
-    case CHANGE_NOTE_TEXT_ACTION:
-      return { ...state, noteText: data };
     case NOTE_NAME_UPDATE_REQUEST_SUCCESS_ACTION:
       return handleNoteNameUpdateRequestSuccessAction({ state, data });
     case CREATE_NOTE_SUCCESS_ACTION:

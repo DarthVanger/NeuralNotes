@@ -1,6 +1,5 @@
 import {
   all,
-  call,
   put,
   takeEvery,
 } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';

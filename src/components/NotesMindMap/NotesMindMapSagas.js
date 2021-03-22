@@ -15,10 +15,8 @@ import {
   NOTE_CHANGE_PARENT_ACTION,
   selectedNoteChildrenFetchedAction,
   selectedNoteParentFetchedAction,
-  DELETE_NOTE_ACTION,
   UPDATE_NOTE_NAME_ACTION,
   noteNameUpdateRequestSuccessAction,
-  deleteNoteRequestSuccessAction,
   changeParentRequestSuccessAction,
   changeParentRequestFailAction,
   SEARCH_RESULT_CLICKED,
@@ -92,11 +90,6 @@ function* fetchParentNote(note) {
   }
 }
 
-function* deleteNote({ data: { note } }) {
-  yield noteStorage.remove(note);
-  yield put(deleteNoteRequestSuccessAction(note));
-}
-
 function* updateNoteName({ data: { note, newName } }) {
   const newNote = yield noteStorage.updateNoteName({ note, newName });
   yield put(noteNameUpdateRequestSuccessAction(newNote));
@@ -132,7 +125,6 @@ export function* noteMindMapInit() {
     takeEvery(NOTE_CHANGE_PARENT_ACTION, changeParentNote),
     takeEvery(ROOT_NOTE_FOUND_ACTION, selectRootNote),
     takeEvery(CHANGE_SELECTED_NOTE_ACTION, changeSelectedNote),
-    takeEvery(DELETE_NOTE_ACTION, deleteNote),
     takeEvery(UPDATE_NOTE_NAME_ACTION, updateNoteName),
     takeEvery(SEARCH_RESULT_CLICKED, handleSearchResultClick),
     takeEvery(UploadsActions.file.uploadSuccess, uploadSuccessSaga),

@@ -109,7 +109,6 @@ export class NotesMindMapComponent extends Component {
 NotesMindMapComponent.propTypes = {
   selectedNote: PropTypes.object.isRequired,
   changeSelectedNote: PropTypes.func.isRequired,
-  deleteNote: PropTypes.func.isRequired,
   isChangeParentModeActive: PropTypes.bool.isRequired,
   changeParentNote: PropTypes.func.isRequired,
   nodes: PropTypes.array.isRequired,

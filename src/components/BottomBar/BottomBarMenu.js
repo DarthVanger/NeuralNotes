@@ -13,6 +13,7 @@ import { colors } from '../../colors';
 import {
   editNoteButtonClickedAction,
   changeParentButtonClickedAction,
+  deleteNoteAction,
 } from './BottomBarActions';
 
 const useStyles = makeStyles(() => ({
@@ -41,6 +42,10 @@ export const BottomBarMenu = () => {
 
   const handleChangeParentButtonClick = () => {
     dispatch(changeParentButtonClickedAction(selectedNote));
+  };
+
+  const handleDeleteButtonClick = () => {
+    dispatch(deleteNoteAction(selectedNote));
   };
 
   return (
@@ -79,7 +84,7 @@ export const BottomBarMenu = () => {
         <MenuItem onClick={handleChangeParentButtonClick}>
           <Typography variant="subtitle1">Change parent</Typography>
         </MenuItem>
-        <MenuItem>
+        <MenuItem onClick={handleDeleteButtonClick}>
           <Typography variant="subtitle1">Delete</Typography>
         </MenuItem>
       </Menu>

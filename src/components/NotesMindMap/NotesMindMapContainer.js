@@ -6,7 +6,6 @@ import { UploadsSelectors } from 'selectors';
 import {
   CHANGE_SELECTED_NOTE_ACTION,
   NOTE_CHANGE_PARENT_ACTION,
-  DELETE_NOTE_ACTION,
   CREATE_EMPTY_CHILD_ACTION,
   UPDATE_NOTE_NAME_ACTION,
   MIND_MAP_CLICKED_ACTION,
@@ -82,7 +81,6 @@ const mapDispatchToProps = () => ({
   changeSelectedNote: data => action(CHANGE_SELECTED_NOTE_ACTION, data),
   changeParentNote: data => action(NOTE_CHANGE_PARENT_ACTION, data),
   createEmptyChild: data => action(CREATE_EMPTY_CHILD_ACTION, data),
-  deleteNote: data => action(DELETE_NOTE_ACTION, data),
   updateNoteName: data => action(UPDATE_NOTE_NAME_ACTION, data),
   onMindMapClick: data => action(MIND_MAP_CLICKED_ACTION, data),
 });

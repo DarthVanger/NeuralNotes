@@ -9,7 +9,9 @@ import noteStorage from 'storage/noteStorage';
 import {
   CREATE_EMPTY_CHILD_ACTION,
   CHANGE_PARENT_BUTTON_CLICKED_ACTION,
+  DELETE_NOTE_ACTION,
   createNoteSuccessAction,
+  deleteNoteRequestSuccessAction,
 } from './BottomBarActions';
 
 function* createEmptyChild({ data: { parent } }) {
@@ -27,6 +29,11 @@ function* handleChangeParentButtonClick({ data: { note } }) {
   yield put(push(`/change-note-parent/${note.id}`));
 }
 
+function* deleteNote({ data: { note } }) {
+  yield noteStorage.remove(note);
+  yield put(deleteNoteRequestSuccessAction(note));
+}
+
 export function* bottomBarInit() {
   yield all([takeEvery(CREATE_EMPTY_CHILD_ACTION, createEmptyChild)]);
   yield all([
@@ -34,5 +41,6 @@ export function* bottomBarInit() {
       CHANGE_PARENT_BUTTON_CLICKED_ACTION,
       handleChangeParentButtonClick,
     ),
+    takeEvery(DELETE_NOTE_ACTION, deleteNote),
   ]);
 }

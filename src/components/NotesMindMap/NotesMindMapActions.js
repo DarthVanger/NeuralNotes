@@ -2,9 +2,6 @@ export const CHANGE_SELECTED_NOTE_ACTION = 'CHANGE_SELECTED_NOTE_ACTION';
 export const CHANGE_NOTE_VIS_NETWORK_NOTE_ACTION =
   'CHANGE_NOTE_VIS_NETWORK_NOTE_ACTION';
 export const NOTE_CHANGE_PARENT_ACTION = 'NOTE_CHANGE_PARENT_ACTION';
-export const DELETE_NOTE_ACTION = 'DELETE_NOTE_ACTION';
-export const DELETE_NOTE_REQUEST_SUCCESS_ACTION =
-  'DELETE_NOTE_REQUEST_SUCCESS_ACTION';
 export const UPDATE_NOTE_NAME_ACTION = 'UPDATE_NOTE_NAME_ACTION';
 export const SELECTED_NOTE_CHILDREN_FETCHED_ACTION =
   'SELECTED_NOTE_CHILDREN_FETCHED_ACTION';
@@ -36,10 +33,6 @@ export const updateNoteNameAction = data => ({
 });
 export const mindMapClickedAction = data => ({
   type: MIND_MAP_CLICKED_ACTION,
-  data,
-});
-export const deleteNoteRequestSuccessAction = data => ({
-  type: DELETE_NOTE_REQUEST_SUCCESS_ACTION,
   data,
 });
 export const changeParentRequestSuccessAction = data => ({

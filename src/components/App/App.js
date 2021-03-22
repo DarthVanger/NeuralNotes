@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 
 import { LoginPageContainer } from 'components/LoginPage/LoginPageContainer';
 import { NoteDetailsPage } from 'components/NoteDetails/NoteDetailsPage';
-import { NotesPageContainer } from 'components/NotesPage/NotesPageContainer';
+import { NotesPageComponent } from 'components/NotesPage/NotesPageComponent';
 import { SearchPageComponent } from 'components/SearchPage/SearchPageComponent';
 import { UploadsPage } from 'components/Uploads/UploadsPage';
 import { isUserSignedInSelector } from 'components/LoginPage/LoginPageSelectors';
@@ -24,7 +24,7 @@ export const App = () => {
         {!isUserSignedIn && <Redirect to="/" />}
 
         <Route exact path="/notes">
-          <NotesPageContainer />
+          <NotesPageComponent />
         </Route>
         <Route exact path="/note/:id">
           <NoteDetailsPage />

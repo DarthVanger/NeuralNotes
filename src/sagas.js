@@ -11,7 +11,6 @@ import { loginInit } from 'components/LoginPage/LoginPageSagas';
 import { logoutButtonInit } from 'components/LogoutButton/LogoutButtonSagas';
 import { noteDetailsInit } from 'components/NoteDetails/NoteDetailsSagas';
 import { noteMindMapInit } from 'components/NotesMindMap/NotesMindMapSagas';
-import { notesInit } from 'components/NotesPage/NotesPageSagas';
 import { searchPageInit } from 'components/SearchPage/SearchPageSagas';
 import { spinnerInit } from 'components/Spinner/SpinnerSagas';
 import { uploadsInit } from 'components/Uploads/UploadsSagas';
@@ -62,7 +61,6 @@ export function* rootSaga() {
     spinnerInit(),
     loginInit(),
     logoutButtonInit(),
-    notesInit(),
     noteMindMapInit(),
     uploadsInit(),
     noteDetailsInit(),

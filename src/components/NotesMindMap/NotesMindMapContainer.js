@@ -6,7 +6,7 @@ import { UploadsSelectors } from 'selectors';
 import {
   CHANGE_SELECTED_NOTE_ACTION,
   NOTE_CHANGE_PARENT_ACTION,
-  CREATE_EMPTY_CHILD_ACTION,
+  ADD_NOTE_BUTTON_CLICKED_ACTION,
   UPDATE_NOTE_NAME_ACTION,
   MIND_MAP_CLICKED_ACTION,
 } from 'components/NotesMindMap/NotesMindMapActions';
@@ -80,7 +80,7 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = () => ({
   changeSelectedNote: data => action(CHANGE_SELECTED_NOTE_ACTION, data),
   changeParentNote: data => action(NOTE_CHANGE_PARENT_ACTION, data),
-  createEmptyChild: data => action(CREATE_EMPTY_CHILD_ACTION, data),
+  createEmptyChild: data => action(ADD_NOTE_BUTTON_CLICKED_ACTION, data),
   updateNoteName: data => action(UPDATE_NOTE_NAME_ACTION, data),
   onMindMapClick: data => action(MIND_MAP_CLICKED_ACTION, data),
 });

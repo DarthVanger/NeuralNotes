@@ -20,7 +20,7 @@ import { BottomBarMenu } from './BottomBarMenu';
 
 import {
   editNoteButtonClickedAction,
-  createEmptyChildAction,
+  addNoteButtonClickedAction,
 } from './BottomBarActions';
 
 const useStyles = makeStyles(() => ({
@@ -57,7 +57,7 @@ export const BottomBar = () => {
   };
 
   const handleAddButtonClick = () => {
-    dispatch(createEmptyChildAction(selectedNote));
+    dispatch(addNoteButtonClickedAction(selectedNote));
   };
 
   return (

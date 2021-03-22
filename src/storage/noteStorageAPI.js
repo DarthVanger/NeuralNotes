@@ -361,16 +361,20 @@ function getTextFileContents(options) {
  * Create a note: a directory and a file with note
  * contents inside.
  */
-function create(note, parentNote) {
-  if (!parentNote) {
-    parentNote = appRootFolder;
+function create(note) {
+  console.debug('creating a new note: ', note, 'with parent: ', note.parent);
+  if (!note.parent) {
+    console.debug(
+      'note.parent is undefined, so creating note in the app root folder!',
+    );
+    note.parent = appRootFolder;
   }
 
   spinner.show();
   return googleDriveApi
     .createDirectory({
       name: note.name,
-      parents: [parentNote.id],
+      parents: [note.parent.id],
     })
     .then(function(createdDirectory) {
       note.id = createdDirectory.id;

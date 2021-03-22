@@ -24,17 +24,21 @@ export const NoteDetailsComponent = props => {
 
   useEffect(() => {
     if (debouncedNoteName === props.noteName) return;
-    props.onNoteNameChange({
+    props.editorNoteNameChangedAction({
       newNoteName: debouncedNoteName,
       note: props.selectedNote,
+      isNewNote: props.isNewNote,
+      isNoteCreationInProgress: props.isNoteCreationInProgress,
     });
   }, [debouncedNoteName]);
 
   useEffect(() => {
     if (debouncedNoteContent === props.noteContent) return;
-    props.onNoteContentChange({
+    props.editorNoteContentChangedAction({
       noteContent: debouncedNoteContent,
       note: props.selectedNote,
+      isNewNote: props.isNewNote,
+      isNoteCreationInProgress: props.isNoteCreationInProgress,
     });
   }, [debouncedNoteContent]);
 
@@ -50,8 +54,9 @@ export const NoteDetailsComponent = props => {
 
   return (
     <StyledNoteDetailsScreen>
-      {areChangesSaved && 'Saved to Google Drive'}
-      {!areChangesSaved && 'Saving...'}
+      {!props.isNewNote && areChangesSaved && 'Saved to Google Drive'}
+      {!props.isNewNote && !areChangesSaved && 'Saving...'}
+      {props.isNoteCreationInProgress && 'Saving...'}
       <StyledNoteNameEditor
         onChange={handleNoteNameChange}
         value={noteName}

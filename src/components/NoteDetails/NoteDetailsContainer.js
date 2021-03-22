@@ -9,23 +9,29 @@ import { NoteDetailsComponent } from 'components/NoteDetails/NoteDetailsComponen
 
 const mapStateToProps = ({
   notesMindMap: { selectedNote },
-  noteDetails: { noteName, noteContent, areChangesSaved },
+  noteDetails: {
+    noteName,
+    noteContent,
+    areChangesSaved,
+    isNewNote,
+    isNoteCreationInProgress,
+  },
 }) => {
   return {
     selectedNote,
     noteContent,
     noteName,
     areChangesSaved,
+    isNewNote,
+    isNoteCreationInProgress,
   };
 };
 
-const mapDispatchToProps = () => ({
-  onNoteNameChange: ({ note, newNoteName }) => {
-    action(EDITOR_NOTE_NAME_CHANGED_ACTION, { note, newNoteName });
-  },
-  onNoteContentChange: ({ note, noteContent }) => {
-    action(EDITOR_NOTE_CONTENT_CHANGED_ACTION, { note, noteContent });
-  },
+const mapDispatchToProps = dispatch => ({
+  editorNoteNameChangedAction: data =>
+    dispatch({ type: EDITOR_NOTE_NAME_CHANGED_ACTION, data }),
+  editorNoteContentChangedAction: data =>
+    dispatch({ type: EDITOR_NOTE_CONTENT_CHANGED_ACTION, data }),
 });
 
 export const NoteDetailsContainer = connect(

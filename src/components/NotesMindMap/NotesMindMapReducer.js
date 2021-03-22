@@ -10,10 +10,11 @@ import {
 } from 'components/NotesMindMap/NotesMindMapActions';
 
 import {
-  CREATE_NOTE_SUCCESS_ACTION,
   CHANGE_PARENT_BUTTON_CLICKED_ACTION,
   DELETE_NOTE_REQUEST_SUCCESS_ACTION,
 } from 'components/BottomBar/BottomBarActions';
+
+import { CREATE_NOTE_SUCCESS_ACTION } from 'components/NoteDetails/NoteDetailsActions';
 
 import { addGroupTagToNodes, removeNodeFromGraph } from '../../helpers/graph';
 
@@ -96,6 +97,7 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
       ...state,
       nodes,
       edges,
+      selectedNote: newNote,
     };
   };
 

@@ -45,9 +45,8 @@ function scanDrive() {
   return noteStorageApi.scanDrive();
 }
 
-function create(note, parentNote) {
-  console.info('Creating a new note: ', note.name);
-  return noteStorageApi.create(note, parentNote).then(function(createdNote) {
+function create(note) {
+  return noteStorageApi.create(note).then(function(createdNote) {
     console.info('Created new note: ', note.name);
     return createdNote;
   });

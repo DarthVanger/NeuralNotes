@@ -434,9 +434,10 @@ function remove(note) {
   const requestParams = {
     fileId: note.id,
     mimeType: 'application/vnd.google-apps.folder',
+    trashed: true,
   };
 
-  const request = googleDriveApi.client.files.delete(requestParams);
+  const request = googleDriveApi.client.files.update(requestParams);
 
   spinner.show();
   return new Promise(resolve => {

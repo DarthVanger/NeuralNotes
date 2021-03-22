@@ -25,7 +25,7 @@ const UploadsList = ({ list }) => {
   return (
     <List className={classes.list}>
       {list.map(item => (
-        <UploadsListItem key={item.name} item={item} />
+        <UploadsListItem key={item.session} item={item} />
       ))}
     </List>
   );

@@ -62,7 +62,7 @@ export function TopBar() {
             <Link to="/uploads">
               <IconButton>
                 <CloudUploadIcon
-                  style={{ color: '#BB86FC', 'margin-right': '10px' }}
+                  style={{ color: '#BB86FC', marginRight: '10px' }}
                 />
               </IconButton>
             </Link>

@@ -14,7 +14,10 @@ export const TopBarPageTitle = ({ children, ...props }) => {
 
   return (
     <div className={classes.topBarPageTitle}>
-      <Typography variant="h6" {...props}>
+      <Typography
+        variant="h6"
+        style={{ color: 'rgba(255, 255, 255, 0.87)' }}
+        {...props}>
         {children}
       </Typography>
     </div>

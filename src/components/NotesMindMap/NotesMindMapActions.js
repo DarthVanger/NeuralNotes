@@ -12,8 +12,6 @@ export const SELECTED_NOTE_PARENT_FETCHED_ACTION =
   'SELECTED_NOTE_PARENT_FETCHED_ACTION';
 
 export const MIND_MAP_CLICKED_ACTION = 'MIND_MAP_CLICKED_ACTION';
-export const CHANGE_PARENT_BUTTON_CLICKED_ACTION =
-  'CHANGE_PARENT_BUTTON_CLICKED_ACTION';
 export const CHANGE_PARENT_REQUEST_SUCCESS_ACTION =
   'CHANGE_PARENT_REQUEST_SUCCESS_ACTION';
 export const CHANGE_PARENT_REQUEST_FAIL_ACTION =
@@ -50,10 +48,6 @@ export const changeParentRequestSuccessAction = data => ({
 });
 export const changeParentRequestFailAction = data => ({
   type: CHANGE_PARENT_REQUEST_FAIL_ACTION,
-  data,
-});
-export const changeParentButtonClickedAction = data => ({
-  type: CHANGE_PARENT_BUTTON_CLICKED_ACTION,
   data,
 });
 export const searchResultClickedAction = data => ({

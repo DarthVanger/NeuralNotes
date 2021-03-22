@@ -86,8 +86,6 @@ const mapDispatchToProps = () => ({
   deleteNote: data => action(DELETE_NOTE_ACTION, data),
   updateNoteName: data => action(UPDATE_NOTE_NAME_ACTION, data),
   onMindMapClick: data => action(MIND_MAP_CLICKED_ACTION, data),
-  onChangeParentButtonClick: data =>
-    action(CHANGE_PARENT_BUTTON_CLICKED_ACTION, data),
 });
 
 export const NotesMindMapContainer = connect(

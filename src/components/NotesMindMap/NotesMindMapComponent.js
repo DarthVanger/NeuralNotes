@@ -116,5 +116,4 @@ NotesMindMapComponent.propTypes = {
   edges: PropTypes.array.isRequired,
   onMindMapClick: PropTypes.func.isRequired,
   updateNoteName: PropTypes.func.isRequired,
-  onChangeParentButtonClick: PropTypes.func.isRequired,
 };

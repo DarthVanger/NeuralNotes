@@ -4,14 +4,16 @@ import {
   SELECTED_NOTE_PARENT_FETCHED_ACTION,
   NOTE_NAME_UPDATE_REQUEST_SUCCESS_ACTION,
   DELETE_NOTE_REQUEST_SUCCESS_ACTION,
-  CHANGE_PARENT_BUTTON_CLICKED_ACTION,
   CHANGE_PARENT_REQUEST_SUCCESS_ACTION,
   CHANGE_PARENT_REQUEST_FAIL_ACTION,
   SEARCH_RESULT_CLICKED,
   ROOT_NOTE_FOUND_ACTION,
 } from 'components/NotesMindMap/NotesMindMapActions';
 
-import { CREATE_NOTE_SUCCESS_ACTION } from 'components/BottomBar/BottomBarActions';
+import {
+  CREATE_NOTE_SUCCESS_ACTION,
+  CHANGE_PARENT_BUTTON_CLICKED_ACTION,
+} from 'components/BottomBar/BottomBarActions';
 
 import { addGroupTagToNodes, removeNodeFromGraph } from '../../helpers/graph';
 

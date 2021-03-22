@@ -17,6 +17,7 @@ import { UploadButton } from 'components/Uploads/UploadButton';
 import { colors } from '../../colors';
 
 import { BottomBarMenu } from './BottomBarMenu';
+import { changeParentButtonClickedAction } from './BottomBarActions';
 
 import {
   editNoteButtonClickedAction,

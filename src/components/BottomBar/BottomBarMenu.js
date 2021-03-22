@@ -11,7 +11,10 @@ import { Link } from 'react-router-dom';
 
 import { colors } from '../../colors';
 
-import { editNoteButtonClickedAction } from './BottomBarActions';
+import {
+  editNoteButtonClickedAction,
+  changeParentButtonClickedAction,
+} from './BottomBarActions';
 
 const useStyles = makeStyles(() => ({
   moreIcon: {
@@ -35,6 +38,10 @@ export const BottomBarMenu = () => {
 
   const handleEditButtonClick = () => {
     dispatch(editNoteButtonClickedAction(selectedNote));
+  };
+
+  const handleChangeParentButtonClick = () => {
+    dispatch(changeParentButtonClickedAction());
   };
 
   return (
@@ -70,7 +77,7 @@ export const BottomBarMenu = () => {
             <Typography variant="subtitle1">Edit</Typography>
           </MenuItem>
         )}
-        <MenuItem>
+        <MenuItem onClick={handleChangeParentButtonClick}>
           <Typography variant="subtitle1">Change parent</Typography>
         </MenuItem>
         <MenuItem>

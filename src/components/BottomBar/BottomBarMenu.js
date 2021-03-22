@@ -1,6 +1,4 @@
-import React from 'react';
-import { useRef } from 'react';
-import { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { Typography } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
@@ -8,10 +6,12 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { colors } from '../../colors';
+
+import { editNoteButtonClickedAction } from './BottomBarActions';
 
 const useStyles = makeStyles(() => ({
   moreIcon: {
@@ -28,9 +28,14 @@ export const BottomBarMenu = () => {
   const menuAnchorEl = useRef();
   const [isMenuOpened, setIsMenuOpened] = useState(false);
   const selectedNote = useSelector(state => state.notesMindMap.selectedNote);
+  const dispatch = useDispatch();
 
   const openMenu = () => setIsMenuOpened(true);
   const closeMenu = () => setIsMenuOpened(false);
+
+  const handleEditButtonClick = () => {
+    dispatch(editNoteButtonClickedAction(selectedNote));
+  };
 
   return (
     <>
@@ -61,11 +66,9 @@ export const BottomBarMenu = () => {
           },
         }}>
         {!selectedNote.isUploadedFile && (
-          <Link to="/note" style={{ textDecoration: 'none' }}>
-            <MenuItem>
-              <Typography variant="subtitle1">Edit</Typography>
-            </MenuItem>
-          </Link>
+          <MenuItem onClick={handleEditButtonClick}>
+            <Typography variant="subtitle1">Edit</Typography>
+          </MenuItem>
         )}
         <MenuItem>
           <Typography variant="subtitle1">Change parent</Typography>

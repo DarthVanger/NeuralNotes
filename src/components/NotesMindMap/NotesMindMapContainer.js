@@ -10,7 +10,6 @@ import {
   CREATE_EMPTY_CHILD_ACTION,
   UPDATE_NOTE_NAME_ACTION,
   MIND_MAP_CLICKED_ACTION,
-  CHANGE_PARENT_BUTTON_CLICKED_ACTION,
 } from 'components/NotesMindMap/NotesMindMapActions';
 import { NotesMindMapComponent } from 'components/NotesMindMap/NotesMindMapComponent';
 

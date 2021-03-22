@@ -66,8 +66,6 @@ export class NotesMindMapComponent extends Component {
 
     const visEvents = {
       click: this.visNetworkClickHandler,
-      doubleClick: this.visNetworkDoubleClickHandler,
-      hold: this.visNetworkHoldHandler,
     };
 
     return (
@@ -106,21 +104,11 @@ export class NotesMindMapComponent extends Component {
       }
     }
   };
-
-  visNetworkDoubleClickHandler = event => {
-    const { nodes } = this.props;
-    if (VisNetworkHelper.clickedOnNote(event)) {
-      let targetNoteId = VisNetworkHelper.getTargetNoteId(event);
-      const targetNote = nodes.find(node => node.id === targetNoteId);
-      this.props.createEmptyChild({ parent: targetNote });
-    }
-  };
 }
 
 NotesMindMapComponent.propTypes = {
   selectedNote: PropTypes.object.isRequired,
   changeSelectedNote: PropTypes.func.isRequired,
-  createEmptyChild: PropTypes.func.isRequired,
   deleteNote: PropTypes.func.isRequired,
   isChangeParentModeActive: PropTypes.bool.isRequired,
   changeParentNote: PropTypes.func.isRequired,

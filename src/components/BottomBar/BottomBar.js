@@ -18,7 +18,10 @@ import { colors } from '../../colors';
 
 import { BottomBarMenu } from './BottomBarMenu';
 
-import { editNoteButtonClickedAction } from './BottomBarActions';
+import {
+  editNoteButtonClickedAction,
+  createEmptyChildAction,
+} from './BottomBarActions';
 
 const useStyles = makeStyles(() => ({
   appBar: {
@@ -53,6 +56,10 @@ export const BottomBar = () => {
     dispatch(editNoteButtonClickedAction(selectedNote));
   };
 
+  const handleAddButtonClick = () => {
+    dispatch(createEmptyChildAction(selectedNote));
+  };
+
   return (
     <AppBar position="fixed" className={classes.appBar}>
       <Toolbar>
@@ -73,7 +80,11 @@ export const BottomBar = () => {
 
         {!selectedNote.isUploadedFile && (
           <>
-            <Fab aria-label="add" className={classes.fabButton} color="primary">
+            <Fab
+              aria-label="add"
+              className={classes.fabButton}
+              color="primary"
+              onClick={handleAddButtonClick}>
               <AddIcon />
             </Fab>
             <UploadButton></UploadButton>

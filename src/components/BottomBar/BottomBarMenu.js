@@ -41,7 +41,7 @@ export const BottomBarMenu = () => {
   };
 
   const handleChangeParentButtonClick = () => {
-    dispatch(changeParentButtonClickedAction());
+    dispatch(changeParentButtonClickedAction(selectedNote));
   };
 
   return (

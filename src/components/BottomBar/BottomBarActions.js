@@ -17,6 +17,7 @@ export const createNoteSuccessAction = data => ({
   type: CREATE_NOTE_SUCCESS_ACTION,
   data,
 });
-export const changeParentButtonClickedAction = () => ({
+export const changeParentButtonClickedAction = note => ({
   type: CHANGE_PARENT_BUTTON_CLICKED_ACTION,
+  data: { note },
 });

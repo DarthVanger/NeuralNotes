@@ -2,7 +2,6 @@ import {
   CHANGE_SELECTED_NOTE_ACTION,
   SELECTED_NOTE_CHILDREN_FETCHED_ACTION,
   SELECTED_NOTE_PARENT_FETCHED_ACTION,
-  NOTE_NAME_UPDATE_REQUEST_SUCCESS_ACTION,
   CHANGE_PARENT_REQUEST_SUCCESS_ACTION,
   CHANGE_PARENT_REQUEST_FAIL_ACTION,
   SEARCH_RESULT_CLICKED,
@@ -14,7 +13,10 @@ import {
   DELETE_NOTE_REQUEST_SUCCESS_ACTION,
 } from 'components/BottomBar/BottomBarActions';
 
-import { CREATE_NOTE_SUCCESS_ACTION } from 'components/NoteDetails/NoteDetailsActions';
+import {
+  CREATE_NOTE_SUCCESS_ACTION,
+  NOTE_NAME_UPDATE_REQUEST_SUCCESS_ACTION,
+} from 'components/NoteDetails/NoteDetailsActions';
 
 import { addGroupTagToNodes, removeNodeFromGraph } from '../../helpers/graph';
 
@@ -76,13 +78,16 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
 
   const handleNoteNameUpdateRequestSuccessAction = () => {
     const updatedNote = data;
-    let nodes = [...state.nodes];
-    nodes = nodes.map(node => {
-      return node.id === data.id ? { ...node, name: updatedNote.name } : node;
+    let updatedNodes = [...state.nodes];
+    updatedNodes = updatedNodes.map(node => {
+      return node.id === updatedNote.id
+        ? { ...node, name: updatedNote.name }
+        : node;
     });
     return {
       ...state,
-      nodes,
+      nodes: updatedNodes,
+      selectedNote: updatedNote,
     };
   };
 
@@ -150,7 +155,6 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
     let newNodes = [...nodes];
     newNodes.push({
       id: newNote.id,
-      label: newNote.name,
       name: newNote.name,
       isUploadedFile: noteStorage.isUploadedFile(newNote),
       parent: newNote.parent,

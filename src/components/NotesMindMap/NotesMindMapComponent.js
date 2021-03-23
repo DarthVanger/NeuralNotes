@@ -11,7 +11,12 @@ export class NotesMindMapComponent extends Component {
   render() {
     const { nodes, edges } = this.props;
 
-    const visGraph = { nodes, edges };
+    const visNodes = nodes.map(node => ({
+      ...node,
+      label: node.name,
+    }));
+
+    const visGraph = { nodes: visNodes, edges };
 
     const visOptions = {
       interaction: {

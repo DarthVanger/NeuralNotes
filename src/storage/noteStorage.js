@@ -61,7 +61,7 @@ function updateNoteName({ note, newName }) {
         newName,
       }),
     ]).then(function(responses) {
-      console.log('resonses for note name update: ', responses);
+      console.debug('responses for note name update: ', responses);
       const newNote = { ...note };
       newNote.name = newName;
       return newNote;

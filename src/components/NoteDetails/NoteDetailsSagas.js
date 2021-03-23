@@ -8,6 +8,10 @@ import {
   NOTE_NAME_UPDATE_REQUEST,
   NOTE_CONTENT_UPDATE_REQUEST,
   CREATE_NOTE_REQUEST_ACTION,
+  QUEUE_NOTE_UPDATE_ACTION,
+  APPLY_QUEUED_NOTE_UPDATE_ACTION,
+  applyQueuedNoteUpdateAction,
+  queueNoteUpdateAction,
   createNoteRequestAction,
   noteNameUpdateRequestSuccessAction,
   noteContentUpdateRequestSuccessAction,
@@ -46,7 +50,7 @@ const queuedChanges = {
 function* handleNoteNameChange({ data: { note, newNoteName, editorState } }) {
   if (shouldUpdateNote(editorState)) yield updateNoteName();
   if (shouldCreateNote(editorState)) yield createNote();
-  if (shouldQueueUpdate(editorState)) queueUpdate();
+  if (shouldQueueUpdate(editorState)) yield queueUpdate();
 
   function createNote() {
     return put(
@@ -59,8 +63,7 @@ function* handleNoteNameChange({ data: { note, newNoteName, editorState } }) {
   }
 
   function queueUpdate() {
-    queuedChanges.noteName = newNoteName;
-    console.debug('Queued changes for note name:', queuedChanges);
+    return put(queueNoteUpdateAction({ noteName: newNoteName }));
   }
 
   function updateNoteName() {
@@ -78,7 +81,7 @@ function* handleNoteContentChange({
 }) {
   if (shouldUpdateNote(editorState)) yield updateNoteName();
   if (shouldCreateNote(editorState)) yield createNote();
-  if (shouldQueueUpdate(editorState)) queueUpdate();
+  if (shouldQueueUpdate(editorState)) yield queueUpdate();
 
   function createNote() {
     return put(
@@ -91,8 +94,7 @@ function* handleNoteContentChange({
   }
 
   function queueUpdate() {
-    queuedChanges.noteContent = noteContent;
-    console.debug('Queued changes for note content:', queuedChanges);
+    return put(queueNoteUpdateAction({ noteContent }));
   }
 
   function updateNoteName() {
@@ -105,18 +107,56 @@ function* handleNoteContentChange({
   }
 }
 
+function* queueNoteUpdate({ data: { noteName, noteContent } }) {
+  if (noteName) {
+    queuedChanges.noteName = noteName;
+    console.debug('Queued changes for note name:', queuedChanges);
+  }
+  if (noteContent) {
+    queuedChanges.noteContent = noteContent;
+    console.debug('Queued changes for note content:', queuedChanges);
+  }
+}
+
+function* applyQueuedNoteUpdate({ data: { note, queuedChanges: changes } }) {
+  if (queuedChanges.noteName !== null) {
+    console.debug(
+      `Applying queued changes for note name: "${queuedChanges.noteName}"`,
+    );
+    yield put(
+      noteNameUpdateRequestAction({
+        ...note,
+        name: changes.noteName,
+      }),
+    );
+  }
+  if (queuedChanges.noteContent !== null) {
+    console.debug(
+      `Applying queued changes for note content: "${queuedChanges.noteContent}"`,
+    );
+    yield put(
+      noteContentUpdateRequestAction({
+        ...note,
+        content: changes.noteContent,
+      }),
+    );
+  }
+}
+
 function* requestNoteNameUpdate({ data: { note } }) {
   const newNote = yield noteStorage.updateNoteName({
     note,
     newName: note.name,
   });
   yield put(noteNameUpdateRequestSuccessAction(newNote));
+  queuedChanges.noteName = null;
 }
 
 function* requestNoteContentUpdate({ data: { note } }) {
   try {
     const newNote = yield noteStorage.updateNoteContent(note);
     yield put(noteContentUpdateRequestSuccessAction(newNote));
+    queuedChanges.noteContent = null;
   } catch (error) {
     toast.error('Failed to save note content');
     console.error(error);
@@ -127,30 +167,8 @@ function* createNoteRequest({ data: { note } }) {
   const newNote = yield noteStorage.create(note);
   newNote.parent = note.parent;
   yield put(createNoteSuccessAction(newNote));
-
-  if (queuedChanges.noteName !== null) {
-    console.debug(
-      `Applying queued changes for note name: "${queuedChanges.noteName}"`,
-    );
-    yield put(
-      noteNameUpdateRequestAction({
-        ...newNote,
-        name: queuedChanges.noteName,
-      }),
-    );
-    queuedChanges.noteName = null;
-  }
-  if (queuedChanges.noteContent !== null) {
-    console.debug(
-      `Applying queued changes for note content: "${queuedChanges.noteContent}"`,
-    );
-    yield put(
-      noteContentUpdateRequestAction({
-        ...newNote,
-        content: queuedChanges.noteContent,
-      }),
-    );
-    queuedChanges.noteContent = null;
+  if (queuedChanges.noteName !== null || queuedChanges.noteContent !== null) {
+    yield put(applyQueuedNoteUpdateAction({ note, queuedChanges }));
   }
 }
 
@@ -179,5 +197,7 @@ export function* noteDetailsInit() {
     takeEvery(NOTE_CONTENT_UPDATE_REQUEST, requestNoteContentUpdate),
     takeEvery(CREATE_NOTE_REQUEST_ACTION, createNoteRequest),
     takeEvery(EDIT_NOTE_BUTTON_CLICKED_ACTION, handleEditNoteButtonClick),
+    takeEvery(QUEUE_NOTE_UPDATE_ACTION, queueNoteUpdate),
+    takeEvery(APPLY_QUEUED_NOTE_UPDATE_ACTION, applyQueuedNoteUpdate),
   ]);
 }

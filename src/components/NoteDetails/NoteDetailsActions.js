@@ -18,7 +18,13 @@ export const NOTE_CONTENT_UPDATE_REQUEST_SUCCESS_ACTION =
   'NOTE_CONTENT_UPDATE_REQUEST_SUCCESS_ACTION';
 
 export const CREATE_NOTE_REQUEST_ACTION = 'CREATE_NOTE_REQUEST_ACTION';
+
 export const CREATE_NOTE_SUCCESS_ACTION = 'CREATE_NOTE_SUCCESS_ACTION';
+
+export const QUEUE_NOTE_UPDATE_ACTION = 'QUEUE_NOTE_UPDATE_ACTION';
+
+export const APPLY_QUEUED_NOTE_UPDATE_ACTION =
+  'APPLY_QUEUED_NOTE_UPDATE_ACTION';
 
 export const createNoteSuccessAction = data => ({
   type: CREATE_NOTE_SUCCESS_ACTION,
@@ -57,4 +63,14 @@ export const noteContentFetchSuccessAction = noteContent => ({
 
 export const applyQueuedNoteUpdates = ({ noteName, noteContent }) => ({
   type: APPLY_QUEUED_NOTE_UPDATES,
+});
+
+export const queueNoteUpdateAction = data => ({
+  type: QUEUE_NOTE_UPDATE_ACTION,
+  data,
+});
+
+export const applyQueuedNoteUpdateAction = data => ({
+  type: APPLY_QUEUED_NOTE_UPDATE_ACTION,
+  data,
 });

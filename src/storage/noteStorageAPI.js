@@ -19,7 +19,7 @@ export default {
   fetchChildNotes,
   getNoteContent,
   create,
-  update,
+  updateNoteContent,
   remove,
   move,
   updateFileName,
@@ -392,10 +392,10 @@ function create(note) {
     });
 }
 
-function update(note) {
-  console.debug('Updaing note: ' + note);
+function updateNoteContent(note) {
+  console.debug('Updaing note content for: ', note);
 
-  const updateSpinner = spinner.create('updating note');
+  const updateSpinner = spinner.create('updating note content');
   updateSpinner.show();
 
   return findNoteContentFile(note)

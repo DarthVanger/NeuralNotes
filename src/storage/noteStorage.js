@@ -12,7 +12,7 @@ export default {
   fetchChildNotes,
   getNoteContent: noteStorageApi.getNoteContent,
   create,
-  update: noteStorageApi.update,
+  updateNoteContent: noteStorageApi.updateNoteContent,
   remove,
   move,
   updateNoteName,

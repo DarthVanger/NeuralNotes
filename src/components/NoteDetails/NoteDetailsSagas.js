@@ -26,8 +26,6 @@ const queuedChanges = {
 function* handleNoteNameChange({
   data: { note, newNoteName, isNewNote, isNoteCreationInProgress },
 }) {
-  console.log('isNewNote: ', isNewNote);
-  console.log('isNoteCreationInProgress: ', isNoteCreationInProgress);
   if (isNewNote) {
     if (!isNoteCreationInProgress) {
       yield put(
@@ -50,12 +48,47 @@ function* handleNoteNameChange({
   }
 }
 
+function* handleNoteContentChange({
+  data: { note, noteContent, isNewNote, isNoteCreationInProgress },
+}) {
+  if (isNewNote) {
+    if (!isNoteCreationInProgress) {
+      yield put(
+        createNoteRequestAction({
+          name: 'Untitled note',
+          content: noteContent,
+          parent: note,
+        }),
+      );
+    } else {
+      queuedChanges.noteName = newNoteName;
+    }
+  } else {
+    yield put(
+      noteContentUpdateRequestAction({
+        ...note,
+        content: noteContent,
+      }),
+    );
+  }
+}
+
 function* requestNoteNameUpdate({ data: { note } }) {
   const newNote = yield noteStorage.updateNoteName({
     note,
     newName: note.name,
   });
   yield put(noteNameUpdateRequestSuccessAction(newNote));
+}
+
+function* requestNoteContentUpdate({ data: { note } }) {
+  try {
+    const newNote = yield noteStorage.updateNoteContent(note);
+    yield put(noteContentUpdateRequestSuccessAction(newNote));
+  } catch (error) {
+    toast.error('Failed to save note content');
+    console.error(error);
+  }
 }
 
 function* createNoteRequest({ data: { note } }) {
@@ -83,18 +116,6 @@ function* createNoteRequest({ data: { note } }) {
   }
 }
 
-function* updateNoteContent({ data: { note, noteContent } }) {
-  let newNote = { ...note, content: noteContent };
-
-  try {
-    const returnedNote = yield noteStorage.update(newNote);
-    yield put(noteContentUpdateRequestSuccessAction(returnedNote));
-  } catch (error) {
-    toast.error('Failed to save note content');
-    console.error(error);
-  }
-}
-
 function* handleEditNoteButtonClick({ data: { note } }) {
   yield put(push(`/note/${note.id}`));
   const noteContent = yield call(noteStorage.getNoteContent, note);
@@ -114,8 +135,11 @@ function* handleCreateNoteSuccess({ data: note }) {
 
 export function* noteDetailsInit() {
   yield all([takeEvery(EDITOR_NOTE_NAME_CHANGED_ACTION, handleNoteNameChange)]);
-  yield all([takeEvery(EDITOR_NOTE_CONTENT_CHANGED_ACTION, updateNoteContent)]);
+  yield all([
+    takeEvery(EDITOR_NOTE_CONTENT_CHANGED_ACTION, handleNoteContentChange),
+  ]);
   yield all([takeEvery(NOTE_NAME_UPDATE_REQUEST, requestNoteNameUpdate)]);
+  yield all([takeEvery(NOTE_CONTENT_UPDATE_REQUEST, requestNoteContentUpdate)]);
   yield all([takeEvery(CREATE_NOTE_REQUEST_ACTION, createNoteRequest)]);
   yield all([
     takeEvery(EDIT_NOTE_BUTTON_CLICKED_ACTION, handleEditNoteButtonClick),

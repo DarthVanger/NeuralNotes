@@ -140,14 +140,12 @@ function* handleCreateNoteSuccess({ data: note }) {
 }
 
 export function* noteDetailsInit() {
-  yield all([takeEvery(EDITOR_NOTE_NAME_CHANGED_ACTION, handleNoteNameChange)]);
   yield all([
+    takeEvery(EDITOR_NOTE_NAME_CHANGED_ACTION, handleNoteNameChange),
     takeEvery(EDITOR_NOTE_CONTENT_CHANGED_ACTION, handleNoteContentChange),
-  ]);
-  yield all([takeEvery(NOTE_NAME_UPDATE_REQUEST, requestNoteNameUpdate)]);
-  yield all([takeEvery(NOTE_CONTENT_UPDATE_REQUEST, requestNoteContentUpdate)]);
-  yield all([takeEvery(CREATE_NOTE_REQUEST_ACTION, createNoteRequest)]);
-  yield all([
+    takeEvery(NOTE_NAME_UPDATE_REQUEST, requestNoteNameUpdate),
+    takeEvery(NOTE_CONTENT_UPDATE_REQUEST, requestNoteContentUpdate),
+    takeEvery(CREATE_NOTE_REQUEST_ACTION, createNoteRequest),
     takeEvery(EDIT_NOTE_BUTTON_CLICKED_ACTION, handleEditNoteButtonClick),
   ]);
 }

@@ -9,21 +9,13 @@ import { NoteDetailsComponent } from 'components/NoteDetails/NoteDetailsComponen
 
 const mapStateToProps = ({
   notesMindMap: { selectedNote },
-  noteDetails: {
-    noteName,
-    noteContent,
-    areChangesSaved,
-    isNewNote,
-    isNoteCreationInProgress,
-  },
+  noteDetails: { noteName, noteContent, editorState },
 }) => {
   return {
     selectedNote,
     noteContent,
     noteName,
-    areChangesSaved,
-    isNewNote,
-    isNoteCreationInProgress,
+    editorState,
   };
 };
 

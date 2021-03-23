@@ -13,9 +13,14 @@ import { ADD_NOTE_BUTTON_CLICKED_ACTION } from 'components/BottomBar/BottomBarAc
 const defaultState = {
   noteName: '',
   noteContent: 'Loading note content...',
-  areChangesSaved: true,
-  isNewNote: false,
-  isNoteCreationInProgress: false,
+  editorState: {
+    // If all changes made to the note were saved to Google Drive
+    areChangesSaved: true,
+    // If the note already exists on Google Drive. False when adding a new note.
+    isExistingNote: true,
+    // If the http request to create note is in progress.
+    isNoteCreationInProgress: false,
+  },
 };
 
 export const noteDetailsReducer = (state = defaultState, { type, data }) => {
@@ -24,7 +29,10 @@ export const noteDetailsReducer = (state = defaultState, { type, data }) => {
       return {
         ...state,
         noteName: data.newNoteName,
-        areChangesSaved: false,
+        editorState: {
+          ...state.editorState,
+          areChangesSaved: false,
+        },
       };
     case CHANGE_SELECTED_NOTE_ACTION:
       return {
@@ -34,15 +42,21 @@ export const noteDetailsReducer = (state = defaultState, { type, data }) => {
     case ADD_NOTE_BUTTON_CLICKED_ACTION:
       return {
         ...state,
-        isNewNote: true,
         noteName: '',
         noteContent: '',
+        editorState: {
+          ...state.editorState,
+          isExistingNote: false,
+        },
       };
     case EDITOR_NOTE_CONTENT_CHANGED_ACTION:
       return {
         ...state,
         noteContent: data.noteContent,
-        areChangesSaved: false,
+        editorState: {
+          ...state.editorState,
+          areChangesSaved: false,
+        },
       };
     case NOTE_CONTENT_FETCH_SUCCESS_ACTION:
       return {
@@ -52,24 +66,36 @@ export const noteDetailsReducer = (state = defaultState, { type, data }) => {
     case NOTE_NAME_UPDATE_REQUEST_SUCCESS_ACTION:
       return {
         ...state,
-        areChangesSaved: true,
+        editorState: {
+          ...state.editorState,
+          areChangesSaved: true,
+        },
       };
     case NOTE_CONTENT_UPDATE_REQUEST_SUCCESS_ACTION:
       return {
         ...state,
-        areChangesSaved: true,
+        editorState: {
+          ...state.editorState,
+          areChangesSaved: true,
+        },
       };
     case CREATE_NOTE_REQUEST_ACTION:
       return {
         ...state,
-        isNoteCreationInProgress: true,
+        editorState: {
+          ...state.editorState,
+          isNoteCreationInProgress: true,
+        },
       };
     case CREATE_NOTE_SUCCESS_ACTION:
       return {
         ...state,
-        isNewNote: false,
-        isNoteCreationInProgress: false,
-        areChangesSaved: true,
+        editorState: {
+          ...state.editorState,
+          isNoteCreationInProgress: false,
+          areChangesSaved: true,
+          isExistingNote: true,
+        },
       };
     default:
       return state;

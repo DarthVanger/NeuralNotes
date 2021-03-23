@@ -19,6 +19,19 @@ import {
 import { push } from 'connected-react-router';
 
 /**
+ * The same note editor is used both for existing notes and for creating a new note.
+ *
+ * If the editor was opened to create a new note, it is created after the first change.
+ * If any changes are made while note creation is in progress, the changes are queued,
+ * and applied automatically after note creation success.
+ * If note is an existing one, simply send request to update it.
+ */
+const shouldUpdateNote = editorState => editorState.isExistingNote;
+const shouldCreateNote = editorState =>
+  !editorState.isExistingNote && !editorState.isNoteCreationInProgress;
+const shouldQueueUpdate = editorState => editorState.isNoteCreationInProgress;
+
+/**
  * Changes made while the note is being created in Google Drive
  * are queued, and appplied as soon as the note has been created.
  *
@@ -30,23 +43,28 @@ const queuedChanges = {
   noteContent: null,
 };
 
-function* handleNoteNameChange({
-  data: { note, newNoteName, isNewNote, isNoteCreationInProgress },
-}) {
-  if (isNewNote) {
-    if (!isNoteCreationInProgress) {
-      yield put(
-        createNoteRequestAction({
-          name: newNoteName,
-          content: '',
-          parent: note,
-        }),
-      );
-    } else {
-      queuedChanges.noteName = newNoteName;
-    }
-  } else {
-    yield put(
+function* handleNoteNameChange({ data: { note, newNoteName, editorState } }) {
+  if (shouldUpdateNote(editorState)) yield updateNoteName();
+  if (shouldCreateNote(editorState)) yield createNote();
+  if (shouldQueueUpdate(editorState)) queueUpdate();
+
+  function createNote() {
+    return put(
+      createNoteRequestAction({
+        name: newNoteName,
+        content: '',
+        parent: note,
+      }),
+    );
+  }
+
+  function queueUpdate() {
+    queuedChanges.noteName = newNoteName;
+    console.debug('Queued changes for note name:', queuedChanges);
+  }
+
+  function updateNoteName() {
+    return put(
       noteNameUpdateRequestAction({
         ...note,
         name: newNoteName,
@@ -56,22 +74,29 @@ function* handleNoteNameChange({
 }
 
 function* handleNoteContentChange({
-  data: { note, noteContent, isNewNote, isNoteCreationInProgress },
+  data: { note, noteContent, editorState },
 }) {
-  if (isNewNote) {
-    if (!isNoteCreationInProgress) {
-      yield put(
-        createNoteRequestAction({
-          name: 'Untitled note',
-          content: noteContent,
-          parent: note,
-        }),
-      );
-    } else {
-      queuedChanges.noteContent = noteContent;
-    }
-  } else {
-    yield put(
+  if (shouldUpdateNote(editorState)) yield updateNoteName();
+  if (shouldCreateNote(editorState)) yield createNote();
+  if (shouldQueueUpdate(editorState)) queueUpdate();
+
+  function createNote() {
+    return put(
+      createNoteRequestAction({
+        name: 'Untitled note',
+        content: noteContent,
+        parent: note,
+      }),
+    );
+  }
+
+  function queueUpdate() {
+    queuedChanges.noteContent = noteContent;
+    console.debug('Queued changes for note content:', queuedChanges);
+  }
+
+  function updateNoteName() {
+    return put(
       noteContentUpdateRequestAction({
         ...note,
         content: noteContent,

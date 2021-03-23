@@ -27,8 +27,7 @@ export const NoteDetailsComponent = props => {
     props.editorNoteNameChangedAction({
       newNoteName: debouncedNoteName,
       note: props.selectedNote,
-      isNewNote: props.isNewNote,
-      isNoteCreationInProgress: props.isNoteCreationInProgress,
+      editorState: props.editorState,
     });
   }, [debouncedNoteName]);
 
@@ -37,8 +36,7 @@ export const NoteDetailsComponent = props => {
     props.editorNoteContentChangedAction({
       noteContent: debouncedNoteContent,
       note: props.selectedNote,
-      isNewNote: props.isNewNote,
-      isNoteCreationInProgress: props.isNoteCreationInProgress,
+      editorState: props.editorState,
     });
   }, [debouncedNoteContent]);
 
@@ -52,10 +50,16 @@ export const NoteDetailsComponent = props => {
     setAreChangesSaved(false);
   };
 
+  const isSaved =
+    props.editorState.isExistingNote && props.editorState.areChangesSaved;
+  const isSaving =
+    props.editorState.isNoteCreationInProgress ||
+    !props.editorState.areChangesSaved;
+
   return (
     <StyledNoteDetailsScreen>
-      {!props.isNewNote && areChangesSaved && 'Saved to Google Drive'}
-      {!props.isNewNote && !areChangesSaved && 'Saving...'}
+      {isSaved && 'Saved to Google Drive'}
+      {isSaving && 'Saving...'}
       {props.isNoteCreationInProgress && 'Saving...'}
       <StyledNoteNameEditor
         onChange={handleNoteNameChange}

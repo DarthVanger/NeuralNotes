@@ -19,8 +19,8 @@ export const NoteDetailsComponent = props => {
   }, [props.noteContent]);
 
   useEffect(() => {
-    setAreChangesSaved(props.areChangesSaved);
-  }, [props.areChangesSaved]);
+    setAreChangesSaved(props.editorState.areChangesSaved);
+  }, [props.editorState.areChangesSaved]);
 
   useEffect(() => {
     if (debouncedNoteName === props.noteName) return;
@@ -50,11 +50,9 @@ export const NoteDetailsComponent = props => {
     setAreChangesSaved(false);
   };
 
-  const isSaved =
-    props.editorState.isExistingNote && props.editorState.areChangesSaved;
+  const isSaved = props.editorState.isExistingNote && areChangesSaved;
   const isSaving =
-    props.editorState.isNoteCreationInProgress ||
-    !props.editorState.areChangesSaved;
+    props.editorState.isNoteCreationInProgress || !areChangesSaved;
 
   return (
     <StyledNoteDetailsScreen>

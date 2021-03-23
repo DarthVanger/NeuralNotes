@@ -61,10 +61,6 @@ export const noteContentFetchSuccessAction = noteContent => ({
   data: noteContent,
 });
 
-export const applyQueuedNoteUpdates = ({ noteName, noteContent }) => ({
-  type: APPLY_QUEUED_NOTE_UPDATES,
-});
-
 export const queueNoteUpdateAction = data => ({
   type: QUEUE_NOTE_UPDATE_ACTION,
   data,

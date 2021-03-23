@@ -10,6 +10,7 @@ import {
   CREATE_NOTE_REQUEST_ACTION,
   QUEUE_NOTE_UPDATE_ACTION,
   APPLY_QUEUED_NOTE_UPDATE_ACTION,
+  CREATE_NOTE_SUCCESS_ACTION,
   applyQueuedNoteUpdateAction,
   queueNoteUpdateAction,
   createNoteRequestAction,
@@ -167,9 +168,6 @@ function* createNoteRequest({ data: { note } }) {
   const newNote = yield noteStorage.create(note);
   newNote.parent = note.parent;
   yield put(createNoteSuccessAction(newNote));
-  if (queuedChanges.noteName !== null || queuedChanges.noteContent !== null) {
-    yield put(applyQueuedNoteUpdateAction({ note, queuedChanges }));
-  }
 }
 
 function* handleEditNoteButtonClick({ data: { note } }) {
@@ -179,13 +177,8 @@ function* handleEditNoteButtonClick({ data: { note } }) {
 }
 
 function* handleCreateNoteSuccess({ data: note }) {
-  if (queuedChanges.queued) {
-    yield put(applyQueuedNoteUpdates(queuedChanges));
-    const newNote = yield noteStorage.updateNoteName({
-      note,
-      newName: newNoteName,
-    });
-    yield put(noteNameUpdateRequestSuccessAction(newNote));
+  if (queuedChanges.noteName !== null || queuedChanges.noteContent !== null) {
+    yield put(applyQueuedNoteUpdateAction({ note, queuedChanges }));
   }
 }
 
@@ -199,5 +192,6 @@ export function* noteDetailsInit() {
     takeEvery(EDIT_NOTE_BUTTON_CLICKED_ACTION, handleEditNoteButtonClick),
     takeEvery(QUEUE_NOTE_UPDATE_ACTION, queueNoteUpdate),
     takeEvery(APPLY_QUEUED_NOTE_UPDATE_ACTION, applyQueuedNoteUpdate),
+    takeEvery(CREATE_NOTE_SUCCESS_ACTION, handleCreateNoteSuccess),
   ]);
 }

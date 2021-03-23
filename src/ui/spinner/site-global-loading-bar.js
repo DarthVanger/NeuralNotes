@@ -1,7 +1,6 @@
 import './site-global-loading-bar.css';
 import './colorful-spinner.css';
 
-let backgroundSpinner = document.getElementById('background-spinner');
 let loadersContainer = document.getElementById(
   'site-global-loading-bar-messages-container',
 );
@@ -67,10 +66,8 @@ function create(name) {
 
 function showLoadingBar() {
   loadingBar.style.display = 'block';
-  backgroundSpinner.classList.add('show');
 }
 
 function hideLoadingBar() {
   loadingBar.style.display = 'none';
-  backgroundSpinner.classList.remove('show');
 }

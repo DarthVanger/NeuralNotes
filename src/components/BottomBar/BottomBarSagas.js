@@ -13,7 +13,7 @@ import {
   deleteNoteRequestSuccessAction,
 } from './BottomBarActions';
 
-function* handleAddNoteButtonClick({ data: { parent } }) {
+function* handleAddNoteButtonClick() {
   console.log('handleAddNoteButtonClick');
   yield put(push('/note/new'));
 }

@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { action } from 'sagas';
 
 import {
   EDITOR_NOTE_NAME_CHANGED_ACTION,

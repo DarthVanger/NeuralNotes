@@ -108,7 +108,7 @@ function* handleNoteContentChange({
   }
 }
 
-function* queueNoteUpdate({ data: { noteName, noteContent } }) {
+function queueNoteUpdate({ data: { noteName, noteContent } }) {
   if (noteName) {
     queuedChanges.noteName = noteName;
     console.debug('Queued changes for note name:', queuedChanges);

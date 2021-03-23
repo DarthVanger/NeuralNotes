@@ -61,7 +61,7 @@ function* handleNoteContentChange({
         }),
       );
     } else {
-      queuedChanges.noteName = newNoteName;
+      queuedChanges.noteContent = noteContent;
     }
   } else {
     yield put(
@@ -97,6 +97,9 @@ function* createNoteRequest({ data: { note } }) {
   yield put(createNoteSuccessAction(newNote));
 
   if (queuedChanges.noteName !== null) {
+    console.debug(
+      `Applying queued changes for note name: "${queuedChanges.noteName}"`,
+    );
     yield put(
       noteNameUpdateRequestAction({
         ...newNote,
@@ -106,8 +109,11 @@ function* createNoteRequest({ data: { note } }) {
     queuedChanges.noteName = null;
   }
   if (queuedChanges.noteContent !== null) {
+    console.debug(
+      `Applying queued changes for note content: "${queuedChanges.noteContent}"`,
+    );
     yield put(
-      noteNameUpdateRequestAction({
+      noteContentUpdateRequestAction({
         ...newNote,
         content: queuedChanges.noteContent,
       }),

@@ -18,6 +18,13 @@ import {
 } from './NoteDetailsActions';
 import { push } from 'connected-react-router';
 
+/**
+ * Changes made while the note is being created in Google Drive
+ * are queued, and appplied as soon as the note has been created.
+ *
+ * This is to avoid blocking the UI while the http request to create
+ * the note in Google Drive is pending.
+ */
 const queuedChanges = {
   noteName: null,
   noteContent: null,

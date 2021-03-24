@@ -17,12 +17,12 @@ const self = {
   client: client,
   getFileById,
   findFileByName,
-  updateFileName: updateFileName,
-  createFolder: createFolder,
+  updateFileName,
+  createFolder,
   findFoldersByName,
   getFolderChildren,
   createTextFile,
-  updateTextFileContent: updateTextFileContent,
+  updateTextFileContent,
 };
 
 export default self;

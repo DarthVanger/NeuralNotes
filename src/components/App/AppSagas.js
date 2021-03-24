@@ -24,7 +24,7 @@ export function* loadApp() {
   let initialNote;
   const lastViewedNoteId = localStorage.getItem('lastViewedNoteId');
   if (lastViewedNoteId) {
-    initialNote = yield googleDriveApi.findNoteById(lastViewedNoteId);
+    initialNote = yield noteStorage.getNoteById(lastViewedNoteId);
   } else {
     initialNote = yield noteStorage.scanDrive();
   }

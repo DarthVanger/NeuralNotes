@@ -440,7 +440,7 @@ function move({ noteId, newParentId }) {
 }
 
 function getNoteById(noteId) {
-  return googleDriveApi.findNoteById(noteId);
+  return googleDriveApi.getFileById(noteId);
 }
 
 function updateNoteName({ note, newName }) {

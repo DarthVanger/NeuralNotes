@@ -16,7 +16,7 @@ var self = {
   loadDriveApi: loadDriveApi,
   client: client,
   findByName,
-  findNoteById,
+  getFileById,
   updateFile: updateFile,
   updateFileName: updateFileName,
   parseParents: parseParents,
@@ -206,9 +206,9 @@ function findFoldersByName(name) {
   });
 }
 
-function findNoteById(noteId) {
+function getFileById(fileId) {
   const request = gapi.client.drive.files.get({
-    fileId: noteId,
+    fileId,
     fields: FILE_FIELDS,
   });
   return new Promise(resolve => {

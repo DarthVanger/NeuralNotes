@@ -2,8 +2,6 @@
 import googleDriveApi from 'api/google-drive-api';
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
 
-('use strict');
-
 let APP_FOLDER_NAME = 'NeuralNotes';
 let appRootFolder;
 let spinner = siteGlobalLoadingBar.create('note-storage-api');
@@ -25,6 +23,10 @@ export default {
   updateFileName,
   updateNoteContentFileName,
   getNoteById,
+  updateNoteName,
+  getLinkToNote,
+  isUploadedFile,
+  isAppFolder,
 };
 
 function setAppRootFolder(folder) {
@@ -456,7 +458,7 @@ function remove(note) {
   });
 }
 
-function move(noteId, newParentId) {
+function move({ noteId, newParentId }) {
   spinner.show();
   const request = gapi.client.request({
     path: '/drive/v2/files/' + noteId,
@@ -484,4 +486,33 @@ function move(noteId, newParentId) {
 
 function getNoteById(noteId) {
   return googleDriveApi.findNoteById(noteId);
+}
+
+function updateNoteName({ note, newName }) {
+  return getNoteById(note.id).then(noteInStorage => {
+    return Promise.all([
+      updateFileName({ id: note.id, name: newName }),
+      updateNoteContentFileName({
+        note: noteInStorage,
+        newName,
+      }),
+    ]).then(function(responses) {
+      console.debug('responses for note name update: ', responses);
+      const newNote = { ...note };
+      newNote.name = newName;
+      return newNote;
+    });
+  });
+}
+
+function getLinkToNote({ id }) {
+  return 'https://drive.google.com/open?id=' + id;
+}
+
+function isUploadedFile(file) {
+  return file.mimeType !== 'application/vnd.google-apps.folder';
+}
+
+function isAppFolder(note) {
+  return note.name === APP_FOLDER_NAME;
 }

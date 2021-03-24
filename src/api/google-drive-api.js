@@ -4,13 +4,13 @@ let client;
 /*
  * Fields to get from Google Drive when requesting a file.
  */
-let FILE_FIELDS = 'id, name, mimeType, parents';
+const FILE_FIELDS = 'id, name, mimeType, parents';
 /*
  * Fields to get from Google Drive when requestin a list of files.
  */
-let FILE_LIST_FIELDS = 'nextPageToken, files(' + FILE_FIELDS + ')';
+const FILE_LIST_FIELDS = 'nextPageToken, files(' + FILE_FIELDS + ')';
 
-var self = {
+const self = {
   FILE_FIELDS: FILE_FIELDS,
   FILE_LIST_FIELDS: FILE_LIST_FIELDS,
   loadDriveApi: loadDriveApi,
@@ -31,7 +31,7 @@ export default self;
  */
 function loadDriveApi() {
   console.info('Loading Google Drive API...');
-  let promise = new Promise(resolve => {
+  const promise = new Promise(resolve => {
     gapi.client.load('drive', 'v3').then(
       function() {
         self.client = gapi.client.drive;
@@ -64,24 +64,21 @@ function findByName(options) {
     throw new Error('googleDriveApi.findByName: no filename passed!');
   }
 
-  let request;
-
   if (options.folderId) {
     query += ' and "' + options.folderId + '" in parents';
   }
 
   query += ' and trashed = false';
 
-  let params = {
+  const params = {
     pageSize: 10,
     fields: FILE_LIST_FIELDS,
     q: query,
   };
 
-  request = gapi.client.drive.files.list(params);
+  const request = gapi.client.drive.files.list(params);
 
-  //TODO: allow search inside of a specified folder?
-  let promise = new Promise(resolve => {
+  const promise = new Promise(resolve => {
     request.execute(function(resp) {
       console.debug(
         'googleDriveApi.findByname(): Files found by query "' + query + '": ',
@@ -99,7 +96,7 @@ function findByName(options) {
 }
 
 function updateFile(options) {
-  let request = gapi.client.request({
+  const request = gapi.client.request({
     path: '/upload/drive/v2/files/' + options.fileId,
     method: 'PUT',
     params: { uploadType: 'media' },
@@ -109,7 +106,7 @@ function updateFile(options) {
     body: options.text,
   });
 
-  let promise = new Promise(resolve => {
+  const promise = new Promise(resolve => {
     request.execute(function(response) {
       resolve(response);
     });
@@ -119,10 +116,10 @@ function updateFile(options) {
 }
 
 function updateFileName({ id, name }) {
-  let fileId = id;
-  let fileName = name;
+  const fileId = id;
+  const fileName = name;
 
-  let request = gapi.client.request({
+  const request = gapi.client.request({
     path: '/drive/v2/files/' + fileId,
     method: 'PATCH',
     body: JSON.stringify({
@@ -131,7 +128,7 @@ function updateFileName({ id, name }) {
   });
 
   console.info('Updating filename to: ' + fileName + '...');
-  let promise = new Promise(resolve => {
+  const promise = new Promise(resolve => {
     request.execute(function(response) {
       console.info('Updated filename to: ' + fileName);
       resolve(response);
@@ -200,11 +197,9 @@ function getFolderChildren(folderId) {
 
   return new Promise((resolve, reject) => {
     request.execute(function(resp) {
-      console.debug('[Loaded] Files: ', resp);
       if (!resp.files) {
         reject();
-        let errorMessage = 'Remote Storage API: Failed to get files';
-        throw new Error(errorMessage);
+        throw new Error('Remote Storage API: Failed to get files');
       }
 
       resolve(resp.files);

@@ -26,6 +26,7 @@ export default {
   getLinkToNote,
   isUploadedFile,
   isAppFolder,
+  findNotesByName,
 };
 
 function setAppRootFolder(folder) {
@@ -469,4 +470,8 @@ function isUploadedFile(file) {
 
 function isAppFolder(note) {
   return note.name === APP_FOLDER_NAME;
+}
+
+function findNotesByName(name) {
+  return googleDriveApi.findFoldersByName(name);
 }

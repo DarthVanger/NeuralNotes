@@ -1,4 +1,4 @@
-import googleDriveApi from 'api/google-drive-api';
+import noteStorage from 'storage/noteStorage';
 import {
   all,
   put,
@@ -11,7 +11,7 @@ import {
 } from 'components/SearchPage/SearchPageAction';
 
 function* searchNoteSaga({ data }) {
-  const results = yield googleDriveApi.findNotesByName(data);
+  const results = yield noteStorage.findNotesByName(data);
   yield put(searchRequestSuccess(results));
 }
 

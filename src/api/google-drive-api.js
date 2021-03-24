@@ -16,12 +16,12 @@ var self = {
   loadDriveApi: loadDriveApi,
   client: client,
   findByName,
-  findNotesByName,
   findNoteById,
   updateFile: updateFile,
   updateFileName: updateFileName,
   parseParents: parseParents,
   createDirectory: createDirectory,
+  findFoldersByName,
 };
 
 export default self;
@@ -194,7 +194,7 @@ function createDirectory(options) {
   });
 }
 
-function findNotesByName(name = '') {
+function findFoldersByName(name) {
   const query = `name contains '${name}' and trashed = false and mimeType = 'application/vnd.google-apps.folder'`;
   const params = { q: query };
   const request = gapi.client.drive.files.list(params);

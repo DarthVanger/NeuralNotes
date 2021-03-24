@@ -16,9 +16,9 @@ const self = {
   loadDriveApi: loadDriveApi,
   client: client,
   getFileById,
-  findByName, // findFileByName
+  findFileByName,
   updateFileName: updateFileName,
-  createDirectory: createDirectory, // createFolder
+  createFolder: createFolder,
   findFoldersByName,
   getFolderChildren,
   createTextFile,
@@ -56,13 +56,13 @@ function loadDriveApi() {
 /**
  * Find a file on google drive by name.
  */
-function findByName(options) {
+function findFileByName(options) {
   let query;
 
   if (options.name) {
     query = 'name = "' + options.name + '"';
   } else {
-    throw new Error('googleDriveApi.findByName: no filename passed!');
+    throw new Error('googleDriveApi.findFileByName: no filename passed!');
   }
 
   if (options.folderId) {
@@ -146,7 +146,7 @@ function updateFileName({ id, name }) {
  * @param {Array} options.parents - Parent directories for the created
  * directory (goolge drive allows many parents).
  */
-function createDirectory(options) {
+function createFolder(options) {
   var requestParams = {
     name: options.name,
     mimeType: 'application/vnd.google-apps.folder',

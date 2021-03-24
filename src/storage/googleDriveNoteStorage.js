@@ -134,7 +134,7 @@ function fetchNoteById(noteId) {
 function createAppRootFolder() {
   console.info('Creating a new App root folder...');
   return googleDriveApi
-    .createDirectory({
+    .createFolder({
       name: APP_FOLDER_NAME,
     })
     .then(function(response) {
@@ -175,7 +175,7 @@ function createAppRootTextFile({ id }) {
  * Try to find "APP_FOLDER_NAME" folder in google drive root.
  */
 function findAppFolder() {
-  return googleDriveApi.findByName({
+  return googleDriveApi.findFileByName({
     name: APP_FOLDER_NAME,
     folderId: 'root',
   });
@@ -224,7 +224,7 @@ function getNoteContent(note) {
 
 function findNoteContentFile(note) {
   return googleDriveApi
-    .findByName({
+    .findFileByName({
       name: note.name + '.txt',
       folderId: note.id,
     })
@@ -281,7 +281,7 @@ function create(note) {
   }
 
   return googleDriveApi
-    .createDirectory({
+    .createFolder({
       name: note.name,
       parents: [note.parent.id],
     })

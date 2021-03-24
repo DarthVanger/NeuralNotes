@@ -1,9 +1,7 @@
 /* global gapi */
 import googleDriveApi from 'api/google-drive-api';
-import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
 
 const APP_FOLDER_NAME = 'NeuralNotes';
-const spinner = siteGlobalLoadingBar.create('note-storage-api');
 
 let appRootFolder;
 
@@ -43,25 +41,22 @@ function setAppRootFolder(folder) {
 function scanDrive() {
   console.debug('Scan note storage...');
   return new Promise(resolve => {
-    spinner.show();
-    findAppFolder()
-      .then(function(searchResult) {
-        if (searchResult.length === 0) {
-          console.info(
-            'App root folder on Google Drive not found, create a new one.',
-          );
-          createAppRootFolder()
-            .then(setAppRootFolder)
-            .then(createAppRootTextFile)
-            .then(() => resolve(appRootFolder));
-        } else {
-          console.info('App root folder found on Google Drive');
-          let searchedAppRootFolder = searchResult[0];
-          setAppRootFolder(searchedAppRootFolder);
-          resolve(searchedAppRootFolder);
-        }
-      })
-      .finally(() => spinner.hide());
+    findAppFolder().then(function(searchResult) {
+      if (searchResult.length === 0) {
+        console.info(
+          'App root folder on Google Drive not found, create a new one.',
+        );
+        createAppRootFolder()
+          .then(setAppRootFolder)
+          .then(createAppRootTextFile)
+          .then(() => resolve(appRootFolder));
+      } else {
+        console.info('App root folder found on Google Drive');
+        let searchedAppRootFolder = searchResult[0];
+        setAppRootFolder(searchedAppRootFolder);
+        resolve(searchedAppRootFolder);
+      }
+    });
   });
 }
 
@@ -69,7 +64,6 @@ function scanDrive() {
  * Find child directories for given noteId folder.
  */
 function fetchChildNotes(note) {
-  spinner.show();
   return new Promise((resolve, reject) => {
     console.debug('[Get] Child notes for: "' + note.name + '"');
     getFiles(note.id)
@@ -86,9 +80,6 @@ function fetchChildNotes(note) {
       })
       .catch(() => {
         reject('Connection with Google Drive failed.\n Can not get files');
-      })
-      .finally(function() {
-        spinner.hide();
       });
   });
 }
@@ -108,7 +99,6 @@ function fetchParentNote(note) {
  */
 function fetchNoteById(noteId) {
   console.debug('[Get] Note folder for: "' + noteId + '"');
-  spinner.show();
 
   let request = googleDriveApi.client.files.get({
     fileId: noteId,
@@ -122,8 +112,6 @@ function fetchNoteById(noteId) {
       file = googleDriveApi.parseParents(file);
       resolve(file);
     });
-  }).finally(function() {
-    spinner.hide();
   });
 }
 
@@ -137,12 +125,10 @@ function getFiles(folderId) {
     q: 'trashed = false and "' + folderId + '" in parents',
   });
 
-  spinner.show();
   return new Promise((resolve, reject) => {
     request.execute(function(resp) {
       console.debug('[Loaded] Files: ', resp);
       if (!resp.files) {
-        spinner.hide();
         reject();
         let errorMessage = 'Remote Storage API: Failed to get files';
         throw new Error(errorMessage);
@@ -151,7 +137,6 @@ function getFiles(folderId) {
       //TODO: same code is duplicated in google-drive-api.js - Refactor!
       resp.files.forEach(googleDriveApi.parseParents);
 
-      spinner.hide();
       resolve(resp.files);
     });
   });
@@ -162,7 +147,6 @@ function getFiles(folderId) {
  */
 function createAppRootFolder() {
   console.info('Creating a new App root folder...');
-  spinner.show();
   return googleDriveApi
     .createDirectory({
       name: APP_FOLDER_NAME,
@@ -176,9 +160,6 @@ function createAppRootFolder() {
       console.info('Created App root folder');
 
       return response;
-    })
-    .finally(function() {
-      spinner.hide();
     });
 }
 
@@ -226,7 +207,6 @@ function findAppFolder() {
  * http://stackoverflow.com/a/10323612/1657101
  */
 function createFile(options) {
-  spinner.show();
   return createEmptyFile({
     name: options.name,
     parents: options.parents,
@@ -238,9 +218,6 @@ function createFile(options) {
     .then(function(updatedFile) {
       console.debug('Updated file: ' + updatedFile.name);
       return updatedFile;
-    })
-    .finally(function() {
-      spinner.hide();
     });
 }
 
@@ -256,13 +233,10 @@ function createEmptyFile(options) {
     parents: options.parents,
   });
 
-  spinner.show();
   return new Promise(resolve => {
     request.execute(function(newFile) {
       resolve(newFile);
     });
-  }).finally(function() {
-    spinner.hide();
   });
 }
 
@@ -271,7 +245,6 @@ function createEmptyFile(options) {
  */
 function updateFile(createdFile, content) {
   console.debug('Updating file: ' + createdFile.name);
-  spinner.show();
   const request = gapi.client.request({
     path: '/upload/drive/v3/files/' + createdFile.id,
     method: 'PATCH',
@@ -285,8 +258,6 @@ function updateFile(createdFile, content) {
     request.execute(function(resp) {
       resolve(resp);
     });
-  }).finally(function() {
-    spinner.hide();
   });
 }
 
@@ -346,7 +317,6 @@ function getTextFileContents(options) {
     },
   });
 
-  spinner.show();
   return new Promise(resolve => {
     request.execute(function(gapiReturnsFalseHereForBlobs, responsePlain) {
       const responseObject = JSON.parse(responsePlain);
@@ -355,8 +325,6 @@ function getTextFileContents(options) {
 
       resolve(responseBody);
     });
-  }).finally(function() {
-    spinner.hide();
   });
 }
 
@@ -373,7 +341,6 @@ function create(note) {
     note.parent = appRootFolder;
   }
 
-  spinner.show();
   return googleDriveApi
     .createDirectory({
       name: note.name,
@@ -389,17 +356,11 @@ function create(note) {
     })
     .then(() => {
       return note;
-    })
-    .finally(function() {
-      spinner.hide();
     });
 }
 
 function updateNoteContent(note) {
   console.debug('Updaing note content for: ', note);
-
-  const updateSpinner = spinner.create('updating note content');
-  updateSpinner.show();
 
   return findNoteContentFile(note)
     .then(function(noteContentFile) {
@@ -446,7 +407,6 @@ function remove(note) {
 
   const request = googleDriveApi.client.files.update(requestParams);
 
-  spinner.show();
   return new Promise(resolve => {
     request.execute(function(response) {
       if (response.error) {
@@ -454,13 +414,10 @@ function remove(note) {
       }
       resolve(response);
     });
-  }).finally(function() {
-    spinner.hide();
   });
 }
 
 function move({ noteId, newParentId }) {
-  spinner.show();
   const request = gapi.client.request({
     path: '/drive/v2/files/' + noteId,
     method: 'PUT',
@@ -476,13 +433,9 @@ function move({ noteId, newParentId }) {
         reject(responseRaw);
       }
     });
-  })
-    .catch(e => {
-      throw new Error(e);
-    })
-    .finally(() => {
-      spinner.hide();
-    });
+  }).catch(e => {
+    throw new Error(e);
+  });
 }
 
 function getNoteById(noteId) {

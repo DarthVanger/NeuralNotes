@@ -199,7 +199,10 @@ function createFile(options) {
   })
     .then(function(newFile) {
       console.debug('Created a new file: ' + newFile.name);
-      return updateFile(newFile, options.content);
+      return googleDriveApi.updateTextFileContent({
+        fileId: newFile.id,
+        text: options.content,
+      });
     })
     .then(function(updatedFile) {
       console.debug('Updated file: ' + updatedFile.name);
@@ -222,27 +225,6 @@ function createEmptyFile(options) {
   return new Promise(resolve => {
     request.execute(function(newFile) {
       resolve(newFile);
-    });
-  });
-}
-
-/**
- * Update empty file with text content.
- */
-function updateFile(createdFile, content) {
-  console.debug('Updating file: ' + createdFile.name);
-  const request = gapi.client.request({
-    path: '/upload/drive/v3/files/' + createdFile.id,
-    method: 'PATCH',
-    params: {
-      uploadType: 'media',
-    },
-    body: content,
-  });
-
-  return new Promise(resolve => {
-    request.execute(function(resp) {
-      resolve(resp);
     });
   });
 }

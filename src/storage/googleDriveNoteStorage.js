@@ -90,23 +90,18 @@ function scanDrive() {
  * Find child directories for given noteId folder.
  */
 function fetchChildNotes(note) {
-  return new Promise((resolve, reject) => {
-    console.debug('[Get] Child notes for: "' + note.name + '"');
-    getFiles(note.id)
-      .then(function(files) {
-        const children = [];
-        files.forEach(function(file) {
-          if (file.name === note.name + '.txt') {
-            return;
-          }
-          children.push(file);
-        });
-        console.debug('[Loaded] notes for "' + note.id + '"');
-        resolve(children);
-      })
-      .catch(() => {
-        reject('Connection with Google Drive failed.\n Can not get files');
+  console.debug('[Get] Child notes for: "' + note.name + '"');
+  return googleDriveApi.getFolderChildren(note.id).then(function(files) {
+    const children = [];
+    files &&
+      files.forEach(function(file) {
+        if (file.name === note.name + '.txt') {
+          return;
+        }
+        children.push(parseParents(file));
       });
+    console.debug('[Loaded] notes for "' + note.id + '":', children);
+    return children;
   });
 }
 
@@ -130,20 +125,6 @@ function fetchNoteById(noteId) {
     console.debug('[Loaded] Note folder for: "' + noteId + '"');
     const file = resp;
     return parseParents(file);
-  });
-}
-
-/**
- * Get files from a folder.
- */
-function getFiles(folderId) {
-  return googleDriveApi.getFolderChildren(folderId).then(files => {
-    if (files) {
-      files.forEach(parseParents);
-    }
-
-    console.debug('[Loaded] googleDriveNoteStorage: folder children: ', files);
-    return files;
   });
 }
 

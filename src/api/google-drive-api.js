@@ -97,8 +97,8 @@ function findByName(options) {
 
 function updateTextFileContent({ fileId, text }) {
   const request = gapi.client.request({
-    path: '/upload/drive/v2/files/' + fileId,
-    method: 'PUT',
+    path: '/upload/drive/v3/files/' + fileId,
+    method: 'PATCH',
     params: { uploadType: 'media' },
     headers: {
       'Content-Type': 'text/plain',

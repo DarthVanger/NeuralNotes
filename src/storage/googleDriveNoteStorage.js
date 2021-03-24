@@ -2,9 +2,10 @@
 import googleDriveApi from 'api/google-drive-api';
 import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
 
-let APP_FOLDER_NAME = 'NeuralNotes';
+const APP_FOLDER_NAME = 'NeuralNotes';
+const spinner = siteGlobalLoadingBar.create('note-storage-api');
+
 let appRootFolder;
-let spinner = siteGlobalLoadingBar.create('note-storage-api');
 
 export default {
   /**

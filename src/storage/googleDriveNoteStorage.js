@@ -29,6 +29,31 @@ export default {
   findNotesByName,
 };
 
+/**
+ * We don't want file to have multiple parents
+ * (but google drive allows that).
+ * So copy parents[0] to parent.
+ */
+function parseParents(file) {
+  if (file.parents) {
+    if (file.parents && file.parents.length > 1) {
+      throw new Error(
+        "Files shouldn't have more than one parent. File with more than one parent: ",
+        file,
+      );
+    }
+    file.parent = { id: file.parents[0] };
+  } else {
+    console.debug(
+      'googleDriveApi.parseParents(): skipping file with name "' +
+        file.name +
+        '", because it has no "parents" property',
+    );
+  }
+
+  return file;
+}
+
 function setAppRootFolder(folder) {
   appRootFolder = folder;
   return appRootFolder;
@@ -101,18 +126,11 @@ function fetchParentNote(note) {
 function fetchNoteById(noteId) {
   console.debug('[Get] Note folder for: "' + noteId + '"');
 
-  let request = googleDriveApi.client.files.get({
-    fileId: noteId,
-    fields: googleDriveApi.FILE_FIELDS,
-  });
-
-  return new Promise(resolve => {
-    request.execute(function(resp) {
-      console.debug('[Loaded] Note folder for: "' + noteId + '"');
-      let file = resp;
-      file = googleDriveApi.parseParents(file);
-      resolve(file);
-    });
+  googleDriveApi.getFileById(noteId).then(resp => {
+    console.debug('[Loaded] Note folder for: "' + noteId + '"');
+    let file = resp;
+    file = parseParents(file);
+    resolve(file);
   });
 }
 
@@ -136,7 +154,7 @@ function getFiles(folderId) {
       }
 
       //TODO: same code is duplicated in google-drive-api.js - Refactor!
-      resp.files.forEach(googleDriveApi.parseParents);
+      resp.files.forEach(parseParents);
 
       resolve(resp.files);
     });
@@ -300,7 +318,7 @@ function findNoteContentFile(note) {
       }
 
       const noteContentFile = foundFiles[0];
-      return noteContentFile;
+      return parseParents(noteContentFile);
     });
 }
 

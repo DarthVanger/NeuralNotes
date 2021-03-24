@@ -19,7 +19,6 @@ var self = {
   getFileById,
   updateFile: updateFile,
   updateFileName: updateFileName,
-  parseParents: parseParents,
   createDirectory: createDirectory,
   findFoldersByName,
 };
@@ -90,8 +89,6 @@ function findByName(options) {
       if (resp.error) {
         throw new Error('File named "' + options.name + '" not found');
       }
-      //TODO: same code is duplicated in note-storage.js - Refactor!
-      resp.files.forEach(parseParents);
 
       resolve(resp.files);
     });
@@ -144,31 +141,6 @@ function updateFileName({ id, name }) {
 }
 
 /**
- * We don't want file to have multiple parents
- * (but google drive allows that).
- * So copy parents[0] to parent.
- */
-function parseParents(file) {
-  if (file.parents) {
-    if (file.parents && file.parents.length > 1) {
-      throw new Error(
-        "Files shouldn't have more than one parent. File with more than one parent: ",
-        file,
-      );
-    }
-    file.parent = { id: file.parents[0] };
-  } else {
-    console.debug(
-      'googleDriveApi.parseParents(): skipping file with name "' +
-        file.name +
-        '", because it has no "parents" property',
-    );
-  }
-
-  return file;
-}
-
-/**
  * Create a directory.
  *
  * @param {String} options.name - Directory name.
@@ -213,8 +185,7 @@ function getFileById(fileId) {
   });
   return new Promise(resolve => {
     request.execute(function(resp) {
-      const file = parseParents(resp);
-      resolve(file);
+      resolve(resp);
     });
   });
 }

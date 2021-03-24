@@ -360,9 +360,6 @@ function updateNoteContent(note) {
         console.error('Failed to update file content! Response: ', response);
         throw response;
       }
-    })
-    .finally(function() {
-      updateSpinner.hide();
     });
 }
 

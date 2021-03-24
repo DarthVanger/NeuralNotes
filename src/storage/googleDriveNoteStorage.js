@@ -137,26 +137,13 @@ function fetchNoteById(noteId) {
  * Get files from a folder.
  */
 function getFiles(folderId) {
-  const request = gapi.client.drive.files.list({
-    pageSize: 10,
-    fields: googleDriveApi.FILE_LIST_FIELDS,
-    q: 'trashed = false and "' + folderId + '" in parents',
-  });
+  return googleDriveApi.getFolderChildren(folderId).then(files => {
+    if (files) {
+      files.forEach(parseParents);
+    }
 
-  return new Promise((resolve, reject) => {
-    request.execute(function(resp) {
-      console.debug('[Loaded] Files: ', resp);
-      if (!resp.files) {
-        reject();
-        let errorMessage = 'Remote Storage API: Failed to get files';
-        throw new Error(errorMessage);
-      }
-
-      //TODO: same code is duplicated in google-drive-api.js - Refactor!
-      resp.files.forEach(parseParents);
-
-      resolve(resp.files);
-    });
+    console.debug('[Loaded] googleDriveNoteStorage: folder children: ', files);
+    return files;
   });
 }
 
@@ -457,7 +444,7 @@ function move({ noteId, newParentId }) {
 }
 
 function getNoteById(noteId) {
-  return googleDriveApi.getFileById(noteId);
+  return googleDriveApi.getFileById(noteId).then(file => parseParents(file));
 }
 
 function updateNoteName({ note, newName }) {

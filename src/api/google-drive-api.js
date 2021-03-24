@@ -21,6 +21,7 @@ var self = {
   updateFileName: updateFileName,
   createDirectory: createDirectory,
   findFoldersByName,
+  getFolderChildren,
 };
 
 export default self;
@@ -186,6 +187,27 @@ function getFileById(fileId) {
   return new Promise(resolve => {
     request.execute(function(resp) {
       resolve(resp);
+    });
+  });
+}
+
+function getFolderChildren(folderId) {
+  const request = gapi.client.drive.files.list({
+    pageSize: 10,
+    fields: FILE_LIST_FIELDS,
+    q: 'trashed = false and "' + folderId + '" in parents',
+  });
+
+  return new Promise((resolve, reject) => {
+    request.execute(function(resp) {
+      console.debug('[Loaded] Files: ', resp);
+      if (!resp.files) {
+        reject();
+        let errorMessage = 'Remote Storage API: Failed to get files';
+        throw new Error(errorMessage);
+      }
+
+      resolve(resp.files);
     });
   });
 }

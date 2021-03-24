@@ -1,9 +1,5 @@
 /* global gapi */
-import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
-
 let client;
-
-let spinner = siteGlobalLoadingBar.create('google-drive-api');
 
 /*
  * Fields to get from Google Drive when requesting a file.
@@ -85,7 +81,6 @@ function findByName(options) {
   request = gapi.client.drive.files.list(params);
 
   //TODO: allow search inside of a specified folder?
-  spinner.show();
   let promise = new Promise(resolve => {
     request.execute(function(resp) {
       console.debug(
@@ -99,7 +94,6 @@ function findByName(options) {
       resp.files.forEach(parseParents);
 
       resolve(resp.files);
-      spinner.hide();
     });
   });
 
@@ -193,13 +187,10 @@ function createDirectory(options) {
 
   const request = self.client.files.create(requestParams);
 
-  spinner.show();
   return new Promise(resolve => {
     request.execute(function(newFile) {
       resolve(newFile);
     });
-  }).finally(function() {
-    spinner.hide();
   });
 }
 
@@ -208,12 +199,9 @@ function findNotesByName(name = '') {
   const params = { q: query };
   const request = gapi.client.drive.files.list(params);
 
-  spinner.show();
-
   return new Promise(resolve => {
     request.execute(function(resp) {
       resolve(resp.files);
-      spinner.hide();
     });
   });
 }

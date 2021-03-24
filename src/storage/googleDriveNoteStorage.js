@@ -126,11 +126,10 @@ function fetchParentNote(note) {
 function fetchNoteById(noteId) {
   console.debug('[Get] Note folder for: "' + noteId + '"');
 
-  googleDriveApi.getFileById(noteId).then(resp => {
+  return googleDriveApi.getFileById(noteId).then(resp => {
     console.debug('[Loaded] Note folder for: "' + noteId + '"');
-    let file = resp;
-    file = parseParents(file);
-    resolve(file);
+    const file = resp;
+    return parseParents(file);
   });
 }
 

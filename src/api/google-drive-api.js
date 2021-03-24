@@ -17,7 +17,7 @@ const self = {
   client: client,
   findByName,
   getFileById,
-  updateFile: updateFile,
+  updateTextFileContent: updateTextFileContent,
   updateFileName: updateFileName,
   createDirectory: createDirectory,
   findFoldersByName,
@@ -95,15 +95,15 @@ function findByName(options) {
   return promise;
 }
 
-function updateFile(options) {
+function updateTextFileContent({ fileId, text }) {
   const request = gapi.client.request({
-    path: '/upload/drive/v2/files/' + options.fileId,
+    path: '/upload/drive/v2/files/' + fileId,
     method: 'PUT',
     params: { uploadType: 'media' },
     headers: {
       'Content-Type': 'text/plain',
     },
-    body: options.text,
+    body: text,
   });
 
   const promise = new Promise(resolve => {

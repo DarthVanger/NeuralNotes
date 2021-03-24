@@ -350,7 +350,7 @@ function updateNoteContent(note) {
 
   return findNoteContentFile(note)
     .then(function(noteContentFile) {
-      return googleDriveApi.updateFile({
+      return googleDriveApi.updateTextFileContent({
         fileId: noteContentFile.id,
         text: note.content,
       });

@@ -15,13 +15,14 @@ const self = {
   FILE_LIST_FIELDS: FILE_LIST_FIELDS,
   loadDriveApi: loadDriveApi,
   client: client,
-  findByName,
   getFileById,
-  updateTextFileContent: updateTextFileContent,
+  findByName, // findFileByName
   updateFileName: updateFileName,
-  createDirectory: createDirectory,
+  createDirectory: createDirectory, // createFolder
   findFoldersByName,
   getFolderChildren,
+  createTextFile,
+  updateTextFileContent: updateTextFileContent,
 };
 
 export default self;
@@ -203,6 +204,42 @@ function getFolderChildren(folderId) {
       }
 
       resolve(resp.files);
+    });
+  });
+}
+
+/**
+ * Create a file with text content on google drive.
+ *
+ * @param {String} options.name - File name.
+ * @param {Array} options.parents - Parent directories for the file
+ * (goolge drive allows many parents).
+ * @param {String} options.content - Text content of the file.
+ *
+ * src of code:
+ * this guy from stackoverflow is a GOD! :)
+ * http://stackoverflow.com/a/10323612/1657101
+ */
+function createTextFile({ name, parents, content }) {
+  return createEmptyTextFile({
+    name,
+    parents,
+  }).then(function(newFile) {
+    return updateTextFileContent({ fileId: newFile.id, text: content });
+  });
+}
+
+function createEmptyTextFile({ parents, name }) {
+  console.debug('Creating empty file...');
+  let request = gapi.client.drive.files.create({
+    mimeType: 'text/plain',
+    name,
+    parents,
+  });
+
+  return new Promise(resolve => {
+    request.execute(function(newFile) {
+      resolve(newFile);
     });
   });
 }

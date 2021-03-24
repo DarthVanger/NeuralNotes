@@ -155,11 +155,12 @@ function createAppRootFolder() {
  */
 function createAppRootTextFile({ id }) {
   console.info('Creating app root text file...');
-  return createFile({
-    name: APP_FOLDER_NAME + '.txt',
-    content: 'Edit this text...',
-    parents: [id],
-  })
+  return googleDriveApi
+    .createTextFile({
+      name: APP_FOLDER_NAME + '.txt',
+      content: 'Edit this text...',
+      parents: [id],
+    })
     .then(function(response) {
       console.info('Created app root textfile');
       return response;
@@ -178,36 +179,6 @@ function findAppFolder() {
     name: APP_FOLDER_NAME,
     folderId: 'root',
   });
-}
-
-/**
- * Create a file with text content on google drive.
- *
- * @param {String} options.name - File name.
- * @param {Array} options.parents - Parent directories for the file
- * (goolge drive allows many parents).
- * @param {String} options.content - Text content of the file.
- *
- * src of code:
- * this guy from stackoverflow is a GOD! :)
- * http://stackoverflow.com/a/10323612/1657101
- */
-function createFile(options) {
-  return createEmptyFile({
-    name: options.name,
-    parents: options.parents,
-  })
-    .then(function(newFile) {
-      console.debug('Created a new file: ' + newFile.name);
-      return googleDriveApi.updateTextFileContent({
-        fileId: newFile.id,
-        text: options.content,
-      });
-    })
-    .then(function(updatedFile) {
-      console.debug('Updated file: ' + updatedFile.name);
-      return updatedFile;
-    });
 }
 
 /**
@@ -316,13 +287,14 @@ function create(note) {
     })
     .then(function(createdDirectory) {
       note.id = createdDirectory.id;
-      return createFile({
+      return googleDriveApi.createTextFile({
         name: note.name + '.txt',
         content: note.content,
         parents: [createdDirectory.id],
       });
     })
     .then(() => {
+      console.debug('New note created!', note);
       return note;
     });
 }

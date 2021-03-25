@@ -181,25 +181,6 @@ function findAppFolder() {
   });
 }
 
-/**
- * Create empty file, which may be filled with content later,
- * (in a separate request) to avoid making the multipart request.
- */
-function createEmptyFile(options) {
-  console.debug('Creating empty file...');
-  let request = googleDriveApi.client.files.create({
-    name: options.name,
-    mimeType: 'text/plain',
-    parents: options.parents,
-  });
-
-  return new Promise(resolve => {
-    request.execute(function(newFile) {
-      resolve(newFile);
-    });
-  });
-}
-
 function updateFileName(options) {
   return googleDriveApi.updateFileName(options);
 }

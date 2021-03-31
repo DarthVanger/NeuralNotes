@@ -1,5 +1,4 @@
 /* global gapi */
-import { clientId, scopes } from 'api/google-client-config';
 import auth from 'auth';
 
 /**
@@ -24,32 +23,21 @@ export function checkAuth() {
 }
 
 export function gapiAuthorize() {
-  console.debug('googleLogin.gapiAuthorize(): clientId: ', clientId);
-  console.debug('googleLogin.gapiAuthorize(): scopes: ', scopes);
-  return new Promise((resolve, reject) => {
-    gapi.auth.authorize(
-      {
-        client_id: clientId,
-        scope: scopes.join(' '),
-        immediate: false,
-      },
-      function(authResult) {
-        console.debug('googleLogin.gapiAuthorize(): authResult: ', authResult);
-        if (authResult.error) {
-          reject(authResult);
-        } else {
-          auth.saveToken({
-            access_token: authResult.access_token,
-            expires_in: authResult.expires_in,
-          });
+  return gapi.auth2
+    .getAuthInstance()
+    .signIn()
+    .then(googleUser => {
+      const authResult = googleUser.getAuthResponse();
+      console.debug('googleLogin.gapiAuthorize(): authResult: ', authResult);
 
-          console.debug(
-            'googleLogin.gapiAuthorize(): auth sucess! authResult: ',
-            authResult,
-          );
-          resolve(authResult);
-        }
-      },
-    );
-  });
+      console.debug(
+        'googleLogin.gapiAuthorize(): auth sucess! authResult: ',
+        authResult,
+      );
+
+      auth.saveToken({
+        access_token: authResult.access_token,
+        expires_in: authResult.expires_in,
+      });
+    });
 }

@@ -19,7 +19,8 @@ export const App = () => {
     <ThemeProvider theme={theme}>
       <Switch>
         <Route exact path="/">
-          <LoginPageContainer />
+          {isUserSignedIn && <Redirect to="/notes" />}
+          {!isUserSignedIn && <LoginPageContainer />}
         </Route>
 
         {!isUserSignedIn && <Redirect to="/" />}

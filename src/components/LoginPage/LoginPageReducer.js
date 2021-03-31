@@ -1,16 +1,17 @@
+import auth from 'auth';
 import {
-  GOOGLE_API_INITIALIZED_ACTION,
+  LOAD_GOOGLE_API_SUCCESS_ACTION,
   AUTH_SUCCESS_ACTION,
 } from 'components/LoginPage/LoginPageActions';
 
 const defaultState = {
   isGoogleApiInitialized: false,
-  isSignedIn: false,
+  isSignedIn: auth.signedIn(),
 };
 
 export const loginPageReducer = (state = defaultState, { type }) => {
   switch (type) {
-    case GOOGLE_API_INITIALIZED_ACTION:
+    case LOAD_GOOGLE_API_SUCCESS_ACTION:
       return Object.assign({}, state, { isGoogleApiInitialized: true });
     case AUTH_SUCCESS_ACTION:
       return {

@@ -15,6 +15,7 @@ import { searchPageInit } from 'components/SearchPage/SearchPageSagas';
 import { spinnerInit } from 'components/Spinner/SpinnerSagas';
 import { uploadsInit } from 'components/Uploads/UploadsSagas';
 import { bottomBarInit } from 'components/BottomBar/BottomBarSagas';
+import { notesPageInit } from 'components/NotesPage/NotesPageSagas';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -66,5 +67,6 @@ export function* rootSaga() {
     noteDetailsInit(),
     searchPageInit(),
     bottomBarInit(),
+    notesPageInit(),
   ]);
 }

@@ -20,7 +20,6 @@ import {
   SEARCH_RESULT_CLICKED,
   ROOT_NOTE_FOUND_ACTION,
 } from 'components/NotesMindMap/NotesMindMapActions';
-import { UploadsActions } from 'components/Uploads/UploadsActions';
 import { doesNodeHasParent } from 'helpers/graph';
 
 function* selectRootNote({ data }) {
@@ -98,19 +97,11 @@ function* changeParentNote({ data: { noteId, newParent } }) {
   }
 }
 
-function* uploadSuccessSaga(action) {
-  const { uploadFolderId } = action.payload.file;
-
-  // @todo: need to refresh notes for `uploadFolderId`
-  yield call(() => console.log('Need to refresh children for', uploadFolderId));
-}
-
 export function* noteMindMapInit() {
   yield all([
     takeEvery(NOTE_CHANGE_PARENT_ACTION, changeParentNote),
     takeEvery(ROOT_NOTE_FOUND_ACTION, selectRootNote),
     takeEvery(CHANGE_SELECTED_NOTE_ACTION, changeSelectedNote),
     takeEvery(SEARCH_RESULT_CLICKED, handleSearchResultClick),
-    takeEvery(UploadsActions.file.uploadSuccess, uploadSuccessSaga),
   ]);
 }

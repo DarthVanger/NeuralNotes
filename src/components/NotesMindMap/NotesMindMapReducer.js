@@ -8,6 +8,8 @@ import {
   ROOT_NOTE_FOUND_ACTION,
 } from 'components/NotesMindMap/NotesMindMapActions';
 
+import { UploadsActions } from 'components/Uploads/UploadsActions';
+
 import {
   CHANGE_PARENT_BUTTON_CLICKED_ACTION,
   DELETE_NOTE_REQUEST_SUCCESS_ACTION,
@@ -29,7 +31,10 @@ const defaultState = {
   edges: [],
 };
 
-export const notesMindMapReducer = (state = defaultState, { type, data }) => {
+export const notesMindMapReducer = (
+  state = defaultState,
+  { type, data, payload },
+) => {
   const handleSelectedNoteChildrenFetchedAction = () => {
     let nodes = [...state.nodes];
     let edges = [...state.edges];
@@ -162,6 +167,58 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
     return newNodes;
   };
 
+  const prependUploadingToFileName = filename => `[Uploading...] ${filename}`;
+
+  const handleFileUploadStart = () => {
+    const { files } = payload;
+    let nodes = state.nodes;
+    const edges = [...state.edges];
+    files.forEach(file => {
+      const newNode = {
+        id: `upload-in-progress-${Date.now()}`,
+        name: prependUploadingToFileName(file.name),
+        parent: state.selectedNote,
+        isUploadedFile: true,
+        isInProgressOfUpload: true,
+      };
+
+      nodes = addNodeToGraph(nodes, newNode);
+      edges.push({ from: newNode.parent.id, to: newNode.id });
+    });
+    return {
+      ...state,
+      nodes,
+      edges,
+    };
+  };
+
+  const handleFileUploadSuccess = () => {
+    const { uploadFolderId } = payload.file;
+    const uploadedFile = payload.result;
+    const nodes = [...state.nodes];
+    const edges = [...state.edges];
+    // TODO: ideally should be searching by id...
+    const nodeToUpdate = nodes.find(
+      node => node.name === prependUploadingToFileName(uploadedFile.name),
+    );
+    nodes[nodes.indexOf(nodeToUpdate)] = {
+      ...nodeToUpdate,
+      id: uploadedFile.id,
+      name: uploadedFile.name,
+      isInProgressOfUpload: false,
+    };
+    const edgeToUpdate = edges.find(edge => edge.to === nodeToUpdate.id);
+    edges[edges.indexOf(edgeToUpdate)] = {
+      ...edgeToUpdate,
+      to: uploadedFile.id,
+    };
+    return {
+      ...state,
+      nodes,
+      edges,
+    };
+  };
+
   switch (type) {
     case ROOT_NOTE_FOUND_ACTION:
       return addRootToGraph();
@@ -189,6 +246,10 @@ export const notesMindMapReducer = (state = defaultState, { type, data }) => {
         edges: [],
         selectedNote: data.note,
       };
+    case UploadsActions.list.addedFiles().type:
+      return handleFileUploadStart();
+    case UploadsActions.file.uploadSuccess().type:
+      return handleFileUploadSuccess();
     default:
       return state;
   }

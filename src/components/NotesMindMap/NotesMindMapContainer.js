@@ -20,61 +20,13 @@ const createNotesMindMapPropertySelector = property =>
     notesMindMapState => notesMindMapState[property],
   );
 
-const getRealNotes = createNotesMindMapPropertySelector('nodes');
-const getRealEdges = createNotesMindMapPropertySelector('edges');
-
-const getUploadItems = createSelector(
-  UploadsSelectors.getUploadsList,
-  getRealNotes,
-  (uploads, notes) =>
-    uploads
-      .map(item => ({
-        realId: item.result ? item.result.id : null,
-        name: item.file.name,
-        folderId: item.file.uploadFolderId,
-      }))
-      .filter(item => {
-        return !notes.find(note => note.id === item.realId);
-      }),
-);
-
-const getPseudoNoteId = item => `pseudo-note-${item.name}`;
-const getPseudoEdgeId = item => `pseudo-edge-${item.name}`;
-
-const getPseudoNotes = createSelector(getUploadItems, items =>
-  items.map(item => ({
-    id: getPseudoNoteId(item),
-    label: item.name,
-  })),
-);
-
-const getPseudoEdges = createSelector(getUploadItems, items =>
-  items.map(item => ({
-    id: getPseudoEdgeId(item),
-    from: item.folderId,
-    to: getPseudoNoteId(item),
-  })),
-);
-
-const getComputedNotes = createSelector(
-  getRealNotes,
-  getPseudoNotes,
-  (realNotes, pseudoNotes) => [...realNotes, ...pseudoNotes],
-);
-
-const getComputedEdges = createSelector(
-  getRealEdges,
-  getPseudoEdges,
-  (realEdges, pseudoEdges) => [...realEdges, ...pseudoEdges],
-);
-
 const mapStateToProps = createStructuredSelector({
   selectedNote: createNotesMindMapPropertySelector('selectedNote'),
   isChangeParentModeActive: createNotesMindMapPropertySelector(
     'isChangeParentModeActive',
   ),
-  nodes: getComputedNotes,
-  edges: getComputedEdges,
+  nodes: createNotesMindMapPropertySelector('nodes'),
+  edges: createNotesMindMapPropertySelector('edges'),
 });
 
 const mapDispatchToProps = () => ({

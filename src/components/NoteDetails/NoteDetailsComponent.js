@@ -64,6 +64,14 @@ export const NoteDetailsComponent = props => {
         value={noteName}
         placeholder="Title"
         rows="1"
+        autoFocus
+        onFocus={function(e) {
+          // set cursor to the end, instead of beginning of input
+          // https://stackoverflow.com/a/35951917/1657101
+          var val = e.target.value;
+          e.target.value = '';
+          e.target.value = val;
+        }}
       />
       <StyledNoteContentEditor
         onChange={handleNoteContentChange}

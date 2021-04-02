@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { createSelector, createStructuredSelector } from 'reselect';
 import { action } from 'sagas';
 import { UploadsSelectors } from 'selectors';
 
@@ -12,21 +11,13 @@ import {
 } from 'components/NotesMindMap/NotesMindMapActions';
 import { NotesMindMapComponent } from 'components/NotesMindMap/NotesMindMapComponent';
 
-const getNotesMindMapState = state => state.notesMindMap;
-
-const createNotesMindMapPropertySelector = property =>
-  createSelector(
-    getNotesMindMapState,
-    notesMindMapState => notesMindMapState[property],
-  );
-
-const mapStateToProps = createStructuredSelector({
-  selectedNote: createNotesMindMapPropertySelector('selectedNote'),
-  isChangeParentModeActive: createNotesMindMapPropertySelector(
-    'isChangeParentModeActive',
-  ),
-  nodes: createNotesMindMapPropertySelector('nodes'),
-  edges: createNotesMindMapPropertySelector('edges'),
+const mapStateToProps = ({
+  notesMindMap: { selectedNote, isChangeParentModeActive, nodes, edges },
+}) => ({
+  selectedNote,
+  isChangeParentModeActive,
+  nodes,
+  edges,
 });
 
 const mapDispatchToProps = () => ({

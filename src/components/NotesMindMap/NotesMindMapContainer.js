@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import { action } from 'sagas';
-import { UploadsSelectors } from 'selectors';
 
 import {
   CHANGE_SELECTED_NOTE_ACTION,

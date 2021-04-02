@@ -14,7 +14,6 @@ import {
   NOTE_CHANGE_PARENT_ACTION,
   selectedNoteChildrenFetchedAction,
   selectedNoteParentFetchedAction,
-  noteNameUpdateRequestSuccessAction,
   changeParentRequestSuccessAction,
   changeParentRequestFailAction,
   SEARCH_RESULT_CLICKED,

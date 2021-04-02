@@ -193,7 +193,6 @@ export const notesMindMapReducer = (
   };
 
   const handleFileUploadSuccess = () => {
-    const { uploadFolderId } = payload.file;
     const uploadedFile = payload.result;
     const nodes = [...state.nodes];
     const edges = [...state.edges];

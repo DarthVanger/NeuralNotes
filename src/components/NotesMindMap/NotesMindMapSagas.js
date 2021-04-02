@@ -7,7 +7,6 @@ import {
   takeEvery,
 } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
 import noteStorage from 'storage/noteStorage';
-import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
 
 import {
   CHANGE_SELECTED_NOTE_ACTION,
@@ -15,7 +14,6 @@ import {
   NOTE_CHANGE_PARENT_ACTION,
   selectedNoteChildrenFetchedAction,
   selectedNoteParentFetchedAction,
-  UPDATE_NOTE_NAME_ACTION,
   noteNameUpdateRequestSuccessAction,
   changeParentRequestSuccessAction,
   changeParentRequestFailAction,
@@ -24,8 +22,6 @@ import {
 } from 'components/NotesMindMap/NotesMindMapActions';
 import { UploadsActions } from 'components/Uploads/UploadsActions';
 import { doesNodeHasParent } from 'helpers/graph';
-
-let spinner = siteGlobalLoadingBar.create('mind map');
 
 function* selectRootNote({ data }) {
   yield put(changeSelectedNoteAction({ note: data, edges: [] }));
@@ -62,11 +58,8 @@ function* handleSearchResultClick({ data: { note } }) {
 }
 
 function* fetchChildNotes(note) {
-  const fetchingNotesSpinner = spinner.create('loading child notes');
-  fetchingNotesSpinner.show();
   try {
     const childNotes = yield call(noteStorage.fetchChildNotes, note);
-    fetchingNotesSpinner.hide();
     return childNotes;
   } catch (e) {
     yield call([toast, toast.error], e);
@@ -74,25 +67,17 @@ function* fetchChildNotes(note) {
 }
 
 function* fetchParentNote(note) {
-  const fetchingNotesSpinner = spinner.create('loading parent note');
-  fetchingNotesSpinner.show();
   console.info(`Loading parent note for "${note.name}"...`);
   try {
     const parentNote = yield call(noteStorage.fetchParentNote, note);
     console.info(
       `[Loaded] Parent note for "${note.name}": "${parentNote.name}"`,
     );
-    fetchingNotesSpinner.hide();
     return parentNote;
   } catch (e) {
     yield call([toast, toast.error], 'Someting went wrong :(');
     throw e;
   }
-}
-
-function* updateNoteName({ data: { note, newName } }) {
-  const newNote = yield noteStorage.updateNoteName({ note, newName });
-  yield put(noteNameUpdateRequestSuccessAction(newNote));
 }
 
 function* changeParentNote({ data: { noteId, newParent } }) {
@@ -125,7 +110,6 @@ export function* noteMindMapInit() {
     takeEvery(NOTE_CHANGE_PARENT_ACTION, changeParentNote),
     takeEvery(ROOT_NOTE_FOUND_ACTION, selectRootNote),
     takeEvery(CHANGE_SELECTED_NOTE_ACTION, changeSelectedNote),
-    takeEvery(UPDATE_NOTE_NAME_ACTION, updateNoteName),
     takeEvery(SEARCH_RESULT_CLICKED, handleSearchResultClick),
     takeEvery(UploadsActions.file.uploadSuccess, uploadSuccessSaga),
   ]);

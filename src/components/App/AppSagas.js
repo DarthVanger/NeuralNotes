@@ -15,7 +15,7 @@ import {
 
 import { loadGoogleApiSuccessAction } from 'components/LoginPage/LoginPageActions';
 
-function* loadGoogleApi() {
+export function* loadGoogleApi() {
   yield googleApi.loadGoogleApi();
   yield put(loadGoogleApiSuccessAction());
 }

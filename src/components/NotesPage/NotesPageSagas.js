@@ -9,15 +9,18 @@ import {
   AUTHORIZED_USER_OPENED_APP,
   loadGoogleApiAction,
 } from 'components/App/AppActions';
+import { loadGoogleApi } from 'components/App/AppSagas';
 import noteStorage from 'storage/noteStorage';
-import { LOAD_GOOGLE_API_SUCCESS_ACTION } from 'components/LoginPage/LoginPageActions';
+import { AUTH_SUCCESS_ACTION } from 'components/LoginPage/LoginPageActions';
 
 import { rootNoteFoundAction } from 'components/NotesMindMap/NotesMindMapActions';
 
-function* handleLoadGoogleApiSuccess() {
+function* loadGoogleDriveApi() {
   yield call(googleDriveApi.loadDriveApi);
   console.debug('load google drive api success');
+}
 
+function* loadInitialNote() {
   let initialNote;
   const lastViewedNoteId = localStorage.getItem('lastViewedNoteId');
   if (lastViewedNoteId) {
@@ -30,10 +33,17 @@ function* handleLoadGoogleApiSuccess() {
 }
 
 function* handleAuthorizedUserOpenedApp() {
-  yield put(loadGoogleApiAction());
+  yield call(loadGoogleApi);
+  yield call(loadGoogleDriveApi);
+  yield call(loadInitialNote);
+}
+
+function* handleAuthSuccess() {
+  yield call(loadGoogleDriveApi);
+  yield call(loadInitialNote);
 }
 
 export function* notesPageInit() {
   yield takeEvery(AUTHORIZED_USER_OPENED_APP, handleAuthorizedUserOpenedApp);
-  yield takeEvery(LOAD_GOOGLE_API_SUCCESS_ACTION, handleLoadGoogleApiSuccess);
+  yield takeEvery(AUTH_SUCCESS_ACTION, handleAuthSuccess);
 }

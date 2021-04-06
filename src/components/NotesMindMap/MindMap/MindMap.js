@@ -72,7 +72,7 @@ const MindMap = ({ nodes, edges, ...attrs }) => {
           r={r}
           cx={center}
           cy={center}
-          key={n.id}
+          key={n.props.id}
           fill="none"
           stroke="#ddd"
           strokeWidth="1"

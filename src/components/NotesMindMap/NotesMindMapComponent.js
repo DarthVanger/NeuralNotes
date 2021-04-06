@@ -79,6 +79,7 @@ export class NotesMindMapComponent extends Component {
             nodes={nodes.map(n => (
               <Node
                 id={n.id}
+                key={n.id}
                 label={n.name}
                 onClick={() => this.handleNodeClick(n)}
               />

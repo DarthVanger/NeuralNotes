@@ -25,6 +25,8 @@ const MindMap = ({ nodes, edges, ...attrs }) => {
    * Render children of a node
    */
   const renderLevel = node => {
+    const nodeWidth = 110;
+
     const levelNodes = edges
       .filter(e => e.props.from === node.props.id)
       .map(e => nodes.find(n => e.props.to === n.props.id));
@@ -65,7 +67,7 @@ const MindMap = ({ nodes, edges, ...attrs }) => {
 
       const c = center;
       const y = center + parentPosition.y + r * Math.sin(φ);
-      const x = center + parentPosition.x + r * Math.cos(φ);
+      const x = center + (parentPosition.x + nodeWidth) + r * Math.cos(φ);
       nodePositions.push({ id: n.props.id, x, y, φ });
       mindMapNodes.push(
         <circle
@@ -82,7 +84,7 @@ const MindMap = ({ nodes, edges, ...attrs }) => {
       const path = (
         <path
           d={`
-            M ${parentPosition?.x || c} ${parentPosition?.y || c}
+            M ${(parentPosition?.x || c) + nodeWidth} ${parentPosition?.y || c}
             L ${x} ${y}
           `}
           stroke={`rgb(${(circleNum * 50) % 255}, ${(circleNum * 100 * 3.14) %

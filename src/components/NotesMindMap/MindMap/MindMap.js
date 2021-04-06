@@ -16,19 +16,15 @@ const MindMap = ({ nodes, edges, ...attrs }) => {
   let mindMapNodes = [];
   const edgeElements = [];
   const nodePositions = [];
-  const slots = [];
   let shift = 3.14 / 4 / circleNum;
 
-  slots[circleNum] = new Array(Math.floor((2 * 3.14) / shift)).fill(false);
   let slotNum = 0;
   let r = getCirlceRadius(circleNum);
 
   /**
    * Render children of a node
    */
-  const renderLevel = (node, nodesRenderedOnThisCircle = 0) => {
-    nodesRenderedOnThisCircle = 0;
-
+  const renderLevel = node => {
     const levelNodes = edges
       .filter(e => e.props.from === node.props.id)
       .map(e => nodes.find(n => e.props.to === n.props.id));
@@ -46,25 +42,10 @@ const MindMap = ({ nodes, edges, ...attrs }) => {
     );
 
     const levelNodeElements = levelNodes.map((n, i) => {
-      console.log('slots:', `[${slots.map(s => s.join(',')).join('\n  ')}\n]`);
-      const freeSlots = slots[circleNum].filter(s => !s);
-      if (freeSlots.length === 0) {
-        console.log(
-          'increasing circleNum, because there are no free slots left',
-        );
-        circleNum++;
-        slots[circleNum] = new Array(Math.floor((2 * 3.14) / shift)).fill(
-          false,
-        );
-        slotNum = 0;
-        r = getCirlceRadius(circleNum);
-        shift = 3.14 / 4 / circleNum;
-        console.log('1- slots: ', slots);
-      } else {
-        slots[circleNum][slotNum] = true;
-        slotNum++;
-      }
-
+      console.log('increasing circleNum');
+      circleNum++;
+      r = getCirlceRadius(circleNum);
+      shift = 3.14 / 4 / circleNum;
       console.log('circleNum: ', circleNum);
 
       const parent = nodes.find(
@@ -75,8 +56,7 @@ const MindMap = ({ nodes, edges, ...attrs }) => {
 
       const parentPosition = nodePositions.find(p => p.id == parent.props.id);
 
-      let φ =
-        (i + nodesRenderedOnThisCircle) * shift + (parentPosition?.φ || 0);
+      let φ = i * shift + (parentPosition?.φ || 0);
       if (parentPosition?.φ) {
         //φ += 3.14 / Math.pow(circleNum + 1, 2);
       }
@@ -131,7 +111,7 @@ const MindMap = ({ nodes, edges, ...attrs }) => {
     mindMapNodes.push(levelNodeElements);
 
     levelNodes.forEach(levelNode => {
-      renderLevel(levelNode, nodesRenderedOnThisCircle + levelNodes.length);
+      renderLevel(levelNode);
     });
   };
 

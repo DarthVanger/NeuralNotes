@@ -7,12 +7,11 @@ import { StyledNotesMindMap } from 'components/NotesMindMap/NotesMindMapStyles';
 import { getDepth } from 'helpers/graph';
 
 const scrollByMouseDrag = (() => el => {
-  const element = el.current;
   let isMouseDown = false;
   const clickPosition = {};
 
   const scroll = e => {
-    element.scroll(e.pageX - clickPosition.x, e.pageY - clickPosition.y);
+    el.current.scroll(e.pageX - clickPosition.x, e.pageY - clickPosition.y);
   };
 
   const pauseEvent = e => {
@@ -31,17 +30,17 @@ const scrollByMouseDrag = (() => el => {
     onMouseDown: e => {
       e.persist();
       pauseEvent(e);
-      const isClickOnSvg = e.target == element.querySelector('svg');
+      const isClickOnSvg = e.target == el.current.querySelector('svg');
       if (isClickOnSvg) {
         isMouseDown = true;
-        clickPosition.y = e.pageY - element.scrollTop;
-        clickPosition.x = e.pageX - element.scrollLeft;
-        element.style.cursor = 'grab';
+        clickPosition.y = e.pageY - el.current.scrollTop;
+        clickPosition.x = e.pageX - el.current.scrollLeft;
+        el.current.style.cursor = 'grab';
       }
     },
     onMouseUp: e => {
       isMouseDown = false;
-      element.style.cursor = 'auto';
+      el.current.style.cursor = 'auto';
     },
   };
 })();

@@ -42,11 +42,9 @@ const MindMap = ({ nodes, edges, ...attrs }) => {
     );
 
     const levelNodeElements = levelNodes.map((n, i) => {
-      console.log('increasing circleNum');
-      circleNum++;
-      r = getCirlceRadius(circleNum);
-      shift = 3.14 / 4 / circleNum;
-      console.log('circleNum: ', circleNum);
+      r = 250;
+      //shift = 3.14 / 4 / circleNum;
+      shift = 3.14 / 2 / levelNodes.length;
 
       const parent = nodes.find(
         n1 =>
@@ -56,10 +54,8 @@ const MindMap = ({ nodes, edges, ...attrs }) => {
 
       const parentPosition = nodePositions.find(p => p.id == parent.props.id);
 
-      let φ = i * shift + (parentPosition?.φ || 0);
-      if (parentPosition?.φ) {
-        //φ += 3.14 / Math.pow(circleNum + 1, 2);
-      }
+      //let φ = i * shift * Math.pow(-1, i) + (parentPosition?.φ || 0);
+      let φ = i * shift * Math.pow(-1, i) + (parentPosition?.φ || 0);
 
       console.debug(`Rendering node: "${n.props.label}"`);
       console.debug(`- parent: "${parent.props.label}"`);
@@ -68,8 +64,8 @@ const MindMap = ({ nodes, edges, ...attrs }) => {
       );
 
       const c = center;
-      const y = center + r * Math.sin(φ);
-      const x = center + r * Math.cos(φ);
+      const y = center + parentPosition.y + r * Math.sin(φ);
+      const x = center + parentPosition.x + r * Math.cos(φ);
       nodePositions.push({ id: n.props.id, x, y, φ });
       mindMapNodes.push(
         <circle
@@ -109,6 +105,9 @@ const MindMap = ({ nodes, edges, ...attrs }) => {
     });
 
     mindMapNodes.push(levelNodeElements);
+
+    circleNum++;
+    console.log('circleNum: ', circleNum);
 
     levelNodes.forEach(levelNode => {
       renderLevel(levelNode);

@@ -89,7 +89,7 @@ const MindMap = ({ nodes, edges, ...attrs }) => {
             255}, ${(circleNum * 150) % 255})`}
           strokeWidth="2"
           fill="none"
-          key={`${n.props.id}->${parent.props.id}`}
+          key={`${parent.props.id}->${n.props.id}`}
         />
       );
 

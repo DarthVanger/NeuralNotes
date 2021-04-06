@@ -75,12 +75,3 @@ const MindMapContainer = ({ children, initialFocusPosition }) => {
 };
 
 export default MindMapContainer;
-
-//  componentDidUpdate(prevProps) {
-//    if (prevProps.nodes.length !== this.props.nodes.length) {
-//      const el = this.mindMapContainerRef.current;
-//      const depth = getDepth(this.props.nodes, this.props.edges);
-//
-//      el && depth > 1 && el.scroll(el.scrollLeft + 250, el.scrollTop + 250);
-//    }
-//  }

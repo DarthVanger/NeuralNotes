@@ -135,9 +135,25 @@ const MindMap = ({ nodes, edges, ...attrs }) => {
     });
   };
 
-  mindMapNodes.push(React.cloneElement(nodes[0], { x: center, y: center }));
-  nodePositions.push({ id: nodes[0].props.id, x: center, y: center, φ: 0 });
-  renderLevel(nodes[0]);
+  const rootNode = getRootNode(nodes, edges);
+  mindMapNodes.push(React.cloneElement(rootNode, { x: center, y: center }));
+  nodePositions.push({ id: rootNode.props.id, x: center, y: center, φ: 0 });
+  renderLevel(rootNode);
+
+  function getRootNode(nodes, edges) {
+    return getParent(nodes[0]);
+
+    function getParent(node) {
+      const parentId = edges.find(e => e.props.to === node.props.id)?.props
+        .from;
+      if (!parentId) {
+        return node;
+      }
+
+      const parentNode = nodes.find(n => n.props.id === parentId);
+      return getParent(parentNode);
+    }
+  }
 
   const svgSize = getCirlceRadius(circleNum + 1) * 2 + center;
   return (

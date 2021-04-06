@@ -30,6 +30,7 @@ export class NotesMindMapComponent extends Component {
           edges={edges.map(e => (
             <Edge {...e} />
           ))}
+          focusNodeId={selectedNote.id}
         />
       </StyledNotesMindMap>
     );

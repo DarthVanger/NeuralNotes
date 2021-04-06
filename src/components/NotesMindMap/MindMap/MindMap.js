@@ -13,7 +13,7 @@ const getCirlceRadius = circleNum => {
   return circleNum * radius;
 };
 
-const MindMap = ({ nodes, edges, ...attrs }) => {
+const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
   let circleNum = 1;
   let mindMapNodes = [];
   const edgeElements = [];
@@ -138,8 +138,13 @@ const MindMap = ({ nodes, edges, ...attrs }) => {
   }
 
   const svgSize = getCirlceRadius(circleNum + 1) * 2 + center;
+  const focusNodePosition = nodePositions.find(p => p.id == focusNodeId);
+  const initialFocusPosition = {
+    x: svgSize / 2 + (focusNodePosition?.x || 0),
+    y: svgSize / 2 + (focusNodePosition?.y || 0),
+  };
   return (
-    <MindMapContainer>
+    <MindMapContainer initialFocusPosition={initialFocusPosition}>
       <svg
         viewBox={`${-svgSize / 2} ${-svgSize / 2} ${svgSize} ${svgSize}`}
         width={svgSize}

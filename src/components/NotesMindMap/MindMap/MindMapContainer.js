@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 
 const StyledContainer = styled.div`
@@ -54,8 +54,19 @@ const scrollByMouseDrag = (() => el => {
   };
 })();
 
-const MindMapContainer = ({ children }) => {
+const MindMapContainer = ({ children, initialFocusPosition }) => {
   const containerRef = useRef(null);
+  useEffect(() => {
+    if (initialFocusPosition) {
+      const viewBoxWidth = containerRef.current.offsetWidth;
+      const viewBoxHeight = containerRef.current.offsetHeight;
+      containerRef.current.scrollLeft =
+        initialFocusPosition.x - viewBoxWidth / 2;
+      containerRef.current.scrollTop =
+        initialFocusPosition.y - viewBoxHeight / 2;
+    }
+  });
+
   return (
     <StyledContainer ref={containerRef} {...scrollByMouseDrag(containerRef)}>
       {children}

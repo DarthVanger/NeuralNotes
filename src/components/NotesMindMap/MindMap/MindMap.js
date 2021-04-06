@@ -1,14 +1,16 @@
 import React from 'react';
 import { Node } from './Node';
 import { Edge } from './Edge';
+import MindMapContainer from './MindMapContainer';
 
 export { Node, Edge };
 
 const center = 0;
 
+const radius = 250;
 const getCirlceRadius = circleNum => {
   if (circleNum < 0) return 0;
-  return circleNum * 250;
+  return circleNum * radius;
 };
 
 const MindMap = ({ nodes, edges, ...attrs }) => {
@@ -19,7 +21,7 @@ const MindMap = ({ nodes, edges, ...attrs }) => {
   let shift = 3.14 / 4 / circleNum;
 
   let slotNum = 0;
-  let r = getCirlceRadius(circleNum);
+  let radius = getCirlceRadius(circleNum);
 
   /**
    * Render children of a node
@@ -44,7 +46,6 @@ const MindMap = ({ nodes, edges, ...attrs }) => {
     );
 
     const levelNodeElements = levelNodes.map((n, i) => {
-      r = 250;
       //shift = 3.14 / 4 / circleNum;
       shift = 3.14 / 2 / levelNodes.length;
 
@@ -66,12 +67,12 @@ const MindMap = ({ nodes, edges, ...attrs }) => {
       );
 
       const c = center;
-      const y = center + parentPosition.y + r * Math.sin(φ);
-      const x = center + (parentPosition.x + nodeWidth) + r * Math.cos(φ);
+      const y = center + parentPosition.y + radius * Math.sin(φ);
+      const x = center + (parentPosition.x + nodeWidth) + radius * Math.cos(φ);
       nodePositions.push({ id: n.props.id, x, y, φ });
       mindMapNodes.push(
         <circle
-          r={r}
+          r={radius}
           cx={center}
           cy={center}
           key={n.props.id}
@@ -138,14 +139,16 @@ const MindMap = ({ nodes, edges, ...attrs }) => {
 
   const svgSize = getCirlceRadius(circleNum + 1) * 2 + center;
   return (
-    <svg
-      viewBox={`${-svgSize / 2} ${-svgSize / 2} ${svgSize} ${svgSize}`}
-      width={svgSize}
-      height={svgSize}
-      {...attrs}>
-      {edgeElements}
-      {mindMapNodes}
-    </svg>
+    <MindMapContainer>
+      <svg
+        viewBox={`${-svgSize / 2} ${-svgSize / 2} ${svgSize} ${svgSize}`}
+        width={svgSize}
+        height={svgSize}
+        {...attrs}>
+        {edgeElements}
+        {mindMapNodes}
+      </svg>
+    </MindMapContainer>
   );
 };
 

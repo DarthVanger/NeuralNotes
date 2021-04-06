@@ -10,7 +10,6 @@ const StyledContainer = styled.div`
 `;
 
 const scrollByMouseDrag = (() => el => {
-  console.log('111 el: ', el);
   let isMouseDown = false;
   const clickPosition = {};
   const clickScroll = {};

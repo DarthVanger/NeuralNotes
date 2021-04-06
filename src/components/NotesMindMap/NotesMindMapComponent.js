@@ -9,9 +9,12 @@ import { getDepth } from 'helpers/graph';
 const scrollByMouseDrag = (() => el => {
   let isMouseDown = false;
   const clickPosition = {};
+  const clickScroll = {};
 
   const scroll = e => {
-    el.current.scroll(e.pageX - clickPosition.x, e.pageY - clickPosition.y);
+    const dx = e.pageX - clickPosition.x;
+    const dy = e.pageY - clickPosition.y;
+    el.current.scroll(clickScroll.x - dx, clickScroll.y - dy);
   };
 
   const pauseEvent = e => {
@@ -33,8 +36,10 @@ const scrollByMouseDrag = (() => el => {
       const isClickOnSvg = e.target == el.current.querySelector('svg');
       if (isClickOnSvg) {
         isMouseDown = true;
-        clickPosition.y = e.pageY - el.current.scrollTop;
-        clickPosition.x = e.pageX - el.current.scrollLeft;
+        clickScroll.y = el.current.scrollTop;
+        clickScroll.x = el.current.scrollLeft;
+        clickPosition.y = e.pageY;
+        clickPosition.x = e.pageX;
         el.current.style.cursor = 'grab';
       }
     },

@@ -1,10 +1,15 @@
 import React from 'react';
-import nodeBackground from './node-background.svg';
-export const Node = ({ x, y, label, ...attrs }) => (
-  <g {...attrs}>
-    <image href={nodeBackground} x={x - 10} y={y - 20} />
-    <text y={y} x={x}>
-      {label}
-    </text>
-  </g>
-);
+import NodeBackground from './NodeBackground';
+
+export const Node = ({ x, y, label, textWidth, ...attrs }) => {
+  const padding = 8;
+  const width = textWidth + padding * 2;
+  const height = 14 + padding * 2;
+
+  return (
+    <g {...attrs} transform={`translate(${x}, ${y})`}>
+      <text>{label}</text>
+      <NodeBackground width={width} height={height} padding={padding} />
+    </g>
+  );
+};

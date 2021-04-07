@@ -109,7 +109,11 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
       if (i == 0) {
         firstNodePosition = { x, y };
       }
-      return React.cloneElement(n, { x, y });
+      return React.cloneElement(n, {
+        x,
+        y,
+        textWidth: getTextWidth(n.props.label),
+      });
     });
 
     mindMapNodes.push(levelNodeElements);
@@ -123,7 +127,13 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
   };
 
   const rootNode = getRootNode(nodes, edges);
-  mindMapNodes.push(React.cloneElement(rootNode, { x: center, y: center }));
+  mindMapNodes.push(
+    React.cloneElement(rootNode, {
+      x: center,
+      y: center,
+      textWidth: getTextWidth(rootNode.props.label),
+    }),
+  );
   nodePositions.push({ id: rootNode.props.id, x: center, y: center, φ: 0 });
   renderLevel(rootNode);
 

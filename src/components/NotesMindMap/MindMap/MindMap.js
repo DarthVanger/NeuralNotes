@@ -27,8 +27,6 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
    * Render children of a node
    */
   const renderLevel = node => {
-    const nodeWidth = 110;
-
     const levelNodes = edges
       .filter(e => e.props.from === node.props.id)
       .map(e => nodes.find(n => e.props.to === n.props.id));
@@ -66,9 +64,15 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
         `- parentPosition: "{${parentPosition?.x}, ${parentPosition?.y}}"`,
       );
 
+      const parentNodeWidth =
+        110 < getTextWidth(parent.props.label)
+          ? getTextWidth(parent.props.label)
+          : 110;
+
       const c = center;
       const y = center + parentPosition.y + radius * Math.sin(φ);
-      const x = center + (parentPosition.x + nodeWidth) + radius * Math.cos(φ);
+      const x =
+        center + (parentPosition.x + parentNodeWidth) + radius * Math.cos(φ);
       nodePositions.push({ id: n.props.id, x, y, φ });
       mindMapNodes.push(
         <circle
@@ -85,7 +89,8 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
       const path = (
         <path
           d={`
-            M ${(parentPosition?.x || c) + nodeWidth} ${parentPosition?.y || c}
+            M ${(parentPosition?.x || c) +
+              parentNodeWidth} ${parentPosition?.y || c}
             L ${x} ${y}
           `}
           stroke={`rgb(${(circleNum * 50) % 255}, ${(circleNum * 100 * 3.14) %
@@ -156,5 +161,16 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
     </MindMapContainer>
   );
 };
+
+// https://stackoverflow.com/questions/31305071/measuring-text-width-height-without-rendering
+function getTextWidth(txt) {
+  const element = document.createElement('canvas');
+  const context = element.getContext('2d');
+  const font = window
+    .getComputedStyle(document.body)
+    .getPropertyValue('font-family');
+  context.font = '16px ' + font;
+  return context.measureText(txt).width;
+}
 
 export default MindMap;

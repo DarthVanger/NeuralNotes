@@ -6,6 +6,8 @@ import MindMapContainer from './MindMapContainer';
 export { Node, Edge };
 
 const center = 0;
+const nodePadding = 8;
+const nodeHeight = 14 + nodePadding * 2;
 
 const radius = 250;
 const getCirlceRadius = circleNum => {
@@ -65,9 +67,7 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
       );
 
       const parentNodeWidth =
-        110 < getTextWidth(parent.props.label)
-          ? getTextWidth(parent.props.label)
-          : 110;
+        getTextWidth(parent.props.label) + nodePadding * 2;
 
       const c = center;
       const y = center + parentPosition.y + radius * Math.sin(φ);
@@ -90,8 +90,8 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
         <path
           d={`
             M ${(parentPosition?.x || c) +
-              parentNodeWidth} ${parentPosition?.y || c}
-            L ${x} ${y}
+              parentNodeWidth} ${(parentPosition?.y || c) - nodeHeight / 2}
+            L ${x} ${y - nodeHeight / 2}
           `}
           stroke={`rgb(${(circleNum * 50) % 255}, ${(circleNum * 100 * 3.14) %
             255}, ${(circleNum * 150) % 255})`}
@@ -113,6 +113,7 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
         x,
         y,
         textWidth: getTextWidth(n.props.label),
+        padding: nodePadding,
       });
     });
 
@@ -132,6 +133,7 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
       x: center,
       y: center,
       textWidth: getTextWidth(rootNode.props.label),
+      padding: nodePadding,
     }),
   );
   nodePositions.push({ id: rootNode.props.id, x: center, y: center, φ: 0 });

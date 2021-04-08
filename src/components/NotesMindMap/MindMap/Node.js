@@ -7,8 +7,8 @@ export const Node = ({ x, y, label, textWidth, padding, ...attrs }) => {
 
   return (
     <g {...attrs} transform={`translate(${x + padding}, ${y - padding})`}>
-      <text>{label}</text>
       <NodeBackground width={width} height={height} padding={padding} />
+      <text>{label}</text>
     </g>
   );
 };

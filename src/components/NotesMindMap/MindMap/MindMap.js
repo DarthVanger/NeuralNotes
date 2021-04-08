@@ -20,10 +20,60 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
   let mindMapNodes = [];
   const edgeElements = [];
   const nodePositions = [];
-  let shift = 3.14 / 4 / circleNum;
 
-  let slotNum = 0;
   let radius = getCirlceRadius(circleNum);
+
+  const renderRootChildren = rootNode => {
+    const children = edges
+      .filter(e => e.props.from === rootNode.props.id)
+      .map(e => nodes.find(n => n.props.id === e.props.to));
+
+    console.debug('Rendering root children: ', children);
+
+    const shift = (2 * 3.14) / children.length;
+
+    const nodeElements = children.map((n, i) => {
+      const phi = i * shift;
+      const x = radius * Math.cos(phi);
+      const y = radius * Math.sin(phi);
+
+      nodePositions.push({
+        id: n.props.id,
+        x: x + center,
+        y: y + center,
+        φ: phi,
+      });
+
+      const path = (
+        <path
+          d={`
+          M ${center} ${center}
+          l ${x} ${y}
+        `}
+          stroke={`rgb(${(circleNum * 50) % 255}, ${(circleNum * 100 * 3.14) %
+            255}, ${(circleNum * 150) % 255})`}
+          strokeWidth="2"
+          fill="none"
+          key={`${rootNode.props.id}->${n.props.id}`}
+        />
+      );
+
+      edgeElements.push(path);
+
+      return React.cloneElement(n, {
+        x,
+        y,
+        textWidth: getTextWidth(n.props.label),
+        padding: nodePadding,
+      });
+    });
+
+    mindMapNodes.push(nodeElements);
+
+    nodeElements.forEach(node => {
+      renderLevel(node);
+    });
+  };
 
   /**
    * Render children of a node
@@ -47,7 +97,7 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
 
     const levelNodeElements = levelNodes.map((n, i) => {
       //shift = 3.14 / 4 / circleNum;
-      shift = 3.14 / 2 / levelNodes.length;
+      const shift = 3.14 / 2 / levelNodes.length;
 
       const parent = nodes.find(
         n1 =>
@@ -137,7 +187,7 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
     }),
   );
   nodePositions.push({ id: rootNode.props.id, x: center, y: center, φ: 0 });
-  renderLevel(rootNode);
+  renderRootChildren(rootNode);
 
   function getRootNode(nodes, edges) {
     return getParent(nodes[0]);

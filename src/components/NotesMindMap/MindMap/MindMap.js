@@ -9,21 +9,12 @@ const center = 0;
 const nodePadding = 8;
 const nodeHeight = 14 + nodePadding * 2;
 
-const radius = 250;
-const getCirlceRadius = circleNum => {
-  if (circleNum < 0) return 0;
-  return circleNum * radius;
-};
-
 const calculateNodeWidth = Node =>
   getTextWidth(Node.props.label) + nodePadding * 2;
 
 const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
-  let circleNum = 1;
   let mindMapNodes = [];
   const edgeElements = [];
-
-  let radius = getCirlceRadius(circleNum);
 
   const getNodeChildren = node =>
     edges
@@ -89,7 +80,7 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
         (parentNode?.props.φ || 0) -
         (nodeChildren.length * shift) / 2;
 
-      radius = calculateRadius(nodeChildren, n);
+      const radius = calculateRadius(nodeChildren, n);
 
       const parentNodeWidth =
         getTextWidth(parentNode.props.label) + nodePadding * 2;
@@ -103,6 +94,7 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
         x,
         y,
         φ,
+        radius: parentNode.props.radius + radius,
         width: calculateNodeWidth(n),
         height: nodeHeight,
         padding: nodePadding,
@@ -120,9 +112,6 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
 
     mindMapNodes.push(...nodeChildrenElements);
 
-    circleNum++;
-    console.log('circleNum: ', circleNum);
-
     nodeChildrenElements.forEach(levelNode => {
       renderNodeChildren(levelNode);
     });
@@ -134,6 +123,7 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
     x: center,
     y: center,
     φ: 0,
+    radius: 0,
     width: calculateNodeWidth(rootNode),
     height: nodeHeight,
     padding: nodePadding,
@@ -158,7 +148,10 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
     }
   }
 
-  const svgSize = getCirlceRadius(circleNum + 1) * 2 + center;
+  const maxNodeRadius = Math.max(...mindMapNodes.map(n => n.props.radius));
+  const maxNodeWidth = Math.max(...mindMapNodes.map(n => n.props.width));
+  const svgSize = 2 * (maxNodeRadius + maxNodeWidth);
+
   const focusNode = mindMapNodes.find(n => n.props.id == focusNodeId);
   const initialFocusPosition = {
     x: svgSize / 2 + (focusNode?.props.x || 0),

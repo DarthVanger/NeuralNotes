@@ -163,18 +163,7 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
       const x =
         center + (parentPosition.x + parentNodeWidth) + radius * Math.cos(φ);
       nodePositions.push({ id: n.props.id, x, y, φ });
-      mindMapNodes.push(
-        <circle
-          r={radius}
-          cx={center}
-          cy={center}
-          key={n.props.id}
-          fill="none"
-          stroke="#ddd"
-          strokeWidth="1"
-          strokeDasharray="4"
-        />,
-      );
+
       const path = (
         <path
           d={`

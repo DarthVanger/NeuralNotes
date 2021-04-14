@@ -23,8 +23,13 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
 
   let radius = getCirlceRadius(circleNum);
 
-  function calculateRadius(levelNodes, n) {
-    if (nodeHasChildren(n) && doesNeighbourHaveChildren(levelNodes, n)) {
+  const getNodeChildren = node =>
+    edges
+      .filter(e => e.props.from === node.props.id)
+      .map(e => nodes.find(n => e.props.to === n.props.id));
+
+  function calculateRadius(nodeChildren, n) {
+    if (nodeHasChildren(n) && doesNeighbourHaveChildren(nodeChildren, n)) {
       return 250 * 2;
     }
     return 250;
@@ -35,9 +40,9 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
     return has;
   }
 
-  function doesNeighbourHaveChildren(levelNodes, n) {
-    const leftNeighbour = levelNodes[levelNodes.indexOf(n) - 1];
-    const rightNeighbour = levelNodes[levelNodes.indexOf(n) + 1];
+  function doesNeighbourHaveChildren(nodeChildren, n) {
+    const leftNeighbour = nodeChildren[nodeChildren.indexOf(n) - 1];
+    const rightNeighbour = nodeChildren[nodeChildren.indexOf(n) + 1];
 
     const nodeHasChildren = node =>
       edges.find(edge => edge.props.from === node.props.id);
@@ -56,16 +61,14 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
   }
 
   const renderRootChildren = rootNode => {
-    const children = edges
-      .filter(e => e.props.from === rootNode.props.id)
-      .map(e => nodes.find(n => n.props.id === e.props.to));
-
-    console.debug('Rendering root children: ', children);
+    const children = getNodeChildren(rootNode);
 
     const shift = (2 * 3.14) / children.length;
 
     const nodeElements = children.map((n, i) => {
       radius = calculateRadius(children, n);
+
+      const edge = edges.find(e => e.props.to === n.props.id);
 
       const φ = i * shift;
       const x = radius * Math.cos(φ);
@@ -78,85 +81,66 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
         φ,
       });
 
-      const path = (
-        <path
-          d={`
-          M ${center} ${center}
-          l ${x} ${y}
-        `}
-          stroke={`rgb(${(circleNum * 50) % 255}, ${(circleNum * 100 * 3.14) %
-            255}, ${(circleNum * 150) % 255})`}
-          strokeWidth="2"
-          fill="none"
-          key={`${rootNode.props.id}->${n.props.id}`}
-        />
-      );
-
-      edgeElements.push(path);
-
-      return React.cloneElement(n, {
+      const NodeElement = React.cloneElement(n, {
         x,
         y,
-        textWidth: getTextWidth(n.props.label),
         padding: nodePadding,
+        width: getTextWidth(n.props.label) + nodePadding * 2,
+        height: nodeHeight,
       });
+
+      const EdgeElement = React.cloneElement(edge, {
+        parentNode: rootNode,
+        childNode: NodeElement,
+      });
+
+      edgeElements.push(EdgeElement);
+
+      return NodeElement;
     });
 
     mindMapNodes.push(nodeElements);
 
     nodeElements.forEach(node => {
-      renderLevel(node);
+      renderNodeChildren(node);
     });
   };
 
   /**
    * Render children of a node
    */
-  const renderLevel = node => {
-    const levelNodes = edges
-      .filter(e => e.props.from === node.props.id)
-      .map(e => nodes.find(n => e.props.to === n.props.id));
+  const renderNodeChildren = node => {
+    const nodeChildren = getNodeChildren(node);
 
-    let firstNodePosition;
-    if (!levelNodes.length) {
-      console.debug(`Node "${node.props.label}" has no children`);
+    if (!nodeChildren.length) {
       return;
     }
 
-    console.debug(
-      `Rendering level for "${
-        node.props.label
-      }". Level nodes: [${levelNodes.map(l => l.props.label).join(',')}]`,
-    );
-
-    const levelNodeElements = levelNodes.map((n, i) => {
+    const nodeChildrenElements = nodeChildren.map((n, i) => {
       //shift = 3.14 / 4 / circleNum;
-      const shift = 3.14 / 2 / levelNodes.length;
+      const shift = 3.14 / 2 / nodeChildren.length;
 
-      const parent = nodes.find(
+      const parentNode = nodes.find(
         n1 =>
           n1.props.id ===
           edges.find(e => e.props.to === n.props.id)?.props.from,
       );
 
-      const parentPosition = nodePositions.find(p => p.id == parent.props.id);
+      const edge = edges.find(e => e.props.to === n.props.id);
 
-      //let φ = i * shift * Math.pow(-1, i) + (parentPosition?.φ || 0);
-      let φ =
-        i * shift + (parentPosition?.φ || 0) - (levelNodes.length * shift) / 2;
-
-      radius = calculateRadius(levelNodes, n);
-
-      console.log('calculated radius: ', radius);
-
-      console.debug(`Rendering node: "${n.props.label}"`);
-      console.debug(`- parent: "${parent.props.label}"`);
-      console.debug(
-        `- parentPosition: "{${parentPosition?.x}, ${parentPosition?.y}}"`,
+      const parentPosition = nodePositions.find(
+        p => p.id == parentNode.props.id,
       );
 
+      const φ =
+        i * shift +
+        (parentPosition?.φ || 0) -
+        (nodeChildren.length * shift) / 2;
+
+      radius = calculateRadius(nodeChildren, n);
+
       const parentNodeWidth =
-        getTextWidth(parent.props.label) + nodePadding * 2;
+        getTextWidth(parentNode.props.label) + nodePadding * 2;
 
       const c = center;
       const y = center + parentPosition.y + radius * Math.sin(φ);
@@ -164,58 +148,49 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
         center + (parentPosition.x + parentNodeWidth) + radius * Math.cos(φ);
       nodePositions.push({ id: n.props.id, x, y, φ });
 
-      const path = (
-        <path
-          d={`
-            M ${(parentPosition?.x || c) +
-              parentNodeWidth} ${(parentPosition?.y || c) - nodeHeight / 2}
-            L ${x} ${y - nodeHeight / 2}
-          `}
-          stroke={`rgb(${(circleNum * 50) % 255}, ${(circleNum * 100 * 3.14) %
-            255}, ${(circleNum * 150) % 255})`}
-          strokeWidth="2"
-          fill="none"
-          key={`${parent.props.id}->${n.props.id}`}
-        />
-      );
-
-      console.debug(
-        `- nodePositiong: "{${parentPosition?.x}, ${parentPosition?.y}}"`,
-      );
-
-      edgeElements.push(path);
-      if (i == 0) {
-        firstNodePosition = { x, y };
-      }
-      return React.cloneElement(n, {
+      const NodeElement = React.cloneElement(n, {
         x,
         y,
-        textWidth: getTextWidth(n.props.label),
+        width: getTextWidth(n.props.label) + nodePadding * 2,
+        height: nodeHeight,
         padding: nodePadding,
       });
+
+      const EdgeElement = React.cloneElement(edge, {
+        parentNode: node,
+        childNode: NodeElement,
+      });
+
+      edgeElements.push(EdgeElement);
+
+      return NodeElement;
     });
 
-    mindMapNodes.push(levelNodeElements);
+    mindMapNodes.push(nodeChildrenElements);
 
     circleNum++;
     console.log('circleNum: ', circleNum);
 
-    levelNodes.forEach(levelNode => {
-      renderLevel(levelNode);
+    nodeChildrenElements.forEach(levelNode => {
+      renderNodeChildren(levelNode);
     });
   };
 
   const rootNode = getRootNode(nodes, edges);
-  mindMapNodes.push(
-    React.cloneElement(rootNode, {
-      x: center,
-      y: center,
-      textWidth: getTextWidth(rootNode.props.label),
-      padding: nodePadding,
-    }),
-  );
+
+  const RootNodeElement = React.cloneElement(rootNode, {
+    x: center,
+    y: center,
+    width: getTextWidth(rootNode.props.label) + nodePadding * 2,
+    height: nodeHeight,
+    padding: nodePadding,
+  });
+
+  mindMapNodes.push(RootNodeElement);
+
   nodePositions.push({ id: rootNode.props.id, x: center, y: center, φ: 0 });
-  renderRootChildren(rootNode);
+
+  renderRootChildren(RootNodeElement);
 
   function getRootNode(nodes, edges) {
     return getParent(nodes[0]);

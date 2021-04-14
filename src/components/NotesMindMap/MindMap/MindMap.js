@@ -15,6 +15,9 @@ const getCirlceRadius = circleNum => {
   return circleNum * radius;
 };
 
+const calculateNodeWidth = Node =>
+  getTextWidth(Node.props.label) + nodePadding * 2;
+
 const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
   let circleNum = 1;
   let mindMapNodes = [];
@@ -110,7 +113,7 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
       const NodeElement = React.cloneElement(n, {
         x,
         y,
-        width: getTextWidth(n.props.label) + nodePadding * 2,
+        width: calculateNodeWidth(n),
         height: nodeHeight,
         padding: nodePadding,
       });
@@ -140,7 +143,7 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
   const RootNodeElement = React.cloneElement(rootNode, {
     x: center,
     y: center,
-    width: getTextWidth(rootNode.props.label) + nodePadding * 2,
+    width: calculateNodeWidth(rootNode),
     height: nodeHeight,
     padding: nodePadding,
   });

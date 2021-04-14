@@ -60,52 +60,6 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
     return false;
   }
 
-  const renderRootChildren = rootNode => {
-    const children = getNodeChildren(rootNode);
-
-    const shift = (2 * 3.14) / children.length;
-
-    const nodeElements = children.map((n, i) => {
-      radius = calculateRadius(children, n);
-
-      const edge = edges.find(e => e.props.to === n.props.id);
-
-      const φ = i * shift;
-      const x = radius * Math.cos(φ);
-      const y = radius * Math.sin(φ);
-
-      nodePositions.push({
-        id: n.props.id,
-        x: x + center,
-        y: y + center,
-        φ,
-      });
-
-      const NodeElement = React.cloneElement(n, {
-        x,
-        y,
-        padding: nodePadding,
-        width: getTextWidth(n.props.label) + nodePadding * 2,
-        height: nodeHeight,
-      });
-
-      const EdgeElement = React.cloneElement(edge, {
-        parentNode: rootNode,
-        childNode: NodeElement,
-      });
-
-      edgeElements.push(EdgeElement);
-
-      return NodeElement;
-    });
-
-    mindMapNodes.push(nodeElements);
-
-    nodeElements.forEach(node => {
-      renderNodeChildren(node);
-    });
-  };
-
   /**
    * Render children of a node
    */
@@ -116,9 +70,14 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
       return;
     }
 
+    const isRootNode = getRootNode(nodes, edges).props.id === node.props.id;
+
     const nodeChildrenElements = nodeChildren.map((n, i) => {
-      //shift = 3.14 / 4 / circleNum;
-      const shift = 3.14 / 2 / nodeChildren.length;
+      const rootNodeChildrenShift = (2 * 3.14) / nodeChildren.length;
+      const nonRootNodeChildrenShift = 3.14 / 2 / nodeChildren.length;
+      const shift = isRootNode
+        ? rootNodeChildrenShift
+        : nonRootNodeChildrenShift;
 
       const parentNode = nodes.find(
         n1 =>
@@ -190,7 +149,7 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
 
   nodePositions.push({ id: rootNode.props.id, x: center, y: center, φ: 0 });
 
-  renderRootChildren(RootNodeElement);
+  renderNodeChildren(RootNodeElement);
 
   function getRootNode(nodes, edges) {
     return getParent(nodes[0]);

@@ -22,7 +22,6 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
   let circleNum = 1;
   let mindMapNodes = [];
   const edgeElements = [];
-  const nodePositions = [];
 
   let radius = getCirlceRadius(circleNum);
 
@@ -66,14 +65,15 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
   /**
    * Render children of a node
    */
-  const renderNodeChildren = node => {
-    const nodeChildren = getNodeChildren(node);
+  const renderNodeChildren = parentNode => {
+    const nodeChildren = getNodeChildren(parentNode);
 
     if (!nodeChildren.length) {
       return;
     }
 
-    const isRootNode = getRootNode(nodes, edges).props.id === node.props.id;
+    const isRootNode =
+      getRootNode(nodes, edges).props.id === parentNode.props.id;
 
     const nodeChildrenElements = nodeChildren.map((n, i) => {
       const rootNodeChildrenShift = (2 * 3.14) / nodeChildren.length;
@@ -82,21 +82,11 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
         ? rootNodeChildrenShift
         : nonRootNodeChildrenShift;
 
-      const parentNode = nodes.find(
-        n1 =>
-          n1.props.id ===
-          edges.find(e => e.props.to === n.props.id)?.props.from,
-      );
-
       const edge = edges.find(e => e.props.to === n.props.id);
-
-      const parentPosition = nodePositions.find(
-        p => p.id == parentNode.props.id,
-      );
 
       const φ =
         i * shift +
-        (parentPosition?.φ || 0) -
+        (parentNode?.props.φ || 0) -
         (nodeChildren.length * shift) / 2;
 
       radius = calculateRadius(nodeChildren, n);
@@ -105,21 +95,21 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
         getTextWidth(parentNode.props.label) + nodePadding * 2;
 
       const c = center;
-      const y = center + parentPosition.y + radius * Math.sin(φ);
+      const y = center + parentNode.props.y + radius * Math.sin(φ);
       const x =
-        center + (parentPosition.x + parentNodeWidth) + radius * Math.cos(φ);
-      nodePositions.push({ id: n.props.id, x, y, φ });
+        center + (parentNode.props.x + parentNodeWidth) + radius * Math.cos(φ);
 
       const NodeElement = React.cloneElement(n, {
         x,
         y,
+        φ,
         width: calculateNodeWidth(n),
         height: nodeHeight,
         padding: nodePadding,
       });
 
       const EdgeElement = React.cloneElement(edge, {
-        parentNode: node,
+        parentNode: parentNode,
         childNode: NodeElement,
       });
 
@@ -128,7 +118,7 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
       return NodeElement;
     });
 
-    mindMapNodes.push(nodeChildrenElements);
+    mindMapNodes.push(...nodeChildrenElements);
 
     circleNum++;
     console.log('circleNum: ', circleNum);
@@ -143,14 +133,13 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
   const RootNodeElement = React.cloneElement(rootNode, {
     x: center,
     y: center,
+    φ: 0,
     width: calculateNodeWidth(rootNode),
     height: nodeHeight,
     padding: nodePadding,
   });
 
   mindMapNodes.push(RootNodeElement);
-
-  nodePositions.push({ id: rootNode.props.id, x: center, y: center, φ: 0 });
 
   renderNodeChildren(RootNodeElement);
 
@@ -170,10 +159,10 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
   }
 
   const svgSize = getCirlceRadius(circleNum + 1) * 2 + center;
-  const focusNodePosition = nodePositions.find(p => p.id == focusNodeId);
+  const focusNode = mindMapNodes.find(n => n.props.id == focusNodeId);
   const initialFocusPosition = {
-    x: svgSize / 2 + (focusNodePosition?.x || 0),
-    y: svgSize / 2 + (focusNodePosition?.y || 0),
+    x: svgSize / 2 + (focusNode?.props.x || 0),
+    y: svgSize / 2 + (focusNode?.props.y || 0),
   };
   return (
     <MindMapContainer initialFocusPosition={initialFocusPosition}>

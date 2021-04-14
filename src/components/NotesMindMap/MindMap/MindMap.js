@@ -33,15 +33,15 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
     const shift = (2 * 3.14) / children.length;
 
     const nodeElements = children.map((n, i) => {
-      const phi = i * shift;
-      const x = radius * Math.cos(phi);
-      const y = radius * Math.sin(phi);
+      const φ = i * shift;
+      const x = radius * Math.cos(φ);
+      const y = radius * Math.sin(φ);
 
       nodePositions.push({
         id: n.props.id,
         x: x + center,
         y: y + center,
-        φ: phi,
+        φ,
       });
 
       const path = (

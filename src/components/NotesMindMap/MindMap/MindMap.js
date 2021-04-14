@@ -23,6 +23,38 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
 
   let radius = getCirlceRadius(circleNum);
 
+  function calculateRadius(levelNodes, n) {
+    if (nodeHasChildren(n) && doesNeighbourHaveChildren(levelNodes, n)) {
+      return 250 * 2;
+    }
+    return 250;
+  }
+
+  function nodeHasChildren(node) {
+    const has = edges.find(edge => edge.props.from === node.props.id);
+    return has;
+  }
+
+  function doesNeighbourHaveChildren(levelNodes, n) {
+    const leftNeighbour = levelNodes[levelNodes.indexOf(n) - 1];
+    const rightNeighbour = levelNodes[levelNodes.indexOf(n) + 1];
+
+    const nodeHasChildren = node =>
+      edges.find(edge => edge.props.from === node.props.id);
+
+    if (leftNeighbour && nodeHasChildren(leftNeighbour)) {
+      console.log('leftNeighbour has chilren: ', leftNeighbour);
+      return true;
+    }
+
+    if (rightNeighbour && nodeHasChildren(rightNeighbour)) {
+      console.log('rightNeighbour has chilren: ', rightNeighbour);
+      return true;
+    }
+
+    return false;
+  }
+
   const renderRootChildren = rootNode => {
     const children = edges
       .filter(e => e.props.from === rootNode.props.id)
@@ -33,6 +65,8 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
     const shift = (2 * 3.14) / children.length;
 
     const nodeElements = children.map((n, i) => {
+      radius = calculateRadius(children, n);
+
       const φ = i * shift;
       const x = radius * Math.cos(φ);
       const y = radius * Math.sin(φ);
@@ -108,7 +142,12 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
       const parentPosition = nodePositions.find(p => p.id == parent.props.id);
 
       //let φ = i * shift * Math.pow(-1, i) + (parentPosition?.φ || 0);
-      let φ = i * shift * Math.pow(-1, i) + (parentPosition?.φ || 0);
+      let φ =
+        i * shift + (parentPosition?.φ || 0) - (levelNodes.length * shift) / 2;
+
+      radius = calculateRadius(levelNodes, n);
+
+      console.log('calculated radius: ', radius);
 
       console.debug(`Rendering node: "${n.props.label}"`);
       console.debug(`- parent: "${parent.props.label}"`);

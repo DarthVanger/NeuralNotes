@@ -4,6 +4,8 @@ import IconButton from '@material-ui/core/IconButton';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -16,34 +18,60 @@ import { LogoutButtonContainer } from 'components/LogoutButton/LogoutButtonConta
 
 import * as Selectors from 'components/Uploads/UploadsSelectors';
 
+import { colors } from 'colors';
+
 export const NotesPageTopBar = () => {
   const hasUploads = useSelector(Selectors.hasUploads);
   // const hasActiveUploads = useSelector(Selectors.hasActiveUploads);
 
+  const [state, setState] = React.useState(0);
+
+  const handleClick = () => {
+    setState(60);
+  };
+
+  const handleClose = () => {
+    setState(0);
+  };
+
   return (
     <TopBar>
       <TopBarLeftButtons>
-        <IconButton edge="start" color="inherit" aria-label="menu">
-          <MenuIcon />
+        <IconButton
+          onClick={handleClick}
+          edge="start"
+          color="inherit"
+          aria-controls="burger-menu">
+          <MenuIcon color="primary" />
         </IconButton>
+        <Menu
+          id="burger-menu"
+          anchorReference="anchorPosition"
+          anchorPosition={state ? { top: state, left: 0 } : undefined}
+          open={!!state}
+          onClose={handleClose}>
+          <MenuItem onClick={handleClose}>
+            <LogoutButtonContainer />
+          </MenuItem>
+        </Menu>
       </TopBarLeftButtons>
-      <TopBarPageTitle style={{ color: '#BB86FC' }}>
+      <TopBarPageTitle style={{ color: colors.violet }}>
         Neural Notes
       </TopBarPageTitle>
       <TopBarRightButtons>
-        <LogoutButtonContainer />
         {hasUploads && (
           <Link to="/uploads">
             <IconButton>
               <CloudUploadIcon
-                style={{ color: '#BB86FC', marginRight: '10px' }}
+                color="primary"
+                style={{ marginRight: '10px' }}
               />
             </IconButton>
           </Link>
         )}
         <Link to="search">
           <IconButton>
-            <SearchIcon style={{ color: '#BB86FC' }} />
+            <SearchIcon color="primary" />
           </IconButton>
         </Link>
       </TopBarRightButtons>

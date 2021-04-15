@@ -71,7 +71,7 @@ export const BottomBarMenu = () => {
         keepMounted
         open={isMenuOpened}
         onClose={closeMenu}
-        aperProps={{
+        PaperProps={{
           style: {
             width: '168px',
           },

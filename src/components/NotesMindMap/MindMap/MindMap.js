@@ -94,7 +94,7 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
         x,
         y,
         φ,
-        radius: parentNode.props.radius + radius,
+        radius,
         width: calculateNodeWidth(n),
         height: nodeHeight,
         padding: nodePadding,
@@ -148,9 +148,11 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
     }
   }
 
-  const maxNodeRadius = Math.max(...mindMapNodes.map(n => n.props.radius));
-  const maxNodeWidth = Math.max(...mindMapNodes.map(n => n.props.width));
-  const svgSize = 2 * (maxNodeRadius + maxNodeWidth);
+  const maxX = Math.max(...mindMapNodes.map(n => Math.abs(n.props.x)));
+  const maxY = Math.max(...mindMapNodes.map(n => Math.abs(n.props.y)));
+
+  const mindMapPadding = 15;
+  const svgSize = 2 * Math.max(maxX, maxY) + mindMapPadding * 2;
 
   const focusNode = mindMapNodes.find(n => n.props.id == focusNodeId);
   const initialFocusPosition = {

@@ -20,37 +20,38 @@ import * as Selectors from 'components/Uploads/UploadsSelectors';
 
 import { colors } from 'colors';
 
+const anchorPositionMenu = { top: 60, left: 0 };
+
 export const NotesPageTopBar = () => {
   const hasUploads = useSelector(Selectors.hasUploads);
   // const hasActiveUploads = useSelector(Selectors.hasActiveUploads);
 
-  const [state, setState] = React.useState(0);
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
-  const handleClick = () => {
-    setState(60);
+  const handleMenuIconClick = () => {
+    setIsMenuOpen(true);
   };
 
-  const handleClose = () => {
-    setState(0);
+  const handleMenuClose = () => {
+    setIsMenuOpen(false);
   };
 
   return (
     <TopBar>
       <TopBarLeftButtons>
         <IconButton
-          onClick={handleClick}
+          onClick={handleMenuIconClick}
           edge="start"
-          color="inherit"
           aria-controls="burger-menu">
           <MenuIcon color="primary" />
         </IconButton>
         <Menu
           id="burger-menu"
           anchorReference="anchorPosition"
-          anchorPosition={state ? { top: state, left: 0 } : undefined}
-          open={!!state}
-          onClose={handleClose}>
-          <MenuItem onClick={handleClose}>
+          anchorPosition={anchorPositionMenu}
+          open={isMenuOpen}
+          onClose={handleMenuClose}>
+          <MenuItem onClick={handleMenuClose}>
             <LogoutButtonContainer />
           </MenuItem>
         </Menu>

@@ -42,11 +42,11 @@ export const NotesPageTopBar = () => {
         <IconButton
           onClick={handleMenuIconClick}
           edge="start"
+          aria-label="menu"
           aria-controls="burger-menu">
           <MenuIcon color="primary" />
         </IconButton>
         <Menu
-          id="burger-menu"
           anchorReference="anchorPosition"
           anchorPosition={anchorPositionMenu}
           open={isMenuOpen}

@@ -21,11 +21,16 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
       .filter(e => e.props.from === node.props.id)
       .map(e => nodes.find(n => e.props.to === n.props.id));
 
+  /**
+   * Default radius is a hard-coded value.
+   * But when two neighbour nodes have children, more space is needed to avoid overlap.
+   */
   function calculateRadius(nodeChildren, n) {
+    const defaultRadius = 250;
     if (nodeHasChildren(n) && doesNeighbourHaveChildren(nodeChildren, n)) {
-      return 250 * 2;
+      return defaultRadius * 2;
     }
-    return 250;
+    return defaultRadius;
   }
 
   function nodeHasChildren(node) {

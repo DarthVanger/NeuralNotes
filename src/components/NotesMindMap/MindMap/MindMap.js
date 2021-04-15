@@ -156,8 +156,12 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
   const maxX = Math.max(...mindMapNodes.map(n => Math.abs(n.props.x)));
   const maxY = Math.max(...mindMapNodes.map(n => Math.abs(n.props.y)));
 
+  // TODO: take width of the node with the max X position,
+  // instead of just the widest node on the mind map.
+  const maxNodeWidth = Math.max(...mindMapNodes.map(n => n.props.width));
+
   const mindMapPadding = 15;
-  const svgSize = 2 * Math.max(maxX, maxY) + mindMapPadding * 2;
+  const svgSize = 2 * Math.max(maxX, maxY) + mindMapPadding * 2 + maxNodeWidth;
 
   const focusNode = mindMapNodes.find(n => n.props.id == focusNodeId);
   const initialFocusPosition = {

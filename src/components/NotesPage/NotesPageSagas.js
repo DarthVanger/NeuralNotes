@@ -5,10 +5,7 @@ import {
 } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
 
 import googleDriveApi from 'api/google-drive-api';
-import {
-  AUTHORIZED_USER_OPENED_APP,
-  loadGoogleApiAction,
-} from 'components/App/AppActions';
+import { AUTHORIZED_USER_OPENED_APP } from 'components/App/AppActions';
 import { loadGoogleApi } from 'components/App/AppSagas';
 import noteStorage from 'storage/noteStorage';
 import { AUTH_SUCCESS_ACTION } from 'components/LoginPage/LoginPageActions';

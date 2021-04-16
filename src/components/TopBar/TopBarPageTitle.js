@@ -1,7 +1,7 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
-
 import { makeStyles } from '@material-ui/core/styles';
+import { colors } from 'colors';
 
 const useStyles = makeStyles(() => ({
   topBarPageTitle: {
@@ -14,10 +14,7 @@ export const TopBarPageTitle = ({ children, ...props }) => {
 
   return (
     <div className={classes.topBarPageTitle}>
-      <Typography
-        variant="h6"
-        style={{ color: 'rgba(255, 255, 255, 0.87)' }}
-        {...props}>
+      <Typography variant="h6" style={{ color: colors.white87 }} {...props}>
         {children}
       </Typography>
     </div>

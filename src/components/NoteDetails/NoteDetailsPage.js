@@ -4,16 +4,16 @@ import IconButton from '@material-ui/core/IconButton';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { colors } from 'colors';
 
 import { NoteDetailsContainer } from 'components/NoteDetails/NoteDetailsContainer';
 
 const Wrapper = styled.div`
-  background-color: #2b2630;
+  background-color: ${colors.darkViolet};
 `;
 
 const BackButtonWrapper = styled.div`
-  color: red !important;
-  padding: 1rem;
+  padding: 0.5rem;
 `;
 
 export const NoteDetailsPage = () => {
@@ -22,7 +22,7 @@ export const NoteDetailsPage = () => {
       <BackButtonWrapper>
         <Link to="/notes">
           <IconButton aria-label="back">
-            <ArrowBackIcon style={{ fill: '#E4E3E4' }} />
+            <ArrowBackIcon style={{ fill: colors.white60 }} />
           </IconButton>
         </Link>
       </BackButtonWrapper>

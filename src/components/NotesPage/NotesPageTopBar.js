@@ -20,8 +20,6 @@ import * as Selectors from 'components/Uploads/UploadsSelectors';
 
 import { colors } from 'colors';
 
-const anchorPositionMenu = { top: 60, left: 0 };
-
 export const NotesPageTopBar = () => {
   const hasUploads = useSelector(Selectors.hasUploads);
   // const hasActiveUploads = useSelector(Selectors.hasActiveUploads);
@@ -36,6 +34,17 @@ export const NotesPageTopBar = () => {
     setIsMenuOpen(false);
   };
 
+  const pageWidth = document.documentElement.scrollWidth;
+  const pageOrientation = window.orientation ? window.orientation : 0;
+  let anchorPositionMenu = { top: 58, left: 0 };
+  if (pageWidth < 600) {
+    if (pageOrientation) {
+      anchorPositionMenu = { top: 42, left: 0 };
+    } else {
+      anchorPositionMenu = { top: 50, left: 0 };
+    }
+  }
+
   return (
     <TopBar>
       <TopBarLeftButtons>
@@ -44,7 +53,7 @@ export const NotesPageTopBar = () => {
           edge="start"
           aria-label="menu"
           aria-controls="burger-menu">
-          <MenuIcon color="primary" />
+          <MenuIcon style={{ color: colors.white87 }} />
         </IconButton>
         <Menu
           anchorReference="anchorPosition"
@@ -72,7 +81,7 @@ export const NotesPageTopBar = () => {
         )}
         <Link to="search">
           <IconButton>
-            <SearchIcon color="primary" />
+            <SearchIcon style={{ color: colors.white60 }} />
           </IconButton>
         </Link>
       </TopBarRightButtons>

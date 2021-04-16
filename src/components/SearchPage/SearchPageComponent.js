@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useDebouncedCallback } from 'use-debounce';
+import ClearIcon from '@material-ui/icons/Clear';
 
 import { searchResultClickedAction } from 'components/NotesMindMap/NotesMindMapActions';
 
@@ -23,6 +24,7 @@ import { searchQueryChangeAction } from '../SearchPage/SearchPageAction';
 const BackButtonWrapper = styled.div`
   color: red !important;
   padding: 1rem;
+  background-color: #2b2630;
 `;
 
 const useStyles = makeStyles(() => ({
@@ -42,7 +44,25 @@ const useStyles = makeStyles(() => ({
   svgIcon: {
     color: colors.iconColor,
   },
+  clearIcon: {
+    color: colors.iconColor,
+    marginLeft: -30,
+    marginBottom: -5,
+  },
 }));
+const MyInput = styled.input`
+  margin-left: 20px;
+  border-radius: 5px;
+  border: 2px solid rgb(204, 135, 250);
+  height: 40px;
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.07);
+  font-size: 20px;
+  color: ${colors.white87};
+  &:hover {
+    box-shadow: 0 0 3px ${colors.white87};
+  }
+`;
 
 export function SearchPageComponent() {
   const searchResults = useSelector(state => state.searchPage.results);
@@ -56,7 +76,7 @@ export function SearchPageComponent() {
 
   const debounced = useDebouncedCallback(
     (value, setQuery) => setQuery(value),
-    1000,
+    100,
   );
 
   const handleClick = searchResult => {
@@ -65,7 +85,6 @@ export function SearchPageComponent() {
   };
 
   const classes = useStyles();
-
   return (
     <>
       <BackButtonWrapper>
@@ -74,16 +93,21 @@ export function SearchPageComponent() {
             <ArrowBackIcon style={{ fill: '#BB86FC' }} />
           </IconButton>
         </Link>
+        <MyInput
+          placeholder="Search input"
+          value={query}
+          onChange={e => debounced.callback(e.target.value, setQuery)}
+        />
+        <ClearIcon
+          className={classes.clearIcon}
+          onClick={() => setQuery(query.slice(0, -1))}
+        />
       </BackButtonWrapper>
-      <input
-        defaultValue={defaultValue}
-        onChange={e => debounced.callback(e.target.value, setQuery)}
-      />
       <List className={classes.list}>
         {searchResults &&
-          searchResults.map(searchResult => (
-            <>
-              <ListItem key={searchResult.id} className={classes.listItem}>
+          searchResults.map((searchResult, key) => (
+            <React.Fragment key={key}>
+              <ListItem className={classes.listItem}>
                 <ListItemIcon className={classes.icon}>
                   <InsertDriveFileRoundedIcon className={classes.svgIcon} />
                 </ListItemIcon>
@@ -94,7 +118,7 @@ export function SearchPageComponent() {
                 </ListItemText>
               </ListItem>
               <Divider component="li" />
-            </>
+            </React.Fragment>
           ))}
       </List>
     </>

@@ -39,6 +39,12 @@ const useStyles = makeStyles(() => ({
     top: -30,
     right: 12,
   },
+  topBar: {
+    position: 'absolute',
+    zIndex: 1,
+    top: -30,
+    right: 45,
+  },
 }));
 
 const StyledLabel = styled.div`
@@ -63,7 +69,7 @@ export const BottomBar = () => {
   return (
     <AppBar position="fixed" className={classes.appBar}>
       <Toolbar>
-        <BottomBarMenu />
+        <BottomBarMenu className={classes.topBar} />
         {!selectedNote.isUploadedFile && (
           <>
             <IconButton

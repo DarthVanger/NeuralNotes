@@ -3,15 +3,17 @@ import { Node } from './Node';
 import { Edge } from './Edge';
 import MindMapContainer from './MindMapContainer';
 import { nodeHasChildren, doesNeighbourHaveChildren } from 'helpers/graph';
+import { getTextWidth } from './utils';
 
 export { Node, Edge };
 
 const center = 0;
 const nodePadding = 8;
 const nodeHeight = 14 + nodePadding * 2;
+const fontSize = 16;
 
 const calculateNodeWidth = Node =>
-  getTextWidth(Node.props.label) + nodePadding * 2;
+  getTextWidth(Node.props.label, fontSize) + nodePadding * 2;
 
 const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
   let mindMapNodes = [];
@@ -79,7 +81,7 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
       const radius = calculateRadius(nodeChildren, n);
 
       const parentNodeWidth =
-        getTextWidth(parentNode.props.label) + nodePadding * 2;
+        getTextWidth(parentNode.props.label, fontSize) + nodePadding * 2;
 
       const c = center;
       const y = center + parentNode.props.y + radius * Math.sin(φ);
@@ -172,16 +174,5 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
     </MindMapContainer>
   );
 };
-
-// https://stackoverflow.com/questions/31305071/measuring-text-width-height-without-rendering
-function getTextWidth(txt) {
-  const element = document.createElement('canvas');
-  const context = element.getContext('2d');
-  const font = window
-    .getComputedStyle(document.body)
-    .getPropertyValue('font-family');
-  context.font = '16px ' + font;
-  return context.measureText(txt).width;
-}
 
 export default MindMap;

@@ -85,8 +85,14 @@ export function getParentNode({ nodes, edges }, node) {
 export function getNeighbours({ nodes, edges }, node) {
   const parentNode = getParentNode({ nodes, edges }, node);
   const parentChildren = getNodeChildren({ nodes, edges }, parentNode);
-  const leftNeighbour = parentChildren[parentChildren.indexOf(node) - 1];
-  const rightNeighbour = parentChildren[parentChildren.indexOf(node) + 1];
+  const nodeIndexInParentChildren = parentChildren.indexOf(node);
+
+  if (nodeIndexInParentChildren === -1) {
+    throw new Error('Can not find the passed node in the graph');
+  }
+
+  const leftNeighbour = parentChildren[nodeIndexInParentChildren - 1];
+  const rightNeighbour = parentChildren[nodeIndexInParentChildren + 1];
   return { leftNeighbour, rightNeighbour };
 }
 

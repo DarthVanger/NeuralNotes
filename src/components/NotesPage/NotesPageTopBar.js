@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import IconButton from '@material-ui/core/IconButton';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
@@ -25,25 +25,17 @@ export const NotesPageTopBar = () => {
   // const hasActiveUploads = useSelector(Selectors.hasActiveUploads);
 
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleMenuIconClick = () => {
+  const handleMenuIconClick = event => {
     setIsMenuOpen(true);
+    setAnchorEl(event.currentTarget);
   };
 
   const handleMenuClose = () => {
     setIsMenuOpen(false);
+    setAnchorEl(null);
   };
-
-  const pageWidth = document.documentElement.scrollWidth;
-  const pageOrientation = window.orientation ? window.orientation : 0;
-  let anchorPositionMenu = { top: 58, left: 0 };
-  if (pageWidth < 600) {
-    if (pageOrientation) {
-      anchorPositionMenu = { top: 42, left: 0 };
-    } else {
-      anchorPositionMenu = { top: 50, left: 0 };
-    }
-  }
 
   return (
     <TopBar>
@@ -56,8 +48,10 @@ export const NotesPageTopBar = () => {
           <MenuIcon style={{ color: colors.white87 }} />
         </IconButton>
         <Menu
-          anchorReference="anchorPosition"
-          anchorPosition={anchorPositionMenu}
+          getContentAnchorEl={null}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+          transformOrigin={{ vertical: 'top', horizontal: `left` }}
+          anchorEl={anchorEl}
           open={isMenuOpen}
           onClose={handleMenuClose}>
           <MenuItem onClick={handleMenuClose}>

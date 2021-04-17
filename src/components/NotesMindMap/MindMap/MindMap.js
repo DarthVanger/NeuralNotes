@@ -38,8 +38,12 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
    * But when two neighbour nodes have children, more space is needed to avoid overlap.
    */
   function calculateRadius(nodeChildren, n) {
+    const nodeInTheGraph = graph.nodes.find(node => node.id === n.props.id);
     const defaultRadius = 250;
-    if (nodeHasChildren(graph, n) && doesNeighbourHaveChildren(graph, n)) {
+    if (
+      nodeHasChildren(graph, nodeInTheGraph) &&
+      doesNeighbourHaveChildren(graph, nodeInTheGraph)
+    ) {
       return defaultRadius * 2;
     }
     return defaultRadius;

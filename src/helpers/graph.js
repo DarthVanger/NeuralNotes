@@ -65,3 +65,44 @@ export function getDepth(nodes, edges) {
     }
   }
 }
+
+export function nodeHasChildren({ nodes, edges }, node) {
+  return edges.find(edge => edge.from === node.id);
+}
+
+export function getNodeChildren({ nodes, edges }, node) {
+  return edges
+    .filter(e => e.from === node.id)
+    .map(e => nodes.find(n => e.to === n.id));
+}
+
+export function getParentNode({ nodes, edges }, node) {
+  const edgePointingToNode = edges.find(e => e.to === node.id);
+  if (!edgePointingToNode) return undefined;
+  return nodes.find(n => n.id === edgePointingToNode.from);
+}
+
+export function getNeighbours({ nodes, edges }, node) {
+  const parentNode = getParentNode({ nodes, edges }, node);
+  const parentChildren = getNodeChildren({ nodes, edges }, parentNode);
+  const leftNeighbour = parentChildren[parentChildren.indexOf(n) - 1];
+  const rightNeighbour = parentChildren[parentChildren.indexOf(n) + 1];
+  return { leftNeighbour, rightNeighbour };
+}
+
+export function doesNeighbourHaveChildren({ nodes, edges }, node) {
+  const { leftNeighbour, rightNeighbour } = getNeighbours(
+    { nodes, edges },
+    node,
+  );
+
+  if (leftNeighbour && nodeHasChildren({ nodes, edges }, leftNeighbour)) {
+    return true;
+  }
+
+  if (rightNeighbour && nodeHasChildren({ nodes, edges }, rightNeighbour)) {
+    return true;
+  }
+
+  return false;
+}

@@ -2,6 +2,7 @@ import React from 'react';
 import { Node } from './Node';
 import { Edge } from './Edge';
 import MindMapContainer from './MindMapContainer';
+import { nodeHasChildren, doesNeighbourHaveChildren } from 'helpers/graph';
 
 export { Node, Edge };
 
@@ -16,6 +17,17 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
   let mindMapNodes = [];
   const edgeElements = [];
 
+  const graph = {
+    nodes: nodes.map(node => ({
+      id: node.props.id,
+      label: node.props.label,
+    })),
+    edges: edges.map(edge => ({
+      from: edge.props.from,
+      to: edge.props.to,
+    })),
+  };
+
   const getNodeChildren = node =>
     edges
       .filter(e => e.props.from === node.props.id)
@@ -27,35 +39,10 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
    */
   function calculateRadius(nodeChildren, n) {
     const defaultRadius = 250;
-    if (nodeHasChildren(n) && doesNeighbourHaveChildren(nodeChildren, n)) {
+    if (nodeHasChildren(graph, n) && doesNeighbourHaveChildren(graph, n)) {
       return defaultRadius * 2;
     }
     return defaultRadius;
-  }
-
-  function nodeHasChildren(node) {
-    const has = edges.find(edge => edge.props.from === node.props.id);
-    return has;
-  }
-
-  function doesNeighbourHaveChildren(nodeChildren, n) {
-    const leftNeighbour = nodeChildren[nodeChildren.indexOf(n) - 1];
-    const rightNeighbour = nodeChildren[nodeChildren.indexOf(n) + 1];
-
-    const nodeHasChildren = node =>
-      edges.find(edge => edge.props.from === node.props.id);
-
-    if (leftNeighbour && nodeHasChildren(leftNeighbour)) {
-      console.log('leftNeighbour has chilren: ', leftNeighbour);
-      return true;
-    }
-
-    if (rightNeighbour && nodeHasChildren(rightNeighbour)) {
-      console.log('rightNeighbour has chilren: ', rightNeighbour);
-      return true;
-    }
-
-    return false;
   }
 
   /**

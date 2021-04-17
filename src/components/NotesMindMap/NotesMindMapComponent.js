@@ -16,20 +16,18 @@ export class NotesMindMapComponent extends Component {
 
     if (!nodes?.length) return null;
 
+    const mindMapNodes = nodes.map(n => ({
+      id: n.id,
+      key: n.id,
+      label: n.name,
+      onClick: () => this.handleNodeClick(n),
+    }));
+
     return (
       <StyledNotesMindMap>
         <MindMap
-          nodes={nodes.map(n => (
-            <Node
-              id={n.id}
-              key={n.id}
-              label={n.name}
-              onClick={() => this.handleNodeClick(n)}
-            />
-          ))}
-          edges={edges.map(e => (
-            <Edge {...e} />
-          ))}
+          nodes={mindMapNodes}
+          edges={edges}
           focusNodeId={selectedNote.id}
         />
       </StyledNotesMindMap>

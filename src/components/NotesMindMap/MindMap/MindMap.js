@@ -2,7 +2,11 @@ import React from 'react';
 import { Node } from './Node';
 import { Edge } from './Edge';
 import MindMapContainer from './MindMapContainer';
-import { nodeHasChildren, doesNeighbourHaveChildren } from 'helpers/graph';
+import {
+  getNodeChildren,
+  nodeHasChildren,
+  doesNeighbourHaveChildren,
+} from 'helpers/graph';
 import { getTextWidth } from './utils';
 
 export { Node, Edge };
@@ -12,40 +16,22 @@ const nodePadding = 8;
 const nodeHeight = 14 + nodePadding * 2;
 const fontSize = 16;
 
-const calculateNodeWidth = Node =>
-  getTextWidth(Node.props.label, fontSize) + nodePadding * 2;
+const calculateNodeWidth = node =>
+  getTextWidth(node.label, fontSize) + nodePadding * 2;
 
 const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
   let mindMapNodes = [];
   const edgeElements = [];
 
-  const graph = {
-    nodes: nodes.map(node => ({
-      id: node.props.id,
-      label: node.props.label,
-    })),
-    edges: edges.map(edge => ({
-      from: edge.props.from,
-      to: edge.props.to,
-    })),
-  };
-
-  const getNodeChildren = node =>
-    edges
-      .filter(e => e.props.from === node.props.id)
-      .map(e => nodes.find(n => e.props.to === n.props.id));
+  const graph = { nodes, edges };
 
   /**
    * Default radius is a hard-coded value.
    * But when two neighbour nodes have children, more space is needed to avoid overlap.
    */
-  function calculateRadius(nodeChildren, n) {
-    const nodeInTheGraph = graph.nodes.find(node => node.id === n.props.id);
+  function calculateRadius(n) {
     const defaultRadius = 250;
-    if (
-      nodeHasChildren(graph, nodeInTheGraph) &&
-      doesNeighbourHaveChildren(graph, nodeInTheGraph)
-    ) {
+    if (nodeHasChildren(graph, n) && doesNeighbourHaveChildren(graph, n)) {
       return defaultRadius * 2;
     }
     return defaultRadius;
@@ -55,14 +41,13 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
    * Render children of a node
    */
   const renderNodeChildren = parentNode => {
-    const nodeChildren = getNodeChildren(parentNode);
+    const nodeChildren = getNodeChildren(graph, parentNode);
 
     if (!nodeChildren.length) {
       return;
     }
 
-    const isRootNode =
-      getRootNode(nodes, edges).props.id === parentNode.props.id;
+    const isRootNode = getRootNode(nodes, edges).id === parentNode.id;
 
     const nodeChildrenElements = nodeChildren.map((n, i) => {
       const rootNodeChildrenShift = (2 * 3.14) / nodeChildren.length;
@@ -71,24 +56,23 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
         ? rootNodeChildrenShift
         : nonRootNodeChildrenShift;
 
-      const edge = edges.find(e => e.props.to === n.props.id);
+      const edge = edges.find(e => e.to === n.id);
 
       const φ =
-        i * shift +
-        (parentNode?.props.φ || 0) -
-        (nodeChildren.length * shift) / 2;
+        i * shift + (parentNode?.φ || 0) - (nodeChildren.length * shift) / 2;
 
       const radius = calculateRadius(nodeChildren, n);
 
       const parentNodeWidth =
-        getTextWidth(parentNode.props.label, fontSize) + nodePadding * 2;
+        getTextWidth(parentNode.label, fontSize) + nodePadding * 2;
 
       const c = center;
-      const y = center + parentNode.props.y + radius * Math.sin(φ);
+      const y = center + parentNode.y + radius * Math.sin(φ);
       const x =
-        center + (parentNode.props.x + parentNodeWidth) + radius * Math.cos(φ);
+        center + (parentNode.x + parentNodeWidth) + radius * Math.cos(φ);
 
-      const NodeElement = React.cloneElement(n, {
+      const nodeProps = {
+        ...n,
         x,
         y,
         φ,
@@ -96,12 +80,21 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
         width: calculateNodeWidth(n),
         height: nodeHeight,
         padding: nodePadding,
+      };
+
+      Object.keys(nodeProps).forEach(nodePropKey => {
+        n[nodePropKey] = nodeProps[nodePropKey];
       });
 
-      const EdgeElement = React.cloneElement(edge, {
+      const NodeElement = <Node {...nodeProps} />;
+
+      const edgeProps = {
+        ...edge,
         parentNode: parentNode,
-        childNode: NodeElement,
-      });
+        childNode: n,
+      };
+
+      const EdgeElement = <Edge {...edgeProps} />;
 
       edgeElements.push(EdgeElement);
 
@@ -110,14 +103,15 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
 
     mindMapNodes.push(...nodeChildrenElements);
 
-    nodeChildrenElements.forEach(levelNode => {
+    nodeChildren.forEach(levelNode => {
       renderNodeChildren(levelNode);
     });
   };
 
   const rootNode = getRootNode(nodes, edges);
 
-  const RootNodeElement = React.cloneElement(rootNode, {
+  const rootNodeProps = {
+    ...rootNode,
     x: center,
     y: center,
     φ: 0,
@@ -125,41 +119,46 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
     width: calculateNodeWidth(rootNode),
     height: nodeHeight,
     padding: nodePadding,
+  };
+
+  Object.keys(rootNodeProps).forEach(nodePropKey => {
+    rootNode[nodePropKey] = rootNodeProps[nodePropKey];
   });
+
+  const RootNodeElement = <Node {...rootNodeProps} />;
 
   mindMapNodes.push(RootNodeElement);
 
-  renderNodeChildren(RootNodeElement);
+  renderNodeChildren(rootNode);
 
   function getRootNode(nodes, edges) {
     return getParent(nodes[0]);
 
     function getParent(node) {
-      const parentId = edges.find(e => e.props.to === node.props.id)?.props
-        .from;
+      const parentId = edges.find(e => e.to === node.id)?.from;
       if (!parentId) {
         return node;
       }
 
-      const parentNode = nodes.find(n => n.props.id === parentId);
+      const parentNode = nodes.find(n => n.id === parentId);
       return getParent(parentNode);
     }
   }
 
-  const maxX = Math.max(...mindMapNodes.map(n => Math.abs(n.props.x)));
-  const maxY = Math.max(...mindMapNodes.map(n => Math.abs(n.props.y)));
+  const maxX = Math.max(...nodes.map(n => Math.abs(n.x)));
+  const maxY = Math.max(...nodes.map(n => Math.abs(n.y)));
 
   // TODO: take width of the node with the max X position,
   // instead of just the widest node on the mind map.
-  const maxNodeWidth = Math.max(...mindMapNodes.map(n => n.props.width));
+  const maxNodeWidth = Math.max(...nodes.map(n => n.width));
 
   const mindMapPadding = 15;
   const svgSize = 2 * Math.max(maxX, maxY) + mindMapPadding * 2 + maxNodeWidth;
 
-  const focusNode = mindMapNodes.find(n => n.props.id == focusNodeId);
+  const focusNode = nodes.find(n => n.id == focusNodeId);
   const initialFocusPosition = {
-    x: svgSize / 2 + (focusNode?.props.x || 0),
-    y: svgSize / 2 + (focusNode?.props.y || 0),
+    x: svgSize / 2 + (focusNode?.x || 0),
+    y: svgSize / 2 + (focusNode?.y || 0),
   };
   return (
     <MindMapContainer initialFocusPosition={initialFocusPosition}>

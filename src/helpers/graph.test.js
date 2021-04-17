@@ -1,4 +1,9 @@
-import { nodeHasChildren, getNodeChildren, getNeighbours } from './graph.js';
+import {
+  nodeHasChildren,
+  getNodeChildren,
+  getNeighbours,
+  doesNeighbourHaveChildren,
+} from './graph.js';
 
 const nodes = [{ id: '0' }, { id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }];
 
@@ -50,6 +55,53 @@ describe('graph helper', () => {
         leftNeighbour: nodes[1],
         rightNeighbour: nodes[3],
       });
+    });
+  });
+
+  describe('doesNeighbourHaveChildren', () => {
+    it('should return false when the node has a left neighbour, but without children', () => {
+      const node = nodes[2];
+      const edges = [
+        { from: '0', to: '1' },
+        { from: '0', to: '2' },
+      ];
+
+      expect(doesNeighbourHaveChildren({ nodes, edges }, node)).toBe(false);
+    });
+
+    it('should return true when the node has a left neighbour with children', () => {
+      const node = nodes[2];
+      const edges = [
+        { from: '0', to: '1' },
+        { from: '0', to: '2' },
+        { from: '1', to: '3' },
+      ];
+
+      expect(doesNeighbourHaveChildren({ nodes, edges }, node)).toBe(true);
+    });
+
+    it('should return true when the node has a right neighbour with children', () => {
+      const node = nodes[2];
+      const edges = [
+        { from: '0', to: '2' },
+        { from: '0', to: '3' },
+        { from: '3', to: '4' },
+      ];
+
+      expect(doesNeighbourHaveChildren({ nodes, edges }, node)).toBe(true);
+    });
+
+    it('should return true when the node has both left and right neighbours with children', () => {
+      const node = nodes[2];
+      const edges = [
+        { from: '0', to: '1' },
+        { from: '0', to: '2' },
+        { from: '0', to: '3' },
+        { from: '1', to: '4' },
+        { from: '3', to: '5' },
+      ];
+
+      expect(doesNeighbourHaveChildren({ nodes, edges }, node)).toBe(true);
     });
   });
 });

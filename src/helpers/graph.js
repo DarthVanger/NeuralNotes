@@ -85,8 +85,8 @@ export function getParentNode({ nodes, edges }, node) {
 export function getNeighbours({ nodes, edges }, node) {
   const parentNode = getParentNode({ nodes, edges }, node);
   const parentChildren = getNodeChildren({ nodes, edges }, parentNode);
-  const leftNeighbour = parentChildren[parentChildren.indexOf(n) - 1];
-  const rightNeighbour = parentChildren[parentChildren.indexOf(n) + 1];
+  const leftNeighbour = parentChildren[parentChildren.indexOf(node) - 1];
+  const rightNeighbour = parentChildren[parentChildren.indexOf(node) + 1];
   return { leftNeighbour, rightNeighbour };
 }
 

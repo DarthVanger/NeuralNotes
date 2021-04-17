@@ -56,9 +56,26 @@ describe('graph helper', () => {
         rightNeighbour: nodes[3],
       });
     });
+
+    it("should return { leftNeighbour: undefined, rightNeighbour: undefined } when neighbours don't exist", () => {
+      const node = nodes[2];
+      const edges = [{ from: '0', to: '2' }];
+
+      expect(getNeighbours({ nodes, edges }, node)).toEqual({
+        leftNeighbour: undefined,
+        rightNeighbour: undefined,
+      });
+    });
   });
 
   describe('doesNeighbourHaveChildren', () => {
+    it('should return false when the node has no neighbours', () => {
+      const node = nodes[2];
+      const edges = [{ from: '0', to: '2' }];
+
+      expect(doesNeighbourHaveChildren({ nodes, edges }, node)).toBe(false);
+    });
+
     it('should return false when the node has a left neighbour, but without children', () => {
       const node = nodes[2];
       const edges = [

@@ -53,7 +53,12 @@ export const NotesPageTopBar = () => {
           transformOrigin={{ vertical: 'top', horizontal: `left` }}
           anchorEl={anchorEl}
           open={isMenuOpen}
-          onClose={handleMenuClose}>
+          onClose={handleMenuClose}
+          PaperProps={{
+            style: {
+              width: '128px',
+            },
+          }}>
           <MenuItem onClick={handleMenuClose}>
             <LogoutButtonContainer />
           </MenuItem>

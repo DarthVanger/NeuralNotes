@@ -1,14 +1,10 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import { colors } from 'colors';
+import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles({
-  logoutButton: {
-    fontSize: '16px',
-    lineHeight: '24px',
-    color: colors.white87,
-    marginRight: '22px',
+  button: {
     textTransform: 'capitalize',
   },
 });
@@ -16,8 +12,8 @@ const useStyles = makeStyles({
 export function LogoutButtonComponent({ logout }) {
   const classes = useStyles();
   return (
-    <Button className={classes.logoutButton} onClick={logout}>
-      Logout
+    <Button className={classes.button} onClick={logout}>
+      <Typography variant="subtitle1">Logout</Typography>
     </Button>
   );
 }

@@ -20,9 +20,6 @@ const calculateNodeWidth = node =>
   getTextWidth(node.label, fontSize) + nodePadding * 2;
 
 const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
-  let mindMapNodes = [];
-  const edgeElements = [];
-
   const graph = { nodes, edges };
 
   /**
@@ -84,22 +81,14 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
 
       Object.assign(n, nodeProps);
 
-      const NodeElement = <Node {...nodeProps} />;
-
       const edgeProps = {
         ...edge,
         parentNode: parentNode,
         childNode: n,
       };
 
-      const EdgeElement = <Edge {...edgeProps} />;
-
-      edgeElements.push(EdgeElement);
-
-      return NodeElement;
+      Object.assign(edge, edgeProps);
     });
-
-    mindMapNodes.push(...nodeChildrenElements);
 
     nodeChildren.forEach(levelNode => {
       renderNodeChildren(levelNode);
@@ -120,10 +109,6 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
   };
 
   Object.assign(rootNode, rootNodeProps);
-
-  const RootNodeElement = <Node {...rootNodeProps} />;
-
-  mindMapNodes.push(RootNodeElement);
 
   renderNodeChildren(rootNode);
 
@@ -163,8 +148,12 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
         width={svgSize}
         height={svgSize}
         {...attrs}>
-        {edgeElements}
-        {mindMapNodes}
+        {edges.map(edge => (
+          <Edge {...edge} />
+        ))}
+        {nodes.map(node => (
+          <Node {...node} />
+        ))}
       </svg>
     </MindMapContainer>
   );

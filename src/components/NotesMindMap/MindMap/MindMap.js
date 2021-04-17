@@ -82,9 +82,7 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
         padding: nodePadding,
       };
 
-      Object.keys(nodeProps).forEach(nodePropKey => {
-        n[nodePropKey] = nodeProps[nodePropKey];
-      });
+      Object.assign(n, nodeProps);
 
       const NodeElement = <Node {...nodeProps} />;
 
@@ -121,9 +119,7 @@ const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
     padding: nodePadding,
   };
 
-  Object.keys(rootNodeProps).forEach(nodePropKey => {
-    rootNode[nodePropKey] = rootNodeProps[nodePropKey];
-  });
+  Object.assign(rootNode, rootNodeProps);
 
   const RootNodeElement = <Node {...rootNodeProps} />;
 

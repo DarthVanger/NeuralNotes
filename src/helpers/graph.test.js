@@ -1,4 +1,4 @@
-import { nodeHasChildren, getNodeChildren } from './graph.js';
+import { nodeHasChildren, getNodeChildren, getNeighbours } from './graph.js';
 
 const nodes = [{ id: '0' }, { id: '1' }, { id: '2' }, { id: '3' }, { id: '4' }];
 
@@ -34,6 +34,22 @@ describe('graph helper', () => {
       const node = nodes[0];
       const edges = [{ from: '1', to: '2' }];
       expect(getNodeChildren({ nodes, edges }, node)).toEqual([]);
+    });
+  });
+
+  describe('getNeighbours', () => {
+    it('should return neighbour nodes when they exist', () => {
+      const node = nodes[2];
+      const edges = [
+        { from: '0', to: '1' },
+        { from: '0', to: '2' },
+        { from: '0', to: '3' },
+      ];
+
+      expect(getNeighbours({ nodes, edges }, node)).toEqual({
+        leftNeighbour: nodes[1],
+        rightNeighbour: nodes[3],
+      });
     });
   });
 });

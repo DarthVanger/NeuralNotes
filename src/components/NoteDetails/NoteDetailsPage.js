@@ -5,6 +5,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { colors } from 'colors';
+import { history } from '../../sagas';
 
 import { NoteDetailsContainer } from 'components/NoteDetails/NoteDetailsContainer';
 import {
@@ -61,6 +62,7 @@ export const NoteDetailsPage = () => {
 
   const handleDeleteButtonClick = () => {
     dispatch(deleteNoteAction(selectedNote));
+    history.push('/notes');
   };
 
   return (

@@ -1,7 +1,10 @@
 import { toast } from 'react-toastify';
 import { all, takeEvery, put, call } from 'redux-saga/effects';
 import noteStorage from 'storage/noteStorage';
-import { EDIT_NOTE_BUTTON_CLICKED_ACTION } from 'components/BottomBar/BottomBarActions';
+import {
+  DELETE_NOTE_REQUEST_SUCCESS_ACTION,
+  EDIT_NOTE_BUTTON_CLICKED_ACTION,
+} from 'components/BottomBar/BottomBarActions';
 import {
   EDITOR_NOTE_NAME_CHANGED_ACTION,
   EDITOR_NOTE_CONTENT_CHANGED_ACTION,
@@ -181,6 +184,9 @@ function* handleCreateNoteSuccess({ data: note }) {
     yield put(applyQueuedNoteUpdateAction({ note, queuedChanges }));
   }
 }
+function* handleNoteDeleteSuccess() {
+  yield put(push('/notes'));
+}
 
 export function* noteDetailsInit() {
   yield all([
@@ -193,5 +199,6 @@ export function* noteDetailsInit() {
     takeEvery(QUEUE_NOTE_UPDATE_ACTION, queueNoteUpdate),
     takeEvery(APPLY_QUEUED_NOTE_UPDATE_ACTION, applyQueuedNoteUpdate),
     takeEvery(CREATE_NOTE_SUCCESS_ACTION, handleCreateNoteSuccess),
+    takeEvery(DELETE_NOTE_REQUEST_SUCCESS_ACTION, handleNoteDeleteSuccess),
   ]);
 }

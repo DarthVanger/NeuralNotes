@@ -5,7 +5,6 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -14,7 +13,9 @@ import { TopBarLeftButtons } from 'components/TopBar/TopBarLeftButtons';
 import { TopBarPageTitle } from 'components/TopBar/TopBarPageTitle';
 import { TopBarRightButtons } from 'components/TopBar/TopBarRightButtons';
 
-import { LogoutButtonContainer } from 'components/LogoutButton/LogoutButtonContainer';
+import { LogoutMenuItemContainer } from 'components/LogoutMenuItem/LogoutMenuItemContainer';
+//import MenuItem from '@material-ui/core/MenuItem';
+//import { Typography } from '@material-ui/core';
 
 import * as Selectors from 'components/Uploads/UploadsSelectors';
 
@@ -24,7 +25,7 @@ export const NotesPageTopBar = () => {
   const hasUploads = useSelector(Selectors.hasUploads);
   // const hasActiveUploads = useSelector(Selectors.hasActiveUploads);
 
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleMenuIconClick = event => {
@@ -59,9 +60,12 @@ export const NotesPageTopBar = () => {
               width: '128px',
             },
           }}>
+          {/*
           <MenuItem onClick={handleMenuClose}>
-            <LogoutButtonContainer />
+            <Typography variant="subtitle1">Logout</Typography>
           </MenuItem>
+          */}
+          <LogoutMenuItemContainer />
         </Menu>
       </TopBarLeftButtons>
       <TopBarPageTitle style={{ color: colors.violet }}>

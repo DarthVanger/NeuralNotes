@@ -13,13 +13,6 @@ export const theme = createMuiTheme({
     },
   },
   typography: {
-    headline6: {
-      fontFamily: 'Roboto',
-      fontStyle: 'normal',
-      fontWeight: 500,
-      fontSize: '19px',
-      lineHeight: '22px',
-    },
     subtitle1: {
       fontFamily: 'Roboto',
       fontStyle: 'normal',

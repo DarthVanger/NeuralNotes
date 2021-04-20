@@ -5,7 +5,7 @@ import {
   takeEvery,
 } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
 
-import { LOGOUT_ACTION } from 'components/LogoutMenuItem/LogoutMenuItemAction';
+import { LOGOUT_ACTION } from 'components/NotesPage/NotesPageTopBarMenuAction';
 
 function* logout() {
   console.log('logout');
@@ -13,6 +13,6 @@ function* logout() {
   yield call(auth.logout);
 }
 
-export function* logoutMenuItemInit() {
+export function* logoutInit() {
   yield all([takeEvery(LOGOUT_ACTION, logout)]);
 }

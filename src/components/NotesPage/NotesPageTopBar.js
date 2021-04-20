@@ -22,9 +22,8 @@ import { colors } from 'colors';
 
 const anchorPositionMenu = { top: 60, left: 0 };
 
-export const NotesPageTopBar = () => {
+export const NotesPageTopBar = props => {
   const hasUploads = useSelector(Selectors.hasUploads);
-  // const hasActiveUploads = useSelector(Selectors.hasActiveUploads);
 
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 

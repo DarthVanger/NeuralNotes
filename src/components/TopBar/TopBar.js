@@ -6,13 +6,12 @@ import styled from 'styled-components';
 
 const TopBarWrapper = styled.div`
   display: flex;
-  height: 5rem;
 `;
 
 export const TopBar = ({ children }) => {
   return (
     <TopBarWrapper>
-      <AppBar style={{ background: '#272727' }}>
+      <AppBar>
         <Toolbar>{children}</Toolbar>
       </AppBar>
     </TopBarWrapper>

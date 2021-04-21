@@ -13,13 +13,6 @@ export const theme = createMuiTheme({
     },
   },
   typography: {
-    headline6: {
-      fontFamily: 'Roboto',
-      fontStyle: 'normal',
-      fontWeight: 500,
-      fontSize: '19px',
-      lineHeight: '22px',
-    },
     subtitle1: {
       fontFamily: 'Roboto',
       fontStyle: 'normal',
@@ -37,6 +30,15 @@ export const theme = createMuiTheme({
       lineHeight: '24px',
       letterSpacing: 0.1,
       color: 'rgba(255, 255, 255, 0.6)',
+    },
+    h6: {
+      fontFamily: 'Roboto',
+      fontStyle: 'normal',
+      fontWeight: 500,
+      fontSize: '20px',
+      lineHeight: '26px',
+      letterSpacing: 0.15,
+      color: colors.white87,
     },
     body2: {
       fontFamily: 'Roboto',

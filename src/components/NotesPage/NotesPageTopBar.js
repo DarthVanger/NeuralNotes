@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import IconButton from '@material-ui/core/IconButton';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
@@ -20,20 +20,21 @@ import * as Selectors from 'components/Uploads/UploadsSelectors';
 
 import { colors } from 'colors';
 
-const anchorPositionMenu = { top: 60, left: 0 };
-
 export const NotesPageTopBar = () => {
   const hasUploads = useSelector(Selectors.hasUploads);
   // const hasActiveUploads = useSelector(Selectors.hasActiveUploads);
 
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleMenuIconClick = () => {
+  const handleMenuIconClick = event => {
     setIsMenuOpen(true);
+    setAnchorEl(event.currentTarget);
   };
 
   const handleMenuClose = () => {
     setIsMenuOpen(false);
+    setAnchorEl(null);
   };
 
   return (
@@ -44,13 +45,20 @@ export const NotesPageTopBar = () => {
           edge="start"
           aria-label="menu"
           aria-controls="burger-menu">
-          <MenuIcon color="primary" />
+          <MenuIcon style={{ color: colors.white87 }} />
         </IconButton>
         <Menu
-          anchorReference="anchorPosition"
-          anchorPosition={anchorPositionMenu}
+          getContentAnchorEl={null}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+          transformOrigin={{ vertical: 'top', horizontal: `left` }}
+          anchorEl={anchorEl}
           open={isMenuOpen}
-          onClose={handleMenuClose}>
+          onClose={handleMenuClose}
+          PaperProps={{
+            style: {
+              width: '128px',
+            },
+          }}>
           <MenuItem onClick={handleMenuClose}>
             <LogoutButtonContainer />
           </MenuItem>
@@ -72,7 +80,7 @@ export const NotesPageTopBar = () => {
         )}
         <Link to="search">
           <IconButton>
-            <SearchIcon color="primary" />
+            <SearchIcon style={{ color: colors.white60 }} />
           </IconButton>
         </Link>
       </TopBarRightButtons>

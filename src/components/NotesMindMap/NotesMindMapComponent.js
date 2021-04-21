@@ -6,6 +6,7 @@ import VisGraph from 'react-graph-vis';
 import { StyledNotesMindMap } from 'components/NotesMindMap/NotesMindMapStyles';
 
 import { VisNetworkHelper } from 'helpers/visNetworkHelper';
+import { colors } from 'colors';
 
 export class NotesMindMapComponent extends Component {
   render() {
@@ -28,16 +29,16 @@ export class NotesMindMapComponent extends Component {
             enabled: false,
           },
         },
-        color: '#F2F2F2',
+        color: colors.titleColor,
         smooth: true,
       },
       nodes: {
         borderWidth: 2,
         shape: 'box',
-        color: '#BB86FC',
+        color: colors.primaryColor,
         margin: 10,
         font: {
-          color: '#F2F2F2',
+          color: colors.titleColor,
           size: 15,
           face: 'raleway',
         },
@@ -47,10 +48,10 @@ export class NotesMindMapComponent extends Component {
         children: {
           borderWidth: 2,
           shape: 'box',
-          color: '#5dbcaf',
+          color: colors.secondaryColor,
           margin: 10,
           font: {
-            color: '#F2F2F2',
+            color: colors.titleColor,
             size: 15,
             face: 'raleway',
           },
@@ -58,10 +59,10 @@ export class NotesMindMapComponent extends Component {
         parent: {
           borderWidth: 2,
           shape: 'box',
-          color: '#BB86FC',
+          color: colors.primaryColor,
           margin: 10,
           font: {
-            color: '#F2F2F2',
+            color: colors.titleColor,
             size: 15,
             face: 'raleway',
           },

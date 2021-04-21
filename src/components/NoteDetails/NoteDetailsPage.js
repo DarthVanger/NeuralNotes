@@ -9,7 +9,7 @@ import { colors } from 'colors';
 import { NoteDetailsContainer } from 'components/NoteDetails/NoteDetailsContainer';
 
 const Wrapper = styled.div`
-  background-color: ${colors.darkViolet};
+  background-color: ${colors.noteBackground};
 `;
 
 const BackButtonWrapper = styled.div`
@@ -22,7 +22,7 @@ export const NoteDetailsPage = () => {
       <BackButtonWrapper>
         <Link to="/notes">
           <IconButton aria-label="back">
-            <ArrowBackIcon style={{ fill: colors.white60 }} />
+            <ArrowBackIcon style={{ fill: colors.textColor }} />
           </IconButton>
         </Link>
       </BackButtonWrapper>

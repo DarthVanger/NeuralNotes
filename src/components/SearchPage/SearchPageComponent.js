@@ -21,7 +21,6 @@ import { searchResultClickedAction } from 'components/NotesMindMap/NotesMindMapA
 import { searchQueryChangeAction } from '../SearchPage/SearchPageAction';
 
 const BackButtonWrapper = styled.div`
-  color: red !important;
   padding: 1rem;
 `;
 
@@ -40,7 +39,7 @@ const useStyles = makeStyles(() => ({
     paddingRight: 12,
   },
   svgIcon: {
-    color: colors.iconColor,
+    color: colors.textColor,
   },
 }));
 
@@ -71,7 +70,7 @@ export function SearchPageComponent() {
       <BackButtonWrapper>
         <Link to="notes">
           <IconButton aria-label="back">
-            <ArrowBackIcon style={{ fill: '#BB86FC' }} />
+            <ArrowBackIcon style={{ fill: colors.primaryColor }} />
           </IconButton>
         </Link>
       </BackButtonWrapper>

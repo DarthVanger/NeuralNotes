@@ -8,7 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { colors } from '../../colors';
+import { colors } from 'colors';
 
 import {
   editNoteButtonClickedAction,
@@ -19,7 +19,7 @@ import {
 const useStyles = makeStyles(() => ({
   moreIcon: {
     position: 'absolute',
-    color: colors.iconColor,
+    color: colors.textColor,
     left: 0,
     padding: '12px',
   },

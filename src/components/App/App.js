@@ -12,7 +12,7 @@ import { ChangeNoteParentPage } from 'components/ChangeNoteParentPage/ChangeNote
 import { UploadsPage } from 'components/Uploads/UploadsPage';
 import { isUserSignedInSelector } from 'components/LoginPage/LoginPageSelectors';
 
-import { theme } from '../../theme';
+import { theme } from 'theme';
 export const App = () => {
   const isUserSignedIn = useSelector(isUserSignedInSelector);
   return (

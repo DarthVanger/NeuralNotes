@@ -45,7 +45,7 @@ export const NotesPageTopBar = () => {
           edge="start"
           aria-label="menu"
           aria-controls="burger-menu">
-          <MenuIcon style={{ color: colors.white87 }} />
+          <MenuIcon style={{ color: colors.titleColor }} />
         </IconButton>
         <Menu
           getContentAnchorEl={null}
@@ -64,7 +64,7 @@ export const NotesPageTopBar = () => {
           </MenuItem>
         </Menu>
       </TopBarLeftButtons>
-      <TopBarPageTitle style={{ color: colors.violet }}>
+      <TopBarPageTitle style={{ color: colors.primaryColor }}>
         Neural Notes
       </TopBarPageTitle>
       <TopBarRightButtons>
@@ -80,7 +80,7 @@ export const NotesPageTopBar = () => {
         )}
         <Link to="search">
           <IconButton>
-            <SearchIcon style={{ color: colors.white60 }} />
+            <SearchIcon style={{ color: colors.textColor }} />
           </IconButton>
         </Link>
       </TopBarRightButtons>

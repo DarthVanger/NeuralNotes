@@ -7,8 +7,10 @@ import styled from 'styled-components';
 import { UploadsActions } from './UploadsActions';
 import * as Selectors from './UploadsSelectors';
 
+import { colors } from 'colors';
+
 const StyledPageHeaderContainer = styled.div`
-  background-color: #1a1a1a;
+  background-color: ${colors.barBackground};
 `;
 
 const StyledBackButton = styled.button`

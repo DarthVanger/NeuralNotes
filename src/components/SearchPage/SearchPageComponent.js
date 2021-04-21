@@ -49,7 +49,7 @@ export function SearchPageComponent() {
   const dispatch = useDispatch();
   const defaultValue = '';
   const [query, setQuery] = useState(defaultValue);
-
+  //test
   useEffect(() => {
     dispatch(searchQueryChangeAction(query));
   }, [query]);

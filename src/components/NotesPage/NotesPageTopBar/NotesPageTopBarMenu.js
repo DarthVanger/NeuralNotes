@@ -4,11 +4,19 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import { colors } from '../../colors';
+import { colors } from '../../../colors';
 
-export function NotesPageTopBarMenu({ logout }) {
+import { logoutAction } from './NotesPageTopBarAction';
+import { useDispatch } from 'react-redux';
+
+export function NotesPageTopBarMenu() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+  const dispatch = useDispatch();
+
+  const logout = () => {
+    dispatch(logoutAction());
+  };
 
   const handleMenuIconClick = event => {
     setIsMenuOpen(true);

@@ -5,7 +5,7 @@ import {
   takeEvery,
 } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
 
-import { LOGOUT_ACTION } from 'components/NotesPage/NotesPageTopBarMenuAction';
+import { LOGOUT_ACTION } from './NotesPageTopBarAction';
 
 function* logout() {
   console.log('logout');

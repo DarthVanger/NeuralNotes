@@ -11,11 +11,11 @@ import { TopBarLeftButtons } from 'components/TopBar/TopBarLeftButtons';
 import { TopBarPageTitle } from 'components/TopBar/TopBarPageTitle';
 import { TopBarRightButtons } from 'components/TopBar/TopBarRightButtons';
 
-import { NotesPageTopBarMenuContainer } from 'components/NotesPage/NotesPageTopBarMenuContainer';
+import { NotesPageTopBarMenu } from './NotesPageTopBarMenu';
 
 import * as Selectors from 'components/Uploads/UploadsSelectors';
 
-import { colors } from 'colors';
+import { colors } from '../../../colors';
 
 export const NotesPageTopBar = () => {
   const hasUploads = useSelector(Selectors.hasUploads);
@@ -24,7 +24,7 @@ export const NotesPageTopBar = () => {
   return (
     <TopBar>
       <TopBarLeftButtons>
-        <NotesPageTopBarMenuContainer />
+        <NotesPageTopBarMenu />
       </TopBarLeftButtons>
       <TopBarPageTitle style={{ color: colors.violet }}>
         Neural Notes

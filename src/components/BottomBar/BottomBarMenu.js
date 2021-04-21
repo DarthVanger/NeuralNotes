@@ -2,6 +2,8 @@ import React, { useRef, useState } from 'react';
 
 import { Typography } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
+import ClearIcon from '@material-ui/icons/Clear';
+
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
@@ -15,6 +17,7 @@ import {
   changeParentButtonClickedAction,
   deleteNoteAction,
 } from './BottomBarActions';
+import PopUpRestore from 'components/ModalDelete/PopUpRestore';
 
 const useStyles = makeStyles(() => ({
   moreIcon: {
@@ -25,7 +28,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export const BottomBarMenu = () => {
+export const BottomBarMenu = ({ handleClickOpen }) => {
   const classes = useStyles();
   // menuAnchorEl is used to be a relative point for menu position
   const menuAnchorEl = useRef();
@@ -46,7 +49,11 @@ export const BottomBarMenu = () => {
 
   const handleDeleteButtonClick = () => {
     dispatch(deleteNoteAction(selectedNote));
+    closeMenu();
+    handleClickOpen();
   };
+
+  const id = 'simple-popover';
 
   return (
     <>
@@ -85,7 +92,9 @@ export const BottomBarMenu = () => {
           <Typography variant="subtitle1">Change parent</Typography>
         </MenuItem>
         <MenuItem onClick={handleDeleteButtonClick}>
-          <Typography variant="subtitle1">Delete</Typography>
+          <Typography aria-describedby={id} variant="subtitle1">
+            Delete
+          </Typography>
         </MenuItem>
       </Menu>
     </>

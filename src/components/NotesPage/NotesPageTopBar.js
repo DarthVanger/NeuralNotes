@@ -24,6 +24,7 @@ const anchorPositionMenu = { top: 60, left: 0 };
 
 export const NotesPageTopBar = () => {
   const hasUploads = useSelector(Selectors.hasUploads);
+  // const hasActiveUploads = useSelector(Selectors.hasActiveUploads);
 
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 

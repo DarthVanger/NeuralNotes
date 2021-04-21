@@ -58,6 +58,17 @@ export const theme = createMuiTheme({
     },
   },
   overrides: {
+    TextField: {
+      width: '90%',
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      paddingBottom: 0,
+      marginTop: 0,
+      fontWeight: 500,
+    },
+    input: {
+      color: 'white',
+    },
     MuiAppBar: {
       colorPrimary: {
         backgroundColor: null,

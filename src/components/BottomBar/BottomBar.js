@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Typography } from '@material-ui/core';
+import { Button, Paper, Popover, Typography } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Fab from '@material-ui/core/Fab';
 import { makeStyles } from '@material-ui/core/styles';
@@ -22,9 +22,13 @@ import {
   editNoteButtonClickedAction,
   addNoteButtonClickedAction,
 } from './BottomBarActions';
+import PopupRestore from 'components/ModalDelete/PopUpRestore';
+import { useState } from 'react';
 
 const useStyles = makeStyles(() => ({
   appBar: {
+    display: 'flex',
+    alignContent: 'center',
     top: 'auto',
     bottom: 0,
   },
@@ -60,10 +64,20 @@ export const BottomBar = () => {
     dispatch(addNoteButtonClickedAction(selectedNote));
   };
 
+  const [openPopUp, setOpenPopUp] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpenPopUp(true);
+  };
+
+  const handleClose = () => {
+    setOpenPopUp(false);
+  };
+
   return (
     <AppBar position="fixed" className={classes.appBar}>
       <Toolbar>
-        <BottomBarMenu />
+        <BottomBarMenu handleClickOpen={handleClickOpen} />
         {!selectedNote.isUploadedFile && (
           <>
             <IconButton
@@ -90,8 +104,10 @@ export const BottomBar = () => {
             <UploadButton></UploadButton>
           </>
         )}
+
         {selectedNote.isUploadedFile && <OpenFileButtonContainer />}
       </Toolbar>
+      <PopupRestore open={openPopUp} handleClose={handleClose} />
     </AppBar>
   );
 };

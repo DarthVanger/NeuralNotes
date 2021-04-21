@@ -9,7 +9,7 @@ import { colors } from 'colors';
 import { NoteDetailsContainer } from 'components/NoteDetails/NoteDetailsContainer';
 
 const Wrapper = styled.div`
-  background-color: ${colors.noteBackground};
+  background: ${colors.barBackground};
 `;
 
 const BackButtonWrapper = styled.div`

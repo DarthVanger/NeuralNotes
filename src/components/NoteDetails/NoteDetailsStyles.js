@@ -27,7 +27,7 @@ export const StyledNoteNameEditor = styled(DefaultTextarea)`
 export const StyledNoteDetailsScreen = styled.div`
   height: 100vh;
   padding: 24px;
-  background-color: ${colors.noteBackground};
+  background: ${colors.mainBackground};
 `;
 
 export const StyledNoteContentEditor = styled(DefaultTextarea)`

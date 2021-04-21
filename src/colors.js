@@ -8,12 +8,15 @@ export const colors = {
   frameHover: '#3C78C8', // :hover frame notes??
   // background
   systemBarBack: '#121212', // system bar background
-  mainBackground: 'rgba(255, 255, 255, 0.07), #121212', // main background
-  menuBackground: 'rgba(255, 255, 255, 0.12), #121212', // menu item background
+  mainBackground:
+    'linear-gradient(0deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.07)), #121212;', // main background
+  menuBackground:
+    'linear-gradient(0deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.12)), #121212;', // menu item background
   menuSelectBackground: 'rgba(255, 255, 255, 0.12)', // selected menu item background
   fileBackground: 'rgba(196, 196, 196, 0.5)', // file manager background
   noteBackground: 'rgba(187, 134, 252, 0.08)', // create/edit note background
-  barBackground: 'rgba(255, 255, 255, 0.09), #121212', // top bar background, bottom bar background
+  barBackground:
+    'linear-gradient(0deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.09)), #121212;', // top bar background, bottom bar background
 };
 
 /*
@@ -38,9 +41,7 @@ const colors = {
   white60: 'rgba(255, 255, 255, 0.6)', //textColor
   iconColor: '#dadada', //textColor
 };
-*/
 
-/*
 const figmaColors = {
   Surface: '#121212', // system bar background
   Surface_Overlay: 'rgba(255, 255, 255, 0.12)', // selected menu item background

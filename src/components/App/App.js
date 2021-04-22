@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { ThemeProvider } from '@material-ui/styles';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import styled from 'styled-components';
 
 import { LoginPageContainer } from 'components/LoginPage/LoginPageContainer';
 import { NoteDetailsPage } from 'components/NoteDetails/NoteDetailsPage';
@@ -11,12 +11,16 @@ import { SearchPageComponent } from 'components/SearchPage/SearchPageComponent';
 import { ChangeNoteParentPage } from 'components/ChangeNoteParentPage/ChangeNoteParentPage';
 import { UploadsPage } from 'components/Uploads/UploadsPage';
 import { isUserSignedInSelector } from 'components/LoginPage/LoginPageSelectors';
+import { colors } from 'colors';
 
-import { theme } from 'theme';
+const AppWrapper = styled.div`
+  background: ${colors.systemBarBack};
+`;
+
 export const App = () => {
   const isUserSignedIn = useSelector(isUserSignedInSelector);
   return (
-    <ThemeProvider theme={theme}>
+    <AppWrapper>
       <Switch>
         <Route exact path="/">
           {isUserSignedIn && <Redirect to="/notes" />}
@@ -41,6 +45,6 @@ export const App = () => {
           <SearchPageComponent />
         </Route>
       </Switch>
-    </ThemeProvider>
+    </AppWrapper>
   );
 };

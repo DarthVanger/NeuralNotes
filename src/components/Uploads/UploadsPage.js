@@ -3,7 +3,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { colors } from '../../colors';
+import { colors } from 'colors';
 
 import { UploadsList } from './UploadsList';
 import { UploadsPageHeader } from './UploadsPageHeader';
@@ -15,7 +15,7 @@ const StyledPageContainer = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-  background: ${colors.elevationOverlay02dp};
+  background: ${colors.mainBackground};
   display: flex;
   flex-direction: column;
 `;

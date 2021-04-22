@@ -14,7 +14,7 @@ import styled from 'styled-components';
 import { OpenFileButtonContainer } from 'components/OpenFileButton/OpenFileButtonContainer';
 import { UploadButton } from 'components/Uploads/UploadButton';
 
-import { colors } from '../../colors';
+import { colors } from 'colors';
 
 import { BottomBarMenu } from './BottomBarMenu';
 
@@ -30,7 +30,7 @@ const useStyles = makeStyles(() => ({
   },
   left: {
     position: 'absolute',
-    color: colors.iconColor,
+    color: colors.textColor,
     left: '46px',
   },
   fabButton: {

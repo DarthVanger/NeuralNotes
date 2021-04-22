@@ -52,8 +52,7 @@ export function UploadButton() {
       <Fab
         aria-label="upload"
         onClick={onUploadButtonClick}
-        className={classes.fabButton}
-        color="secondary">
+        className={classes.fabButton}>
         <PublishIcon />
       </Fab>
     </>

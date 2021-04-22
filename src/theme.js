@@ -1,15 +1,15 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 
-import { colors } from './colors';
+import { colors } from 'colors';
 
 export const theme = createMuiTheme({
   palette: {
     primary: {
-      main: colors.violet,
+      main: colors.primaryColor,
     },
     secondary: {
-      main: colors.turquoise,
-      button: colors.buttonGray,
+      main: colors.secondaryColor,
+      button: colors.titleColor,
     },
   },
   typography: {
@@ -20,7 +20,7 @@ export const theme = createMuiTheme({
       fontSize: '16px',
       lineHeight: '24px',
       letterSpacing: 0.15,
-      color: 'rgba(255, 255, 255, 0.87)',
+      color: colors.titleColor,
     },
     subtitle2: {
       fontFamily: 'Roboto',
@@ -29,7 +29,7 @@ export const theme = createMuiTheme({
       fontSize: '14px',
       lineHeight: '24px',
       letterSpacing: 0.1,
-      color: 'rgba(255, 255, 255, 0.6)',
+      color: colors.textColor,
     },
     h6: {
       fontFamily: 'Roboto',
@@ -38,7 +38,7 @@ export const theme = createMuiTheme({
       fontSize: '20px',
       lineHeight: '26px',
       letterSpacing: 0.15,
-      color: colors.white87,
+      color: colors.titleColor,
     },
     body2: {
       fontFamily: 'Roboto',
@@ -47,7 +47,7 @@ export const theme = createMuiTheme({
       fontSize: '14px',
       lineHeight: '20px',
       letterSpacing: 0.25,
-      color: 'rgba(255, 255, 255, 0.6)',
+      color: colors.textColor,
     },
     button: {
       fontFamily: 'Roboto',
@@ -63,12 +63,12 @@ export const theme = createMuiTheme({
     MuiAppBar: {
       colorPrimary: {
         backgroundColor: null,
-        background: colors.elevationOverlay04dp,
+        background: colors.barBackground,
       },
     },
     MuiList: {
       root: {
-        background: colors.elevationOverlay02dp,
+        background: colors.mainBackground,
       },
       padding: {
         paddingTop: 0,
@@ -77,12 +77,12 @@ export const theme = createMuiTheme({
     },
     MuiDivider: {
       root: {
-        backgroundColor: colors.darkGray,
+        backgroundColor: colors.menuSelectBackground,
       },
     },
     MuiMenuItem: {
       root: {
-        background: colors.dialogsGray,
+        background: colors.menuBackground,
         minHeight: '32px',
       },
     },

@@ -8,7 +8,7 @@ const ICON_PADDING = CONTAINER_PADDING + 4;
 export const StyledSearchPanelWrapper = styled.div`
   position: absolute;
   width: auto;
-  background-color: ${colors.darkGray};
+  background-color: ${colors.mainBackground};
   bottom: 8px;
   left: 50%;
   transform: translateX(-50%);
@@ -20,10 +20,10 @@ export const StyledInput = styled.input`
   width: 200px;
   line-height: 100%;
   padding: 0 8px 0 18px;
-  border: 1px solid ${colors.lightGray};
+  border: 1px solid ${colors.textColor};
   border-radius: 8px;
-  background-color: ${colors.darkGray};
-  color: ${colors.lightGray};
+  background-color: ${colors.menuBackground};
+  color: ${colors.titleColor};
   outline: none;
 `;
 

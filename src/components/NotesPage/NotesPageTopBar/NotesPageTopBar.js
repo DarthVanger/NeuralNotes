@@ -15,7 +15,7 @@ import { NotesPageTopBarMenu } from './NotesPageTopBarMenu';
 
 import * as Selectors from 'components/Uploads/UploadsSelectors';
 
-import { colors } from '../../../colors';
+import { colors } from 'colors';
 
 export const NotesPageTopBar = () => {
   const hasUploads = useSelector(Selectors.hasUploads);
@@ -26,7 +26,7 @@ export const NotesPageTopBar = () => {
       <TopBarLeftButtons>
         <NotesPageTopBarMenu />
       </TopBarLeftButtons>
-      <TopBarPageTitle style={{ color: colors.violet }}>
+      <TopBarPageTitle style={{ color: colors.primaryColor }}>
         Neural Notes
       </TopBarPageTitle>
       <TopBarRightButtons>
@@ -42,7 +42,7 @@ export const NotesPageTopBar = () => {
         )}
         <Link to="search">
           <IconButton>
-            <SearchIcon style={{ color: colors.white60 }} />
+            <SearchIcon style={{ color: colors.textColor }} />
           </IconButton>
         </Link>
       </TopBarRightButtons>

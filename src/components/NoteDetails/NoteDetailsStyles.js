@@ -2,7 +2,7 @@ import { colors } from 'colors';
 import styled from 'styled-components';
 
 export const DefaultTextarea = styled.textarea`
-  background-color: ${colors.darkViolet};
+  background-color: ${colors.noteBackground};
   padding: 0px;
   width: 100%;
   border: none;
@@ -17,7 +17,7 @@ export const StyledNoteNameEditor = styled(DefaultTextarea)`
   text-align: center;
   height: 24px;
   line-height: 24px;
-  color: ${colors.white87};
+  color: ${colors.titleColor};
   font-size: 20px;
   overflow: hidden;
   font-weight: 500;
@@ -27,13 +27,13 @@ export const StyledNoteNameEditor = styled(DefaultTextarea)`
 export const StyledNoteDetailsScreen = styled.div`
   height: 100vh;
   padding: 24px;
-  background-color: ${colors.darkViolet};
+  background: ${colors.mainBackground};
 `;
 
 export const StyledNoteContentEditor = styled(DefaultTextarea)`
   height: 90%;
   line-height: 20px;
-  color: ${colors.white60};
+  color: ${colors.textColor};
   font-size: 14px;
   font-weight: normal;
   letter-spacing: 0.25px;

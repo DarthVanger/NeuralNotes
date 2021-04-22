@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
-import { colors } from '../../colors';
+import { colors } from 'colors';
 
 import { UploadsActions } from './UploadsActions';
 
@@ -45,7 +45,7 @@ const StyledIconButton = styled.button`
   background: none;
   border: none;
   outline: none;
-  color: ${colors.white60};
+  color: ${colors.textColor};
 `;
 
 const UploadsListItem = ({ item }) => {

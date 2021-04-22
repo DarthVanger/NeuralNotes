@@ -8,7 +8,7 @@ import { all } from 'redux-saga/effects';
 
 import { appInit } from 'components/App/AppSagas';
 import { loginInit } from 'components/LoginPage/LoginPageSagas';
-import { logoutButtonInit } from 'components/LogoutButton/LogoutButtonSagas';
+import { logoutInit } from 'components/NotesPage/NotesPageTopBar/NotesPageTopBarSagas';
 import { noteDetailsInit } from 'components/NoteDetails/NoteDetailsSagas';
 import { noteMindMapInit } from 'components/NotesMindMap/NotesMindMapSagas';
 import { searchPageInit } from 'components/SearchPage/SearchPageSagas';
@@ -61,7 +61,7 @@ export function* rootSaga() {
     appInit(),
     spinnerInit(),
     loginInit(),
-    logoutButtonInit(),
+    logoutInit(),
     noteMindMapInit(),
     uploadsInit(),
     noteDetailsInit(),

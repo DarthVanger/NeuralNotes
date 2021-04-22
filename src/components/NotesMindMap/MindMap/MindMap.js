@@ -62,8 +62,10 @@ const MindMap = ({
       /**
        * Shift is the angle between each child node in respect to the parent node
        */
-      const rootNodeChildrenAngleBetweenChildNodes = (2 * 3.14) / nodeChildren.length;
-      const nonRootNodeChildrenAngleBetweenChildNodes = 3.14 / 2 / nodeChildren.length;
+      const rootNodeChildrenAngleBetweenChildNodes =
+        (2 * 3.14) / nodeChildren.length;
+      const nonRootNodeChildrenAngleBetweenChildNodes =
+        3.14 / 2 / nodeChildren.length;
       const angleBetweenChildNodes = isRootNode
         ? rootNodeChildrenAngleBetweenChildNodes
         : nonRootNodeChildrenAngleBetweenChildNodes;
@@ -79,18 +81,18 @@ const MindMap = ({
        *                          | parent |
        *                          -----------------------------------
        *                               /\ \    ) φ of the first child
-       *  angleBetweenChildNodes     /   \    \      
-       *          |                /   ︶ \       \ 
+       *  angleBetweenChildNodes     /   \    \
+       *          |                /   ︶ \       \
        *          |              /     ^   \          \
        *          -------------/-------|    \              \
        *                     /               \                 \
        *                   /                  \                    \
        *            --------------             \             ---------------
        *            | last child |              \            | first child |
-       *            --------------      -----------------    --------------- 
-       *                                | middle child  | 
-       *                                ----------------- 
-       *      
+       *            --------------      -----------------    ---------------
+       *                                | middle child  |
+       *                                -----------------
+       *
        *
        * φ is the polar coordinates angle, with the center placed at the parent node.
        *
@@ -103,9 +105,13 @@ const MindMap = ({
        *   (instead of the first child (i=0) having φ equal to the parentNode.φ).
        */
 
-      const angleBetweenFirstAndLastChild = (nodeChildren.length * angleBetweenChildNodes);
+      const angleBetweenFirstAndLastChild =
+        nodeChildren.length * angleBetweenChildNodes;
 
-      const φ = parentNode.φ + i * angleBetweenChildNodes - angleBetweenFirstAndLastChild / 2;
+      const φ =
+        parentNode.φ +
+        i * angleBetweenChildNodes -
+        angleBetweenFirstAndLastChild / 2;
 
       const radius = calculateRadius(nodeChildren, n);
 

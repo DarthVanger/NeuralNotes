@@ -112,3 +112,17 @@ export function doesNeighbourHaveChildren({ nodes, edges }, node) {
 
   return false;
 }
+
+export function getRootNode({ nodes, edges }) {
+  return getParentRecursive(nodes[0].id);
+
+  function getParentRecursive(nodeId) {
+    const parentId = edges.find(e => e.to === nodeId)?.from;
+
+    if (!parentId) {
+      return nodes.find(n => n.id === nodeId);
+    }
+
+    return getParentRecursive(parentId);
+  }
+}

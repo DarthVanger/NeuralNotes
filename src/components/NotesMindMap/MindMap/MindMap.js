@@ -6,6 +6,7 @@ import {
   getNodeChildren,
   nodeHasChildren,
   doesNeighbourHaveChildren,
+  getRootNode,
 } from 'helpers/graph';
 import { getTextWidth } from './utils';
 
@@ -52,7 +53,7 @@ const MindMap = ({
       return;
     }
 
-    const isRootNode = getRootNode(nodes, edges).id === parentNode.id;
+    const isRootNode = getRootNode(graph).id === parentNode.id;
 
     const nodeChildrenElements = nodeChildren.map((n, i) => {
       const rootNodeChildrenShift = (2 * 3.14) / nodeChildren.length;
@@ -103,7 +104,7 @@ const MindMap = ({
     });
   };
 
-  const rootNode = getRootNode(nodes, edges);
+  const rootNode = getRootNode(graph);
 
   const rootNodeProps = {
     ...rootNode,
@@ -119,20 +120,6 @@ const MindMap = ({
   Object.assign(rootNode, rootNodeProps);
 
   renderNodeChildren(rootNode);
-
-  function getRootNode(nodes, edges) {
-    return getParent(nodes[0]);
-
-    function getParent(node) {
-      const parentId = edges.find(e => e.to === node.id)?.from;
-      if (!parentId) {
-        return node;
-      }
-
-      const parentNode = nodes.find(n => n.id === parentId);
-      return getParent(parentNode);
-    }
-  }
 
   const maxX = Math.max(...nodes.map(n => Math.abs(n.x)));
   const maxY = Math.max(...nodes.map(n => Math.abs(n.y)));

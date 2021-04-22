@@ -4,7 +4,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import { colors } from '../../../colors';
+import { colors } from 'colors';
 
 import { logoutAction } from './NotesPageTopBarAction';
 import { useDispatch } from 'react-redux';
@@ -35,7 +35,7 @@ export function NotesPageTopBarMenu() {
         edge="start"
         aria-label="menu"
         aria-controls="burger-menu">
-        <MenuIcon style={{ color: colors.white87 }} />
+        <MenuIcon style={{ color: colors.titleColor }} />
       </IconButton>
       <Menu
         getContentAnchorEl={null}

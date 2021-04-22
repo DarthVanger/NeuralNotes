@@ -10,7 +10,7 @@ export const GlobalStyle = createGlobalStyle`
   html, body {
     height: 100%;
     font-size: initial;
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Roboto', sans-serif;
     color: white;
     margin: 0;
   }

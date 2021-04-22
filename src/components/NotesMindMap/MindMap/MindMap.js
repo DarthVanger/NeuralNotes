@@ -77,8 +77,7 @@ const MindMap = ({
       const x =
         center + (parentNode.x + parentNodeWidth) + radius * Math.cos(φ);
 
-      const nodeProps = {
-        ...n,
+      Object.assign(n, {
         x,
         y,
         φ,
@@ -86,17 +85,12 @@ const MindMap = ({
         width: calculateNodeWidth(n),
         height: nodeHeight,
         padding: nodePadding,
-      };
+      });
 
-      Object.assign(n, nodeProps);
-
-      const edgeProps = {
-        ...edge,
+      Object.assign(edge, {
         parentNode: parentNode,
         childNode: n,
-      };
-
-      Object.assign(edge, edgeProps);
+      });
     });
 
     nodeChildren.forEach(levelNode => {
@@ -106,8 +100,7 @@ const MindMap = ({
 
   const rootNode = getRootNode(graph);
 
-  const rootNodeProps = {
-    ...rootNode,
+  Object.assign(rootNode, {
     x: center,
     y: center,
     φ: 0,
@@ -115,9 +108,7 @@ const MindMap = ({
     width: calculateNodeWidth(rootNode),
     height: nodeHeight,
     padding: nodePadding,
-  };
-
-  Object.assign(rootNode, rootNodeProps);
+  });
 
   renderNodeChildren(rootNode);
 

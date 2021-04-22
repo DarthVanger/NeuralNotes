@@ -19,7 +19,15 @@ const fontSize = 16;
 const calculateNodeWidth = node =>
   getTextWidth(node.label, fontSize) + nodePadding * 2;
 
-const MindMap = ({ nodes, edges, focusNodeId, ...attrs }) => {
+const MindMap = ({
+  nodes: nodesProp,
+  edges: edgesProp,
+  focusNodeId,
+  ...attrs
+}) => {
+  const nodes = [...nodesProp];
+  const edges = [...edgesProp];
+
   const graph = { nodes, edges };
 
   /**

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDebounce } from 'use-debounce';
+import { Typography } from '@material-ui/core';
 
 import {
   StyledNoteNameEditor,
@@ -56,9 +57,11 @@ export const NoteDetailsComponent = props => {
 
   return (
     <StyledNoteDetailsScreen>
-      {isSaved && 'Saved to Google Drive'}
-      {isSaving && 'Saving...'}
-      {props.isNoteCreationInProgress && 'Saving...'}
+      <Typography variant="subtitle2">
+        {isSaved && 'Saved to Google Drive'}
+        {isSaving && 'Saving...'}
+        {props.isNoteCreationInProgress && 'Saving...'}
+      </Typography>
       <StyledNoteNameEditor
         onChange={handleNoteNameChange}
         value={noteName}

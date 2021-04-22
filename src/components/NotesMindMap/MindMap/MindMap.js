@@ -46,7 +46,7 @@ const MindMap = ({
   /**
    * Render children of a node
    */
-  const renderNodeChildren = parentNode => {
+  const renderNodeChildrenRecursive = parentNode => {
     const nodeChildren = getNodeChildren(graph, parentNode);
 
     if (!nodeChildren.length) {
@@ -55,7 +55,7 @@ const MindMap = ({
 
     const isRootNode = getRootNode(graph).id === parentNode.id;
 
-    const nodeChildrenElements = nodeChildren.map((n, i) => {
+    nodeChildren.forEach((n, i) => {
       const rootNodeChildrenShift = (2 * 3.14) / nodeChildren.length;
       const nonRootNodeChildrenShift = 3.14 / 2 / nodeChildren.length;
       const shift = isRootNode
@@ -94,7 +94,7 @@ const MindMap = ({
     });
 
     nodeChildren.forEach(levelNode => {
-      renderNodeChildren(levelNode);
+      renderNodeChildrenRecursive(levelNode);
     });
   };
 
@@ -110,7 +110,7 @@ const MindMap = ({
     padding: nodePadding,
   });
 
-  renderNodeChildren(rootNode);
+  renderNodeChildrenRecursive(rootNode);
 
   const maxX = Math.max(...nodes.map(n => Math.abs(n.x)));
   const maxY = Math.max(...nodes.map(n => Math.abs(n.y)));

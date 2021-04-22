@@ -91,10 +91,8 @@ const MindMap = ({
         parentNode: parentNode,
         childNode: n,
       });
-    });
 
-    nodeChildren.forEach(levelNode => {
-      renderNodeChildrenRecursive(levelNode);
+      renderNodeChildrenRecursive(n);
     });
   };
 

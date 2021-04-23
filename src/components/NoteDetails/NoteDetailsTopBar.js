@@ -36,15 +36,12 @@ const NoteDetailsTopBar = () => {
   const handleChangeParentButtonClick = () => {
     dispatch(changeParentButtonClickedAction(selectedNote));
   };
-
-  const title = selectedNote ? selectedNote.name : 'Add you note';
-
   return (
     <TopBar>
       <TopBarLeftButtons>
         <BackButton to="/notes" />
       </TopBarLeftButtons>
-      <TopBarPageTitle>{title}</TopBarPageTitle>
+      <TopBarPageTitle>{selectedNote.name}</TopBarPageTitle>
       <TopBarRightButtons>
         <IconButton
           ref={menuAnchorEl}

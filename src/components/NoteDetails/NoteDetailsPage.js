@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { colors } from 'colors';
 import { NoteDetailsContainer } from 'components/NoteDetails/NoteDetailsContainer';
 import NoteDetailsTopBar from './NoteDetailsTopBar';
-import { useState } from 'react';
 
 const Wrapper = styled.div`
   background: ${colors.barBackground};

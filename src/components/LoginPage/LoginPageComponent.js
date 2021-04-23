@@ -16,7 +16,6 @@ import { FONT_SIZE } from 'components/LoginPage/slideComponents';
 const Main = styled.main`
   width: 100%;
   background-color: ${COLORS.rainfull};
-  font-family: Roboto;
 
   .h1,
   .h2,

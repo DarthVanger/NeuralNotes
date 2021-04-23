@@ -14,7 +14,6 @@ export const theme = createMuiTheme({
   },
   typography: {
     subtitle1: {
-      fontFamily: 'Roboto',
       fontStyle: 'normal',
       fontWeight: 'normal',
       fontSize: '16px',
@@ -23,7 +22,6 @@ export const theme = createMuiTheme({
       color: colors.titleColor,
     },
     subtitle2: {
-      fontFamily: 'Roboto',
       fontStyle: 'normal',
       fontWeight: 'normal',
       fontSize: '14px',
@@ -41,7 +39,6 @@ export const theme = createMuiTheme({
       color: colors.titleColor,
     },
     body2: {
-      fontFamily: 'Roboto',
       fontStyle: 'normal',
       fontWeight: 'normal',
       fontSize: '14px',
@@ -50,7 +47,6 @@ export const theme = createMuiTheme({
       color: colors.textColor,
     },
     button: {
-      fontFamily: 'Roboto',
       fontStyle: 'normal',
       fontWeight: 500,
       fontSize: '14px',

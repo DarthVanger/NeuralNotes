@@ -4,8 +4,11 @@ import {
   NOTE_CONTENT_FETCH_SUCCESS_ACTION,
   NOTE_NAME_UPDATE_REQUEST_SUCCESS_ACTION,
   NOTE_CONTENT_UPDATE_REQUEST_SUCCESS_ACTION,
+  NOTE_NAME_UPDATE_REQUEST_FAILURE_ACTION,
+  NOTE_CONTENT_UPDATE_REQUEST_FAILURE_ACTION,
   CREATE_NOTE_REQUEST_ACTION,
   CREATE_NOTE_SUCCESS_ACTION,
+  CREATE_NOTE_FAILURE_ACTION,
 } from 'components/NoteDetails/NoteDetailsActions';
 import { CHANGE_SELECTED_NOTE_ACTION } from 'components/NotesMindMap/NotesMindMapActions';
 import { ADD_NOTE_BUTTON_CLICKED_ACTION } from 'components/BottomBar/BottomBarActions';
@@ -20,6 +23,8 @@ const defaultState = {
     isExistingNote: true,
     // If the http request to create note is in progress.
     isNoteCreationInProgress: false,
+    // if create note or update note name/content return error
+    error: null,
   },
 };
 
@@ -69,6 +74,7 @@ export const noteDetailsReducer = (state = defaultState, { type, data }) => {
         editorState: {
           ...state.editorState,
           areChangesSaved: true,
+          error: null,
         },
       };
     case NOTE_CONTENT_UPDATE_REQUEST_SUCCESS_ACTION:
@@ -77,6 +83,23 @@ export const noteDetailsReducer = (state = defaultState, { type, data }) => {
         editorState: {
           ...state.editorState,
           areChangesSaved: true,
+          error: null,
+        },
+      };
+    case NOTE_NAME_UPDATE_REQUEST_FAILURE_ACTION:
+      return {
+        ...state,
+        editorState: {
+          ...state.editorState,
+          error: data.error,
+        },
+      };
+    case NOTE_CONTENT_UPDATE_REQUEST_FAILURE_ACTION:
+      return {
+        ...state,
+        editorState: {
+          ...state.editorState,
+          error: data.error,
         },
       };
     case CREATE_NOTE_REQUEST_ACTION:
@@ -95,6 +118,15 @@ export const noteDetailsReducer = (state = defaultState, { type, data }) => {
           isNoteCreationInProgress: false,
           areChangesSaved: true,
           isExistingNote: true,
+          error: null,
+        },
+      };
+    case CREATE_NOTE_FAILURE_ACTION:
+      return {
+        ...state,
+        editorState: {
+          ...state.editorState,
+          error: data.error,
         },
       };
     default:

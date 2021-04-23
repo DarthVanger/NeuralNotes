@@ -14,10 +14,6 @@ const useStyles = makeStyles(() => ({
   textField: {
     color: colors.textColor,
   },
-  customInput: {
-    color: colors.textColor,
-    padding: '0px 10px',
-  },
 }));
 
 export default function SearchInputComponent() {
@@ -37,7 +33,7 @@ export default function SearchInputComponent() {
   const classes = useStyles();
   return (
     <TextField
-      className={classes.customInput}
+      className={classes.textField}
       placeholder="Search notes and files"
       type="text"
       variant="outlined"

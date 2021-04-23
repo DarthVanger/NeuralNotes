@@ -19,6 +19,7 @@ import { searchResultClickedAction } from 'components/NotesMindMap/NotesMindMapA
 import { TopBarLeftButtons } from 'components/TopBar/TopBarLeftButtons';
 import { TopBar } from 'components/TopBar/TopBar';
 import SearchInputComponent from './SearchInput';
+import { BackButton } from 'components/BackButton/BackButton';
 const useStyles = makeStyles(() => ({
   list: {
     width: '100%',
@@ -53,11 +54,7 @@ export function SearchPageComponent() {
     <>
       <TopBar>
         <TopBarLeftButtons>
-          <Link to="notes">
-            <IconButton aria-label="back">
-              <ArrowBackIcon style={{ fill: colors.textColor }} />
-            </IconButton>
-          </Link>
+          <BackButton to={'notes'} />
         </TopBarLeftButtons>
         <SearchInputComponent />
       </TopBar>

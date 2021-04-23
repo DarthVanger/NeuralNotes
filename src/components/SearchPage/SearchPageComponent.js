@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { Typography } from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
@@ -13,21 +13,16 @@ import InsertDriveFileRoundedIcon from '@material-ui/icons/InsertDriveFileRounde
 import { colors } from 'colors';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-import { useDebouncedCallback } from 'use-debounce';
 
 import { searchResultClickedAction } from 'components/NotesMindMap/NotesMindMapActions';
 
-import { searchQueryChangeAction } from '../SearchPage/SearchPageAction';
-
-const BackButtonWrapper = styled.div`
-  padding: 1rem;
-`;
-
+import { TopBarLeftButtons } from 'components/TopBar/TopBarLeftButtons';
+import { TopBar } from 'components/TopBar/TopBar';
+import SearchInputComponent from './SearchInput';
 const useStyles = makeStyles(() => ({
   list: {
     width: '100%',
-    height: '100%',
+    height: '100vh',
     paddingLeft: 16,
   },
   listItem: {
@@ -46,17 +41,6 @@ const useStyles = makeStyles(() => ({
 export function SearchPageComponent() {
   const searchResults = useSelector(state => state.searchPage.results);
   const dispatch = useDispatch();
-  const defaultValue = '';
-  const [query, setQuery] = useState(defaultValue);
-
-  useEffect(() => {
-    dispatch(searchQueryChangeAction(query));
-  }, [query]);
-
-  const debounced = useDebouncedCallback(
-    (value, setQuery) => setQuery(value),
-    1000,
-  );
 
   const handleClick = searchResult => {
     const note = { ...searchResult, label: searchResult.name };
@@ -67,22 +51,22 @@ export function SearchPageComponent() {
 
   return (
     <>
-      <BackButtonWrapper>
-        <Link to="notes">
-          <IconButton aria-label="back">
-            <ArrowBackIcon style={{ fill: colors.primaryColor }} />
-          </IconButton>
-        </Link>
-      </BackButtonWrapper>
-      <input
-        defaultValue={defaultValue}
-        onChange={e => debounced.callback(e.target.value, setQuery)}
-      />
+      <TopBar>
+        <TopBarLeftButtons>
+          <Link to="notes">
+            <IconButton aria-label="back">
+              <ArrowBackIcon style={{ fill: colors.textColor }} />
+            </IconButton>
+          </Link>
+        </TopBarLeftButtons>
+        <SearchInputComponent />
+      </TopBar>
+
       <List className={classes.list}>
         {searchResults &&
           searchResults.map(searchResult => (
-            <>
-              <ListItem key={searchResult.id} className={classes.listItem}>
+            <React.Fragment key={searchResult.id}>
+              <ListItem className={classes.listItem}>
                 <ListItemIcon className={classes.icon}>
                   <InsertDriveFileRoundedIcon className={classes.svgIcon} />
                 </ListItemIcon>
@@ -93,7 +77,7 @@ export function SearchPageComponent() {
                 </ListItemText>
               </ListItem>
               <Divider component="li" />
-            </>
+            </React.Fragment>
           ))}
       </List>
     </>

@@ -1,42 +1,40 @@
 import { colors } from 'colors';
 import styled from 'styled-components';
 
+export const StyledNoteDetailsScreen = styled.div`
+  background: ${colors.mainBackground};
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+`;
+
 export const DefaultTextarea = styled.textarea`
   background-color: ${colors.noteBackground};
-  padding: 0px;
+  padding: 0;
   width: 100%;
   border: none;
   resize: none;
   border-radius: 4px;
   outline: none;
   box-shadow: none;
-  font-family: Roboto;
 `;
 
 export const StyledNoteNameEditor = styled(DefaultTextarea)`
   text-align: center;
-  height: 24px;
-  line-height: 24px;
+  line-height: 56px;
   color: ${colors.titleColor};
   font-size: 20px;
-  overflow: hidden;
   font-weight: 500;
-  margin-bottom: 16px;
-`;
-
-export const StyledNoteDetailsScreen = styled.div`
-  height: 100vh;
-  padding: 24px;
-  background: ${colors.mainBackground};
+  flex-grow: 0;
+  margin-top: -24px; // override status message 'Saved...'
 `;
 
 export const StyledNoteContentEditor = styled(DefaultTextarea)`
-  height: 90%;
+  flex-grow: 1;
   line-height: 20px;
   color: ${colors.textColor};
   font-size: 14px;
   font-weight: normal;
   letter-spacing: 0.25px;
-
-  padding: 1rem;
+  padding: 2rem;
 `;

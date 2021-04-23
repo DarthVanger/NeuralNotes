@@ -18,7 +18,6 @@ export const DefaultTextarea = styled.textarea`
   border-radius: 4px;
   outline: none;
   box-shadow: none;
-  margin-bottom: 16px;
 `;
 
 export const StyledNoteNameEditor = styled(DefaultTextarea)`

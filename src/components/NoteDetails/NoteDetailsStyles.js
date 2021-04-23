@@ -6,7 +6,7 @@ export const StyledNoteDetailsScreen = styled.div`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  padding-top: 70px;
+  padding-top: 60px;
 `;
 
 export const DefaultTextarea = styled.textarea`
@@ -18,7 +18,7 @@ export const DefaultTextarea = styled.textarea`
   border-radius: 4px;
   outline: none;
   box-shadow: none;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 `;
 
 export const StyledNoteNameEditor = styled(DefaultTextarea)`

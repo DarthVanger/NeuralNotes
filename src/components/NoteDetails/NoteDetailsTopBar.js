@@ -15,14 +15,11 @@ import { TopBarPageTitle } from 'components/TopBar/TopBarPageTitle';
 import { changeParentButtonClickedAction } from 'components/BottomBar/BottomBarActions';
 import { colors } from 'colors';
 import { BackButton } from 'components/BackButton/BackButton';
+import { TopBarRightButtons } from 'components/TopBar/TopBarRightButtons';
 
 const useStyles = makeStyles(() => ({
   moreIcon: {
-    position: 'absolute',
     color: colors.textColor,
-    right: 0,
-    padding: '12px',
-    marginRight: '40px',
   },
 }));
 
@@ -48,14 +45,16 @@ const NoteDetailsTopBar = () => {
         <BackButton to="/notes" />
       </TopBarLeftButtons>
       <TopBarPageTitle>{title}</TopBarPageTitle>
-      <IconButton
-        ref={menuAnchorEl}
-        className={classes.moreIcon}
-        aria-label="more"
-        aria-haspopup="true"
-        onClick={openMenu}>
-        <MoreVertIcon />
-      </IconButton>
+      <TopBarRightButtons>
+        <IconButton
+          ref={menuAnchorEl}
+          className={classes.moreIcon}
+          aria-label="more"
+          aria-haspopup="true"
+          onClick={openMenu}>
+          <MoreVertIcon />
+        </IconButton>
+      </TopBarRightButtons>
       <Menu
         anchorOrigin={{
           vertical: 'top',

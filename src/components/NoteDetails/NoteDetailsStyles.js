@@ -6,6 +6,7 @@ export const StyledNoteDetailsScreen = styled.div`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  padding-top: 70px;
 `;
 
 export const DefaultTextarea = styled.textarea`
@@ -17,6 +18,7 @@ export const DefaultTextarea = styled.textarea`
   border-radius: 4px;
   outline: none;
   box-shadow: none;
+  margin-bottom: 20px;
 `;
 
 export const StyledNoteNameEditor = styled(DefaultTextarea)`
@@ -26,7 +28,6 @@ export const StyledNoteNameEditor = styled(DefaultTextarea)`
   font-size: 20px;
   font-weight: 500;
   flex-grow: 0;
-  margin-top: -24px; // override status message 'Saved...'
 `;
 
 export const StyledNoteContentEditor = styled(DefaultTextarea)`

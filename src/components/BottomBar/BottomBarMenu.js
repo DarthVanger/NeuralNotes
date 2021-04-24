@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export const BottomBarMenu = () => {
+export const BottomBarMenu = ({ handleClickOpen }) => {
   const classes = useStyles();
   // menuAnchorEl is used to be a relative point for menu position
   const menuAnchorEl = useRef();
@@ -46,6 +46,8 @@ export const BottomBarMenu = () => {
 
   const handleDeleteButtonClick = () => {
     dispatch(deleteNoteAction(selectedNote));
+    handleClickOpen();
+    closeMenu();
   };
 
   return (

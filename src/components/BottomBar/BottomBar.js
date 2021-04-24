@@ -22,6 +22,8 @@ import {
   editNoteButtonClickedAction,
   addNoteButtonClickedAction,
 } from './BottomBarActions';
+import PopupRestore from 'components/PopUpModal/PopUpRestore';
+import { useState } from 'react';
 
 const useStyles = makeStyles(() => ({
   appBar: {
@@ -60,10 +62,20 @@ export const BottomBar = () => {
     dispatch(addNoteButtonClickedAction(selectedNote));
   };
 
+  const [openPopUp, setOpenPopUp] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpenPopUp(true);
+  };
+
+  const handleClose = () => {
+    setOpenPopUp(false);
+  };
+
   return (
     <AppBar position="fixed" className={classes.appBar}>
       <Toolbar>
-        <BottomBarMenu />
+        <BottomBarMenu handleClickOpen={handleClickOpen} />
         {!selectedNote.isUploadedFile && (
           <>
             <IconButton
@@ -92,6 +104,7 @@ export const BottomBar = () => {
         )}
         {selectedNote.isUploadedFile && <OpenFileButtonContainer />}
       </Toolbar>
+      <PopupRestore open={openPopUp} handleClose={handleClose} />
     </AppBar>
   );
 };

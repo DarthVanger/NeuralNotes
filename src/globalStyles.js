@@ -14,6 +14,10 @@ export const GlobalStyle = createGlobalStyle`
     color: white;
     margin: 0;
   }
+
+  input, button, textarea, select {
+    font-family: inherit;
+  }
   
   #app-root {
     position: relative;

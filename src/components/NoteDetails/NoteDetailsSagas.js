@@ -1,4 +1,3 @@
-import { toast } from 'react-toastify';
 import { all, takeEvery, put, call } from 'redux-saga/effects';
 import noteStorage from 'storage/noteStorage';
 import { EDIT_NOTE_BUTTON_CLICKED_ACTION } from 'components/BottomBar/BottomBarActions';
@@ -11,15 +10,18 @@ import {
   QUEUE_NOTE_UPDATE_ACTION,
   APPLY_QUEUED_NOTE_UPDATE_ACTION,
   CREATE_NOTE_SUCCESS_ACTION,
-  applyQueuedNoteUpdateAction,
   queueNoteUpdateAction,
-  createNoteRequestAction,
-  noteNameUpdateRequestSuccessAction,
-  noteContentUpdateRequestSuccessAction,
-  noteContentFetchSuccessAction,
+  applyQueuedNoteUpdateAction,
   noteNameUpdateRequestAction,
+  noteNameUpdateRequestSuccessAction,
+  noteNameUpdateRequestFailureAction,
   noteContentUpdateRequestAction,
+  noteContentUpdateRequestSuccessAction,
+  noteContentUpdateRequestFailureAction,
+  createNoteRequestAction,
   createNoteSuccessAction,
+  createNoteFailureAction,
+  noteContentFetchSuccessAction,
 } from './NoteDetailsActions';
 import { push } from 'connected-react-router';
 
@@ -145,29 +147,54 @@ function* applyQueuedNoteUpdate({ data: { note, queuedChanges: changes } }) {
 }
 
 function* requestNoteNameUpdate({ data: { note } }) {
-  const newNote = yield noteStorage.updateNoteName({
-    note,
-    newName: note.name,
-  });
-  yield put(noteNameUpdateRequestSuccessAction(newNote));
-  queuedChanges.noteName = null;
+  try {
+    const newNote = yield noteStorage.updateNoteName({
+      note,
+      newName: note.name,
+    });
+    yield put(noteNameUpdateRequestSuccessAction(newNote));
+    queuedChanges.noteName = null;
+  } catch (e) {
+    yield put(
+      noteNameUpdateRequestFailureAction({
+        name: e.name,
+        message: e.message,
+      }),
+    );
+    console.error(e);
+  }
 }
 
 function* requestNoteContentUpdate({ data: { note } }) {
   try {
-    const newNote = yield noteStorage.updateNoteContent(note);
-    yield put(noteContentUpdateRequestSuccessAction(newNote));
+    yield noteStorage.updateNoteContent(note); // func return undefined or error
+    yield put(noteContentUpdateRequestSuccessAction());
     queuedChanges.noteContent = null;
-  } catch (error) {
-    toast.error('Failed to save note content');
-    console.error(error);
+  } catch (e) {
+    yield put(
+      noteContentUpdateRequestFailureAction({
+        name: e.name,
+        message: e.message,
+      }),
+    );
+    console.error(e);
   }
 }
 
 function* createNoteRequest({ data: { note } }) {
-  const newNote = yield noteStorage.create(note);
-  newNote.parent = note.parent;
-  yield put(createNoteSuccessAction(newNote));
+  try {
+    const newNote = yield noteStorage.create(note); // func return object (not Promise) or error
+    newNote.parent = note.parent;
+    yield put(createNoteSuccessAction(newNote));
+  } catch (e) {
+    yield put(
+      noteContentUpdateRequestFailureAction({
+        name: e.name,
+        message: e.message,
+      }),
+    );
+    console.error(e);
+  }
 }
 
 function* handleEditNoteButtonClick({ data: { note } }) {

@@ -64,9 +64,8 @@ export const noteNameUpdateRequestSuccessAction = data => ({
   data,
 });
 
-export const noteContentUpdateRequestSuccessAction = data => ({
+export const noteContentUpdateRequestSuccessAction = () => ({
   type: NOTE_CONTENT_UPDATE_REQUEST_SUCCESS_ACTION,
-  data,
 });
 
 export const noteNameUpdateRequestFailureAction = error => ({

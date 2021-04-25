@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useDebounce } from 'use-debounce';
-import { Typography } from '@material-ui/core';
 
 import {
   StyledNoteNameEditor,
   StyledNoteDetailsScreen,
   StyledNoteContentEditor,
-} from 'components/NoteDetails/NoteDetailsStyles';
+} from './NoteDetailsStyles';
+import NoteDetailsSaveStatus from './NoteDetailsSaveStatus';
 
 export const NoteDetailsComponent = props => {
   const [noteName, setNoteName] = useState(props.noteName);
@@ -51,17 +51,12 @@ export const NoteDetailsComponent = props => {
     setAreChangesSaved(false);
   };
 
-  const isSaved = props.editorState.isExistingNote && areChangesSaved;
-  const isSaving =
-    props.editorState.isNoteCreationInProgress || !areChangesSaved;
-
   return (
     <StyledNoteDetailsScreen>
-      <Typography variant="subtitle2">
-        {isSaved && 'Saved to Google Drive'}
-        {isSaving && 'Saving...'}
-        {props.isNoteCreationInProgress && 'Saving...'}
-      </Typography>
+      <NoteDetailsSaveStatus
+        editorState={props.editorState}
+        areChangesSaved={areChangesSaved}
+      />
       <StyledNoteNameEditor
         onChange={handleNoteNameChange}
         value={noteName}

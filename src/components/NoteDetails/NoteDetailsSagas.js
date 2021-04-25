@@ -159,6 +159,7 @@ function* requestNoteNameUpdate({ data: { note } }) {
       noteNameUpdateRequestFailureAction({
         name: e.name,
         message: e.message,
+        text: 'Failed to save changes note name',
       }),
     );
     console.error(e);
@@ -175,6 +176,7 @@ function* requestNoteContentUpdate({ data: { note } }) {
       noteContentUpdateRequestFailureAction({
         name: e.name,
         message: e.message,
+        text: 'Failed to save changes note content',
       }),
     );
     console.error(e);
@@ -191,6 +193,7 @@ function* createNoteRequest({ data: { note } }) {
       noteContentUpdateRequestFailureAction({
         name: e.name,
         message: e.message,
+        text: 'Failed to save the new note',
       }),
     );
     console.error(e);

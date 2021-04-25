@@ -190,7 +190,7 @@ function* createNoteRequest({ data: { note } }) {
     yield put(createNoteSuccessAction(newNote));
   } catch (e) {
     yield put(
-      noteContentUpdateRequestFailureAction({
+      createNoteFailureAction({
         name: e.name,
         message: e.message,
         text: 'Failed to save the new note',

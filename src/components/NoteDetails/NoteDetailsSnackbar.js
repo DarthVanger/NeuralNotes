@@ -2,7 +2,11 @@ import React, { useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 
-export default function NoteDetailsSnackbar({ error }) {
+export default function NoteDetailsSnackbar({
+  error,
+  saveNoteName,
+  saveNoteContent,
+}) {
   useEffect(() => {
     if (error) {
       setOpen(true);
@@ -17,7 +21,17 @@ export default function NoteDetailsSnackbar({ error }) {
     }
 
     setOpen(false);
-    // make a call to the function to retry sending the note
+
+    if (error.text.includes('name')) {
+      saveNoteName();
+    }
+    if (error.text.includes('content')) {
+      saveNoteContent();
+    }
+    if (error.text.includes('new')) {
+      // determine what was entered (name or content)
+      // and call saveNoteName() or saveNoteContent()
+    }
   };
 
   const errorMsg = error.text ? error.text : 'Some error...';

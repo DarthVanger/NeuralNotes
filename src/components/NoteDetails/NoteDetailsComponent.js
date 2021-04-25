@@ -26,21 +26,29 @@ export const NoteDetailsComponent = props => {
 
   useEffect(() => {
     if (debouncedNoteName === props.noteName) return;
+    saveNoteName();
+  }, [debouncedNoteName]);
+
+  useEffect(() => {
+    if (debouncedNoteContent === props.noteContent) return;
+    saveNoteContent();
+  }, [debouncedNoteContent]);
+
+  const saveNoteName = () => {
     props.editorNoteNameChangedAction({
       newNoteName: debouncedNoteName,
       note: props.selectedNote,
       editorState: props.editorState,
     });
-  }, [debouncedNoteName]);
+  };
 
-  useEffect(() => {
-    if (debouncedNoteContent === props.noteContent) return;
+  const saveNoteContent = () => {
     props.editorNoteContentChangedAction({
       noteContent: debouncedNoteContent,
       note: props.selectedNote,
       editorState: props.editorState,
     });
-  }, [debouncedNoteContent]);
+  };
 
   const handleNoteNameChange = e => {
     setNoteName(e.target.value);
@@ -77,8 +85,16 @@ export const NoteDetailsComponent = props => {
         value={noteContent}
         rows="5"
       />
-      {/*<NoteDetailsSnackbar error={props.editorState.error} />*/}
-      <NoteDetailsSnackbar error={{ text: 'test!!!' }} />
+      {/*<NoteDetailsSnackbar
+        error={props.editorState.error}
+        saveNoteName={saveNoteName}
+        saveNoteContent={saveNoteContent}
+      />*/}
+      <NoteDetailsSnackbar
+        error={{ text: 'test!!! name content' }}
+        saveNoteName={saveNoteName}
+        saveNoteContent={saveNoteContent}
+      />
     </StyledNoteDetailsScreen>
   );
 };

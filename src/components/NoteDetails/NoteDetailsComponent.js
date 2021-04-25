@@ -7,6 +7,7 @@ import {
   StyledNoteContentEditor,
 } from './NoteDetailsStyles';
 import NoteDetailsSaveStatus from './NoteDetailsSaveStatus';
+import NoteDetailsSnackbar from './NoteDetailsSnackbar';
 
 export const NoteDetailsComponent = props => {
   const [noteName, setNoteName] = useState(props.noteName);
@@ -76,6 +77,8 @@ export const NoteDetailsComponent = props => {
         value={noteContent}
         rows="5"
       />
+      {/*<NoteDetailsSnackbar error={props.editorState.error} />*/}
+      <NoteDetailsSnackbar error={{ text: 'test!!!' }} />
     </StyledNoteDetailsScreen>
   );
 };

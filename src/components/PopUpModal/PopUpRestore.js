@@ -17,13 +17,13 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function PopupRestore({ handleClose, open }) {
+export default function PopupRestore({ closeRestorePopUp, open }) {
   const classes = useStyles();
   return (
     <div>
       <Popover
         open={open}
-        onClose={handleClose}
+        onClose={closeRestorePopUp}
         anchorReference="anchorPosition"
         anchorPosition={{ top: 1900, left: 100 }}
         anchorOrigin={{
@@ -36,7 +36,7 @@ export default function PopupRestore({ handleClose, open }) {
         }}>
         <Paper className={classes.popBody} elevation={9}>
           <Typography>File moved to trash</Typography>
-          <Button onClick={handleClose} color="primary" size="small">
+          <Button onClick={closeRestorePopUp} color="primary" size="small">
             UNDO
           </Button>
         </Paper>

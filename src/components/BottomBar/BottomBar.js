@@ -62,20 +62,20 @@ export const BottomBar = () => {
     dispatch(addNoteButtonClickedAction(selectedNote));
   };
 
-  const [openPopUp, setOpenPopUp] = useState(false);
+  const [openRestorePopUp, setOpenRestorePoUp] = useState(false);
 
-  const handleClickOpen = () => {
-    setOpenPopUp(true);
+  const openRestorePopUpHandler = () => {
+    setOpenRestorePoUp(true);
   };
 
-  const handleClose = () => {
-    setOpenPopUp(false);
+  const closeRestorePopUp = () => {
+    setOpenRestorePoUp(false);
   };
 
   return (
     <AppBar position="fixed" className={classes.appBar}>
       <Toolbar>
-        <BottomBarMenu handleClickOpen={handleClickOpen} />
+        <BottomBarMenu openRestorePopUp={openRestorePopUpHandler} />
         {!selectedNote.isUploadedFile && (
           <>
             <IconButton
@@ -104,7 +104,10 @@ export const BottomBar = () => {
         )}
         {selectedNote.isUploadedFile && <OpenFileButtonContainer />}
       </Toolbar>
-      <PopupRestore open={openPopUp} handleClose={handleClose} />
+      <PopupRestore
+        open={openRestorePopUp}
+        closeRestorePopUp={closeRestorePopUp}
+      />
     </AppBar>
   );
 };

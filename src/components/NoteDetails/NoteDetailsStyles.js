@@ -27,6 +27,7 @@ export const StyledNoteNameEditor = styled(DefaultTextarea)`
   font-size: 20px;
   font-weight: 500;
   flex-grow: 0;
+  margin-top: -24px; // override status message 'Saved...'
 `;
 
 export const StyledNoteContentEditor = styled(DefaultTextarea)`

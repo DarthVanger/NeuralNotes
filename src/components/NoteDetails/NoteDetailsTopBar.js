@@ -23,7 +23,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const NoteDetailsTopBar = () => {
+const NoteDetailsTopBar = ({ openDialog }) => {
   const classes = useStyles();
   const menuAnchorEl = useRef();
   const [isMenuOpened, setIsMenuOpened] = useState(false);
@@ -74,7 +74,9 @@ const NoteDetailsTopBar = () => {
           <Typography variant="subtitle1">Change parent</Typography>
         </MenuItem>
         <MenuItem onClick={closeMenu}>
-          <Typography variant="subtitle1">Delete</Typography>
+          <Typography variant="subtitle1" onClick={openDialog}>
+            Delete
+          </Typography>
         </MenuItem>
       </Menu>
     </TopBar>

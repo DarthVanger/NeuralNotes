@@ -25,6 +25,7 @@ function* handleChangeParentButtonClick({ data: { note } }) {
 function* deleteNote({ data: { note } }) {
   yield noteStorage.remove(note);
   yield put(deleteNoteRequestSuccessAction(note));
+  yield put(push('/notes'));
 }
 
 export function* bottomBarInit() {

@@ -46,6 +46,7 @@ export const BottomBarMenu = () => {
 
   const handleDeleteButtonClick = () => {
     dispatch(deleteNoteAction(selectedNote));
+    closeMenu();
   };
 
   return (

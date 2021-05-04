@@ -30,9 +30,7 @@ function* deleteNote({ data: { note } }) {
   yield toast(RestorePopup, {
     position: toast.POSITION.BOTTOM_LEFT,
     hideProgressBar: true,
-    // autoClose: false,
     closeButton: false,
-    // autoClose:false,
   });
 }
 

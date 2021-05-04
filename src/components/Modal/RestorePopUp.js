@@ -1,27 +1,24 @@
 import React from 'react';
-import { colors } from '../../colors';
 import styled from 'styled-components';
 import { Button, Typography } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.minimal.css';
-import './popstyle.css';
+import './restorePopUp.css';
+import { colors } from '../../colors';
 
 const PopUpDiv = styled.div`
   display: flex;
+  justify-content: space-evenly;
   align-items: center;
-  background-color: #121212;
+  background-color: ${colors.systemBarBack};
 `;
 
 const RestorePopup = ({ closeToast }) => {
   return (
-    <>
-      <PopUpDiv>
-        <Typography style={{ width: '70%' }}>File moved to trash</Typography>
-        <Button color="primary">UNDO</Button>
-        <CloseIcon onClick={closeToast} />
-      </PopUpDiv>
-    </>
+    <PopUpDiv>
+      <Typography>File moved to trash</Typography>
+      <Button color="primary">UNDO</Button>
+      <CloseIcon onClick={closeToast} />
+    </PopUpDiv>
   );
 };
 

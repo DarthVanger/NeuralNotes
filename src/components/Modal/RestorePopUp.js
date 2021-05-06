@@ -15,8 +15,16 @@ const PopUpDiv = styled.div`
 const RestorePopup = ({ closeToast }) => {
   return (
     <PopUpDiv>
-      <Typography>File moved to trash</Typography>
-      <Button color="primary">UNDO</Button>
+      <Typography>
+        File deleted, you can restore it from Google Drive Trash
+      </Typography>
+      <Button
+        color="primary"
+        onClick={() =>
+          (window.location.href = 'https://drive.google.com/drive/trash')
+        }>
+        UNDO
+      </Button>
       <CloseIcon onClick={closeToast} />
     </PopUpDiv>
   );

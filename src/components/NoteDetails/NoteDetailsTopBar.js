@@ -16,6 +16,7 @@ import { changeParentButtonClickedAction } from 'components/BottomBar/BottomBarA
 import { colors } from 'colors';
 import { BackButton } from 'components/BackButton/BackButton';
 import { TopBarRightButtons } from 'components/TopBar/TopBarRightButtons';
+import DialogDeleteNote from 'components/Modal/DialogDeleteNote';
 
 const useStyles = makeStyles(() => ({
   moreIcon: {
@@ -23,15 +24,21 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const NoteDetailsTopBar = ({ openDialog }) => {
+const NoteDetailsTopBar = () => {
   const classes = useStyles();
   const menuAnchorEl = useRef();
+
   const [isMenuOpened, setIsMenuOpened] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   const selectedNote = useSelector(state => state.notesMindMap.selectedNote);
   const dispatch = useDispatch();
 
   const openMenu = () => setIsMenuOpened(true);
   const closeMenu = () => setIsMenuOpened(false);
+
+  const openDialog = () => setIsDialogOpen(true);
+  const closeDialog = () => setIsDialogOpen(false);
 
   const handleChangeParentButtonClick = () => {
     dispatch(changeParentButtonClickedAction(selectedNote));
@@ -79,6 +86,7 @@ const NoteDetailsTopBar = ({ openDialog }) => {
           </Typography>
         </MenuItem>
       </Menu>
+      <DialogDeleteNote isDialogOpen={isDialogOpen} closeDialog={closeDialog} />
     </TopBar>
   );
 };

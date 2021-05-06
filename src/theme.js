@@ -82,9 +82,25 @@ export const theme = createMuiTheme({
         minHeight: '32px',
       },
     },
+    MuiDialogContent: {
+      root: {
+        background: colors.menuBackground,
+      },
+    },
+    MuiDialogContentText: {
+      root: {
+        color: colors.textColor,
+      },
+    },
+    MuiDialogActions: {
+      root: {
+        background: colors.menuBackground,
+      },
+    },
     MuiDialogTitle: {
       root: {
         background: colors.menuBackground,
+        color: colors.textColor,
       },
     },
   },

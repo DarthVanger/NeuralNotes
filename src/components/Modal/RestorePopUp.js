@@ -1,8 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Button, Typography } from '@material-ui/core';
+import { Link, Typography } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-import './restorePopUp.css';
 import { colors } from '../../colors';
 
 const PopUpDiv = styled.div`
@@ -16,15 +15,13 @@ const RestorePopup = ({ closeToast }) => {
   return (
     <PopUpDiv>
       <Typography>
-        File deleted, you can restore it from Google Drive Trash
+        <Link
+          color="inherit"
+          href="https://drive.google.com/drive/trash"
+          target="_blank">
+          Google Drive Trash
+        </Link>
       </Typography>
-      <Button
-        color="primary"
-        onClick={() =>
-          (window.location.href = 'https://drive.google.com/drive/trash')
-        }>
-        UNDO
-      </Button>
       <CloseIcon onClick={closeToast} />
     </PopUpDiv>
   );

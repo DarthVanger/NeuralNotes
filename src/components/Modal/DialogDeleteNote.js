@@ -21,7 +21,7 @@ const DialogDeleteNote = ({ closeDeleteDialog, isDeleteDialogOpen }) => {
       onClose={closeDeleteDialog}
       aria-labelledby="delete-note-confirmation-dialog-title">
       <DialogTitle id="delete-note-confirmation-dialog-title">
-        {selectedNote.name}
+        Delete {selectedNote.name}
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="delete-note-confirmation-dialog-description">

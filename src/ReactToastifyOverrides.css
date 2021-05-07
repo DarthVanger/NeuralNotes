@@ -1,0 +1,7 @@
+.Toastify__toast-container {
+  margin-left: 50px;
+}
+.Toastify__toast--default {
+  border-radius: 5px;
+  background-color: #121212 !important;
+}

@@ -15,6 +15,7 @@ const RestorePopup = ({ closeToast }) => {
   return (
     <PopUpDiv>
       <Typography>
+        File deleted, you can restore it from &nbsp;
         <Link
           color="inherit"
           href="https://drive.google.com/drive/trash"

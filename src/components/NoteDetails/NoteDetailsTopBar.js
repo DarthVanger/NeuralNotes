@@ -29,7 +29,7 @@ const NoteDetailsTopBar = () => {
   const menuAnchorEl = useRef();
 
   const [isMenuOpened, setIsMenuOpened] = useState(false);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const selectedNote = useSelector(state => state.notesMindMap.selectedNote);
   const dispatch = useDispatch();
@@ -37,8 +37,8 @@ const NoteDetailsTopBar = () => {
   const openMenu = () => setIsMenuOpened(true);
   const closeMenu = () => setIsMenuOpened(false);
 
-  const openDialog = () => setIsDialogOpen(true);
-  const closeDialog = () => setIsDialogOpen(false);
+  const openDeleteDialog = () => setIsDeleteDialogOpen(true);
+  const closeDeleteDialog = () => setIsDeleteDialogOpen(false);
 
   const handleChangeParentButtonClick = () => {
     dispatch(changeParentButtonClickedAction(selectedNote));
@@ -81,12 +81,15 @@ const NoteDetailsTopBar = () => {
           <Typography variant="subtitle1">Change parent</Typography>
         </MenuItem>
         <MenuItem onClick={closeMenu}>
-          <Typography variant="subtitle1" onClick={openDialog}>
+          <Typography variant="subtitle1" onClick={openDeleteDialog}>
             Delete
           </Typography>
         </MenuItem>
       </Menu>
-      <DialogDeleteNote isDialogOpen={isDialogOpen} closeDialog={closeDialog} />
+      <DialogDeleteNote
+        isDeleteDialogOpen={isDeleteDialogOpen}
+        closeDeleteDialog={closeDeleteDialog}
+      />
     </TopBar>
   );
 };

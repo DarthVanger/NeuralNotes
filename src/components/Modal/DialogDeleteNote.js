@@ -8,17 +8,17 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteNoteAction } from '../../components/BottomBar/BottomBarActions';
 
-const DialogDeleteNote = ({ closeDialog, isDialogOpen }) => {
+const DialogDeleteNote = ({ closeDeleteDialog, isDeleteDialogOpen }) => {
   const selectedNote = useSelector(state => state.notesMindMap.selectedNote);
   const dispatch = useDispatch();
   const confirmDeleteNote = () => {
     dispatch(deleteNoteAction(selectedNote));
-    closeDialog();
+    closeDeleteDialog();
   };
   return (
     <Dialog
-      open={isDialogOpen}
-      onClose={closeDialog}
+      open={isDeleteDialogOpen}
+      onClose={closeDeleteDialog}
       aria-labelledby="delete-note-confirmation-dialog-title">
       <DialogTitle id="delete-note-confirmation-dialog-title">
         {selectedNote.name}
@@ -29,7 +29,7 @@ const DialogDeleteNote = ({ closeDialog, isDialogOpen }) => {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={closeDialog} color="primary">
+        <Button onClick={closeDeleteDialog} color="primary">
           Cancel
         </Button>
         <Button onClick={confirmDeleteNote} color="primary" autoFocus>

@@ -13,8 +13,8 @@ import { colors } from 'colors';
 import {
   editNoteButtonClickedAction,
   changeParentButtonClickedAction,
-  deleteNoteAction,
 } from './BottomBarActions';
+import DialogDeleteNote from 'components/Modal/DialogDeleteNote';
 
 const useStyles = makeStyles(() => ({
   moreIcon: {
@@ -29,6 +29,7 @@ export const BottomBarMenu = () => {
   const classes = useStyles();
   // menuAnchorEl is used to be a relative point for menu position
   const menuAnchorEl = useRef();
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isMenuOpened, setIsMenuOpened] = useState(false);
   const selectedNote = useSelector(state => state.notesMindMap.selectedNote);
   const dispatch = useDispatch();
@@ -43,11 +44,8 @@ export const BottomBarMenu = () => {
   const handleChangeParentButtonClick = () => {
     dispatch(changeParentButtonClickedAction(selectedNote));
   };
-
-  const handleDeleteButtonClick = () => {
-    dispatch(deleteNoteAction(selectedNote));
-    closeMenu();
-  };
+  const openDeleteDialog = () => setIsDeleteDialogOpen(true);
+  const closeDeleteDialog = () => setIsDeleteDialogOpen(false);
 
   return (
     <>
@@ -85,10 +83,18 @@ export const BottomBarMenu = () => {
         <MenuItem onClick={handleChangeParentButtonClick}>
           <Typography variant="subtitle1">Change parent</Typography>
         </MenuItem>
-        <MenuItem onClick={handleDeleteButtonClick}>
+        <MenuItem
+          onClick={() => {
+            openDeleteDialog();
+            closeMenu();
+          }}>
           <Typography variant="subtitle1">Delete</Typography>
         </MenuItem>
       </Menu>
+      <DialogDeleteNote
+        isDeleteDialogOpen={isDeleteDialogOpen}
+        closeDeleteDialog={closeDeleteDialog}
+      />
     </>
   );
 };

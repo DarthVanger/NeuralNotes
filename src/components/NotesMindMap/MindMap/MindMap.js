@@ -105,13 +105,16 @@ const MindMap = ({
        *   (instead of the first child (i=0) having φ equal to the parentNode.φ).
        */
 
-      const angleBetweenFirstAndLastChild =
-        nodeChildren.length * angleBetweenChildNodes;
+      const isASingleChild = nodeChildren.length === 1;
 
-      const φ =
-        parentNode.φ +
-        i * angleBetweenChildNodes -
-        angleBetweenFirstAndLastChild / 2;
+      const angleBetweenFirstAndLastChild = isASingleChild
+        ? 0
+        : nodeChildren.length * angleBetweenChildNodes;
+
+      const childAngle =
+        i * angleBetweenChildNodes - angleBetweenFirstAndLastChild / 2;
+
+      const φ = parentNode.φ + childAngle;
 
       /**
        * Radius around the parent node

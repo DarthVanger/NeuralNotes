@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 
 import PropTypes from 'prop-types';
-import MindMap, { Node, Edge } from './MindMap/MindMap.js';
+import MindMap from './MindMap/MindMap.js';
 import { StyledNotesMindMap } from 'components/NotesMindMap/NotesMindMapStyles';
-
-import { getDepth } from 'helpers/graph';
 
 export class NotesMindMapComponent extends Component {
   constructor(props) {

@@ -121,7 +121,6 @@ const MindMap = ({
       const parentNodeWidth =
         getTextWidth(parentNode.label, fontSize) + nodePadding * 2;
 
-      const c = center;
       const y = center + parentNode.y + radius * Math.sin(φ);
       const x =
         center + (parentNode.x + parentNodeWidth) + radius * Math.cos(φ);
@@ -182,10 +181,10 @@ const MindMap = ({
         height={svgSize}
         {...attrs}>
         {edges.map(edge => (
-          <Edge {...edge} />
+          <Edge {...edge} key={`${edge.parentNode.id}->${edge.childNode.id}`} />
         ))}
         {nodes.map(node => (
-          <Node {...node} />
+          <Node {...node} key={node.id} />
         ))}
       </svg>
     </MindMapContainer>

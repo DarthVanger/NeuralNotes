@@ -66,7 +66,7 @@ export function getDepth(nodes, edges) {
   }
 }
 
-export function nodeHasChildren({ nodes, edges }, node) {
+export function nodeHasChildren({ edges }, node) {
   return Boolean(edges.find(edge => edge.from === node.id));
 }
 

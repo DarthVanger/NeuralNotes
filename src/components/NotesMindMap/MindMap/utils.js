@@ -1,5 +1,5 @@
 // https://stackoverflow.com/questions/31305071/measuring-text-width-height-without-rendering
-export function getTextWidth(txt, fontSize) {
+export function getTextWidth(txt) {
   const element = document.createElement('canvas');
   const context = element.getContext('2d');
   const font = window

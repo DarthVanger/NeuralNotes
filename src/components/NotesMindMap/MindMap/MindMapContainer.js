@@ -46,7 +46,7 @@ const scrollByMouseDrag = (() => el => {
         el.current.style.cursor = 'grab';
       }
     },
-    onMouseUp: e => {
+    onMouseUp: () => {
       isMouseDown = false;
       el.current.style.cursor = 'auto';
     },

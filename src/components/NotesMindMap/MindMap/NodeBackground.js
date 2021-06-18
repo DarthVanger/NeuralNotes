@@ -1,6 +1,6 @@
 import React from 'react';
 
-const NodeBackground = ({ height, width, padding, ...attrs }) => {
+const NodeBackground = ({ height, width, padding }) => {
   const borderPath = `
     M 0 ${(height * 2) / 3}
     v -${(height * 2) / 3 - height / 6}

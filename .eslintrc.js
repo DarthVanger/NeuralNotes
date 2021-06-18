@@ -3,6 +3,7 @@ module.exports = {
     browser: true,
     es6: true,
     node: true,
+    'jest/globals': true,
   },
   settings: {
     react: {
@@ -29,7 +30,7 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module',
   },
-  plugins: ['react', 'class-property'],
+  plugins: ['react', 'class-property', 'jest'],
   rules: {
     'no-console': 'off',
     'react/prop-types': 0,

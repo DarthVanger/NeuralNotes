@@ -8,8 +8,9 @@ export const Edge = ({ parentNode, childNode }) => {
    * Straight line from parent to child, taking into account nodes width & height.
    */
   const svgPathShape = `
-    M ${parentNode.x + parentNode.width} ${parentNode.y - parentNode.height / 2}
-    L ${childNode.x} ${childNode.y - childNode.height / 2}
+    M ${parentNode.x + parentNode.width / 2} ${parentNode.y -
+    parentNode.height / 2}
+    L ${childNode.x + childNode.width / 2} ${childNode.y - childNode.height / 2}
   `;
 
   return (

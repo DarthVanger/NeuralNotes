@@ -59,13 +59,12 @@ const MindMap = ({
       // Edge from the parent to the current node
       const edge = edges.find(e => e.to === n.id);
 
-      /**
-       * Shift is the angle between each child node in respect to the parent node
-       */
       const rootNodeChildrenAngleBetweenChildNodes =
         (2 * 3.14) / nodeChildren.length;
+
       const nonRootNodeChildrenAngleBetweenChildNodes =
         3.14 / 2 / nodeChildren.length;
+
       const angleBetweenChildNodes = isRootNode
         ? rootNodeChildrenAngleBetweenChildNodes
         : nonRootNodeChildrenAngleBetweenChildNodes;

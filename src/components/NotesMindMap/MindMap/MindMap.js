@@ -124,8 +124,7 @@ const MindMap = ({
         getTextWidth(parentNode.label, fontSize) + nodePadding * 2;
 
       const y = center + parentNode.y + radius * Math.sin(φ);
-      const x =
-        center + (parentNode.x + parentNodeWidth) + radius * Math.cos(φ);
+      const x = center + parentNode.x + radius * Math.cos(φ);
 
       Object.assign(n, {
         x,

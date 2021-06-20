@@ -96,6 +96,10 @@ export function getNeighbours({ nodes, edges }, node) {
   return { leftNeighbour, rightNeighbour };
 }
 
+export function getLeftNeighbour({ nodes, edges }, node) {
+  return getNeighbours({ nodes, edges }, node).leftNeighbour;
+}
+
 export function doesNeighbourHaveChildren({ nodes, edges }, node) {
   const { leftNeighbour, rightNeighbour } = getNeighbours(
     { nodes, edges },

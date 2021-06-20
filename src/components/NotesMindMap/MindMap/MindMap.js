@@ -7,6 +7,7 @@ import {
   nodeHasChildren,
   doesNeighbourHaveChildren,
   getRootNode,
+  getLeftNeighbour,
 } from 'helpers/graph';
 import { getTextWidth } from './utils';
 
@@ -42,6 +43,16 @@ const MindMap = ({
     }
     return defaultRadius;
   }
+
+  /**
+   * Get the angle between the bottom left and bottom right corners of a node.
+   */
+  const getAngleWidth = node => {
+    const rightEdgeX = node.radius * Math.cos(node.φ) + node.width;
+    const rightEdgeY = node.radius * Math.sin(node.φ);
+    const rightEdgePhi = Math.atan2(rightEdgeY, rightEdgeX);
+    return rightEdgePhi - node.φ;
+  };
 
   /**
    * Render children of a node recursively
@@ -113,7 +124,14 @@ const MindMap = ({
       const childAngle =
         i * angleBetweenChildNodes - angleBetweenFirstAndLastChild / 2;
 
-      const φ = parentNode.φ + childAngle;
+      // Add left neighbour angle width to φ to ensure the current
+      // node doesn't overlap with its left neighbour.
+      const leftNeighbour = getLeftNeighbour({ nodes, edges }, n);
+      const leftNeighbourAngleWidth = leftNeighbour
+        ? getAngleWidth(leftNeighbour)
+        : 0;
+
+      const φ = parentNode.φ + childAngle + leftNeighbourAngleWidth;
 
       /**
        * Radius around the parent node

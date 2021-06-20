@@ -21,7 +21,7 @@ const NodeBackground = ({ height, width, padding }) => {
   const backgroundPath = borderPath.replaceAll(/m/g, 'l');
 
   return (
-    <g transform={`translate(-${padding}, -${height - padding})`}>
+    <g transform={`translate(0, -${height})`}>
       <path d={backgroundPath} stroke="none" fill="white" />
       <path d={borderPath} stroke="#3C78C8" fill="transparent" />
     </g>

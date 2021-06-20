@@ -3,9 +3,9 @@ import NodeBackground from './NodeBackground';
 
 export const Node = ({ x, y, label, width, height, padding, ...attrs }) => {
   return (
-    <g {...attrs} transform={`translate(${x + padding}, ${y - padding})`}>
+    <g {...attrs} transform={`translate(${x}, ${y})`}>
       <NodeBackground width={width} height={height} padding={padding} />
-      <text>{label}</text>
+      <text transform={`translate(${padding}, -${padding})`}>{label}</text>
     </g>
   );
 };

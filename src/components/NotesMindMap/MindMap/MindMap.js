@@ -10,6 +10,7 @@ import {
   getLeftNeighbour,
 } from 'helpers/graph';
 import { getTextWidth } from './utils';
+import { getAngleWidth } from './geometry';
 
 export { Node, Edge };
 
@@ -43,16 +44,6 @@ const MindMap = ({
     }
     return defaultRadius;
   }
-
-  /**
-   * Get the angle between the bottom left and bottom right corners of a node.
-   */
-  const getAngleWidth = node => {
-    const rightEdgeX = node.radius * Math.cos(node.φ) + node.width;
-    const rightEdgeY = node.radius * Math.sin(node.φ);
-    const rightEdgePhi = Math.atan2(rightEdgeY, rightEdgeX);
-    return rightEdgePhi - node.φ;
-  };
 
   /**
    * Render children of a node recursively
@@ -131,7 +122,13 @@ const MindMap = ({
         ? getAngleWidth(leftNeighbour)
         : 0;
 
-      const φ = parentNode.φ + childAngle + leftNeighbourAngleWidth;
+      console.log(
+        `leftNeighbourAngleWidth (${n.label}): `,
+        (leftNeighbourAngleWidth * 180) / Math.PI,
+      );
+
+      //const φ = parentNode.φ + leftNeighbourAngleWidth + leftNeighbour?.φ || 0;
+      const φ = (leftNeighbour?.φ || 0) - leftNeighbourAngleWidth;
 
       /**
        * Radius around the parent node
@@ -152,6 +149,7 @@ const MindMap = ({
         width: calculateNodeWidth(n),
         height: nodeHeight,
         padding: nodePadding,
+        parent: parentNode,
       });
 
       Object.assign(edge, {

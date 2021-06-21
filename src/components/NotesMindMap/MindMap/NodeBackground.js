@@ -1,17 +1,25 @@
 import React from 'react';
 
 const NodeBackground = ({ height, width, padding }) => {
+  //const borderPath = `
+  //  M 0 ${(height * 2) / 3}
+  //  v -${(height * 2) / 3 - height / 6}
+  //  l ${height / 6} -${height / 6}
+  //  h ${width - (height * 2) / 3}
+  //  m ${height / 3} ${height / 3}
+  //  v ${(height * 2) / 3 - height / 6}
+  //  l -${height / 6} ${height / 6}
+  //  h -${width - (height * 2) / 3}
+  //  m -${height / 3} -${height / 3}
+  //`;
+
   const borderPath = `
-    M 0 ${(height * 2) / 3}
-    v -${(height * 2) / 3 - height / 6}
-    l ${height / 6} -${height / 6}
-    h ${width - (height * 2) / 3}
-    m ${height / 3} ${height / 3}
-    v ${(height * 2) / 3 - height / 6}
-    l -${height / 6} ${height / 6}
-    h -${width - (height * 2) / 3}
-    m -${height / 3} -${height / 3}
-  `;
+   M 0 0
+   h ${width}
+   v ${height}
+   h -${width}
+   v -${height}
+ `;
 
   // Replacing 'm' (move) with 'l' (line) makes the border a closed loop,
   // in order to let the fill color cover everything inside.
@@ -22,7 +30,7 @@ const NodeBackground = ({ height, width, padding }) => {
 
   return (
     <g transform={`translate(0, -${height})`}>
-      <path d={backgroundPath} stroke="none" fill="white" />
+      {/* <path d={backgroundPath} stroke="none" fill="white" /> */}
       <path d={borderPath} stroke="#3C78C8" fill="transparent" />
     </g>
   );

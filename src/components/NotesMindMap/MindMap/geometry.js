@@ -8,8 +8,10 @@ import { getParentNode } from 'helpers/graph';
 export const getAngleWidth = node => {
   const { width, radius: parentRadius } = node;
 
+  const margin = 15;
+
   // Radius of a circle drawn around the node
-  const R = width / 2;
+  const R = (width + margin) / 2;
 
   /**
    *                              .

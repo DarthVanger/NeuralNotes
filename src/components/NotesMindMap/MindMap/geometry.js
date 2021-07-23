@@ -1,102 +1,74 @@
 import { getParentNode } from 'helpers/graph';
 
-export const getNodeEdgeCornerNames = node => {
-  let φ = node.φ;
-
-  if (φ <= 0) φ = 2 * Math.PI + φ;
-
-  if (φ > 0 && φ <= Math.PI / 2)
-    return { start: 'topRight', end: 'bottomLeft' };
-  if (φ > Math.PI / 2 && φ <= Math.PI)
-    return { start: 'bottomRight', end: 'topLeft' };
-  if (φ > Math.PI && φ <= (Math.PI * 3) / 2)
-    return { start: 'bottomLeft', end: 'topRight' };
-  if (φ > (Math.PI * 3) / 2 && φ <= 2 * Math.PI)
-    return { start: 'topLeft', end: 'bottomRight' };
-};
-
-export const getNodeQuadrant = node => {
-  let φ = node.φ;
-
-  if (φ <= 0) φ = 2 * Math.PI + φ;
-
-  if (φ > 0 && φ <= Math.PI / 2) return 1;
-  if (φ > Math.PI / 2 && φ <= Math.PI) return 2;
-  if (φ > Math.PI && φ <= (Math.PI * 3) / 2) return 3;
-  if (φ > (Math.PI * 3) / 2 && φ <= 2 * Math.PI) return 4;
-};
-
-export const getNodeEndCorner = node => {
-  const { end: endCornerName } = getNodeEdgeCornerNames(node);
-
-  return getNodeCorner(node, endCornerName);
-};
-
 /**
- * Get the angle between the bottom left and bottom right corners of a node.
+ * Get the angle width of a diameter of a circle drawn around a node,
+ * the circle diameter is taken as node width.
  * Polar coordinates origin is at parent node.
  */
 export const getAngleWidth = node => {
-  //console.log('node.φ: ', node.φ);
-  const relativeNodeX = node.radius * Math.cos(node.φ);
-  const relativeNodeY = node.radius * Math.sin(node.φ);
-  const startCorner = getNodeCorner(node, getNodeEdgeCornerNames(node).start);
-  const endCorner = getNodeCorner(node, getNodeEdgeCornerNames(node).end);
-  const startCornerRelative = {
-    x: startCorner.x - node.parent.x,
-    y: startCorner.y - node.parent.y,
-  };
-  const endCornerRelative = {
-    x: endCorner.x - node.parent.x,
-    y: endCorner.y - node.parent.y,
-  };
+  const { width, radius: parentRadius } = node;
 
-  let startCornerPhi = Math.atan2(startCornerRelative.x, startCornerRelative.y);
-  let endCornerPhi = Math.atan2(endCornerRelative.x, endCornerRelative.y);
+  // Radius of a circle drawn around the node
+  const R = width / 2;
 
-  if (startCornerPhi > 0) startCornerPhi = -(2 * Math.PI - startCornerPhi);
-  if (endCornerPhi > 0) endCornerPhi = -(2 * Math.PI - endCornerPhi);
+  /**
+   *                              .                  .
+   *
+   *           .
+   *                                                        .
+   *
+   *
+   *                          ----------
+   *    .                     | parent |
+   *                          ------------------------------- .
+   *                               |\
+   *                                     parentRadius
+   *    1/2 angleWidth            | ︶ \
+   *    --------------------------- ^       o
+   *                             |   o  \         o      .
+   *                             |
+   *               parentRadius  |        \
+   *           .                 |
+   *                             o          o          o
+   *                             |    R   /
+   *                             |    /
+   *                             . /  o              o
+   *                                        o
+   *
+   *
+   *
+   *
+   * Use law of cosines to find the angle between node center and the
+   * point where the circle around the node intersects with the circle around
+   * the parent node. Twice of that is the "angle width" of the node.
+   */
+  const angleWidth =
+    2 *
+    Math.acos(
+      (2 * parentRadius * parentRadius - R * R) /
+        (2 * parentRadius * parentRadius),
+    );
 
-  console.log('start corner phi: ', startCornerPhi);
-  console.log('end corner phi: ', endCornerPhi);
-
-  const angleWidth = Math.abs(endCornerPhi - startCornerPhi); // % (2 * Math.PI);
-  console.log(
-    `getNodeEdgeCornerNames() (${node.label}): `,
-    getNodeEdgeCornerNames(node),
-  );
-  console.log(`angle Width (${node.label}): `, (angleWidth * 180) / Math.PI);
   return angleWidth;
 };
 
-export const getNodeCorner = (node, cornerName) => {
-  const { x, y, width, height } = node;
+/**
+ * Get the coordinates of points where a circle drawn around the node
+ * intersects with the circle drawn around its parent node.
+ * So to say, "edges" of the node on the parent node circle.
+ */
+export const getNodeCircularEdges = node => {
+  const startEdgePhi = node.φ - getAngleWidth(node) / 2;
+  const endEdgePhi = node.φ + getAngleWidth(node) / 2;
+  const startEdge = {
+    x: node.radius * Math.cos(startEdgePhi),
+    y: node.radius * Math.sin(startEdgePhi),
+  };
 
-  const quadrant = getNodeQuadrant(node);
+  const endEdge = {
+    x: node.radius * Math.cos(endEdgePhi),
+    y: node.radius * Math.sin(endEdgePhi),
+  };
 
-  if (quadrant === 4) {
-    switch (cornerName) {
-      case 'bottomRight':
-        return { x, y };
-      case 'bottomLeft':
-        return { x: x - width, y };
-      case 'topLeft':
-        return { x: x - width, y: y - height };
-      case 'topRight':
-        return { x: x, y: y - height };
-    }
-  }
-
-  if (quadrant === 3) {
-    switch (cornerName) {
-      case 'bottomRight':
-        return { x, y: y + height };
-      case 'bottomLeft':
-        return { x: x - width, y: y + height };
-      case 'topLeft':
-        return { x: x - width, y };
-      case 'topRight':
-        return { x, y };
-    }
-  }
+  return { startEdge, endEdge };
 };

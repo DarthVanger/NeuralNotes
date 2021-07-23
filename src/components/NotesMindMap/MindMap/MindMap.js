@@ -61,16 +61,6 @@ const MindMap = ({
       // Edge from the parent to the current node
       const edge = edges.find(e => e.to === n.id);
 
-      const rootNodeChildrenAngleBetweenChildNodes =
-        (2 * 3.14) / nodeChildren.length;
-
-      const nonRootNodeChildrenAngleBetweenChildNodes =
-        3.14 / 2 / nodeChildren.length;
-
-      const angleBetweenChildNodes = isRootNode
-        ? rootNodeChildrenAngleBetweenChildNodes
-        : nonRootNodeChildrenAngleBetweenChildNodes;
-
       /**
        *                    ---------------
        *                    | grandparent |
@@ -82,7 +72,7 @@ const MindMap = ({
        *                          | parent |
        *                          -----------------------------------
        *                               /\ \    ) φ of the first child
-       *  angleBetweenChildNodes     /   \    \
+       *  angleToLeftNeighbour      /   \    \
        *          |                /   ︶ \       \
        *          |              /     ^   \          \
        *          -------------/-------|    \              \
@@ -99,44 +89,36 @@ const MindMap = ({
        *
        * φ is calculated for each child node as follows:
        * - Start with parentNode.φ, so the parent line continues in the same direction.
-       * - Add the child index multiplied by angleBetweenChildNodes constant,
-       *   so the nodes will go around the parent node one by one in a circle arch.
+       * - Add "angleToLeftNeighbour", which is left neighbour angle width halved, plus
+       *   the current node angle width halved. So the nodes will be rendered next to each
+       *   other on a cricle arch, without overlapping.
        * - Subtract the angle between the first and last child, divided by two,
        *   so that the middle child will have φ equal to the parentNode.φ
        *   (instead of the first child (i=0) having φ equal to the parentNode.φ).
        */
 
-      const isASingleChild = nodeChildren.length === 1;
-
-      const angleBetweenFirstAndLastChild = isASingleChild
-        ? 0
-        : nodeChildren.length * angleBetweenChildNodes;
-
-      const childAngle =
-        i * angleBetweenChildNodes - angleBetweenFirstAndLastChild / 2;
-
-      // Add left neighbour angle width to φ to ensure the current
-      // node doesn't overlap with its left neighbour.
       const leftNeighbour = getLeftNeighbour({ nodes, edges }, n);
       const leftNeighbourAngleWidth = leftNeighbour
         ? getAngleWidth(leftNeighbour)
         : 0;
-
-      console.log(
-        `leftNeighbourAngleWidth (${n.label}): `,
-        (leftNeighbourAngleWidth * 180) / Math.PI,
-      );
-
-      //const φ = parentNode.φ + leftNeighbourAngleWidth + leftNeighbour?.φ || 0;
-      const φ = (leftNeighbour?.φ || 0) - leftNeighbourAngleWidth;
 
       /**
        * Radius around the parent node
        */
       const radius = calculateRadius(nodeChildren, n);
 
-      const parentNodeWidth =
-        getTextWidth(parentNode.label, fontSize) + nodePadding * 2;
+      const nodeWidth = calculateNodeWidth(n);
+
+      const nodeAngleWidth = getAngleWidth({
+        width: nodeWidth,
+        radius: radius,
+        label: n.label,
+      });
+
+      const angleToLeftNeighbour =
+        leftNeighbourAngleWidth / 2 + nodeAngleWidth / 2;
+
+      const φ = (leftNeighbour?.φ || 0) - angleToLeftNeighbour;
 
       const y = center + parentNode.y + radius * Math.sin(φ);
       const x = center + parentNode.x + radius * Math.cos(φ);
@@ -146,9 +128,10 @@ const MindMap = ({
         y,
         φ,
         radius,
-        width: calculateNodeWidth(n),
+        width: nodeWidth,
         height: nodeHeight,
         padding: nodePadding,
+        angleWidth: nodeAngleWidth,
         parent: parentNode,
       });
 

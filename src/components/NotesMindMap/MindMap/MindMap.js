@@ -10,7 +10,7 @@ import {
   getLeftNeighbour,
 } from 'helpers/graph';
 import { getTextWidth } from './utils';
-import { getAngleWidth } from './geometry';
+import { getAngleWidth, getDistanceBetweenNodes } from './geometry';
 
 export { Node, Edge };
 
@@ -98,7 +98,7 @@ const MindMap = ({
        *
        * φ is calculated for each child node as follows:
        * - Start with parentNode.φ, so the parent line continues in the same direction.
-       * - Subtract (allChildrenAngleWidth / 2), so children are centered around the parent.φ.
+       * - Subtract (allSiblingsAngleWidth / 2), so children are centered around the parent.φ.
        * - Add "angleToLeftNeighbour", which is left neighbour angle width halved, plus
        *   the current node angle width halved. So the nodes will be rendered next to each
        *   other on a cricle arch, without overlapping.
@@ -109,9 +109,13 @@ const MindMap = ({
        */
       const radius = calculateRadius(nodeChildren, n);
 
-      const children = getNodeChildren(graph, parentNode);
+      // TODO: it should be radius for this node children,
+      // not this node radius around its parent.
+      n.childrenRadius = radius;
 
-      const allChildrenAngleWidth = children.reduce((acc, curr) => {
+      const siblings = getNodeChildren(graph, parentNode);
+
+      const allSiblingsAngleWidth = siblings.reduce((acc, curr) => {
         curr.width = calculateNodeWidth(curr);
         curr.radius = radius;
         const angleWidth = getAngleWidth(curr);
@@ -133,7 +137,7 @@ const MindMap = ({
       const angleToLeftNeighbour =
         leftNeighbourAngleWidth / 2 + nodeAngleWidth / 2;
 
-      const startAngle = parentNode.φ + allChildrenAngleWidth / 2;
+      const startAngle = parentNode.φ + allSiblingsAngleWidth / 2;
 
       const φ = (leftNeighbour?.φ || startAngle) - angleToLeftNeighbour;
 
@@ -156,6 +160,47 @@ const MindMap = ({
       Object.assign(edge, {
         parentNode: parentNode,
         childNode: n,
+      });
+
+      /* prevent children of sibling nodes from overlapping,
+       * by increasing the distance between siblings to make
+       * space for their children.
+       */
+
+      const getShiftToMakeSpaceForChildren = node => {
+        const children = getNodeChildren(graph, node);
+        if (children.length === 0) return 0;
+
+        const leftNeighbour = getLeftNeighbour({ nodes, edges }, node);
+        if (!leftNeighbour) return 0;
+
+        if (nodeHasChildren(graph, leftNeighbour)) {
+          const distanceBetweenNodes = getDistanceBetweenNodes(
+            node,
+            leftNeighbour,
+          );
+          if (distanceBetweenNodes < node.childrenRadius) {
+            const shift = node.childrenRadius - distanceBetweenNodes;
+            const angleShift = getAngleWidth({
+              width: shift,
+              radius: node.radius,
+            });
+            return angleShift;
+          }
+        }
+      };
+
+      const shiftToMakeSpaceForChildren = getShiftToMakeSpaceForChildren(n);
+
+      const newφ = φ - shiftToMakeSpaceForChildren;
+
+      const newy = center + parentNode.y + radius * Math.sin(newφ);
+      const newx = center + parentNode.x + radius * Math.cos(newφ);
+
+      Object.assign(n, {
+        φ: newφ,
+        x: newx,
+        y: newy,
       });
 
       renderNodeChildrenRecursive(n);

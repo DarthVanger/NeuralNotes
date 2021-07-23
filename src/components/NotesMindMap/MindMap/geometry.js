@@ -75,3 +75,9 @@ export const getNodeCircularEdges = node => {
 
   return { startEdge, endEdge };
 };
+
+export const getDistanceBetweenNodes = (node1, node2) => {
+  return Math.sqrt(
+    Math.pow(node2.x - node1.x, 2) + Math.pow(node2.y - node2.y, 2),
+  );
+};

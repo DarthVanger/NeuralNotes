@@ -89,36 +89,44 @@ const MindMap = ({
        *
        * φ is calculated for each child node as follows:
        * - Start with parentNode.φ, so the parent line continues in the same direction.
+       * - Subtract (allChildrenAngleWidth / 2), so children are centered around the parent.φ.
        * - Add "angleToLeftNeighbour", which is left neighbour angle width halved, plus
        *   the current node angle width halved. So the nodes will be rendered next to each
        *   other on a cricle arch, without overlapping.
-       * - Subtract the angle between the first and last child, divided by two,
-       *   so that the middle child will have φ equal to the parentNode.φ
-       *   (instead of the first child (i=0) having φ equal to the parentNode.φ).
        */
-
-      const leftNeighbour = getLeftNeighbour({ nodes, edges }, n);
-      const leftNeighbourAngleWidth = leftNeighbour
-        ? getAngleWidth(leftNeighbour)
-        : 0;
 
       /**
        * Radius around the parent node
        */
       const radius = calculateRadius(nodeChildren, n);
 
+      const children = getNodeChildren(graph, parentNode);
+
+      const allChildrenAngleWidth = children.reduce((acc, curr) => {
+        curr.width = calculateNodeWidth(curr);
+        curr.radius = radius;
+        const angleWidth = getAngleWidth(curr);
+        return acc + angleWidth;
+      }, 0);
+
+      const leftNeighbour = getLeftNeighbour({ nodes, edges }, n);
+      const leftNeighbourAngleWidth = leftNeighbour
+        ? getAngleWidth(leftNeighbour)
+        : 0;
+
       const nodeWidth = calculateNodeWidth(n);
 
       const nodeAngleWidth = getAngleWidth({
         width: nodeWidth,
         radius: radius,
-        label: n.label,
       });
 
       const angleToLeftNeighbour =
         leftNeighbourAngleWidth / 2 + nodeAngleWidth / 2;
 
-      const φ = (leftNeighbour?.φ || 0) - angleToLeftNeighbour;
+      const startAngle = parentNode.φ + allChildrenAngleWidth / 2;
+
+      const φ = (leftNeighbour?.φ || startAngle) - angleToLeftNeighbour;
 
       const y = center + parentNode.y + radius * Math.sin(φ);
       const x = center + parentNode.x + radius * Math.cos(φ);

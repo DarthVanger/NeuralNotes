@@ -12,35 +12,36 @@ export const getAngleWidth = node => {
   const R = width / 2;
 
   /**
-   *                              .                  .
+   *                              .
    *
    *           .
-   *                                                        .
+   *                                                        .  <--- circle around parent
    *
    *
    *                          ----------
    *    .                     | parent |
    *                          ------------------------------- .
-   *                               |\
-   *                                     parentRadius
-   *    1/2 angleWidth            | ︶ \
-   *    --------------------------- ^       o
-   *                             |   o  \         o      .
-   *                             |
-   *               parentRadius  |        \
-   *           .                 |
-   *                             o          o          o
-   *                             |    R   /
-   *                             |    /
-   *                             . /  o              o
-   *                                        o
-   *
+   *                               |\ \
+   *                               | \     \
+   *    1/2 angleWidth             |︶ \        \
+   *    --------------------------- ^    \       .   \
+   *                               |       \            . \.
+   *                               |         \          /         parentRadius
+   *              parentRadius --> | .        \  <-----------.-----------------
+   *           .                   |            \   /
+   *                               |            _ .             .
+   *                               |      R _     ^
+   *                  .            .    _      child node center
+   *                             . |_                        .  <---- child circle, R = 1/2 node width
+   *                                   .
+   *                                        .           .
+   *                                              .
    *
    *
    *
    * Use law of cosines to find the angle between node center and the
    * point where the circle around the node intersects with the circle around
-   * the parent node. Twice of that is the "angle width" of the node.
+   * the parent node, along which the children are rendered.
    */
   const angleWidth =
     2 *

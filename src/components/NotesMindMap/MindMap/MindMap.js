@@ -28,7 +28,16 @@ const MindMap = ({
   focusNodeId,
   ...attrs
 }) => {
-  const nodes = [...nodesProp];
+  const nodes = nodesProp.map(nodeConfig => {
+    const { id, key, label, ...domAttributes } = nodeConfig;
+    return {
+      id,
+      key,
+      label,
+      domAttributes,
+    };
+  });
+
   const edges = [...edgesProp];
 
   const graph = { nodes, edges };
@@ -44,15 +53,6 @@ const MindMap = ({
     }
     return defaultRadius;
   }
-
-  const getNodeElementAttributes = node => {
-    const nodeConfig = nodesProp.find(
-      nodeFromProps => nodeFromProps.id === node.id,
-    );
-    const nodeElementAttributes = { ...nodeConfig };
-    delete nodeElementAttributes.label;
-    return nodeElementAttributes;
-  };
 
   /**
    * Render children of a node recursively
@@ -154,7 +154,6 @@ const MindMap = ({
         padding: nodePadding,
         angleWidth: nodeAngleWidth,
         parent: parentNode,
-        elementAttributes: getNodeElementAttributes(n),
       });
 
       Object.assign(edge, {
@@ -217,7 +216,6 @@ const MindMap = ({
     width: calculateNodeWidth(rootNode),
     height: nodeHeight,
     padding: nodePadding,
-    elementAttributes: getNodeElementAttributes(rootNode),
   });
 
   renderNodeChildrenRecursive(rootNode);

@@ -26,6 +26,7 @@ const MindMap = ({
   nodes: nodesProp,
   edges: edgesProp,
   focusNodeId,
+  debug,
   ...attrs
 }) => {
   const nodes = nodesProp.map(nodeConfig => {
@@ -154,11 +155,13 @@ const MindMap = ({
         padding: nodePadding,
         angleWidth: nodeAngleWidth,
         parent: parentNode,
+        debug,
       });
 
       Object.assign(edge, {
         parentNode: parentNode,
         childNode: n,
+        debug,
       });
 
       /* prevent children of sibling nodes from overlapping,
@@ -216,6 +219,7 @@ const MindMap = ({
     width: calculateNodeWidth(rootNode),
     height: nodeHeight,
     padding: nodePadding,
+    debug,
   });
 
   renderNodeChildrenRecursive(rootNode);

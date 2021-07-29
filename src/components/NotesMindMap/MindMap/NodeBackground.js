@@ -1,6 +1,6 @@
 import React from 'react';
 
-const NodeBackground = ({ height, width, padding }) => {
+const NodeBackground = ({ height, width, padding, debug }) => {
   const borderPath = `
     M 0 ${(height * 2) / 3}
     v -${(height * 2) / 3 - height / 6}
@@ -32,13 +32,16 @@ const NodeBackground = ({ height, width, padding }) => {
   // Change stroke from "none" to "red" for this path to see how it looks like.
   const backgroundPath = borderPath.replaceAll(/m/g, 'l');
 
+  if (debug) {
+    return debugCircle;
+  }
+
   return (
     <>
       <g transform={`translate(-${width / 2}, -${height / 2})`}>
         <path d={backgroundPath} stroke="none" fill="white" />
         <path d={borderPath} stroke="#3C78C8" fill="transparent" />
       </g>
-      {/* debugCircle */}
     </>
   );
 };

@@ -3,6 +3,7 @@ import {
   getNodeChildren,
   getLeftNeighbour,
   nodeHasChildren,
+  getLeftSideSiblings,
 } from 'helpers/graph';
 
 /**
@@ -88,8 +89,11 @@ export const getDistanceBetweenNodes = (node1, node2) => {
 };
 
 /**
- * Calculate angle width between node and its left neighbour,
+ * For each left-side sibling of the node,
+ * calculate angle width between node and its sibling,
  * such that children of both nodes would not overlap.
+ * Return the max angle width, so no nodes' children overlap.
+ *
  * Each node has radius of a circle for rendering its children,
  * so we just need to make sure those circles don't overlap.
  */
@@ -100,10 +104,13 @@ export const getShiftToMakeSpaceForChildren = (graph, node) => {
   const leftNeighbour = getLeftNeighbour(graph, node);
   if (!leftNeighbour) return 0;
 
-  const leftNeighbourHasChildren = nodeHasChildren(graph, leftNeighbour);
-  if (!leftNeighbourHasChildren) return 0;
+  const getShiftToMakeSpaceForChildrenBetweenNodeAndSibling = (
+    node,
+    sibling,
+  ) => {
+    const siblingHasChildren = nodeHasChildren(graph, sibling);
+    if (!siblingHasChildren) return 0;
 
-  if (leftNeighbourHasChildren) {
     const distanceBetweenNodes = getDistanceBetweenNodes(node, leftNeighbour);
     if (distanceBetweenNodes < node.childrenRadius) {
       const shift = node.childrenRadius - distanceBetweenNodes;
@@ -113,5 +120,11 @@ export const getShiftToMakeSpaceForChildren = (graph, node) => {
       });
       return angleShift;
     }
-  }
+  };
+
+  const leftSideSiblings = getLeftSideSiblings(graph, node);
+  const shifts = leftSideSiblings.map(sibling =>
+    getShiftToMakeSpaceForChildrenBetweenNodeAndSibling(node, sibling),
+  );
+  return Math.max(...shifts);
 };

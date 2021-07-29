@@ -130,3 +130,24 @@ export function getRootNode({ nodes, edges }) {
     return getParentRecursive(parentId);
   }
 }
+
+/**
+ * Get node siblings which are on the left of the passed node.
+ * I.e. siblings from the first one to the passed node, without
+ * the siblings which come after the passed node.
+ */
+export const getLeftSideSiblings = ({ nodes, edges }, node) => {
+  const parentNode = getParentNode({ nodes, edges }, node);
+  const parentChildren = getNodeChildren({ nodes, edges }, parentNode);
+  const nodeIndexInParentChildren = parentChildren.indexOf(node);
+
+  if (nodeIndexInParentChildren === -1) {
+    throw new Error('Can not find the passed node in the graph');
+  }
+
+  const leftSiblings = [];
+  for (let i = 0; i < nodeIndexInParentChildren; i++) {
+    leftSiblings.push(parentChildren[i]);
+  }
+  return leftSiblings;
+};

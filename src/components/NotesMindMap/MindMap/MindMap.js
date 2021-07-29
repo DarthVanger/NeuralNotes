@@ -31,10 +31,13 @@ const MindMap = ({
 }) => {
   const nodes = nodesProp.map(nodeConfig => {
     const { id, key, label, ...domAttributes } = nodeConfig;
+    const width = calculateNodeWidth(nodeConfig);
+
     return {
       id,
       key,
       label,
+      width,
       domAttributes,
     };
   });
@@ -109,10 +112,13 @@ const MindMap = ({
        * Radius around the parent node
        */
       const radius = calculateRadius(nodeChildren, n);
+      n.radius = radius;
 
       // TODO: it should be radius for this node children,
       // not this node radius around its parent.
       n.childrenRadius = radius;
+
+      n.angleWidth = getAngleWidth(n);
 
       const siblings = getNodeChildren(graph, parentNode);
 
@@ -124,19 +130,10 @@ const MindMap = ({
       }, 0);
 
       const leftNeighbour = getLeftNeighbour({ nodes, edges }, n);
-      const leftNeighbourAngleWidth = leftNeighbour
-        ? getAngleWidth(leftNeighbour)
-        : 0;
 
-      const nodeWidth = calculateNodeWidth(n);
-
-      const nodeAngleWidth = getAngleWidth({
-        width: nodeWidth,
-        radius: radius,
-      });
-
-      const angleToLeftNeighbour =
-        leftNeighbourAngleWidth / 2 + nodeAngleWidth / 2;
+      const angleToLeftNeighbour = !leftNeighbour
+        ? 0
+        : leftNeighbour.angleWidth / 2 + n.angleWidth / 2;
 
       const startAngle = parentNode.φ + allSiblingsAngleWidth / 2;
 
@@ -150,10 +147,8 @@ const MindMap = ({
         y,
         φ,
         radius,
-        width: nodeWidth,
         height: nodeHeight,
         padding: nodePadding,
-        angleWidth: nodeAngleWidth,
         parent: parentNode,
         debug,
       });

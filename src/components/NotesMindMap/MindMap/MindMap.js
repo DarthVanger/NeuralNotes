@@ -176,7 +176,10 @@ const MindMap = ({
         const leftNeighbour = getLeftNeighbour({ nodes, edges }, node);
         if (!leftNeighbour) return 0;
 
-        if (nodeHasChildren(graph, leftNeighbour)) {
+        const leftNeighbourHasChildren = nodeHasChildren(graph, leftNeighbour);
+        if (!leftNeighbourHasChildren) return 0;
+
+        if (leftNeighbourHasChildren) {
           const distanceBetweenNodes = getDistanceBetweenNodes(
             node,
             leftNeighbour,

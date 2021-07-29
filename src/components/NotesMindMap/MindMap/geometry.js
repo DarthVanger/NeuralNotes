@@ -1,4 +1,9 @@
-import { getParentNode } from 'helpers/graph';
+import {
+  getParentNode,
+  getNodeChildren,
+  getLeftNeighbour,
+  nodeHasChildren,
+} from 'helpers/graph';
 
 /**
  * Get the angle width of a diameter of a circle drawn around a node,
@@ -80,4 +85,33 @@ export const getDistanceBetweenNodes = (node1, node2) => {
   return Math.sqrt(
     Math.pow(node2.x - node1.x, 2) + Math.pow(node2.y - node2.y, 2),
   );
+};
+
+/**
+ * Calculate angle width between node and its left neighbour,
+ * such that children of both nodes would not overlap.
+ * Each node has radius of a circle for rendering its children,
+ * so we just need to make sure those circles don't overlap.
+ */
+export const getShiftToMakeSpaceForChildren = (graph, node) => {
+  const children = getNodeChildren(graph, node);
+  if (children.length === 0) return 0;
+
+  const leftNeighbour = getLeftNeighbour(graph, node);
+  if (!leftNeighbour) return 0;
+
+  const leftNeighbourHasChildren = nodeHasChildren(graph, leftNeighbour);
+  if (!leftNeighbourHasChildren) return 0;
+
+  if (leftNeighbourHasChildren) {
+    const distanceBetweenNodes = getDistanceBetweenNodes(node, leftNeighbour);
+    if (distanceBetweenNodes < node.childrenRadius) {
+      const shift = node.childrenRadius - distanceBetweenNodes;
+      const angleShift = getAngleWidth({
+        width: shift,
+        radius: node.radius,
+      });
+      return angleShift;
+    }
+  }
 };

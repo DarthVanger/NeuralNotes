@@ -10,7 +10,11 @@ import {
   getLeftNeighbour,
 } from 'helpers/graph';
 import { getTextWidth } from './utils';
-import { getAngleWidth, getDistanceBetweenNodes } from './geometry';
+import {
+  getAngleWidth,
+  getDistanceBetweenNodes,
+  getShiftToMakeSpaceForChildren,
+} from './geometry';
 
 export { Node, Edge };
 
@@ -159,38 +163,10 @@ const MindMap = ({
         debug,
       });
 
-      /* prevent children of sibling nodes from overlapping,
-       * by increasing the distance between siblings to make
-       * space for their children.
-       */
-
-      const getShiftToMakeSpaceForChildren = node => {
-        const children = getNodeChildren(graph, node);
-        if (children.length === 0) return 0;
-
-        const leftNeighbour = getLeftNeighbour({ nodes, edges }, node);
-        if (!leftNeighbour) return 0;
-
-        const leftNeighbourHasChildren = nodeHasChildren(graph, leftNeighbour);
-        if (!leftNeighbourHasChildren) return 0;
-
-        if (leftNeighbourHasChildren) {
-          const distanceBetweenNodes = getDistanceBetweenNodes(
-            node,
-            leftNeighbour,
-          );
-          if (distanceBetweenNodes < node.childrenRadius) {
-            const shift = node.childrenRadius - distanceBetweenNodes;
-            const angleShift = getAngleWidth({
-              width: shift,
-              radius: node.radius,
-            });
-            return angleShift;
-          }
-        }
-      };
-
-      const shiftToMakeSpaceForChildren = getShiftToMakeSpaceForChildren(n);
+      const shiftToMakeSpaceForChildren = getShiftToMakeSpaceForChildren(
+        graph,
+        n,
+      );
 
       const newφ = φ - shiftToMakeSpaceForChildren;
 

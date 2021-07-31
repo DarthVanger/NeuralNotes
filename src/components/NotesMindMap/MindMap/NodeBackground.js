@@ -1,6 +1,6 @@
 import React from 'react';
 
-const NodeBackground = ({ height, width, padding, debug }) => {
+const NodeBackground = ({ height, width, debug }) => {
   const borderPath = `
     M 0 ${(height * 2) / 3}
     v -${(height * 2) / 3 - height / 6}
@@ -13,13 +13,17 @@ const NodeBackground = ({ height, width, padding, debug }) => {
     m -${height / 3} -${height / 3}
   `;
 
-  const debugRectangle = `
-   M -${width / 2} -${height / 2}
-   h ${width}
-   v ${height}
-   h -${width}
-   v -${height}
- `;
+  const DebugRectangle = () => {
+    const debugRectanglePath = `
+     M -${width / 2} -${height / 2}
+     h ${width}
+     v ${height}
+     h -${width}
+     v -${height}
+   `;
+
+    return <path d={debugRectanglePath} stroke="#3C78C8" fill="transparent" />;
+  };
 
   const debugCircle = (
     <circle r={width / 2} stroke="#3C78C8" fill="transparent" />
@@ -33,7 +37,12 @@ const NodeBackground = ({ height, width, padding, debug }) => {
   const backgroundPath = borderPath.replaceAll(/m/g, 'l');
 
   if (debug) {
-    return debugCircle;
+    return (
+      <>
+        {debugCircle}
+        <DebugRectangle />
+      </>
+    );
   }
 
   return (

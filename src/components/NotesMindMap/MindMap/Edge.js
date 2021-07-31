@@ -1,7 +1,7 @@
 import React from 'react';
 import { getNodeCircularEdges } from './geometry';
 
-export const Edge = ({ parentNode, childNode }) => {
+export const Edge = ({ parentNode, childNode, debug }) => {
   const hue = Math.floor(Math.abs((parentNode.φ % (Math.PI / 2)) * 345));
   const randomColor = `hsl(${hue}, 100%, 70%)`;
 
@@ -15,7 +15,7 @@ export const Edge = ({ parentNode, childNode }) => {
 
   const { startEdge, endEdge } = getNodeCircularEdges(childNode);
 
-  const debugLines = () => {
+  const DebugLines = () => {
     const pathToCenter = `
       M ${parentNode.x} ${parentNode.y}
       L ${childNode.x} ${childNode.y}
@@ -64,12 +64,15 @@ export const Edge = ({ parentNode, childNode }) => {
   };
 
   return (
-    <path
-      d={svgPathShape}
-      stroke={randomColor}
-      strokeWidth="2"
-      fill="none"
-      key={`${parentNode.id}->${childNode.id}3`}
-    />
+    <>
+      <path
+        d={svgPathShape}
+        stroke={randomColor}
+        strokeWidth="2"
+        fill="none"
+        key={`${parentNode.id}->${childNode.id}3`}
+      />
+      {debug && <DebugLines />}
+    </>
   );
 };

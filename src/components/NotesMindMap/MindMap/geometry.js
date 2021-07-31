@@ -1,5 +1,4 @@
 import {
-  getParentNode,
   getNodeChildren,
   getLeftNeighbour,
   nodeHasChildren,

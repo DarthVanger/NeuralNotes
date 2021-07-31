@@ -10,11 +10,7 @@ import {
   getLeftNeighbour,
 } from 'helpers/graph';
 import { getTextWidth } from './utils';
-import {
-  getAngleWidth,
-  getDistanceBetweenNodes,
-  getShiftToMakeSpaceForChildren,
-} from './geometry';
+import { getAngleWidth, getShiftToMakeSpaceForChildren } from './geometry';
 
 export { Node, Edge };
 
@@ -72,9 +68,11 @@ const MindMap = ({
       return;
     }
 
-    const isRootNode = getRootNode(graph).id === parentNode.id;
+    // TODO: render nodes symmetrically around the whole circle
+    // for the root node
+    //const isRootNode = getRootNode(graph).id === parentNode.id;
 
-    nodeChildren.forEach((n, i) => {
+    nodeChildren.forEach(n => {
       // Edge from the parent to the current node
       const edge = edges.find(e => e.to === n.id);
 

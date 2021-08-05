@@ -6,7 +6,6 @@ export const StyledNoteDetailsScreen = styled.div`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  padding-top: 60px;
 `;
 
 export const DefaultTextarea = styled.textarea`

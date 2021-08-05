@@ -17,6 +17,7 @@ import { colors } from 'colors';
 import { BackButton } from 'components/BackButton/BackButton';
 import { TopBarRightButtons } from 'components/TopBar/TopBarRightButtons';
 import DialogDeleteNote from 'components/Modal/DialogDeleteNote';
+import { isExistingNoteSelector } from './NoteDetailsSelectors';
 
 const useStyles = makeStyles(() => ({
   moreIcon: {
@@ -43,12 +44,17 @@ const NoteDetailsTopBar = () => {
   const handleChangeParentButtonClick = () => {
     dispatch(changeParentButtonClickedAction(selectedNote));
   };
+
+  const isExistingNote = useSelector(isExistingNoteSelector);
+
+  const pageTitle = isExistingNote ? selectedNote.name : 'Add new note';
+
   return (
     <TopBar>
       <TopBarLeftButtons>
         <BackButton to="/notes" />
       </TopBarLeftButtons>
-      <TopBarPageTitle>{selectedNote.name}</TopBarPageTitle>
+      <TopBarPageTitle>{pageTitle}</TopBarPageTitle>
       <TopBarRightButtons>
         <IconButton
           ref={menuAnchorEl}

@@ -191,7 +191,7 @@ function getFileById(fileId) {
 
 function getFolderChildren(folderId) {
   const request = gapi.client.drive.files.list({
-    pageSize: 10,
+    pageSize: 100,
     fields: FILE_LIST_FIELDS,
     q: 'trashed = false and "' + folderId + '" in parents',
   });

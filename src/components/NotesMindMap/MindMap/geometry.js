@@ -60,27 +60,6 @@ export const getAngleWidth = node => {
   return angleWidth;
 };
 
-/**
- * Get the coordinates of points where a circle drawn around the node
- * intersects with the circle drawn around its parent node.
- * So to say, "edges" of the node on the parent node circle.
- */
-export const getNodeCircularEdges = node => {
-  const startEdgePhi = node.φ - getAngleWidth(node) / 2;
-  const endEdgePhi = node.φ + getAngleWidth(node) / 2;
-  const startEdge = {
-    x: node.radius * Math.cos(startEdgePhi),
-    y: node.radius * Math.sin(startEdgePhi),
-  };
-
-  const endEdge = {
-    x: node.radius * Math.cos(endEdgePhi),
-    y: node.radius * Math.sin(endEdgePhi),
-  };
-
-  return { startEdge, endEdge };
-};
-
 export const getDistanceBetweenNodes = (node1, node2) => {
   return Math.sqrt(
     Math.pow(node2.x - node1.x, 2) + Math.pow(node2.y - node2.y, 2),

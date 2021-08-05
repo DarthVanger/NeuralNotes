@@ -151,3 +151,31 @@ export const getLeftSideSiblings = ({ nodes, edges }, node) => {
   }
   return leftSiblings;
 };
+
+export const getDeepestFirstChild = ({ nodes, edges }, node) => {
+  const getFirstChildRecursive = firstChild => {
+    const children = getNodeChildren({ nodes, edges }, firstChild);
+    if (children.length === 0) {
+      return firstChild;
+    }
+
+    return getFirstChildRecursive(children[0]);
+  };
+
+  return getFirstChildRecursive(node);
+};
+
+export const getDeepestLastChild = ({ nodes, edges }, node) => {
+  const getLastChildRecursive = lastChild => {
+    const children = getNodeChildren({ nodes, edges }, lastChild);
+    if (children.length === 0) {
+      return lastChild;
+    }
+
+    return getLastChildRecursive(children[children.length - 1]);
+  };
+
+  return getLastChildRecursive(node);
+};
+
+export const isRootNode = (graph, node) => getRootNode(graph).id === node.id;

@@ -8,9 +8,18 @@ import {
   doesNeighbourHaveChildren,
   getRootNode,
   getLeftNeighbour,
+  getDeepestFirstChild,
+  getDeepestLastChild,
 } from 'helpers/graph';
 import { getTextWidth } from './utils';
-import { getAngleWidth, getShiftToMakeSpaceForChildren } from './geometry';
+import {
+  getAngleWidth,
+  updatePolarAngle,
+  getAngleBetweenNodes,
+  getDistanceBetweenNodes,
+  getAngleWidthOfNodeTree,
+  getRadiusToFitAllDecendants,
+} from './geometry';
 
 export { Node, Edge };
 
@@ -18,6 +27,7 @@ const center = 0;
 const nodePadding = 8;
 const nodeHeight = 14 + nodePadding * 2;
 const fontSize = 16;
+const defaultNodeChildrenRadius = 250;
 
 const calculateNodeWidth = node =>
   getTextWidth(node.label, fontSize) + nodePadding * 2;
@@ -47,18 +57,6 @@ const MindMap = ({
   const graph = { nodes, edges };
 
   /**
-   * Default radius is a hard-coded value.
-   * But when two neighbour nodes have children, more space is needed to avoid overlap.
-   */
-  function calculateRadius(n) {
-    const defaultRadius = 250;
-    if (nodeHasChildren(graph, n) && doesNeighbourHaveChildren(graph, n)) {
-      return defaultRadius * 2;
-    }
-    return defaultRadius;
-  }
-
-  /**
    * Render children of a node recursively
    */
   const renderNodeChildrenRecursive = parentNode => {
@@ -68,13 +66,20 @@ const MindMap = ({
       return;
     }
 
-    // TODO: render nodes symmetrically around the whole circle
-    // for the root node
-    //const isRootNode = getRootNode(graph).id === parentNode.id;
+    const isRootNode = getRootNode(graph).id === parentNode.id;
 
-    nodeChildren.forEach(n => {
+    nodeChildren.forEach((n, nodeIndex) => {
       // Edge from the parent to the current node
       const edge = edges.find(e => e.to === n.id);
+
+      n.parent = parentNode;
+      n.height = nodeHeight;
+      n.padding = nodePadding;
+      n.debug = debug;
+
+      edge.parentNode = parentNode;
+      edge.childNode = n;
+      edge.debug = debug;
 
       /**
        *                    ---------------
@@ -104,7 +109,6 @@ const MindMap = ({
        *
        * φ is calculated for each child node as follows:
        * - Start with parentNode.φ, so the parent line continues in the same direction.
-       * - Subtract (allSiblingsAngleWidth / 2), so children are centered around the parent.φ.
        * - Add "angleToLeftNeighbour", which is left neighbour angle width halved, plus
        *   the current node angle width halved. So the nodes will be rendered next to each
        *   other on a cricle arch, without overlapping.
@@ -113,71 +117,62 @@ const MindMap = ({
       /**
        * Radius around the parent node
        */
-      const radius = calculateRadius(nodeChildren, n);
-      n.radius = radius;
-
-      // TODO: it should be radius for this node children,
-      // not this node radius around its parent.
-      n.childrenRadius = radius;
+      if (!parentNode.childrenRadius) {
+        parentNode.childrenRadius = defaultNodeChildrenRadius;
+      }
+      n.radiusAroundParent = parentNode.childrenRadius;
 
       n.angleWidth = getAngleWidth(n);
 
-      const siblings = getNodeChildren(graph, parentNode);
-
-      const allSiblingsAngleWidth = siblings.reduce((acc, curr) => {
-        curr.width = calculateNodeWidth(curr);
-        curr.radius = radius;
-        const angleWidth = getAngleWidth(curr);
-        return acc + angleWidth;
-      }, 0);
-
       const leftNeighbour = getLeftNeighbour({ nodes, edges }, n);
 
-      const angleToLeftNeighbour = !leftNeighbour
-        ? 0
-        : leftNeighbour.angleWidth / 2 + n.angleWidth / 2;
+      const startAngle = parentNode.φ;
 
-      const startAngle = parentNode.φ + allSiblingsAngleWidth / 2;
+      const φ = leftNeighbour?.φ || startAngle;
 
-      const φ = (leftNeighbour?.φ || startAngle) - angleToLeftNeighbour;
-
-      const y = center + parentNode.y + radius * Math.sin(φ);
-      const x = center + parentNode.x + radius * Math.cos(φ);
-
-      Object.assign(n, {
-        x,
-        y,
-        φ,
-        radius,
-        height: nodeHeight,
-        padding: nodePadding,
-        parent: parentNode,
-        debug,
-      });
-
-      Object.assign(edge, {
-        parentNode: parentNode,
-        childNode: n,
-        debug,
-      });
-
-      const shiftToMakeSpaceForChildren = getShiftToMakeSpaceForChildren(
-        graph,
-        n,
-      );
-
-      const newφ = φ - shiftToMakeSpaceForChildren;
-
-      const newy = center + parentNode.y + radius * Math.sin(newφ);
-      const newx = center + parentNode.x + radius * Math.cos(newφ);
-
-      Object.assign(n, {
-        φ: newφ,
-        x: newx,
-        y: newy,
-      });
+      updatePolarAngle({ nodes, edges }, n, φ);
 
       renderNodeChildrenRecursive(n);
+
+      n.treeAngleWidth = getAngleWidthOfNodeTree(graph, n);
+
+      const angleDistanceToLeftNeighbour = !leftNeighbour
+        ? 0
+        : leftNeighbour.treeAngleWidth / 2 + n.treeAngleWidth / 2;
+
+      const newφ = φ - angleDistanceToLeftNeighbour;
+
+      updatePolarAngle({ nodes, edges }, n, newφ);
+
+      renderNodeChildrenRecursive(n);
+
+      if (nodeIndex === nodeChildren.length - 1) {
+        const radiusToFitAllChildren = getRadiusToFitAllDecendants(
+          graph,
+          parentNode,
+        );
+
+        if (radiusToFitAllChildren > parentNode.childrenRadius) {
+          parentNode.childrenRadius = getRadiusToFitAllDecendants(
+            graph,
+            parentNode,
+          );
+          renderNodeChildrenRecursive(parentNode);
+          return;
+        }
+      }
+
+      // When the last child φ is calculated, we know the angle all
+      // children combined take. We want to center children by shifting
+      // them by their combined angle width / 2.
+      if (nodeIndex === nodeChildren.length - 1 && !isRootNode) {
+        const childrenAngleWidth = -(n.φ - startAngle);
+        const centeringShift = childrenAngleWidth / 2;
+        nodeChildren.forEach(node => {
+          updatePolarAngle(graph, node, node.φ + centeringShift);
+          renderNodeChildrenRecursive(node);
+        });
+      }
     });
   };
 

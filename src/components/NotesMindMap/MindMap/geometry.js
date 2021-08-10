@@ -70,7 +70,7 @@ export const getDistanceBetweenNodes = (node1, node2) => {
   );
 };
 
-export const updatePolarAngle = (graph, node, newφ) => {
+export const updateNodePositionAroundParent = (graph, node, newφ) => {
   const parentNode = getParentNode(graph, node);
 
   const newy = parentNode.y + node.radiusAroundParent * Math.sin(newφ);
@@ -81,6 +81,27 @@ export const updatePolarAngle = (graph, node, newφ) => {
     x: newx,
     y: newy,
   });
+};
+
+/**
+ * Update node's position around parent with new φ and also move all its decendants.
+ */
+export const updateNodeTreePositionAroundParent = (graph, node, newφ) => {
+  const parentNode = getParentNode(graph, node);
+  const deltaφ = newφ - node.φ;
+
+  const rotateRecursively = nodeToRotate => {
+    updateNodePositionAroundParent(
+      graph,
+      nodeToRotate,
+      nodeToRotate.φ + deltaφ,
+    );
+    getNodeChildren(graph, nodeToRotate).forEach(child => {
+      rotateRecursively(child);
+    });
+  };
+
+  rotateRecursively(node);
 };
 
 /**
@@ -135,7 +156,7 @@ export const getAngleWidthOfNodeTree = (graph, node) => {
   const deepestFirstChild = getDeepestFirstChild(graph, node);
   const deepestLastChild = getDeepestLastChild(graph, node);
 
-  const nodeAngleWidth = getAngleWidth(node);
+  const nodeAngleWidth = node.angleWidth;
 
   if (nodeChildren.length === 0) {
     return nodeAngleWidth;
@@ -169,7 +190,9 @@ export const getAngleWidthOfNodeTree = (graph, node) => {
   const angleOfTheDeepestLastChild =
     angleBetweenNodeAndDeepestLastChild + angleWidthOfDeepestLastChild / 2;
 
-  // take twice the biggest half, instead of a simple sum, in order to keep it symmetrical
+  // Take twice the biggest half, instead of a simple sum, in order to keep it symmetrical.
+  // Otherwise we'd have to deal with left side angle width and right side angle width,
+  // making things more complicated.
   const decendantsAngleWidth =
     Math.max(angleOfTheDeepestFirstChild, angleOfTheDeepestLastChild) * 2;
 
@@ -182,25 +205,92 @@ export const getAngleWidthOfNodeTree = (graph, node) => {
   return angleWidthOfTheNodeTree;
 };
 
-/**
- * Calculate radius around the node, that will fit all its decendants,
- * based on their angle width and the current childrenRadius of the node.
- */
-export const getRadiusToFitAllDecendants = (graph, node) => {
+export const increaseRadiusToFitAllDecendantsIfNeeded = (graph, node) => {
   const maxAllowedAngleWidth = isRootNode(graph, node) ? 2 * Math.PI : Math.PI;
+  const currentAngleWidth = getTotalAngleWidthOfDecendants(graph, node);
 
-  const nodeChildren = getNodeChildren(graph, node);
-  const totalAngleWidthOfDecendants = nodeChildren.reduce(
-    (acc, curr) => acc + curr.treeAngleWidth,
-    0,
-  );
+  if (currentAngleWidth < maxAllowedAngleWidth) return;
 
-  const currentCircleLength = totalAngleWidthOfDecendants * node.childrenRadius;
+  let lowerBound = node.childrenRadius;
+  // not sure why this formula for upper bound, but it seems to work :)
+  let upperBound =
+    node.childrenRadius * Math.pow(currentAngleWidth / maxAllowedAngleWidth, 2);
+  let fitRadius;
 
-  const maxCircleLength = maxAllowedAngleWidth * node.childrenRadius;
+  while (true) {
+    const mid = (lowerBound + upperBound) / 2;
 
-  const fitRadius =
-    node.childrenRadius * (currentCircleLength / maxCircleLength);
+    updateChildrenRadiusAndDecendants(graph, node, mid);
+    const currentAngleWidth = getTotalAngleWidthOfDecendants(graph, node);
+
+    if (currentAngleWidth > maxAllowedAngleWidth) {
+      lowerBound = mid;
+      continue;
+    }
+
+    if (maxAllowedAngleWidth - currentAngleWidth < Math.PI / 180) {
+      fitRadius = mid;
+      break;
+    }
+
+    upperBound = mid;
+  }
 
   return fitRadius;
+};
+
+export const getTotalAngleWidthOfDecendants = (graph, node) => {
+  const nodeChildren = getNodeChildren(graph, node);
+  return nodeChildren.reduce((acc, curr) => acc + curr.treeAngleWidth, 0);
+};
+
+/**
+ * Initially children are rendered starting from parent.φ, going counterclockwise.
+ * So they aren't centered around the parent.φ.
+ * This function centers the children around the parent.φ, by rotating them by
+ * half of their total angle (angle is taken between the centers of the
+ * first and the last node).
+ * Also rotates all the decendants.
+ */
+export const centerChildrenAndDecendants = (graph, node) => {
+  const nodeChildren = getNodeChildren(graph, node);
+  const firstChild = nodeChildren[0];
+  const lastChild = nodeChildren[nodeChildren.length - 1];
+
+  const angleBetweenCentersOfTheFirstAndLastChildren =
+    getTotalAngleWidthOfDecendants(graph, node) -
+    firstChild.treeAngleWidth / 2 -
+    lastChild.treeAngleWidth / 2;
+
+  const centeringShift = angleBetweenCentersOfTheFirstAndLastChildren / 2;
+
+  nodeChildren.forEach(node => {
+    updateNodeTreePositionAroundParent(graph, node, node.φ + centeringShift);
+  });
+};
+
+/**
+ * Update node's childrenRadius and reposition its children accordingly,
+ * also moving all their decendants.
+ */
+export const updateChildrenRadiusAndDecendants = (graph, node, newRadius) => {
+  node.childrenRadius = newRadius;
+
+  const nodeChildren = getNodeChildren(graph, node);
+
+  nodeChildren.forEach(child => {
+    child.radiusAroundParent = newRadius;
+    child.angleWidth = getAngleWidth(child);
+    updateNodeTreePositionAroundParent(graph, child, child.φ);
+
+    child.treeAngleWidth = getAngleWidthOfNodeTree(graph, child);
+
+    const leftNeighbour = getLeftNeighbour(graph, child);
+    const φ = !leftNeighbour
+      ? node.φ
+      : leftNeighbour.φ -
+        (leftNeighbour.treeAngleWidth / 2 + child.treeAngleWidth / 2);
+
+    updateNodeTreePositionAroundParent(graph, child, φ);
+  });
 };

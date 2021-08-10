@@ -14,11 +14,13 @@ import {
 import { getTextWidth } from './utils';
 import {
   getAngleWidth,
-  updatePolarAngle,
+  updateNodePositionAroundParent,
   getAngleBetweenNodes,
   getDistanceBetweenNodes,
   getAngleWidthOfNodeTree,
-  getRadiusToFitAllDecendants,
+  centerChildrenAndDecendants,
+  updateNodeTreePositionAroundParent,
+  increaseRadiusToFitAllDecendantsIfNeeded,
 } from './geometry';
 
 export { Node, Edge };
@@ -107,30 +109,19 @@ const MindMap = ({
        *
        * φ is the polar coordinates angle, with the center placed at the parent node.
        *
-       * φ is calculated for each child node as follows:
-       * - Start with parentNode.φ, so the parent line continues in the same direction.
-       * - Add "angleToLeftNeighbour", which is left neighbour angle width halved, plus
-       *   the current node angle width halved. So the nodes will be rendered next to each
-       *   other on a cricle arch, without overlapping.
        */
 
-      /**
-       * Radius around the parent node
-       */
-      if (!parentNode.childrenRadius) {
-        parentNode.childrenRadius = defaultNodeChildrenRadius;
-      }
+      parentNode.childrenRadius = defaultNodeChildrenRadius;
+
       n.radiusAroundParent = parentNode.childrenRadius;
 
       n.angleWidth = getAngleWidth(n);
 
       const leftNeighbour = getLeftNeighbour({ nodes, edges }, n);
 
-      const startAngle = parentNode.φ;
+      const φ = leftNeighbour?.φ || parentNode.φ;
 
-      const φ = leftNeighbour?.φ || startAngle;
-
-      updatePolarAngle({ nodes, edges }, n, φ);
+      updateNodePositionAroundParent({ nodes, edges }, n, φ);
 
       renderNodeChildrenRecursive(n);
 
@@ -142,36 +133,14 @@ const MindMap = ({
 
       const newφ = φ - angleDistanceToLeftNeighbour;
 
-      updatePolarAngle({ nodes, edges }, n, newφ);
-
-      renderNodeChildrenRecursive(n);
+      updateNodeTreePositionAroundParent(graph, n, newφ);
 
       if (nodeIndex === nodeChildren.length - 1) {
-        const radiusToFitAllChildren = getRadiusToFitAllDecendants(
-          graph,
-          parentNode,
-        );
+        increaseRadiusToFitAllDecendantsIfNeeded(graph, parentNode);
 
-        if (radiusToFitAllChildren > parentNode.childrenRadius) {
-          parentNode.childrenRadius = getRadiusToFitAllDecendants(
-            graph,
-            parentNode,
-          );
-          renderNodeChildrenRecursive(parentNode);
-          return;
+        if (!isRootNode) {
+          centerChildrenAndDecendants(graph, parentNode);
         }
-      }
-
-      // When the last child φ is calculated, we know the angle all
-      // children combined take. We want to center children by shifting
-      // them by their combined angle width / 2.
-      if (nodeIndex === nodeChildren.length - 1 && !isRootNode) {
-        const childrenAngleWidth = -(n.φ - startAngle);
-        const centeringShift = childrenAngleWidth / 2;
-        nodeChildren.forEach(node => {
-          updatePolarAngle(graph, node, node.φ + centeringShift);
-          renderNodeChildrenRecursive(node);
-        });
       }
     });
   };

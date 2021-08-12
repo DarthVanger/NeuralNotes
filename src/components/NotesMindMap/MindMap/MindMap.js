@@ -32,7 +32,7 @@ const MindMap = ({
   ...attrs
 }) => {
   const nodes = nodesProp.map(nodeConfig => {
-    const { id, key, label, ...domAttributes } = nodeConfig;
+    const { id, key, label, customAttributes, ...domAttributes } = nodeConfig;
     const width = calculateNodeWidth(nodeConfig);
 
     return {
@@ -40,6 +40,7 @@ const MindMap = ({
       key,
       label,
       width,
+      customAttributes,
       domAttributes,
     };
   });

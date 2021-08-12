@@ -1,6 +1,7 @@
 import React from 'react';
+import { colors } from 'colors';
 
-const NodeBackground = ({ height, width, debug }) => {
+const NodeBackground = ({ height, width, isSelected, debug }) => {
   const borderPath = `
     M 0 ${(height * 2) / 3}
     v -${(height * 2) / 3 - height / 6}
@@ -45,11 +46,25 @@ const NodeBackground = ({ height, width, debug }) => {
     );
   }
 
+  const nodeStyle = {
+    stroke: colors.nodeBorder,
+    fill: 'transparent',
+  };
+
+  const selectedNodeStyle = {
+    ...nodeStyle,
+    stroke: colors.primaryColor,
+    filter: colors.selectedNodeShadow,
+  };
+
   return (
     <>
       <g transform={`translate(-${width / 2}, -${height / 2})`}>
         <path d={backgroundPath} stroke="none" fill="white" />
-        <path d={borderPath} stroke="#3C78C8" fill="transparent" />
+        <path
+          d={borderPath}
+          style={isSelected ? selectedNodeStyle : nodeStyle}
+        />
       </g>
     </>
   );

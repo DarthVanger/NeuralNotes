@@ -5,7 +5,7 @@ export const colors = {
   iconColor: '#000000', // icon in round button, google drive icon
   textColor: 'rgba(255, 255, 255, 0.6)', // icon, placeholder, text popup, upload percents
   titleColor: 'rgba(255, 255, 255, 0.87)', // menu, menu item, title notes, title popup, upload filenames, upload round button background
-  frameHover: '#3C78C8', // :hover frame notes??
+  nodeBorder: '#3C78C8', // node border color on mind map
   // background
   systemBarBack: '#121212', // system bar background
   mainBackground:
@@ -17,6 +17,8 @@ export const colors = {
   noteBackground: 'rgba(187, 134, 252, 0.08)', // create/edit note background
   barBackground:
     'linear-gradient(0deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.09)), #121212;', // top bar background, bottom bar background
+  selectedNodeShadow:
+    'drop-shadow(0px 0px 4px #BB86FC) drop-shadow(0px 0px 2px #BB86FC) drop-shadow(0px 0px 6px #BB86FC)', // shadow (glow) for the selected node on the mind map
 };
 
 /*

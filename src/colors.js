@@ -5,7 +5,7 @@ export const colors = {
   iconColor: '#000000', // icon in round button, google drive icon
   textColor: 'rgba(255, 255, 255, 0.6)', // icon, placeholder, text popup, upload percents
   titleColor: 'rgba(255, 255, 255, 0.87)', // menu, menu item, title notes, title popup, upload filenames, upload round button background
-  nodeBorder: '#3C78C8', // node border color on mind map
+  nodeBorder: '#3C78C8', // node border and edges color on mind map
   // background
   systemBarBack: '#121212', // system bar background
   mainBackground:

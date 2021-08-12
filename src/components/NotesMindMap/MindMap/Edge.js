@@ -1,5 +1,4 @@
 import React from 'react';
-import { getNodeCircularEdges } from './geometry';
 
 export const Edge = ({ parentNode, childNode }) => {
   const hue = Math.floor(Math.abs((parentNode.φ % (Math.PI / 2)) * 345));

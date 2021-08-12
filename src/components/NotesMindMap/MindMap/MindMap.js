@@ -2,21 +2,11 @@ import React from 'react';
 import { Node } from './Node';
 import { Edge } from './Edge';
 import MindMapContainer from './MindMapContainer';
-import {
-  getNodeChildren,
-  nodeHasChildren,
-  doesNeighbourHaveChildren,
-  getRootNode,
-  getLeftNeighbour,
-  getDeepestFirstChild,
-  getDeepestLastChild,
-} from 'helpers/graph';
+import { getNodeChildren, getRootNode, getLeftNeighbour } from 'helpers/graph';
 import { getTextWidth } from './utils';
 import {
   getAngleWidth,
   updateNodePositionAroundParent,
-  getAngleBetweenNodes,
-  getDistanceBetweenNodes,
   getAngleWidthOfNodeTree,
   centerChildrenAndDecendants,
   updateNodeTreePositionAroundParent,

@@ -1,12 +1,10 @@
 import {
   getNodeChildren,
   getLeftNeighbour,
-  nodeHasChildren,
-  getLeftSideSiblings,
-  getParentNode,
   getDeepestFirstChild,
   getDeepestLastChild,
   isRootNode,
+  getParentNode,
 } from 'helpers/graph';
 
 /**
@@ -87,7 +85,6 @@ export const updateNodePositionAroundParent = (graph, node, newφ) => {
  * Update node's position around parent with new φ and also move all its decendants.
  */
 export const updateNodeTreePositionAroundParent = (graph, node, newφ) => {
-  const parentNode = getParentNode(graph, node);
   const deltaφ = newφ - node.φ;
 
   const rotateRecursively = nodeToRotate => {
@@ -217,6 +214,7 @@ export const increaseRadiusToFitAllDecendantsIfNeeded = (graph, node) => {
     node.childrenRadius * Math.pow(currentAngleWidth / maxAllowedAngleWidth, 2);
   let fitRadius;
 
+  // eslint-disable-next-line no-constant-condition
   while (true) {
     const mid = (lowerBound + upperBound) / 2;
 

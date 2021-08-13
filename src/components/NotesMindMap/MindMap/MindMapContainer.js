@@ -132,7 +132,8 @@ const MindMapContainer = ({ children, focusPosition }) => {
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
       onMouseMove={onMouseMove}
-      onMouseLeave={onMouseLeave}>
+      onMouseLeave={onMouseLeave}
+      style={isPanningRef.current ? { cursor: 'grab' } : {}}>
       {children}
     </StyledContainer>
   );

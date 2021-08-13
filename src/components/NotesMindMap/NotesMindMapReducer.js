@@ -20,7 +20,7 @@ import {
   NOTE_NAME_UPDATE_REQUEST_SUCCESS_ACTION,
 } from 'components/NoteDetails/NoteDetailsActions';
 
-import { addGroupTagToNodes, removeNodeFromGraph } from '../../helpers/graph';
+import { removeNodeFromGraph } from '../../helpers/graph';
 
 import noteStorage from 'storage/noteStorage';
 
@@ -65,7 +65,6 @@ export const notesMindMapReducer = (
           toNode: child,
         });
       });
-      nodes = addGroupTagToNodes(nodes, edges);
     }
     return {
       ...state,
@@ -82,7 +81,6 @@ export const notesMindMapReducer = (
     if (parentNote) {
       nodes = addNodeToGraph(nodes, parentNote);
       edges.push({ from: parentNote.id, to: state.selectedNote.id });
-      nodes = addGroupTagToNodes(nodes, edges);
     }
     return {
       ...state,
@@ -111,8 +109,7 @@ export const notesMindMapReducer = (
     let nodes = [...state.nodes];
     let edges = [...state.edges];
     edges.push({ from: newNote.parent.id, to: newNote.id });
-    nodes = addNodeToGraph(nodes, { ...newNote, group: 'children' });
-    nodes = addGroupTagToNodes(nodes, edges);
+    nodes = addNodeToGraph(nodes, { ...newNote });
     return {
       ...state,
       nodes,
@@ -142,7 +139,6 @@ export const notesMindMapReducer = (
     let nodes = [...state.nodes];
     edges = edges.filter(edge => edge.to !== noteId);
     edges.push({ from: newParentId, to: noteId });
-    nodes = addGroupTagToNodes(nodes, edges);
     return {
       ...state,
       isChangeParentModeActive: false,

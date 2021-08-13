@@ -31,8 +31,8 @@ const MindMapContainer = ({ children, focusPosition, ...attrs }) => {
 
   useEffect(() => {
     const updatedViewBox = {
-      w: svgSizeRef.current.w,
-      h: svgSizeRef.current.h,
+      w: svgSizeRef.current.w / scaleRef.current,
+      h: svgSizeRef.current.h / scaleRef.current,
       x: focusPosition.x - svgSizeRef.current.w / 2,
       y: focusPosition.y - svgSizeRef.current.h / 2,
     };

@@ -57,10 +57,35 @@ const NodeBackground = ({ height, width, isSelected, debug }) => {
     filter: colors.selectedNodeShadow,
   };
 
+  const backgroundStyle = {
+    stroke: 'none',
+    fill: 'white',
+  };
+
+  const addMarginToBackground = () => {
+    const margin = 2;
+    const xScaleFactor = (width + margin * 2) / width;
+    const yScaleFactor = (height + margin * 2) / height;
+
+    const transform = `
+      scale(${xScaleFactor}, ${yScaleFactor})
+      translate(-${(width / 2) * (xScaleFactor - 1)}, -${(height / 2) *
+      (yScaleFactor - 1)})
+    `;
+
+    return transform;
+  };
+
+  const backgroundTransform = addMarginToBackground();
+
   return (
     <>
       <g transform={`translate(-${width / 2}, -${height / 2})`}>
-        <path d={backgroundPath} stroke="none" fill="white" />
+        <path
+          d={backgroundPath}
+          style={backgroundStyle}
+          transform={backgroundTransform}
+        />
         <path
           d={borderPath}
           style={isSelected ? selectedNodeStyle : nodeStyle}

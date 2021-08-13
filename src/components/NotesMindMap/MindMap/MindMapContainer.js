@@ -1,7 +1,7 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-const StyledContainer = styled.div`
+const StyledContainer = styled.svg`
   position: absolute;
   bottom: 0;
   height: calc(100% - 125px);
@@ -9,65 +9,130 @@ const StyledContainer = styled.div`
   overflow: scroll;
 `;
 
-const scrollByMouseDrag = (() => el => {
-  let isMouseDown = false;
-  const clickPosition = {};
-  const clickScroll = {};
+/**
+ * Svg zoom and pan adopted from
+ * https://stackoverflow.com/questions/52576376/how-to-zoom-in-on-a-complex-svg-structure
+ */
+const MindMapContainer = ({ children, focusPosition }) => {
+  useEffect(() => {
+    const svgElementRect = svgElementRef.current.getBoundingClientRect();
 
-  const scroll = e => {
-    const dx = e.pageX - clickPosition.x;
-    const dy = e.pageY - clickPosition.y;
-    el.current.scroll(clickScroll.x - dx, clickScroll.y - dy);
-  };
+    svgSizeRef.current = {
+      w: svgElementRect.width,
+      h: svgElementRect.height,
+    };
 
-  const pauseEvent = e => {
-    e.stopPropagation();
-    e.preventDefault();
-    e.cancelBubble = true;
-    e.returnValue = false;
+    setViewBox({
+      ...viewBox,
+      w: svgElementRect.width,
+      h: svgElementRect.height,
+    });
+  }, []);
+
+  useEffect(() => {
+    const updatedViewBox = {
+      w: svgSizeRef.current.w,
+      h: svgSizeRef.current.h,
+      x: focusPosition.x - svgSizeRef.current.w / 2,
+      y: focusPosition.y - svgSizeRef.current.h / 2,
+    };
+    setViewBox(updatedViewBox);
+  }, [focusPosition]);
+
+  const [viewBox, setViewBox] = useState({
+    x: 0,
+    y: 0,
+    w: 0,
+    h: 0,
+  });
+
+  const svgSizeRef = useRef(null);
+  const svgElementRef = useRef(null);
+  const isPanningRef = useRef(false);
+  const panStartPointRef = useRef();
+  const panEndPointRef = useRef();
+  const viewBoxOnPanStartRef = useRef();
+  const scaleRef = useRef(1);
+
+  const onWheel = e => {
+    const w = viewBox.w;
+    const h = viewBox.h;
+    const mx = e.nativeEvent.offsetX;
+    const my = e.nativeEvent.offsetY;
+    const dw = w * Math.sign(e.deltaY) * 0.05;
+    const dh = h * Math.sign(e.deltaY) * 0.05;
+    const dx = (dw * mx) / svgSizeRef.current.w;
+    const dy = (dh * my) / svgSizeRef.current.h;
+
+    scaleRef.current = svgSizeRef.current.w / viewBox.w;
+
+    setViewBox({
+      x: viewBox.x + dx,
+      y: viewBox.y + dy,
+      w: viewBox.w - dw,
+      h: viewBox.h - dh,
+    });
+
     return false;
   };
 
-  return {
-    onMouseMove: e => {
-      pauseEvent(e);
-      isMouseDown && scroll(e);
-    },
-    onMouseDown: e => {
-      e.persist();
-      pauseEvent(e);
-      const isClickOnSvg = e.target == el.current.querySelector('svg');
-      if (isClickOnSvg) {
-        isMouseDown = true;
-        clickScroll.y = el.current.scrollTop;
-        clickScroll.x = el.current.scrollLeft;
-        clickPosition.y = e.pageY;
-        clickPosition.x = e.pageX;
-        el.current.style.cursor = 'grab';
-      }
-    },
-    onMouseUp: () => {
-      isMouseDown = false;
-      el.current.style.cursor = 'auto';
-    },
+  const onMouseDown = e => {
+    isPanningRef.current = true;
+    panStartPointRef.current = { x: e.nativeEvent.x, y: e.nativeEvent.y };
+    viewBoxOnPanStartRef.current = viewBox;
   };
-})();
 
-const MindMapContainer = ({ children, initialFocusPosition }) => {
-  const containerRef = useRef(null);
-  useEffect(() => {
-    if (initialFocusPosition) {
-      const viewBoxWidth = containerRef.current.offsetWidth;
-      const viewBoxHeight = containerRef.current.offsetHeight;
-      containerRef.current.scrollLeft =
-        initialFocusPosition.x - viewBoxWidth / 2;
-      containerRef.current.scrollTop =
-        initialFocusPosition.y - viewBoxHeight / 2;
+  const onMouseMove = e => {
+    if (isPanningRef.current) {
+      panEndPointRef.current = { x: e.nativeEvent.x, y: e.nativeEvent.y };
+      const dx =
+        (panStartPointRef.current.x - panEndPointRef.current.x) /
+        scaleRef.current;
+      const dy =
+        (panStartPointRef.current.y - panEndPointRef.current.y) /
+        scaleRef.current;
+      setViewBox({
+        x: viewBoxOnPanStartRef.current.x + dx,
+        y: viewBoxOnPanStartRef.current.y + dy,
+        w: viewBoxOnPanStartRef.current.w,
+        h: viewBoxOnPanStartRef.current.h,
+      });
     }
-  });
+  };
+
+  const onMouseUp = e => {
+    if (isPanningRef.current) {
+      panEndPointRef.current = { x: e.nativeEvent.x, y: e.nativeEvent.y };
+      const dx =
+        (panStartPointRef.current.x - panEndPointRef.current.x) /
+        scaleRef.current;
+      const dy =
+        (panStartPointRef.current.y - panEndPointRef.current.y) /
+        scaleRef.current;
+
+      setViewBox({
+        x: viewBoxOnPanStartRef.current.x + dx,
+        y: viewBoxOnPanStartRef.current.y + dy,
+        w: viewBoxOnPanStartRef.current.w,
+        h: viewBoxOnPanStartRef.current.h,
+      });
+      isPanningRef.current = false;
+    }
+  };
+
+  const onMouseLeave = () => {
+    isPanningRef.current = false;
+  };
 
   return (
-    <StyledContainer ref={containerRef} {...scrollByMouseDrag(containerRef)}>
+    <StyledContainer
+      ref={svgElementRef}
+      viewBox={`${viewBox.x} ${viewBox.y} ${viewBox.w} ${viewBox.h}`}
+      onWheel={onWheel}
+      onMouseDown={onMouseDown}
+      onMouseUp={onMouseUp}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}>
       {children}
     </StyledContainer>
   );

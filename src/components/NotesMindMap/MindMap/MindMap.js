@@ -162,24 +162,19 @@ const MindMap = ({
   const svgSize = 2 * Math.max(maxX, maxY) + mindMapPadding * 2 + maxNodeWidth;
 
   const focusNode = nodes.find(n => n.id == focusNodeId);
-  const initialFocusPosition = {
-    x: svgSize / 2 + (focusNode?.x || 0),
-    y: svgSize / 2 + (focusNode?.y || 0),
+  const focusPosition = {
+    x: focusNode.x,
+    y: focusNode.y,
   };
+
   return (
-    <MindMapContainer initialFocusPosition={initialFocusPosition}>
-      <svg
-        viewBox={`${-svgSize / 2} ${-svgSize / 2} ${svgSize} ${svgSize}`}
-        width={svgSize}
-        height={svgSize}
-        {...attrs}>
-        {edges.map(edge => (
-          <Edge {...edge} key={`${edge.parentNode.id}->${edge.childNode.id}`} />
-        ))}
-        {nodes.map(node => (
-          <Node {...node} key={node.id} />
-        ))}
-      </svg>
+    <MindMapContainer focusPosition={focusPosition}>
+      {edges.map(edge => (
+        <Edge {...edge} key={`${edge.parentNode.id}->${edge.childNode.id}`} />
+      ))}
+      {nodes.map(node => (
+        <Node {...node} key={node.id} />
+      ))}
     </MindMapContainer>
   );
 };

@@ -160,9 +160,12 @@ export const notesMindMapReducer = (
 
   const addRootToGraph = () => {
     let nodes = state.nodes;
+    const updatedNodes = addNodeToGraph(nodes, { ...data });
+
     return {
       ...state,
-      nodes: addNodeToGraph(nodes, { ...data }),
+      nodes: updatedNodes,
+      selectedNote: updatedNodes[0],
     };
   };
 

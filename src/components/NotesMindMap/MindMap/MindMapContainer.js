@@ -13,7 +13,7 @@ const StyledContainer = styled.svg`
  * Svg zoom and pan adopted from
  * https://stackoverflow.com/questions/52576376/how-to-zoom-in-on-a-complex-svg-structure
  */
-const MindMapContainer = ({ children, focusPosition }) => {
+const MindMapContainer = ({ children, focusPosition, ...attrs }) => {
   useEffect(() => {
     const svgElementRect = svgElementRef.current.getBoundingClientRect();
 
@@ -126,6 +126,7 @@ const MindMapContainer = ({ children, focusPosition }) => {
 
   return (
     <StyledContainer
+      {...attrs}
       ref={svgElementRef}
       viewBox={`${viewBox.x} ${viewBox.y} ${viewBox.w} ${viewBox.h}`}
       onWheel={onWheel}

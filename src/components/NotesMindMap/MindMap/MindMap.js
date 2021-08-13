@@ -151,16 +151,6 @@ const MindMap = ({
 
   renderNodeChildrenRecursive(rootNode);
 
-  const maxX = Math.max(...nodes.map(n => Math.abs(n.x)));
-  const maxY = Math.max(...nodes.map(n => Math.abs(n.y)));
-
-  // TODO: take width of the node with the max X position,
-  // instead of just the widest node on the mind map.
-  const maxNodeWidth = Math.max(...nodes.map(n => n.width));
-
-  const mindMapPadding = 15;
-  const svgSize = 2 * Math.max(maxX, maxY) + mindMapPadding * 2 + maxNodeWidth;
-
   const focusNode = nodes.find(n => n.id == focusNodeId);
   const focusPosition = {
     x: focusNode.x,
@@ -168,7 +158,7 @@ const MindMap = ({
   };
 
   return (
-    <MindMapContainer focusPosition={focusPosition}>
+    <MindMapContainer focusPosition={focusPosition} {...attrs}>
       {edges.map(edge => (
         <Edge {...edge} key={`${edge.parentNode.id}->${edge.childNode.id}`} />
       ))}

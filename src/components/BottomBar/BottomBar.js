@@ -61,7 +61,7 @@ export const BottomBar = () => {
   };
 
   return (
-    <AppBar position="fixed" className={classes.appBar}>
+    <AppBar position="static" className={classes.appBar}>
       <Toolbar>
         <BottomBarMenu />
         {!selectedNote.isUploadedFile && (

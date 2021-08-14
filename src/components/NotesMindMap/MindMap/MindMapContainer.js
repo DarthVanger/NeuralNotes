@@ -2,11 +2,8 @@ import React, { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const StyledContainer = styled.svg`
-  position: absolute;
-  bottom: 0;
-  height: calc(100% - 125px);
+  height: 100%;
   width: 100%;
-  overflow: scroll;
 `;
 
 /**

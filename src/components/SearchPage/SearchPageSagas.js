@@ -11,8 +11,11 @@ import {
 } from 'components/SearchPage/SearchPageAction';
 
 function* searchNoteSaga({ data }) {
-  const results = yield noteStorage.findNotesByName(data);
-  yield put(searchRequestSuccess(results));
+  const query = data;
+  if (query !== '') {
+    const results = yield noteStorage.findNotesByName(query);
+    yield put(searchRequestSuccess(results));
+  }
 }
 
 export function* searchPageInit() {

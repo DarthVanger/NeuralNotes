@@ -33,6 +33,7 @@ export default function SearchInputComponent() {
   const classes = useStyles();
   return (
     <TextField
+      autoFocus
       className={classes.textField}
       placeholder="Search notes and files"
       type="text"

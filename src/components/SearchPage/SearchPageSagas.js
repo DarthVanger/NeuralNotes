@@ -7,17 +7,19 @@ import {
 
 import {
   searchRequestSuccess,
+  searchRequestAction,
   SEARCH_QUERY_CHANGED_ACTION,
 } from 'components/SearchPage/SearchPageAction';
 
-function* searchNoteSaga({ data }) {
+function* handleSearchQueryChange({ data }) {
   const query = data;
   if (query !== '') {
+    yield put(searchRequestAction(query));
     const results = yield noteStorage.findNotesByName(query);
     yield put(searchRequestSuccess(results));
   }
 }
 
 export function* searchPageInit() {
-  yield all([takeEvery(SEARCH_QUERY_CHANGED_ACTION, searchNoteSaga)]);
+  yield all([takeEvery(SEARCH_QUERY_CHANGED_ACTION, handleSearchQueryChange)]);
 }

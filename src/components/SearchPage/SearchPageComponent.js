@@ -41,6 +41,11 @@ export function SearchPageComponent() {
   const areSearchResultsFetched = useSelector(
     state => state.searchPage.areSearchResultsFetched,
   );
+
+  const isSearchRequestInProgress = useSelector(
+    state => state.searchPage.isSearchRequestInProgress,
+  );
+
   const dispatch = useDispatch();
 
   const handleClick = searchResult => {
@@ -82,6 +87,9 @@ export function SearchPageComponent() {
           <ListItem className={classes.listItem}>
             None of your notes or files mathed this search
           </ListItem>
+        )}
+        {isSearchRequestInProgress && (
+          <ListItem className={classes.listItem}>Searching...</ListItem>
         )}
       </List>
     </>

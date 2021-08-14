@@ -26,7 +26,7 @@ export const NotesPageTopBar = () => {
       <TopBarLeftButtons>
         <NotesPageTopBarMenu />
       </TopBarLeftButtons>
-      <TopBarPageTitle style={{ color: colors.primaryColor }}>
+      <TopBarPageTitle style={{ color: colors.primary }}>
         Neural Notes
       </TopBarPageTitle>
       <TopBarRightButtons>
@@ -42,7 +42,7 @@ export const NotesPageTopBar = () => {
         )}
         <Link to="search">
           <IconButton>
-            <SearchIcon style={{ color: colors.textColor }} />
+            <SearchIcon style={{ color: colors.onSurfaceMediumEmphasis }} />
           </IconButton>
         </Link>
       </TopBarRightButtons>

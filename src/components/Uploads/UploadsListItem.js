@@ -45,7 +45,7 @@ const StyledIconButton = styled.button`
   background: none;
   border: none;
   outline: none;
-  color: ${colors.textColor};
+  color: ${colors.onSurfaceMediumEmphasis};
 `;
 
 const UploadsListItem = ({ item }) => {

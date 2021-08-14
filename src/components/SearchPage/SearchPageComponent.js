@@ -32,7 +32,7 @@ const useStyles = makeStyles(() => ({
     paddingRight: 12,
   },
   svgIcon: {
-    color: colors.textColor,
+    color: colors.onSurfaceMediumEmphasis,
   },
 }));
 

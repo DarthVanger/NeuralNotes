@@ -10,7 +10,7 @@ import * as Selectors from './UploadsSelectors';
 import { colors } from 'colors';
 
 const StyledPageHeaderContainer = styled.div`
-  background-color: ${colors.barBackground};
+  background-color: ${colors.elevationOverlay04dp};
 `;
 
 const StyledBackButton = styled.button`

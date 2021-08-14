@@ -8,7 +8,7 @@ const PopUpDiv = styled.div`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  background-color: ${colors.systemBarBack};
+  background-color: ${colors.surface};
 `;
 
 const RestorePopup = ({ closeToast }) => {

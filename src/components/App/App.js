@@ -14,7 +14,7 @@ import { isUserSignedInSelector } from 'components/LoginPage/LoginPageSelectors'
 import { colors } from 'colors';
 
 const AppWrapper = styled.div`
-  background: ${colors.systemBarBack};
+  background: ${colors.surface};
 `;
 
 export const App = () => {

@@ -47,19 +47,19 @@ const NodeBackground = ({ height, width, isSelected, debug }) => {
   }
 
   const nodeStyle = {
-    stroke: colors.secondaryColor,
+    stroke: colors.secondary,
     fill: 'transparent',
   };
 
   const selectedNodeStyle = {
     ...nodeStyle,
-    stroke: colors.primaryColor,
+    stroke: colors.primary,
     filter: colors.selectedNodeShadow,
   };
 
   const backgroundStyle = {
     stroke: 'none',
-    fill: colors.mainBackground,
+    fill: colors.elevationOverlay02dp,
   };
 
   const addMarginToBackground = () => {

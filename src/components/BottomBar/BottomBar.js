@@ -30,7 +30,7 @@ const useStyles = makeStyles(() => ({
   },
   left: {
     position: 'absolute',
-    color: colors.textColor,
+    color: colors.onSurfaceMediumEmphasis,
     left: '46px',
   },
   fabButton: {

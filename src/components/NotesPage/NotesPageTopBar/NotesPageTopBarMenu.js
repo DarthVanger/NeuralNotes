@@ -35,7 +35,7 @@ export function NotesPageTopBarMenu() {
         edge="start"
         aria-label="menu"
         aria-controls="burger-menu">
-        <MenuIcon style={{ color: colors.titleColor }} />
+        <MenuIcon style={{ color: colors.onSurfaceHighEmphasis }} />
       </IconButton>
       <Menu
         getContentAnchorEl={null}

@@ -18,7 +18,7 @@ export const Node = node => {
   const { isSelected } = customAttributes;
 
   const textStyle = {
-    fill: isSelected ? colors.primaryColor : colors.secondaryColor,
+    fill: isSelected ? colors.primary : colors.secondary,
   };
 
   return (

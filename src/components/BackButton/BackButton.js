@@ -7,7 +7,7 @@ import { colors } from 'colors';
 export const BackButton = ({ to }) => (
   <Link to={to}>
     <IconButton edge="start" color="inherit" aria-label="back">
-      <ArrowBackIcon style={{ fill: colors.textColor }} />
+      <ArrowBackIcon style={{ fill: colors.onSurfaceMediumEmphasis }} />
     </IconButton>
   </Link>
 );

@@ -15,7 +15,7 @@ const StyledPageContainer = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-  background: ${colors.mainBackground};
+  background: ${colors.elevationOverlay02dp};
   display: flex;
   flex-direction: column;
 `;

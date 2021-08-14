@@ -4,12 +4,20 @@ import { colors } from 'colors';
 
 export const theme = createMuiTheme({
   palette: {
+    type: 'dark',
     primary: {
-      main: colors.primaryColor,
+      main: colors.primary,
     },
     secondary: {
-      main: colors.secondaryColor,
-      button: colors.titleColor,
+      main: colors.secondary,
+      button: colors.onSurfaceHighEmphasis,
+    },
+    text: {
+      primary: colors.onSurfaceHighEmphasis,
+      secondary: colors.onSurfaceMediumEmphasis,
+      disabled: colors.onSurfaceDisabled,
+      hint: colors.onSurfaceDisabled,
+      icon: colors.onSurfaceDisabled,
     },
   },
   typography: {
@@ -19,7 +27,7 @@ export const theme = createMuiTheme({
       fontSize: '16px',
       lineHeight: '24px',
       letterSpacing: 0.15,
-      color: colors.titleColor,
+      color: colors.onSurfaceHighEmphasis,
     },
     subtitle2: {
       fontStyle: 'normal',
@@ -27,7 +35,7 @@ export const theme = createMuiTheme({
       fontSize: '14px',
       lineHeight: '24px',
       letterSpacing: 0.1,
-      color: colors.textColor,
+      color: colors.onSurfaceMediumEmphasis,
     },
     h6: {
       fontFamily: 'Roboto',
@@ -36,7 +44,7 @@ export const theme = createMuiTheme({
       fontSize: '20px',
       lineHeight: '26px',
       letterSpacing: 0.15,
-      color: colors.titleColor,
+      color: colors.onSurfaceHighEmphasis,
     },
     body2: {
       fontStyle: 'normal',
@@ -44,7 +52,7 @@ export const theme = createMuiTheme({
       fontSize: '14px',
       lineHeight: '20px',
       letterSpacing: 0.25,
-      color: colors.textColor,
+      color: colors.onSurfaceMediumEmphasis,
     },
     button: {
       fontStyle: 'normal',
@@ -58,49 +66,53 @@ export const theme = createMuiTheme({
   overrides: {
     MuiAppBar: {
       colorPrimary: {
-        backgroundColor: null,
-        background: colors.barBackground,
+        backgroundColor: colors.elevationOverlay04dp,
       },
     },
     MuiList: {
       root: {
-        background: colors.mainBackground,
+        background: colors.elevationOverlay02dp,
       },
       padding: {
         paddingTop: 0,
         paddingBottom: 0,
       },
     },
+    MuiListItem: {
+      root: {
+        color: colors.onSurfaceHighEmphasis,
+      },
+    },
     MuiDivider: {
       root: {
-        backgroundColor: colors.menuSelectBackground,
+        backgroundColor: colors.divider,
       },
     },
     MuiMenuItem: {
       root: {
-        background: colors.menuBackground,
+        background: colors.elevationOverlay08dp,
         minHeight: '32px',
       },
     },
     MuiDialogContent: {
       root: {
-        background: colors.menuBackground,
+        background: colors.elevationOverlay08dp,
       },
     },
     MuiDialogContentText: {
       root: {
-        color: colors.textColor,
+        color: colors.onSurfaceMediumEmphasis,
       },
     },
     MuiDialogActions: {
       root: {
-        background: colors.menuBackground,
+        background: colors.elevationOverlay08dp,
       },
     },
     MuiDialogTitle: {
       root: {
-        background: colors.menuBackground,
-        color: colors.textColor,
+        background: colors.elevationOverlay08dp,
+        color: colors.onSurfaceMediumEmphasis,
       },
     },
   },

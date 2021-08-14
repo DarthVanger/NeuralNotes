@@ -5,7 +5,7 @@ import { NoteDetailsContainer } from 'components/NoteDetails/NoteDetailsContaine
 import NoteDetailsTopBar from './NoteDetailsTopBar';
 
 const Wrapper = styled.div`
-  background: ${colors.barBackground};
+  background: ${colors.elevationOverlay04dp};
   height: 100vh;
   display: flex;
   flex-direction: column;

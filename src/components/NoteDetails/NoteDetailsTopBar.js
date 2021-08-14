@@ -21,7 +21,7 @@ import { isExistingNoteSelector } from './NoteDetailsSelectors';
 
 const useStyles = makeStyles(() => ({
   moreIcon: {
-    color: colors.textColor,
+    color: colors.onSurfaceMediumEmphasis,
   },
 }));
 

@@ -12,10 +12,9 @@ import ClearIcon from '@material-ui/icons/Clear';
 
 const useStyles = makeStyles(() => ({
   textField: {
-    color: colors.titleColor,
     '&::placeholder': {
-      color: colors.textColor,
-      // override Mui's opacity
+      color: colors.onSurfaceDisabled,
+      // override Mui's 0.5 opacity
       opacity: 1,
     },
   },
@@ -52,13 +51,13 @@ export default function SearchInputComponent() {
         },
         startAdornment: (
           <InputAdornment position="start">
-            <SearchIcon style={{ fill: colors.textColor }} />
+            <SearchIcon style={{ fill: colors.onSurfaceMediumEmphasis }} />
           </InputAdornment>
         ),
 
         endAdornment: value && (
           <IconButton onClick={() => setValue('')}>
-            <ClearIcon style={{ fill: colors.textColor }} />
+            <ClearIcon style={{ fill: colors.onSurfaceMediumEmphasis }} />
           </IconButton>
         ),
       }}

@@ -2,7 +2,7 @@ import { colors } from 'colors';
 import styled from 'styled-components';
 
 export const StyledNoteDetailsScreen = styled.div`
-  background: ${colors.mainBackground};
+  background: ${colors.elevationOverlay02dp};
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -10,7 +10,7 @@ export const StyledNoteDetailsScreen = styled.div`
 `;
 
 export const DefaultTextarea = styled.textarea`
-  background-color: ${colors.noteBackground};
+  background-color: ${colors.elevationOverlay02dp};
   padding: 0;
   width: 100%;
   border: none;
@@ -23,7 +23,7 @@ export const DefaultTextarea = styled.textarea`
 export const StyledNoteNameEditor = styled(DefaultTextarea)`
   text-align: center;
   line-height: 56px;
-  color: ${colors.titleColor};
+  color: ${colors.onSurfaceHighEmphasis};
   font-size: 20px;
   font-weight: 500;
   flex-grow: 0;
@@ -32,7 +32,7 @@ export const StyledNoteNameEditor = styled(DefaultTextarea)`
 export const StyledNoteContentEditor = styled(DefaultTextarea)`
   flex-grow: 1;
   line-height: 20px;
-  color: ${colors.textColor};
+  color: ${colors.onSurfaceMediumEmphasis};
   font-size: 14px;
   font-weight: normal;
   letter-spacing: 0.25px;

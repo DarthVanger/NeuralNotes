@@ -3,5 +3,5 @@ import { colors } from 'colors';
 
 export const StyledNotesMindMap = styled.div`
   flex-grow: 1;
-  background: ${colors.mainBackground};
+  background: ${colors.elevationOverlay02dp};
 `;

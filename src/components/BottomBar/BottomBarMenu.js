@@ -19,7 +19,7 @@ import DialogDeleteNote from 'components/Modal/DialogDeleteNote';
 const useStyles = makeStyles(() => ({
   moreIcon: {
     position: 'absolute',
-    color: colors.textColor,
+    color: colors.onSurfaceMediumEmphasis,
     left: 0,
     padding: '12px',
   },

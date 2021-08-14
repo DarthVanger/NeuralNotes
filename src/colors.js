@@ -3,7 +3,10 @@ export const colors = {
   primaryColor: '#BB86FC', // programme name, add note round button background, open button, cloud button, progress bar, active(??) notes
   secondaryColor: '#70EFDE', // notes, branches notes, frame notes
   iconColor: '#000000', // icon in round button, google drive icon
-  textColor: 'rgba(255, 255, 255, 0.6)', // icon, placeholder, text popup, upload percents
+
+  // Changed rgba(255, 255, 255, 0.6) to the corresponding hex color
+  textColor: '#ABABAB', // icon, search placeholder, text popup, upload percents
+
   titleColor: 'rgba(255, 255, 255, 0.87)', // menu, menu item, title notes, title popup, upload filenames, upload round button background
   // background
   systemBarBack: '#121212', // system bar background

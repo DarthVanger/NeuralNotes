@@ -12,7 +12,12 @@ import ClearIcon from '@material-ui/icons/Clear';
 
 const useStyles = makeStyles(() => ({
   textField: {
-    color: colors.textColor,
+    color: colors.titleColor,
+    '&::placeholder': {
+      color: colors.textColor,
+      // override Mui's opacity
+      opacity: 1,
+    },
   },
 }));
 

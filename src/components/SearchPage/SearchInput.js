@@ -23,12 +23,12 @@ export default function SearchInputComponent() {
   const [value, setValue] = useState(defaultValue);
 
   useEffect(() => {
-    dispatch(searchQueryChangeAction(value));
+    debouncedDispatchSearchQueryChangeAction.callback(value, dispatch);
   }, [value]);
 
-  const debounced = useDebouncedCallback(
-    (value, setValue) => setValue(value),
-    100,
+  const debouncedDispatchSearchQueryChangeAction = useDebouncedCallback(
+    (value, dispatch) => dispatch(searchQueryChangeAction(value)),
+    500,
   );
   const classes = useStyles();
   return (
@@ -38,7 +38,7 @@ export default function SearchInputComponent() {
       type="text"
       variant="outlined"
       size="small"
-      onChange={e => debounced.callback(e.target.value, setValue)}
+      onChange={e => setValue(e.target.value)}
       value={value}
       InputProps={{
         classes: {

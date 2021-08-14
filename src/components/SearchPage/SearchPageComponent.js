@@ -38,6 +38,9 @@ const useStyles = makeStyles(() => ({
 
 export function SearchPageComponent() {
   const searchResults = useSelector(state => state.searchPage.results);
+  const areSearchResultsFetched = useSelector(
+    state => state.searchPage.areSearchResultsFetched,
+  );
   const dispatch = useDispatch();
 
   const handleClick = searchResult => {
@@ -46,6 +49,8 @@ export function SearchPageComponent() {
   };
 
   const classes = useStyles();
+
+  const noResultsFound = areSearchResultsFetched && searchResults.length === 0;
 
   return (
     <>
@@ -73,6 +78,11 @@ export function SearchPageComponent() {
               <Divider component="li" />
             </React.Fragment>
           ))}
+        {noResultsFound && (
+          <ListItem className={classes.listItem}>
+            None of your notes or files mathed this search
+          </ListItem>
+        )}
       </List>
     </>
   );

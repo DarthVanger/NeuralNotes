@@ -16,7 +16,7 @@ import {
 export { Node, Edge };
 
 const center = 0;
-const nodePadding = 8;
+const nodePadding = 14;
 const nodeHeight = 14 + nodePadding * 2;
 const fontSize = 16;
 const defaultNodeChildrenRadius = 250;

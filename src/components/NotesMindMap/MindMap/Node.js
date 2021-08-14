@@ -1,5 +1,6 @@
 import React from 'react';
 import NodeBackground from './NodeBackground';
+import { colors } from 'colors';
 
 export const Node = node => {
   const {
@@ -14,6 +15,12 @@ export const Node = node => {
     customAttributes,
   } = node;
 
+  const { isSelected } = customAttributes;
+
+  const textStyle = {
+    fill: isSelected ? colors.primaryColor : colors.secondaryColor,
+  };
+
   return (
     <g {...domAttributes} transform={`translate(${x} ${y})`}>
       <NodeBackground
@@ -21,10 +28,12 @@ export const Node = node => {
         height={height}
         padding={padding}
         debug={debug}
-        isSelected={customAttributes.isSelected}
+        isSelected={isSelected}
       />
       <g transform={`translate(${padding}, -${padding})`}>
-        <text transform={`translate(${-width / 2}, ${height / 2})`}>
+        <text
+          transform={`translate(${-width / 2}, ${height / 2})`}
+          style={textStyle}>
           {label}
         </text>
       </g>

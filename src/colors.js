@@ -5,11 +5,12 @@ export const colors = {
   iconColor: '#000000', // icon in round button, google drive icon
   textColor: 'rgba(255, 255, 255, 0.6)', // icon, placeholder, text popup, upload percents
   titleColor: 'rgba(255, 255, 255, 0.87)', // menu, menu item, title notes, title popup, upload filenames, upload round button background
-  nodeBorder: '#3C78C8', // node border and edges color on mind map
   // background
   systemBarBack: '#121212', // system bar background
   mainBackground:
-    'linear-gradient(0deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.07)), #121212;', // main background
+    //'linear-gradient(0deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.07)), #121212;',
+    // liner-gradient was mixing two colors, now use just the resulting color hex value: #232323
+    '#232323', // main background
   menuBackground:
     'linear-gradient(0deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.12)), #121212;', // menu item background
   menuSelectBackground: 'rgba(255, 255, 255, 0.12)', // selected menu item background

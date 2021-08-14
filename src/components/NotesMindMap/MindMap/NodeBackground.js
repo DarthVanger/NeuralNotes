@@ -47,7 +47,7 @@ const NodeBackground = ({ height, width, isSelected, debug }) => {
   }
 
   const nodeStyle = {
-    stroke: colors.nodeBorder,
+    stroke: colors.secondaryColor,
     fill: 'transparent',
   };
 
@@ -59,11 +59,11 @@ const NodeBackground = ({ height, width, isSelected, debug }) => {
 
   const backgroundStyle = {
     stroke: 'none',
-    fill: 'white',
+    fill: colors.mainBackground,
   };
 
   const addMarginToBackground = () => {
-    const margin = 2;
+    const margin = 8;
     const xScaleFactor = (width + margin * 2) / width;
     const yScaleFactor = (height + margin * 2) / height;
 

@@ -14,7 +14,7 @@ export const Edge = ({ parentNode, childNode }) => {
     <>
       <path
         d={svgPathShape}
-        stroke={colors.nodeBorder}
+        stroke={colors.secondaryColor}
         strokeWidth="2"
         fill="none"
         key={`${parentNode.id}->${childNode.id}3`}

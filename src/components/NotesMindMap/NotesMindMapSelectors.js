@@ -13,3 +13,8 @@ export const getSelectedNoteId = createSelector(getSelectedNote, selectedNote =>
 
 export const isChangeParentModeActiveSelector = state =>
   state.notesMindMap.isChangeParentModeActive;
+
+export const graphSelector = state => ({
+  nodes: state.notesMindMap.nodes,
+  edges: state.notesMindMap.edges,
+});

@@ -12,10 +12,14 @@ import { BackButton } from 'components/BackButton/BackButton';
 import { getSelectedNote } from 'components/NotesMindMap/NotesMindMapSelectors';
 import { colors } from 'colors';
 import { changeNoteParentPageMountedAction } from './ChangeNoteParentPageActions';
+import { nodeHasChildren } from 'helpers/graph';
+import useGraph from 'components/NotesMindMap/hooks/useGraph';
 
 export const ChangeNoteParentPage = () => {
   const dispatch = useDispatch();
   const selectedNote = useSelector(getSelectedNote);
+  const graph = useGraph();
+  const selectedNoteHasChildren = nodeHasChildren(graph, selectedNote);
 
   useEffect(() => {
     dispatch(changeNoteParentPageMountedAction());
@@ -35,7 +39,9 @@ export const ChangeNoteParentPage = () => {
           <Typography
             variant="body2"
             style={{ color: colors.onPrimaryHighEmphasis }}>
-            Click on a note to move "{selectedNote.name}" under it
+            {selectedNoteHasChildren
+              ? 'Click on a note to attach the selected tree'
+              : `Click on a note to attach "${selectedNote.name}"`}
           </Typography>
         </Toolbar>
       </AppBar>

@@ -159,3 +159,17 @@ export const getDeepestLastChild = ({ nodes, edges }, node) => {
 };
 
 export const isRootNode = (graph, node) => getRootNode(graph).id === node.id;
+
+export const isNodeDecendantOf = (graph, node, possibleDeepParent) => {
+  const isParentNodeRecursive = currentNode => {
+    const nodeParent = getParentNode(graph, currentNode);
+
+    if (!nodeParent) return false;
+
+    if (nodeParent.id === possibleDeepParent.id) return true;
+
+    return isParentNodeRecursive(nodeParent);
+  };
+
+  return isParentNodeRecursive(node);
+};

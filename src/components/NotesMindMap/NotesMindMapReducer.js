@@ -21,7 +21,10 @@ import {
   NOTE_NAME_UPDATE_REQUEST_SUCCESS_ACTION,
 } from 'components/NoteDetails/NoteDetailsActions';
 
-import { CHANGE_NOTE_PARENT_PAGE_MOUNTED } from 'components/NotesPage/ChangeNoteParentPage/ChangeNoteParentPageActions';
+import {
+  CHANGE_NOTE_PARENT_PAGE_MOUNTED,
+  CHANGE_NOTE_PARENT_PAGE_UNMOUNTED,
+} from 'components/NotesPage/ChangeNoteParentPage/ChangeNoteParentPageActions';
 
 import { removeNodeFromGraph } from '../../helpers/graph';
 
@@ -250,6 +253,9 @@ export const notesMindMapReducer = (
     case CHANGE_NOTE_PARENT_PAGE_MOUNTED:
       // for case when user refreshes the change parent page
       return { ...state, isChangeParentModeActive: true };
+    case CHANGE_NOTE_PARENT_PAGE_UNMOUNTED:
+      // for case when user clicks "back" on the change parent page
+      return { ...state, isChangeParentModeActive: false };
     case CHANGE_PARENT_REQUEST_SUCCESS_ACTION:
       return handleChangeParentNoteRequestSuccess();
     case CHANGE_PARENT_REQUEST_FAIL_ACTION:

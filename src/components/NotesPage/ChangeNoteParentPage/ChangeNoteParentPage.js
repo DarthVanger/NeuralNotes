@@ -11,7 +11,10 @@ import { TopBarPageTitle } from 'components/TopBar/TopBarPageTitle';
 import { BackButton } from 'components/BackButton/BackButton';
 import { getSelectedNote } from 'components/NotesMindMap/NotesMindMapSelectors';
 import { colors } from 'colors';
-import { changeNoteParentPageMountedAction } from './ChangeNoteParentPageActions';
+import {
+  changeNoteParentPageMountedAction,
+  changeNoteParentPageUnmountedAction,
+} from './ChangeNoteParentPageActions';
 import { nodeHasChildren } from 'helpers/graph';
 import useGraph from 'components/NotesMindMap/hooks/useGraph';
 
@@ -23,6 +26,10 @@ export const ChangeNoteParentPage = () => {
 
   useEffect(() => {
     dispatch(changeNoteParentPageMountedAction());
+
+    return () => {
+      dispatch(changeNoteParentPageUnmountedAction());
+    };
   }, []);
 
   return (

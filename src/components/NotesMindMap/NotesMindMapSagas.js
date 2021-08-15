@@ -17,11 +17,11 @@ import {
   changeParentRequestSuccessAction,
   changeParentRequestFailAction,
   SEARCH_RESULT_CLICKED,
-  ROOT_NOTE_FOUND_ACTION,
+  INITIAL_NOTE_FETCHED_ACTION,
 } from 'components/NotesMindMap/NotesMindMapActions';
 import { doesNodeHasParent } from 'helpers/graph';
 
-function* selectRootNote({ data }) {
+function* handleInitialNoteLoad({ data }) {
   yield put(changeSelectedNoteAction({ note: data, edges: [] }));
 }
 
@@ -99,7 +99,7 @@ function* changeParentNote({ data: { noteId, newParent } }) {
 export function* noteMindMapInit() {
   yield all([
     takeEvery(NOTE_CHANGE_PARENT_ACTION, changeParentNote),
-    takeEvery(ROOT_NOTE_FOUND_ACTION, selectRootNote),
+    takeEvery(INITIAL_NOTE_FETCHED_ACTION, handleInitialNoteLoad),
     takeEvery(CHANGE_SELECTED_NOTE_ACTION, changeSelectedNote),
     takeEvery(SEARCH_RESULT_CLICKED, handleSearchResultClick),
   ]);

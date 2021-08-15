@@ -15,6 +15,8 @@ export const CHANGE_PARENT_REQUEST_FAIL_ACTION =
   'CHANGE_PARENT_REQUEST_FAIL_ACTION';
 export const SEARCH_RESULT_CLICKED = 'SEARCH_RESULT_CLICKED';
 
+export const RESET_MIND_MAP_TO_ROOT_NODE = 'RESET_MIND_MAP_TO_ROOT_NODE';
+
 export const changeSelectedNoteAction = data => ({
   type: CHANGE_SELECTED_NOTE_ACTION,
   data,
@@ -48,9 +50,13 @@ export const searchResultClickedAction = data => ({
   data,
 });
 
-export const ROOT_NOTE_FOUND_ACTION = 'ROOT_NOTE_FOUND_ACTION';
+export const INITIAL_NOTE_FETCHED_ACTION = 'INITIAL_NOTE_FETCHED_ACTION';
 
-export const rootNoteFoundAction = data => ({
-  type: ROOT_NOTE_FOUND_ACTION,
+export const initialNoteFetchedAction = data => ({
+  type: INITIAL_NOTE_FETCHED_ACTION,
   data,
+});
+
+export const resetMindMapToRootNode = () => ({
+  type: RESET_MIND_MAP_TO_ROOT_NODE,
 });

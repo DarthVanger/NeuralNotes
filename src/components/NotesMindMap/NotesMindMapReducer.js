@@ -5,7 +5,8 @@ import {
   CHANGE_PARENT_REQUEST_SUCCESS_ACTION,
   CHANGE_PARENT_REQUEST_FAIL_ACTION,
   SEARCH_RESULT_CLICKED,
-  ROOT_NOTE_FOUND_ACTION,
+  INITIAL_NOTE_FETCHED_ACTION,
+  RESET_MIND_MAP_TO_ROOT_NODE,
 } from 'components/NotesMindMap/NotesMindMapActions';
 
 import { UploadsActions } from 'components/Uploads/UploadsActions';
@@ -154,7 +155,7 @@ export const notesMindMapReducer = (
     };
   };
 
-  const addRootToGraph = () => {
+  const addInitialNoteToGraph = () => {
     let nodes = state.nodes;
     const updatedNodes = addNodeToGraph(nodes, { ...data });
 
@@ -228,8 +229,8 @@ export const notesMindMapReducer = (
   };
 
   switch (type) {
-    case ROOT_NOTE_FOUND_ACTION:
-      return addRootToGraph();
+    case INITIAL_NOTE_FETCHED_ACTION:
+      return addInitialNoteToGraph();
     case CHANGE_SELECTED_NOTE_ACTION:
       return handleChangeSelectedNoteAction();
     case SELECTED_NOTE_CHILDREN_FETCHED_ACTION:
@@ -258,6 +259,12 @@ export const notesMindMapReducer = (
       return handleFileUploadStart();
     case UploadsActions.file.uploadSuccess().type:
       return handleFileUploadSuccess();
+    case RESET_MIND_MAP_TO_ROOT_NODE:
+      return {
+        ...state,
+        nodes: [],
+        edges: [],
+      };
     default:
       return state;
   }

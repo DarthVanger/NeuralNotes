@@ -10,7 +10,10 @@ import { loadGoogleApi } from 'components/App/AppSagas';
 import noteStorage from 'storage/noteStorage';
 import { AUTH_SUCCESS_ACTION } from 'components/LoginPage/LoginPageActions';
 
-import { rootNoteFoundAction } from 'components/NotesMindMap/NotesMindMapActions';
+import {
+  initialNoteFetchedAction,
+  RESET_MIND_MAP_TO_ROOT_NODE,
+} from 'components/NotesMindMap/NotesMindMapActions';
 
 function* loadGoogleDriveApi() {
   yield call(googleDriveApi.loadDriveApi);
@@ -22,11 +25,20 @@ function* loadInitialNote() {
   const lastViewedNoteId = localStorage.getItem('lastViewedNoteId');
   if (lastViewedNoteId) {
     initialNote = yield call(noteStorage.getNoteById, lastViewedNoteId);
+    yield put(initialNoteFetchedAction(initialNote));
   } else {
-    initialNote = yield call(noteStorage.scanDrive);
+    const rootNote = yield call(loadRootNote);
+    yield put(initialNoteFetchedAction(rootNote));
   }
+}
 
-  yield put(rootNoteFoundAction(initialNote));
+function loadRootNote() {
+  return noteStorage.scanDrive();
+}
+
+function* resetMindMapToRootNode() {
+  const rootNote = yield call(loadRootNote);
+  yield put(initialNoteFetchedAction(rootNote));
 }
 
 function* handleAuthorizedUserOpenedApp() {
@@ -43,4 +55,5 @@ function* handleAuthSuccess() {
 export function* notesPageInit() {
   yield takeEvery(AUTHORIZED_USER_OPENED_APP, handleAuthorizedUserOpenedApp);
   yield takeEvery(AUTH_SUCCESS_ACTION, handleAuthSuccess);
+  yield takeEvery(RESET_MIND_MAP_TO_ROOT_NODE, resetMindMapToRootNode);
 }

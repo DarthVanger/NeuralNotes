@@ -1,6 +1,6 @@
 import {
   CHANGE_SELECTED_NOTE_ACTION,
-  SELECTED_NOTE_CHILDREN_FETCHED_ACTION,
+  NOTE_CHILDREN_FETCHED_ACTION,
   SELECTED_NOTE_PARENT_FETCHED_ACTION,
   CHANGE_PARENT_REQUEST_SUCCESS_ACTION,
   CHANGE_PARENT_REQUEST_FAIL_ACTION,
@@ -41,21 +41,17 @@ export const notesMindMapReducer = (
   state = defaultState,
   { type, data, payload },
 ) => {
-  const handleSelectedNoteChildrenFetchedAction = () => {
+  const handleNoteChildrenFetchedAction = ({ note, children }) => {
     let nodes = [...state.nodes];
     let edges = [...state.edges];
 
-    const selectedNoteInNodes = nodes.find(
-      node => node.id === state.selectedNote.id,
-    );
-    nodes[nodes.indexOf(selectedNoteInNodes)] = {
-      ...selectedNoteInNodes,
+    nodes[nodes.indexOf(note)] = {
+      ...note,
       wereChildrenFetched: true,
     };
 
-    const childNotes = data;
-    if (childNotes.length) {
-      childNotes.forEach(child => {
+    if (children.length) {
+      children.forEach(child => {
         // when a an initial note is loaded, its parent is loaded
         // but without children. When the parent is clicked,
         // the children are fetched, including the initial note,
@@ -139,12 +135,11 @@ export const notesMindMapReducer = (
   };
 
   const handleChangeParentNoteRequestSuccess = () => {
-    const noteId = data.noteId;
-    const newParentId = data.newParentId;
+    const { note, newParent } = data;
     let edges = [...state.edges];
     let nodes = [...state.nodes];
-    edges = edges.filter(edge => edge.to !== noteId);
-    edges.push({ from: newParentId, to: noteId });
+    edges = edges.filter(edge => edge.to !== note.id);
+    edges.push({ from: newParent.id, to: note.id });
     return {
       ...state,
       isChangeParentModeActive: false,
@@ -238,8 +233,8 @@ export const notesMindMapReducer = (
       return addInitialNoteToGraph();
     case CHANGE_SELECTED_NOTE_ACTION:
       return handleChangeSelectedNoteAction();
-    case SELECTED_NOTE_CHILDREN_FETCHED_ACTION:
-      return handleSelectedNoteChildrenFetchedAction(data);
+    case NOTE_CHILDREN_FETCHED_ACTION:
+      return handleNoteChildrenFetchedAction(data);
     case SELECTED_NOTE_PARENT_FETCHED_ACTION:
       return handleSelectedNoteParentFetchedAction(data);
     case NOTE_NAME_UPDATE_REQUEST_SUCCESS_ACTION:

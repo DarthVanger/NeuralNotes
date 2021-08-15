@@ -55,7 +55,7 @@ export class NotesMindMapComponent extends Component {
       // when on the change parent page, user clicks on a note to
       // select the new parent for the selected note
       this.props.changeParentNote({
-        noteId: this.props.selectedNote.id,
+        note: this.props.selectedNote,
         newParent: targetNote,
       });
     } else {

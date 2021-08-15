@@ -12,7 +12,7 @@ import {
   CHANGE_SELECTED_NOTE_ACTION,
   changeSelectedNoteAction,
   NOTE_CHANGE_PARENT_ACTION,
-  selectedNoteChildrenFetchedAction,
+  noteChildrenFetchedAction,
   selectedNoteParentFetchedAction,
   changeParentRequestSuccessAction,
   changeParentRequestFailAction,
@@ -34,8 +34,8 @@ function* changeSelectedNote({ data: { note, edges } }) {
   const targetNote = note;
   localStorage.setItem('lastViewedNoteId', targetNote.id);
   if (!targetNote.wereChildrenFetched && !targetNote.isUploadedFile) {
-    const childNotes = yield fetchChildNotes(targetNote);
-    yield put(selectedNoteChildrenFetchedAction(childNotes));
+    const children = yield fetchChildNotes(targetNote);
+    yield put(noteChildrenFetchedAction({ note, children }));
   } else {
     console.log('not fetching child notes');
   }
@@ -53,7 +53,7 @@ function* handleSearchResultClick({ data: { note } }) {
   localStorage.setItem('lastViewedNoteId', targetNote.id);
   const childNotes = yield fetchChildNotes(targetNote);
   yield put(push('/notes'));
-  yield put(selectedNoteChildrenFetchedAction(childNotes));
+  yield put(noteChildrenFetchedAction({ note, children }));
 }
 
 function* fetchChildNotes(note) {
@@ -79,26 +79,32 @@ function* fetchParentNote(note) {
   }
 }
 
-function* changeParentNote({ data: { noteId, newParent } }) {
+function* changeParentNote({ data: { note, newParent } }) {
   try {
     if (newParent.wereChildrenFetched) {
       yield* fetchChildNotes(newParent);
     }
-    yield call(noteStorage.move, { noteId, newParentId: newParent.id });
-    yield put(
-      changeParentRequestSuccessAction({ noteId, newParentId: newParent.id }),
-    );
+    yield call(noteStorage.move, {
+      noteId: note.id,
+      newParentId: newParent.id,
+    });
+    yield put(changeParentRequestSuccessAction({ note, newParent }));
   } catch (e) {
-    yield put(
-      changeParentRequestFailAction({ noteId, newParentId: newParent.id }),
-    );
+    yield put(changeParentRequestFailAction({ note, newParent, error: e }));
     yield call([toast, toast.error], 'Changing note has parent failed');
     throw Error(e);
   }
 }
 
-function* handleChangeParentRequestSuccess() {
+function* handleChangeParentRequestSuccess({ data: { note, newParent } }) {
   yield put(push('/notes'));
+
+  if (!newParent.wereChildrenFetched) {
+    const children = yield fetchChildNotes(newParent);
+    yield put(noteChildrenFetchedAction({ note, children }));
+  } else {
+    console.log('not fetching child notes for new parent');
+  }
 }
 
 export function* noteMindMapInit() {

@@ -3,8 +3,7 @@ export const CHANGE_NOTE_VIS_NETWORK_NOTE_ACTION =
   'CHANGE_NOTE_VIS_NETWORK_NOTE_ACTION';
 export const NOTE_CHANGE_PARENT_ACTION = 'NOTE_CHANGE_PARENT_ACTION';
 export const UPDATE_NOTE_NAME_ACTION = 'UPDATE_NOTE_NAME_ACTION';
-export const SELECTED_NOTE_CHILDREN_FETCHED_ACTION =
-  'SELECTED_NOTE_CHILDREN_FETCHED_ACTION';
+export const NOTE_CHILDREN_FETCHED_ACTION = 'NOTE_CHILDREN_FETCHED_ACTION';
 export const SELECTED_NOTE_PARENT_FETCHED_ACTION =
   'SELECTED_NOTE_PARENT_FETCHED_ACTION';
 
@@ -21,8 +20,8 @@ export const changeSelectedNoteAction = data => ({
   type: CHANGE_SELECTED_NOTE_ACTION,
   data,
 });
-export const selectedNoteChildrenFetchedAction = data => ({
-  type: SELECTED_NOTE_CHILDREN_FETCHED_ACTION,
+export const noteChildrenFetchedAction = data => ({
+  type: NOTE_CHILDREN_FETCHED_ACTION,
   data,
 });
 export const selectedNoteParentFetchedAction = data => ({

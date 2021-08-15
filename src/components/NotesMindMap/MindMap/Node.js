@@ -1,6 +1,6 @@
 import React from 'react';
 import NodeBackground from './NodeBackground';
-import { colors } from 'colors';
+import { colors, nodeBorderColor } from 'colors';
 
 export const Node = node => {
   const {
@@ -18,7 +18,7 @@ export const Node = node => {
   const { isSelected } = customAttributes;
 
   const textStyle = {
-    fill: isSelected ? colors.primary : colors.secondary,
+    fill: isSelected ? colors.primary : nodeBorderColor,
   };
 
   return (

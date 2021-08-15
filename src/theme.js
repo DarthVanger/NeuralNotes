@@ -66,7 +66,11 @@ export const theme = createMuiTheme({
   overrides: {
     MuiAppBar: {
       colorPrimary: {
-        backgroundColor: colors.elevationOverlay04dp,
+        // reset default background color
+        backgroundColor: null,
+        // use background instead of background color as some colors are implemented using
+        // linear-gradient() to blend 2 colors
+        background: colors.elevationOverlay04dp,
       },
     },
     MuiList: {

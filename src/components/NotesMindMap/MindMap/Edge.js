@@ -1,5 +1,5 @@
 import React from 'react';
-import { colors } from 'colors';
+import { mindMapEdgeColor } from 'colors';
 
 export const Edge = ({ parentNode, childNode }) => {
   /**
@@ -14,7 +14,7 @@ export const Edge = ({ parentNode, childNode }) => {
     <>
       <path
         d={svgPathShape}
-        stroke={colors.secondary}
+        stroke={mindMapEdgeColor}
         strokeWidth="2"
         fill="none"
         key={`${parentNode.id}->${childNode.id}3`}

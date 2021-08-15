@@ -1,5 +1,10 @@
 import React from 'react';
-import { colors } from 'colors';
+import {
+  colors,
+  nodeBorderColor,
+  mindMapBackground,
+  selectedNodeShadow,
+} from 'colors';
 
 const NodeBackground = ({ height, width, isSelected, debug }) => {
   const borderPath = `
@@ -47,19 +52,19 @@ const NodeBackground = ({ height, width, isSelected, debug }) => {
   }
 
   const nodeStyle = {
-    stroke: colors.secondary,
+    stroke: nodeBorderColor,
     fill: 'transparent',
   };
 
   const selectedNodeStyle = {
     ...nodeStyle,
     stroke: colors.primary,
-    filter: colors.selectedNodeShadow,
+    filter: selectedNodeShadow,
   };
 
   const backgroundStyle = {
     stroke: 'none',
-    fill: colors.elevationOverlay02dp,
+    fill: mindMapBackground,
   };
 
   const addMarginToBackground = () => {

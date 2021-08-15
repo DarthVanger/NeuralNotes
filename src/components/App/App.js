@@ -1,8 +1,8 @@
 import React from 'react';
-
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import Typography from '@material-ui/core/Typography';
 
 import { LoginPageContainer } from 'components/LoginPage/LoginPageContainer';
 import { NoteDetailsPage } from 'components/NoteDetails/NoteDetailsPage';
@@ -43,6 +43,13 @@ export const App = () => {
         </Route>
         <Route path="/search">
           <SearchPageComponent />
+        </Route>
+        <Route path="*">
+          <div style={{ height: '100vh', padding: '1em' }}>
+            <Typography variant="h4">
+              Whoops, this page doesn't exist.
+            </Typography>
+          </div>
         </Route>
       </Switch>
     </AppWrapper>

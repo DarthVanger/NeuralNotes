@@ -21,7 +21,7 @@ function* handleAddNoteButtonClick() {
 }
 
 function* handleChangeParentButtonClick({ data: { note } }) {
-  yield put(push(`/change-note-parent/${note.id}`));
+  yield put(push(`/notes/change-parent/${note.id}`));
 }
 
 function* deleteNote({ data: { note } }) {

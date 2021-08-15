@@ -21,6 +21,8 @@ import {
   NOTE_NAME_UPDATE_REQUEST_SUCCESS_ACTION,
 } from 'components/NoteDetails/NoteDetailsActions';
 
+import { CHANGE_NOTE_PARENT_PAGE_MOUNTED } from 'components/NotesPage/ChangeNoteParentPage/ChangeNoteParentPageActions';
+
 import { removeNodeFromGraph } from '../../helpers/graph';
 
 import noteStorage from 'storage/noteStorage';
@@ -244,6 +246,9 @@ export const notesMindMapReducer = (
     case DELETE_NOTE_REQUEST_SUCCESS_ACTION:
       return handleDeleteNoteRequestSuccessAction({ state, data });
     case CHANGE_PARENT_BUTTON_CLICKED_ACTION:
+      return { ...state, isChangeParentModeActive: true };
+    case CHANGE_NOTE_PARENT_PAGE_MOUNTED:
+      // for case when user refreshes the change parent page
       return { ...state, isChangeParentModeActive: true };
     case CHANGE_PARENT_REQUEST_SUCCESS_ACTION:
       return handleChangeParentNoteRequestSuccess();

@@ -6,8 +6,8 @@ import {
   put,
   takeEvery,
 } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
-import noteStorage from 'storage/noteStorage';
 
+import noteStorage from 'storage/noteStorage';
 import {
   CHANGE_SELECTED_NOTE_ACTION,
   changeSelectedNoteAction,
@@ -18,6 +18,7 @@ import {
   changeParentRequestFailAction,
   SEARCH_RESULT_CLICKED,
   INITIAL_NOTE_FETCHED_ACTION,
+  CHANGE_PARENT_REQUEST_SUCCESS_ACTION,
 } from 'components/NotesMindMap/NotesMindMapActions';
 import { doesNodeHasParent } from 'helpers/graph';
 
@@ -96,9 +97,17 @@ function* changeParentNote({ data: { noteId, newParent } }) {
   }
 }
 
+function* handleChangeParentRequestSuccess() {
+  yield put(push('/notes'));
+}
+
 export function* noteMindMapInit() {
   yield all([
     takeEvery(NOTE_CHANGE_PARENT_ACTION, changeParentNote),
+    takeEvery(
+      CHANGE_PARENT_REQUEST_SUCCESS_ACTION,
+      handleChangeParentRequestSuccess,
+    ),
     takeEvery(INITIAL_NOTE_FETCHED_ACTION, handleInitialNoteLoad),
     takeEvery(CHANGE_SELECTED_NOTE_ACTION, changeSelectedNote),
     takeEvery(SEARCH_RESULT_CLICKED, handleSearchResultClick),

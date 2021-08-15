@@ -15,17 +15,7 @@ export const Node = node => {
   const selectedNote = useSelectedNote();
   const graph = useGraph();
 
-  const {
-    x,
-    y,
-    label,
-    width,
-    height,
-    padding,
-    debug,
-    domAttributes,
-    customAttributes,
-  } = node;
+  const { x, y, label, width, height, padding, debug, domAttributes } = node;
 
   const textStyle = {
     fill: isSelected ? colors.primary : nodeBorderColor,
@@ -42,7 +32,6 @@ export const Node = node => {
     isChangeParentModeActive && isDecendantOfSelectedNote;
 
   const isSelected = node.id === selectedNote.id || isPartOfSelectedTree;
-  console.log(node.label, 'is selected: ', isSelected);
 
   return (
     <g {...domAttributes} transform={`translate(${x} ${y})`}>

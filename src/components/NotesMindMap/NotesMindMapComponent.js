@@ -19,9 +19,6 @@ export class NotesMindMapComponent extends Component {
       key: n.id,
       label: n.name,
       onClick: () => this.handleNodeClick(n),
-      customAttributes: {
-        isSelected: selectedNote.id === n.id,
-      },
     }));
 
     return (

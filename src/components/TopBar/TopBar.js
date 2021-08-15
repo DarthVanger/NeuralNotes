@@ -4,6 +4,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import styled from 'styled-components';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { colors } from 'colors';
 
 const TopBarWrapper = styled.div`
   display: flex;
@@ -14,16 +15,18 @@ const useStyles = makeStyles(theme => ({
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
   },
+  appBar: {
+    backgroundColor: colors.elevationOverlay04dp,
+  },
 }));
 
 export const TopBar = ({ children }) => {
-  const theme = useTheme();
   const classes = useStyles();
-  console.log('theme', theme);
+
   return (
     <>
       <TopBarWrapper>
-        <AppBar>
+        <AppBar className={classes.appBar}>
           <Toolbar>{children}</Toolbar>
         </AppBar>
       </TopBarWrapper>

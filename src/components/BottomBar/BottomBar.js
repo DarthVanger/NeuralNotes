@@ -35,6 +35,9 @@ const useStyles = makeStyles(() => ({
     top: -30,
     right: 12,
   },
+  appBar: {
+    backgroundColor: colors.elevationOverlay04dp,
+  },
 }));
 
 const StyledLabel = styled.div`
@@ -57,7 +60,7 @@ export const BottomBar = () => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" className={classes.appBar}>
       <Toolbar>
         <BottomBarMenu />
         {!selectedNote.isUploadedFile && (

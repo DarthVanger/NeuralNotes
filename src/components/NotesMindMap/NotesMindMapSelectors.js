@@ -10,3 +10,6 @@ export const getSelectedNote = createSelector(
 export const getSelectedNoteId = createSelector(getSelectedNote, selectedNote =>
   selectedNote ? selectedNote.id : null,
 );
+
+export const isChangeParentModeActiveSelector = state =>
+  state.notesMindMap.isChangeParentModeActive;

@@ -74,6 +74,7 @@ export const NoteDetailsComponent = props => {
       <StyledNoteContentEditor
         onChange={handleNoteContentChange}
         value={noteContent}
+        placeholder="Note"
         rows="5"
       />
     </StyledNoteDetailsScreen>

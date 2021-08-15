@@ -24,10 +24,6 @@ import {
 } from './BottomBarActions';
 
 const useStyles = makeStyles(() => ({
-  appBar: {
-    top: 'auto',
-    bottom: 0,
-  },
   left: {
     position: 'absolute',
     color: colors.onSurfaceMediumEmphasis,
@@ -61,7 +57,7 @@ export const BottomBar = () => {
   };
 
   return (
-    <AppBar position="static" className={classes.appBar}>
+    <AppBar position="static">
       <Toolbar>
         <BottomBarMenu />
         {!selectedNote.isUploadedFile && (

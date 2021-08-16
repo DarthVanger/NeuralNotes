@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { action } from 'sagas';
+import { makeAction } from 'redux-store';
 
 import {
   CHANGE_SELECTED_NOTE_ACTION,
@@ -19,10 +19,10 @@ const mapStateToProps = ({
 });
 
 const mapDispatchToProps = () => ({
-  changeSelectedNote: data => action(CHANGE_SELECTED_NOTE_ACTION, data),
-  changeParentNote: data => action(NOTE_CHANGE_PARENT_ACTION, data),
-  updateNoteName: data => action(UPDATE_NOTE_NAME_ACTION, data),
-  onMindMapClick: data => action(MIND_MAP_CLICKED_ACTION, data),
+  changeSelectedNote: data => makeAction(CHANGE_SELECTED_NOTE_ACTION, data),
+  changeParentNote: data => makeAction(NOTE_CHANGE_PARENT_ACTION, data),
+  updateNoteName: data => makeAction(UPDATE_NOTE_NAME_ACTION, data),
+  onMindMapClick: data => makeAction(MIND_MAP_CLICKED_ACTION, data),
 });
 
 export const NotesMindMapContainer = connect(

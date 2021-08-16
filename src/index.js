@@ -4,7 +4,7 @@ import { ConnectedRouter } from 'connected-react-router';
 import { GlobalStyle } from 'globalStyles';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { store, history } from 'sagas';
+import { store, history } from 'redux-store';
 
 import { ThemeProvider } from '@material-ui/styles';
 import { theme } from 'theme';

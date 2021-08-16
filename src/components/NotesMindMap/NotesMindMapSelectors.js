@@ -18,3 +18,9 @@ export const graphSelector = state => ({
   nodes: state.notesMindMap.nodes,
   edges: state.notesMindMap.edges,
 });
+
+export const isSelectedNoteLoadingSelector = state =>
+  state.notesMindMap.isSelectedNoteLoading;
+
+export const mindMapLoadedFromMemorySelector = state =>
+  state.notesMindMap.mindMapLoadedFromMemory;

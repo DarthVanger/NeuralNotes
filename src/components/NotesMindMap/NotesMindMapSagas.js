@@ -9,8 +9,7 @@ import {
 
 import noteStorage from 'storage/noteStorage';
 import {
-  CHANGE_SELECTED_NOTE_ACTION,
-  changeSelectedNoteAction,
+  noteWithChildrenAndParentFetchSuccessAction,
   NOTE_CHANGE_PARENT_ACTION,
   noteChildrenFetchedAction,
   selectedNoteParentFetchedAction,
@@ -19,38 +18,21 @@ import {
   SEARCH_RESULT_CLICKED,
   INITIAL_NOTE_FETCHED_ACTION,
   CHANGE_PARENT_REQUEST_SUCCESS_ACTION,
+  MIND_MAP_NODE_CLICKED_ACTION,
+  FETCH_NOTE_ACTION,
+  NOTE_FETCH_SUCCESS_ACTION,
+  fetchNoteAction,
+  noteFetchSuccessAction,
 } from 'components/NotesMindMap/NotesMindMapActions';
+import { NOTES_GRAPH_LOADED_FROM_LOCAL_STORAGE_ACTION } from 'components/NotesPage/NotesPageActions';
 import { doesNodeHasParent } from 'helpers/graph';
 
-function* handleInitialNoteLoad({ data }) {
-  yield put(changeSelectedNoteAction({ note: data, edges: [] }));
-}
-
-/**
- * Load child notes for clicked note,
- * and redraw the network for new notes.
- */
-function* changeSelectedNote({ data: { note, edges } }) {
-  const targetNote = note;
-  localStorage.setItem('lastViewedNoteId', targetNote.id);
-  if (!targetNote.wereChildrenFetched && !targetNote.isUploadedFile) {
-    const children = yield fetchChildNotes(targetNote);
-    yield put(noteChildrenFetchedAction({ note, children }));
-  } else {
-    console.log('not fetching child notes');
-  }
-
-  if (!doesNodeHasParent(note, edges) && !noteStorage.isAppFolder(note)) {
-    const parentNote = yield fetchParentNote(targetNote);
-    yield put(selectedNoteParentFetchedAction(parentNote));
-  } else {
-    console.log('not fetching parent note');
-  }
+function* handleInitialNoteLoad({ data: initialNote }) {
+  yield put(noteFetchSuccessAction(initialNote));
 }
 
 function* handleSearchResultClick({ data: { note } }) {
   const targetNote = note;
-  localStorage.setItem('lastViewedNoteId', targetNote.id);
   const childNotes = yield fetchChildNotes(targetNote);
   yield put(push('/notes'));
   yield put(noteChildrenFetchedAction({ note, children }));
@@ -107,6 +89,49 @@ function* handleChangeParentRequestSuccess({ data: { note, newParent } }) {
   }
 }
 
+function* handleNotesGraphLoadedFromLocalStorage({ data: { selectedNote } }) {
+  yield put(fetchNoteAction(selectedNote));
+}
+
+function* fetchNote({ data: note }) {
+  const fetchedNote = yield call(noteStorage.getNoteById, note.id);
+  yield put(noteFetchSuccessAction(fetchedNote));
+}
+
+function* handleMindMapNodeClick({
+  data: { targetNode, graph, selectedNote, isChangeParentModeActive },
+}) {
+  if (targetNode.id === selectedNote.id) return;
+
+  if (isChangeParentModeActive) {
+    yield put(
+      changeParentNoteAction({
+        note: selectedNote,
+        newParent: targetNote,
+      }),
+    );
+  } else {
+    yield put(fetchNoteAction(targetNode));
+  }
+}
+
+function* handleFetchNoteSuccess({ data: fetchedNote }) {
+  const children = yield fetchChildNotes(fetchedNote);
+
+  let parentNote;
+  if (!noteStorage.isAppFolder(fetchedNote)) {
+    parentNote = yield fetchParentNote(fetchedNote);
+  }
+
+  yield put(
+    noteWithChildrenAndParentFetchSuccessAction({
+      note: fetchedNote,
+      children,
+      parentNote,
+    }),
+  );
+}
+
 export function* noteMindMapInit() {
   yield all([
     takeEvery(NOTE_CHANGE_PARENT_ACTION, changeParentNote),
@@ -115,7 +140,13 @@ export function* noteMindMapInit() {
       handleChangeParentRequestSuccess,
     ),
     takeEvery(INITIAL_NOTE_FETCHED_ACTION, handleInitialNoteLoad),
-    takeEvery(CHANGE_SELECTED_NOTE_ACTION, changeSelectedNote),
     takeEvery(SEARCH_RESULT_CLICKED, handleSearchResultClick),
+    takeEvery(
+      NOTES_GRAPH_LOADED_FROM_LOCAL_STORAGE_ACTION,
+      handleNotesGraphLoadedFromLocalStorage,
+    ),
+    takeEvery(MIND_MAP_NODE_CLICKED_ACTION, handleMindMapNodeClick),
+    takeEvery(FETCH_NOTE_ACTION, fetchNote),
+    takeEvery(NOTE_FETCH_SUCCESS_ACTION, handleFetchNoteSuccess),
   ]);
 }

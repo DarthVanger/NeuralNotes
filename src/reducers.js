@@ -6,6 +6,7 @@ import { noteDetailsReducer } from 'components/NoteDetails/NoteDetailsReducer';
 import { notesMindMapReducer } from 'components/NotesMindMap/NotesMindMapReducer';
 import { searchPageReducer } from 'components/SearchPage/SearchPageReducer';
 import { uploadsReducer } from 'components/Uploads/UploadsReducer';
+import { mindMapLoadedFromMemoryNotficationReducer } from 'components/NotesMindMap/MindMapLoadedFromMemoryNotification/MindMapLoadedFromMemoryNotificationReducer';
 
 export const createRootReducer = history =>
   combineReducers({
@@ -15,4 +16,5 @@ export const createRootReducer = history =>
     notesMindMap: notesMindMapReducer,
     searchPage: searchPageReducer,
     [uploadsReducer.KEY]: uploadsReducer,
+    mindMapLoadedFromMemoryNotfication: mindMapLoadedFromMemoryNotficationReducer,
   });

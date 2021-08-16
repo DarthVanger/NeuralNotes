@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import {
   colors,
   nodeBorderColor,
@@ -6,7 +7,7 @@ import {
   selectedNodeShadow,
 } from 'colors';
 
-const NodeBackground = ({ height, width, isSelected, debug }) => {
+const NodeBackground = ({ height, width, isSelected, isLoading, debug }) => {
   const borderPath = `
     M 0 ${(height * 2) / 3}
     v -${(height * 2) / 3 - height / 6}
@@ -67,6 +68,28 @@ const NodeBackground = ({ height, width, isSelected, debug }) => {
     fill: mindMapBackground,
   };
 
+  const BorderPath = () => {
+    if (isLoading) {
+      const LoadingPath = styled.path`
+        @keyframes moving-dash {
+          to {
+            stroke-dashoffset: 1000;
+          }
+        }
+
+        animation: moving-dash 15s linear infinite;
+        animation-direction: reverse;
+        stroke-dasharray: 20;
+      `;
+
+      return <LoadingPath d={borderPath} style={selectedNodeStyle} />;
+    }
+
+    return (
+      <path d={borderPath} style={isSelected ? selectedNodeStyle : nodeStyle} />
+    );
+  };
+
   const addMarginToBackground = () => {
     const margin = 8;
     const xScaleFactor = (width + margin * 2) / width;
@@ -91,10 +114,7 @@ const NodeBackground = ({ height, width, isSelected, debug }) => {
           style={backgroundStyle}
           transform={backgroundTransform}
         />
-        <path
-          d={borderPath}
-          style={isSelected ? selectedNodeStyle : nodeStyle}
-        />
+        <BorderPath />
       </g>
     </>
   );

@@ -173,3 +173,18 @@ export const isNodeDecendantOf = (graph, node, possibleDeepParent) => {
 
   return isParentNodeRecursive(node);
 };
+
+export const removeEdge = (graph, { from, to }) => {
+  const { nodes, edges } = graph;
+  const edge = edges.find(edge => edge.from === from.id && edge.to === to.id);
+  const updatedEdges = [...edges];
+  updatedEdges.splice(edges.indexOf(edge), 1);
+  return updatedEdges;
+};
+
+export const addEdge = (graph, { from, to }) => {
+  const { nodes, edges } = graph;
+  const updatedEdges = [...edges];
+  updatedEdges.push({ from: from.id, to: to.id });
+  return updatedEdges;
+};

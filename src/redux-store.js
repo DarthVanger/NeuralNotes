@@ -5,6 +5,7 @@ import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import { sagaMiddleware, runSaga } from './sagas.js';
+import { saveNotesMindMapToLocalStorageOnReduxStoreChange } from 'storage/notesMindMapLocalStorage';
 
 const composeEnhancers = composeWithDevTools({
   serialize: {
@@ -37,8 +38,10 @@ const configureStore = preloadedState => {
   return store;
 };
 
+export const store = configureStore();
+
 runSaga();
 
-export const store = configureStore();
+store.subscribe(() => saveNotesMindMapToLocalStorageOnReduxStoreChange(store));
 
 export const makeAction = (type, data = null) => store.dispatch({ type, data });

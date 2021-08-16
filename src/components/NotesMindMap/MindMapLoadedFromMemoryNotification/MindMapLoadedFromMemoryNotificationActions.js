@@ -1,0 +1,7 @@
+export const MIND_MAP_LOADED_FROM_MEMORY_NOTIFICATION_CLOSED =
+  'MIND_MAP_LOADED_FROM_MEMORY_NOTIFICATION_CLOSED';
+
+export const mindMapLoadedFromMemoryNotificationClosed = data => ({
+  type: MIND_MAP_LOADED_FROM_MEMORY_NOTIFICATION_CLOSED,
+  data,
+});

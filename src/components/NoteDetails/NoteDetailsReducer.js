@@ -7,7 +7,6 @@ import {
   CREATE_NOTE_REQUEST_ACTION,
   CREATE_NOTE_SUCCESS_ACTION,
 } from 'components/NoteDetails/NoteDetailsActions';
-import { CHANGE_SELECTED_NOTE_ACTION } from 'components/NotesMindMap/NotesMindMapActions';
 import { ADD_NOTE_BUTTON_CLICKED_ACTION } from 'components/BottomBar/BottomBarActions';
 
 const defaultState = {
@@ -33,11 +32,6 @@ export const noteDetailsReducer = (state = defaultState, { type, data }) => {
           ...state.editorState,
           areChangesSaved: false,
         },
-      };
-    case CHANGE_SELECTED_NOTE_ACTION:
-      return {
-        ...state,
-        noteName: data.note.name,
       };
     case ADD_NOTE_BUTTON_CLICKED_ACTION:
       return {

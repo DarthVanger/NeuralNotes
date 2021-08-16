@@ -1,4 +1,3 @@
-export const CHANGE_SELECTED_NOTE_ACTION = 'CHANGE_SELECTED_NOTE_ACTION';
 export const CHANGE_NOTE_VIS_NETWORK_NOTE_ACTION =
   'CHANGE_NOTE_VIS_NETWORK_NOTE_ACTION';
 export const NOTE_CHANGE_PARENT_ACTION = 'NOTE_CHANGE_PARENT_ACTION';
@@ -7,7 +6,6 @@ export const NOTE_CHILDREN_FETCHED_ACTION = 'NOTE_CHILDREN_FETCHED_ACTION';
 export const SELECTED_NOTE_PARENT_FETCHED_ACTION =
   'SELECTED_NOTE_PARENT_FETCHED_ACTION';
 
-export const MIND_MAP_CLICKED_ACTION = 'MIND_MAP_CLICKED_ACTION';
 export const CHANGE_PARENT_REQUEST_SUCCESS_ACTION =
   'CHANGE_PARENT_REQUEST_SUCCESS_ACTION';
 export const CHANGE_PARENT_REQUEST_FAIL_ACTION =
@@ -16,10 +14,37 @@ export const SEARCH_RESULT_CLICKED = 'SEARCH_RESULT_CLICKED';
 
 export const RESET_MIND_MAP_TO_ROOT_NODE = 'RESET_MIND_MAP_TO_ROOT_NODE';
 
-export const changeSelectedNoteAction = data => ({
-  type: CHANGE_SELECTED_NOTE_ACTION,
+export const MIND_MAP_NODE_CLICKED_ACTION = 'MIND_MAP_NODE_CLICKED_ACTION';
+
+export const FETCH_NOTE_ACTION = 'FETCH_NOTE_ACTION';
+export const NOTE_FETCH_SUCCESS_ACTION = 'NOTE_FETCH_SUCCESS_ACTION';
+export const NOTE_WITH_CHILDREN_AND_PARENT_FETCH_SUCCESS_ACTION =
+  'NOTE_WITH_CHILDREN_AND_PARENT_FETCH_SUCCESS_ACTION';
+
+export const noteWithChildrenAndParentFetchSuccessAction = data => ({
+  type: NOTE_WITH_CHILDREN_AND_PARENT_FETCH_SUCCESS_ACTION,
   data,
 });
+export const noteFetchSuccessAction = data => ({
+  type: NOTE_FETCH_SUCCESS_ACTION,
+  data,
+});
+
+export const fetchNoteAction = data => ({
+  type: FETCH_NOTE_ACTION,
+  data,
+});
+
+export const changeParentNoteAction = data => ({
+  type: NOTE_CHANGE_PARENT_ACTION,
+  data,
+});
+
+export const mindMapNodeClickedAction = data => ({
+  type: MIND_MAP_NODE_CLICKED_ACTION,
+  data,
+});
+
 export const noteChildrenFetchedAction = data => ({
   type: NOTE_CHILDREN_FETCHED_ACTION,
   data,
@@ -30,10 +55,6 @@ export const selectedNoteParentFetchedAction = data => ({
 });
 export const updateNoteNameAction = data => ({
   type: UPDATE_NOTE_NAME_ACTION,
-  data,
-});
-export const mindMapClickedAction = data => ({
-  type: MIND_MAP_CLICKED_ACTION,
   data,
 });
 export const changeParentRequestSuccessAction = data => ({

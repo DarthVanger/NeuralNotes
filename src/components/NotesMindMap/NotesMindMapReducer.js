@@ -1,5 +1,4 @@
 import {
-  CHANGE_SELECTED_NOTE_ACTION,
   NOTE_CHILDREN_FETCHED_ACTION,
   SELECTED_NOTE_PARENT_FETCHED_ACTION,
   CHANGE_PARENT_REQUEST_SUCCESS_ACTION,
@@ -7,6 +6,9 @@ import {
   SEARCH_RESULT_CLICKED,
   INITIAL_NOTE_FETCHED_ACTION,
   RESET_MIND_MAP_TO_ROOT_NODE,
+  NOTE_WITH_CHILDREN_AND_PARENT_FETCH_SUCCESS_ACTION,
+  MIND_MAP_NODE_CLICKED_ACTION,
+  FETCH_NOTE_ACTION,
 } from 'components/NotesMindMap/NotesMindMapActions';
 
 import { UploadsActions } from 'components/Uploads/UploadsActions';
@@ -26,7 +28,14 @@ import {
   CHANGE_NOTE_PARENT_PAGE_UNMOUNTED,
 } from 'components/NotesPage/ChangeNoteParentPage/ChangeNoteParentPageActions';
 
-import { removeNodeFromGraph } from '../../helpers/graph';
+import { NOTES_GRAPH_LOADED_FROM_LOCAL_STORAGE_ACTION } from 'components/NotesPage/NotesPageActions';
+
+import {
+  removeNodeFromGraph,
+  removeEdge,
+  addEdge,
+  getParentNode,
+} from '../../helpers/graph';
 
 import noteStorage from 'storage/noteStorage';
 
@@ -35,39 +44,72 @@ const defaultState = {
   isChangeParentModeActive: false,
   nodes: [],
   edges: [],
+  isSelectedNoteLoading: false,
+  mindMapLoadedFromMemory: false,
 };
 
 export const notesMindMapReducer = (
   state = defaultState,
   { type, data, payload },
 ) => {
-  const handleNoteChildrenFetchedAction = ({ note, children }) => {
+  const handleNotesGraphLoadedFromLocalStorage = () => {
+    const { graph, selectedNote } = data;
+    const { nodes, edges } = graph;
+    const updatedNodes = graph.nodes.map(node => ({
+      ...node,
+      wereChildrenFetched: false,
+    }));
+
+    return {
+      ...state,
+      nodes: updatedNodes,
+      edges,
+      selectedNote,
+      mindMapLoadedFromMemory: true,
+    };
+  };
+
+  const handleNoteWithChildrenAndParentFetchSuccess = () => {
+    const { note, children, parentNote } = data;
+
+    const state1 = updateNoteChildren(state, note, children);
+    const state2 = updateNoteParent(state1, note, parentNote);
+
+    const nodes = state2.nodes.map(n => {
+      if (n.id === note.id) {
+        return {
+          ...note,
+          wereChildrenFetched: true,
+        };
+      } else {
+        return n;
+      }
+    });
+
+    return {
+      ...state2,
+      nodes,
+      isSelectedNoteLoading: false,
+    };
+  };
+
+  const updateNoteChildren = (state, note, children) => {
     let nodes = [...state.nodes];
     let edges = [...state.edges];
 
-    nodes[nodes.indexOf(note)] = {
-      ...note,
-      wereChildrenFetched: true,
-    };
+    children.forEach(child => {
+      // if the child is already on the mind map, do nothing
+      if (nodes.find(n => n.id === child.id)) return;
 
-    if (children.length) {
-      children.forEach(child => {
-        // when a an initial note is loaded, its parent is loaded
-        // but without children. When the parent is clicked,
-        // the children are fetched, including the initial note,
-        // which is already present in the graph. Omit it
-        // when adding nodes and edges, to avoid having it twice.
-        if (nodes.find(node => node.id === child.id)) return;
-
-        nodes = addNodeToGraph(nodes, child);
-        edges.push({
-          from: child.parent.id,
-          to: child.id,
-          fromNode: child.parent,
-          toNode: child,
-        });
+      nodes = addNodeToGraph(nodes, child);
+      edges.push({
+        from: note.id,
+        to: child.id,
+        fromNode: note,
+        toNode: child,
       });
-    }
+    });
+
     return {
       ...state,
       nodes,
@@ -75,19 +117,48 @@ export const notesMindMapReducer = (
     };
   };
 
-  const handleSelectedNoteParentFetchedAction = () => {
-    let nodes = [...state.nodes];
-    let edges = [...state.edges];
+  const updateNoteParent = (state, note, fetchedParentNote) => {
+    // the app folder has no parent, nothing to update
+    if (noteStorage.isAppFolder(note)) return state;
 
-    const parentNote = data;
-    if (parentNote) {
-      nodes = addNodeToGraph(nodes, parentNote);
-      edges.push({ from: parentNote.id, to: state.selectedNote.id });
+    const { nodes, edges } = state;
+
+    const graph = { nodes, edges };
+
+    const currentParentNote = getParentNode(graph, note);
+    const fetchedParentNoteInGraph = nodes.find(
+      node => node.id === fetchedParentNote.id,
+    );
+
+    // fetched note's parent is already its parent in the graph, do nothing
+    if (currentParentNote?.id === fetchedParentNote.id) {
+      return state;
     }
+
+    let updatedNodes = nodes;
+    let updatedEdges = edges;
+
+    // fetched parent is not in the graph yet, add it with edge to selected note
+    if (!fetchedParentNoteInGraph) {
+      updatedNodes = addNodeToGraph(nodes, fetchedParentNote);
+      updatedEdges = addEdge(graph, {
+        from: fetchedParentNote,
+        to: note,
+      });
+    }
+
+    // note had a parent different from the fetched one, remove edge to old parent
+    if (currentParentNote && currentParentNote.id !== fetchedParentNote.id) {
+      updatedEdges = removeEdge(graph, {
+        from: currentParentNote,
+        to: note,
+      });
+    }
+
     return {
       ...state,
-      nodes,
-      edges,
+      nodes: updatedNodes,
+      edges: updatedEdges,
     };
   };
 
@@ -145,13 +216,6 @@ export const notesMindMapReducer = (
       isChangeParentModeActive: false,
       edges,
       nodes,
-    };
-  };
-
-  const handleChangeSelectedNoteAction = () => {
-    return {
-      ...state,
-      selectedNote: data.note,
     };
   };
 
@@ -231,12 +295,8 @@ export const notesMindMapReducer = (
   switch (type) {
     case INITIAL_NOTE_FETCHED_ACTION:
       return addInitialNoteToGraph();
-    case CHANGE_SELECTED_NOTE_ACTION:
-      return handleChangeSelectedNoteAction();
-    case NOTE_CHILDREN_FETCHED_ACTION:
-      return handleNoteChildrenFetchedAction(data);
-    case SELECTED_NOTE_PARENT_FETCHED_ACTION:
-      return handleSelectedNoteParentFetchedAction(data);
+    case NOTES_GRAPH_LOADED_FROM_LOCAL_STORAGE_ACTION:
+      return handleNotesGraphLoadedFromLocalStorage();
     case NOTE_NAME_UPDATE_REQUEST_SUCCESS_ACTION:
       return handleNoteNameUpdateRequestSuccessAction({ state, data });
     case CREATE_NOTE_SUCCESS_ACTION:
@@ -270,6 +330,18 @@ export const notesMindMapReducer = (
         ...state,
         nodes: [],
         edges: [],
+      };
+    case NOTE_WITH_CHILDREN_AND_PARENT_FETCH_SUCCESS_ACTION:
+      return handleNoteWithChildrenAndParentFetchSuccess();
+    case MIND_MAP_NODE_CLICKED_ACTION:
+      return {
+        ...state,
+        selectedNote: data.targetNode,
+      };
+    case FETCH_NOTE_ACTION:
+      return {
+        ...state,
+        isSelectedNoteLoading: true,
       };
     default:
       return state;

@@ -51,7 +51,9 @@ export const NoteDeletedNotification = () => {
 
   return (
     <NotesMindMapSnackbar
+      autoHideDuration={6000}
       open={showNoteDeletedNotification}
+      onClose={handleClose}
       message={message}
       action={actions}
     />

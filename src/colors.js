@@ -23,3 +23,4 @@ export const nodeBorderColor = colors.onSurfaceHighEmphasis;
 export const mindMapEdgeColor = nodeBorderColor;
 export const mindMapBackground = colors.elevationOverlay02dp;
 export const selectedNodeShadow = `drop-shadow(0px 0px 4px ${colors.primary}) drop-shadow(0px 0px 2px ${colors.primary}) drop-shadow(0px 0px 6px ${colors.primary})`;
+export const snackbarBackground = '#E3E3E3'; // #121212 overlayed by white with 0.87 opcaity

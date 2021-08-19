@@ -13,10 +13,9 @@ import styled from 'styled-components';
 
 import { OpenFileButtonContainer } from 'components/OpenFileButton/OpenFileButtonContainer';
 import { UploadButton } from 'components/Uploads/UploadButton';
-
 import { colors } from 'colors';
-
 import { BottomBarMenu } from './BottomBarMenu';
+import { NoteDeletedNotification } from './NoteDeletedNotification';
 
 import {
   editNoteButtonClickedAction,
@@ -60,37 +59,40 @@ export const BottomBar = () => {
   };
 
   return (
-    <AppBar position="static" className={classes.appBar}>
-      <Toolbar>
-        <BottomBarMenu />
-        {!selectedNote.isUploadedFile && (
-          <>
-            <IconButton
-              aria-label="edit"
-              onClick={handleEditButtonClick}
-              className={classes.left}>
-              <EditIcon />
-            </IconButton>
-          </>
-        )}
-        <StyledLabel>
-          <Typography variant="subtitle2">{selectedNote.name}</Typography>
-        </StyledLabel>
+    <>
+      <AppBar position="static" className={classes.appBar}>
+        <Toolbar>
+          <BottomBarMenu />
+          {!selectedNote.isUploadedFile && (
+            <>
+              <IconButton
+                aria-label="edit"
+                onClick={handleEditButtonClick}
+                className={classes.left}>
+                <EditIcon />
+              </IconButton>
+            </>
+          )}
+          <StyledLabel>
+            <Typography variant="subtitle2">{selectedNote.name}</Typography>
+          </StyledLabel>
 
-        {!selectedNote.isUploadedFile && (
-          <>
-            <Fab
-              aria-label="add"
-              className={classes.fabButton}
-              color="primary"
-              onClick={handleAddButtonClick}>
-              <AddIcon />
-            </Fab>
-            <UploadButton></UploadButton>
-          </>
-        )}
-        {selectedNote.isUploadedFile && <OpenFileButtonContainer />}
-      </Toolbar>
-    </AppBar>
+          {!selectedNote.isUploadedFile && (
+            <>
+              <Fab
+                aria-label="add"
+                className={classes.fabButton}
+                color="primary"
+                onClick={handleAddButtonClick}>
+                <AddIcon />
+              </Fab>
+              <UploadButton></UploadButton>
+            </>
+          )}
+          {selectedNote.isUploadedFile && <OpenFileButtonContainer />}
+        </Toolbar>
+      </AppBar>
+      <NoteDeletedNotification />
+    </>
   );
 };

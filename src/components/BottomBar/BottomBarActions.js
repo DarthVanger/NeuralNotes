@@ -6,6 +6,8 @@ export const CHANGE_PARENT_BUTTON_CLICKED_ACTION =
 export const DELETE_NOTE_ACTION = 'DELETE_NOTE_ACTION';
 export const DELETE_NOTE_REQUEST_SUCCESS_ACTION =
   'DELETE_NOTE_REQUEST_SUCCESS_ACTION';
+export const NOTE_DELETE_NOTIFICATION_CLOSED =
+  'NOTE_DELETE_NOTIFICATION_CLOSED';
 
 export const editNoteButtonClickedAction = note => ({
   type: EDIT_NOTE_BUTTON_CLICKED_ACTION,
@@ -25,5 +27,9 @@ export const deleteNoteAction = note => ({
 });
 export const deleteNoteRequestSuccessAction = data => ({
   type: DELETE_NOTE_REQUEST_SUCCESS_ACTION,
+  data,
+});
+export const noteDeletedNotificationClosedAction = data => ({
+  type: NOTE_DELETE_NOTIFICATION_CLOSED,
   data,
 });

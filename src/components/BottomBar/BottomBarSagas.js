@@ -13,7 +13,6 @@ import {
   deleteNoteRequestSuccessAction,
 } from './BottomBarActions';
 import { toast } from 'react-toastify';
-import RestorePopup from 'components/Modal/RestorePopUp';
 
 function* handleAddNoteButtonClick() {
   console.log('handleAddNoteButtonClick');
@@ -27,11 +26,6 @@ function* handleChangeParentButtonClick({ data: { note } }) {
 function* deleteNote({ data: { note } }) {
   yield noteStorage.remove(note);
   yield put(deleteNoteRequestSuccessAction(note));
-  yield toast(RestorePopup, {
-    position: toast.POSITION.BOTTOM_LEFT,
-    hideProgressBar: true,
-    closeButton: false,
-  });
 }
 
 export function* bottomBarInit() {

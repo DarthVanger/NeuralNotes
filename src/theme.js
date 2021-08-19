@@ -1,6 +1,6 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 
-import { colors } from 'colors';
+import { colors, snackbarBackground } from 'colors';
 
 export const theme = createMuiTheme({
   palette: {
@@ -108,6 +108,11 @@ export const theme = createMuiTheme({
       root: {
         background: colors.elevationOverlay08dp,
         color: colors.onSurfaceMediumEmphasis,
+      },
+    },
+    MuiSnackbarContent: {
+      root: {
+        backgroundColor: snackbarBackground,
       },
     },
   },

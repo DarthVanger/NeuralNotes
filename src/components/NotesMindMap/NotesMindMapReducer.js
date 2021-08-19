@@ -198,10 +198,15 @@ export const notesMindMapReducer = (
       state.edges,
       nodeToDelete,
     );
+
     return {
       ...state,
       nodes,
       edges,
+      selectedNote: getParentNode(
+        { nodes: state.nodes, edges: state.edges },
+        nodeToDelete,
+      ),
     };
   };
 

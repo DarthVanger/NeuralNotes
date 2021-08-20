@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import MindMap from './MindMap/MindMap.js';
 import { StyledNotesMindMap } from 'components/NotesMindMap/NotesMindMapStyles';
-import MindMapLoadedFromMemoryNotification from './MindMapLoadedFromMemoryNotification/MindMapLoadedFromMemoryNotification';
-import NoteIsTrashedDialog from './NoteIsTrashedDialog/NoteIsTrashedDialog';
-import NoteIsPermanentlyDeletedDialog from './NoteIsPermanentlyDeletedDialog/NoteIsPermanentlyDeletedDialog';
+import MindMapLoadedFromMemoryNotification from './notifications/MindMapLoadedFromMemoryNotification/MindMapLoadedFromMemoryNotification';
+import NoteIsTrashedDialog from './notifications/NoteIsTrashedDialog/NoteIsTrashedDialog';
+import NoteIsPermanentlyDeletedDialog from './notifications/NoteIsPermanentlyDeletedDialog/NoteIsPermanentlyDeletedDialog';
 
 export class NotesMindMapComponent extends Component {
   constructor(props) {

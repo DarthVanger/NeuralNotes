@@ -37,8 +37,8 @@ import {
   ATTEMPT_TO_CALL_API_WITH_EXPIRED_TOKEN_ACTION,
   sesssionRefreshSuccessAction,
 } from 'components/LoginPage/LoginPageActions';
-import { DISMISS_NOTE_IS_TRASHED_DIALOG_ACTION } from 'components/NotesMindMap/NoteIsTrashedDialog/NoteIsTrashedDialogActions';
-import { NOTE_IS_PERMANENTLY_DELETED_DIALOG_CLOSED } from 'components/NotesMindMap/NoteIsPermanentlyDeletedDialog/NoteIsPermanentlyDeletedDialogActions';
+import { DISMISS_NOTE_IS_TRASHED_DIALOG_ACTION } from 'components/NotesMindMap/notifications/NoteIsTrashedDialog/NoteIsTrashedDialogActions';
+import { NOTE_IS_PERMANENTLY_DELETED_DIALOG_CLOSED } from 'components/NotesMindMap/notifications/NoteIsPermanentlyDeletedDialog/NoteIsPermanentlyDeletedDialogActions';
 
 function* handleInitialNoteLoad({ data: initialNote }) {
   yield put(noteFetchSuccessAction(initialNote));

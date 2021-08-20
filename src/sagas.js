@@ -13,7 +13,11 @@ import { bottomBarInit } from 'components/BottomBar/BottomBarSagas';
 import { notesPageInit } from 'components/NotesPage/NotesPageSagas';
 import { sessionExpiredDialogInit } from 'components/SessionExpiredDialog/SessionExpiredDialogSagas';
 
-export const sagaMiddleware = createSagaMiddleware();
+export const sagaMiddleware = createSagaMiddleware({
+  onError: e => {
+    console.log('saga erore', e);
+  },
+});
 
 export const runSaga = () => {
   sagaMiddleware.run(rootSaga);

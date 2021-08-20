@@ -4,6 +4,7 @@ import {
   takeEvery,
 } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
 import { push } from 'connected-react-router';
+import { apiCall } from 'api/api';
 
 import noteStorage from 'storage/noteStorage';
 import {
@@ -24,7 +25,7 @@ function* handleChangeParentButtonClick({ data: { note } }) {
 }
 
 function* deleteNote({ data: { note } }) {
-  yield noteStorage.remove(note);
+  yield apiCall(noteStorage.remove, note);
   yield put(deleteNoteRequestSuccessAction(note));
 }
 

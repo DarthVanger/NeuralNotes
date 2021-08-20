@@ -11,6 +11,7 @@ import { spinnerInit } from 'components/Spinner/SpinnerSagas';
 import { uploadsInit } from 'components/Uploads/UploadsSagas';
 import { bottomBarInit } from 'components/BottomBar/BottomBarSagas';
 import { notesPageInit } from 'components/NotesPage/NotesPageSagas';
+import { sessionExpiredDialogInit } from 'components/SessionExpiredDialog/SessionExpiredDialogSagas';
 
 export const sagaMiddleware = createSagaMiddleware();
 
@@ -30,5 +31,6 @@ export function* rootSaga() {
     searchPageInit(),
     bottomBarInit(),
     notesPageInit(),
+    sessionExpiredDialogInit(),
   ]);
 }

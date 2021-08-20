@@ -4,6 +4,7 @@ import {
   put,
   takeEvery,
 } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
+import { apiCall } from 'api/api';
 
 import {
   searchRequestSuccess,
@@ -15,7 +16,7 @@ function* handleSearchQueryChange({ data }) {
   const query = data;
   if (query !== '') {
     yield put(searchRequestAction(query));
-    const results = yield noteStorage.findNotesByName(query);
+    const results = yield apiCall(noteStorage.findNotesByName, query);
     yield put(searchRequestSuccess(results));
   }
 }

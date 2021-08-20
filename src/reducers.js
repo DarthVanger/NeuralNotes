@@ -8,6 +8,7 @@ import { searchPageReducer } from 'components/SearchPage/SearchPageReducer';
 import { uploadsReducer } from 'components/Uploads/UploadsReducer';
 import { mindMapLoadedFromMemoryNotficationReducer } from 'components/NotesMindMap/MindMapLoadedFromMemoryNotification/MindMapLoadedFromMemoryNotificationReducer';
 import { bottomBarReducer } from 'components/BottomBar/BottomBarReducer';
+import { sessionExpiredDialogReducer } from 'components/SessionExpiredDialog/SessionExpiredDialogReducer';
 
 export const createRootReducer = history =>
   combineReducers({
@@ -19,4 +20,5 @@ export const createRootReducer = history =>
     [uploadsReducer.KEY]: uploadsReducer,
     mindMapLoadedFromMemoryNotfication: mindMapLoadedFromMemoryNotficationReducer,
     bottomBar: bottomBarReducer,
+    sessionExpiredDialog: sessionExpiredDialogReducer,
   });

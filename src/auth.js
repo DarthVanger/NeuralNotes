@@ -38,6 +38,10 @@ function saveToken(tokenObject) {
   console.info('access token saved in localStorage');
 }
 
+function getTokenExpirationDate() {
+  return new Date(localStorage.getItem('gapiAccessTokenExpirationDate'));
+}
+
 function getToken() {
   return window.localStorage.getItem('gapiAccessToken');
 }
@@ -47,3 +51,12 @@ function logout() {
   window.localStorage.removeItem('gapiAccessTokenExpirationDate');
   window.location.assign('/');
 }
+
+export const didSessionExpire = () => {
+  // add 10 seconds to now to be on the safe side in case
+  // when http request is made after this check and it reaches Google API
+  // after a few seconds, during which the token might expire
+  const now = new Date(Date.now() + 10000);
+
+  return getTokenExpirationDate() < now;
+};

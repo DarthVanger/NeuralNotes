@@ -8,6 +8,7 @@ import {
 } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
 
 import noteStorage from 'storage/noteStorage';
+import { apiCall } from 'api/api';
 import {
   noteWithChildrenAndParentFetchSuccessAction,
   NOTE_CHANGE_PARENT_ACTION,
@@ -26,6 +27,12 @@ import {
 } from 'components/NotesMindMap/NotesMindMapActions';
 import { NOTES_GRAPH_LOADED_FROM_LOCAL_STORAGE_ACTION } from 'components/NotesPage/NotesPageActions';
 import { doesNodeHasParent } from 'helpers/graph';
+import {
+  attemptToCallApiWithExpiredTokenAction,
+  SESSION_REFRESH_SUCCESS_ACTION,
+  ATTEMPT_TO_CALL_API_WITH_EXPIRED_TOKEN_ACTION,
+  sesssionRefreshSuccessAction,
+} from 'components/LoginPage/LoginPageActions';
 
 function* handleInitialNoteLoad({ data: initialNote }) {
   yield put(noteFetchSuccessAction(initialNote));
@@ -40,7 +47,7 @@ function* handleSearchResultClick({ data: { note } }) {
 
 function* fetchChildNotes(note) {
   try {
-    const childNotes = yield call(noteStorage.fetchChildNotes, note);
+    const childNotes = yield apiCall(noteStorage.fetchChildNotes, note);
     return childNotes;
   } catch (e) {
     yield call([toast, toast.error], e);
@@ -50,7 +57,7 @@ function* fetchChildNotes(note) {
 function* fetchParentNote(note) {
   console.info(`Loading parent note for "${note.name}"...`);
   try {
-    const parentNote = yield call(noteStorage.fetchParentNote, note);
+    const parentNote = yield apiCall(noteStorage.fetchParentNote, note);
     console.info(
       `[Loaded] Parent note for "${note.name}": "${parentNote.name}"`,
     );
@@ -66,7 +73,7 @@ function* changeParentNote({ data: { note, newParent } }) {
     if (newParent.wereChildrenFetched) {
       yield* fetchChildNotes(newParent);
     }
-    yield call(noteStorage.move, {
+    yield apiCall(noteStorage.move, {
       noteId: note.id,
       newParentId: newParent.id,
     });
@@ -94,7 +101,7 @@ function* handleNotesGraphLoadedFromLocalStorage({ data: { selectedNote } }) {
 }
 
 function* fetchNote({ data: note }) {
-  const fetchedNote = yield call(noteStorage.getNoteById, note.id);
+  const fetchedNote = yield apiCall(noteStorage.getNoteById, note.id);
   yield put(noteFetchSuccessAction(fetchedNote));
 }
 

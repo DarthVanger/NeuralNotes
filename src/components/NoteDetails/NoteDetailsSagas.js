@@ -22,6 +22,7 @@ import {
   createNoteSuccessAction,
 } from './NoteDetailsActions';
 import { push } from 'connected-react-router';
+import { apiCall } from 'api/api';
 
 /**
  * The same note editor is used both for existing notes and for creating a new note.
@@ -145,7 +146,7 @@ function* applyQueuedNoteUpdate({ data: { note, queuedChanges: changes } }) {
 }
 
 function* requestNoteNameUpdate({ data: { note } }) {
-  const newNote = yield noteStorage.updateNoteName({
+  const newNote = yield apiCall(noteStorage.updateNoteName, {
     note,
     newName: note.name,
   });
@@ -155,7 +156,7 @@ function* requestNoteNameUpdate({ data: { note } }) {
 
 function* requestNoteContentUpdate({ data: { note } }) {
   try {
-    const newNote = yield noteStorage.updateNoteContent(note);
+    const newNote = yield apiCall(noteStorage.updateNoteContent, note);
     yield put(noteContentUpdateRequestSuccessAction(newNote));
     queuedChanges.noteContent = null;
   } catch (error) {
@@ -165,14 +166,14 @@ function* requestNoteContentUpdate({ data: { note } }) {
 }
 
 function* createNoteRequest({ data: { note } }) {
-  const newNote = yield noteStorage.create(note);
+  const newNote = yield apiCall(noteStorage.create, note);
   newNote.parent = note.parent;
   yield put(createNoteSuccessAction(newNote));
 }
 
 function* handleEditNoteButtonClick({ data: { note } }) {
   yield put(push(`/note/${note.id}`));
-  const noteContent = yield call(noteStorage.getNoteContent, note);
+  const noteContent = yield apiCall(noteStorage.getNoteContent, note);
   yield put(noteContentFetchSuccessAction(noteContent));
 }
 

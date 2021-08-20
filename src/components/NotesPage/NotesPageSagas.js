@@ -11,6 +11,7 @@ import noteStorage from 'storage/noteStorage';
 import { AUTH_SUCCESS_ACTION } from 'components/LoginPage/LoginPageActions';
 import { getMindMapFromLocalStorage } from 'storage/notesMindMapLocalStorage';
 import { notesGraphLoadedFromLocalStorageAction } from 'components/NotesPage/NotesPageActions';
+import { apiCall } from 'api/api';
 
 import {
   initialNoteFetchedAction,
@@ -34,8 +35,8 @@ function* loadInitialNotesGraph() {
   }
 }
 
-function loadRootNote() {
-  return noteStorage.scanDrive();
+function* loadRootNote() {
+  return apiCall(noteStorage.scanDrive);
 }
 
 function* resetMindMapToRootNode() {

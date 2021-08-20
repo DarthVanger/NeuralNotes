@@ -6,3 +6,6 @@ export const loadGoogleApiSuccessAction = () => ({
   type: LOAD_GOOGLE_API_SUCCESS_ACTION,
 });
 export const authSuccessAction = () => ({ type: AUTH_SUCCESS_ACTION });
+export const requestAuthorizationAction = () => ({
+  type: REQUEST_AUTHORIZATION_ACTION,
+});

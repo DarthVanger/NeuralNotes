@@ -21,6 +21,20 @@ export const NOTE_FETCH_SUCCESS_ACTION = 'NOTE_FETCH_SUCCESS_ACTION';
 export const NOTE_WITH_CHILDREN_AND_PARENT_FETCH_SUCCESS_ACTION =
   'NOTE_WITH_CHILDREN_AND_PARENT_FETCH_SUCCESS_ACTION';
 
+export const FETCHED_NOTE_IS_TRASHED = 'FETCHED_NOTE_IS_TRASHED';
+
+export const SELECT_NOTE_ACTION = 'SELECT_NOTE_ACTION';
+
+export const selectNoteAction = data => ({
+  type: SELECT_NOTE_ACTION,
+  data,
+});
+
+export const fetchedNoteIsTrashed = data => ({
+  type: FETCHED_NOTE_IS_TRASHED,
+  data,
+});
+
 export const noteWithChildrenAndParentFetchSuccessAction = data => ({
   type: NOTE_WITH_CHILDREN_AND_PARENT_FETCH_SUCCESS_ACTION,
   data,

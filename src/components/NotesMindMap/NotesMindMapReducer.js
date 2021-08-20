@@ -7,8 +7,8 @@ import {
   INITIAL_NOTE_FETCHED_ACTION,
   RESET_MIND_MAP_TO_ROOT_NODE,
   NOTE_WITH_CHILDREN_AND_PARENT_FETCH_SUCCESS_ACTION,
-  MIND_MAP_NODE_CLICKED_ACTION,
   FETCH_NOTE_ACTION,
+  SELECT_NOTE_ACTION,
 } from 'components/NotesMindMap/NotesMindMapActions';
 
 import { UploadsActions } from 'components/Uploads/UploadsActions';
@@ -30,11 +30,14 @@ import {
 
 import { NOTES_GRAPH_LOADED_FROM_LOCAL_STORAGE_ACTION } from 'components/NotesPage/NotesPageActions';
 
+import { DISMISS_NOTE_IS_TRASHED_DIALOG_ACTION } from 'components/NotesMindMap/NoteIsTrashedDialog/NoteIsTrashedDialogActions';
+
 import {
   removeNodeFromGraph,
   removeEdge,
   addEdge,
   getParentNode,
+  getRootNode,
 } from '../../helpers/graph';
 
 import noteStorage from 'storage/noteStorage';
@@ -194,8 +197,10 @@ export const notesMindMapReducer = (
   const handleDeleteNoteRequestSuccessAction = () => {
     const nodeToDelete = data;
     const { nodes, edges } = removeNodeFromGraph(
-      state.nodes,
-      state.edges,
+      {
+        nodes: state.nodes,
+        edges: state.edges,
+      },
       nodeToDelete,
     );
 
@@ -297,6 +302,19 @@ export const notesMindMapReducer = (
     };
   };
 
+  const handleDismissNoteIsTrashedDialog = () => {
+    const { nodes, edges, selectedNote } = state;
+    const graph = { nodes, edges };
+
+    const updatedGraph = removeNodeFromGraph(graph, selectedNote);
+
+    return {
+      ...state,
+      nodes: updatedGraph.nodes,
+      edges: updatedGraph.edges,
+    };
+  };
+
   switch (type) {
     case INITIAL_NOTE_FETCHED_ACTION:
       return addInitialNoteToGraph();
@@ -338,16 +356,18 @@ export const notesMindMapReducer = (
       };
     case NOTE_WITH_CHILDREN_AND_PARENT_FETCH_SUCCESS_ACTION:
       return handleNoteWithChildrenAndParentFetchSuccess();
-    case MIND_MAP_NODE_CLICKED_ACTION:
-      return {
-        ...state,
-        selectedNote: data.targetNode,
-      };
     case FETCH_NOTE_ACTION:
       return {
         ...state,
         isSelectedNoteLoading: true,
       };
+    case SELECT_NOTE_ACTION:
+      return {
+        ...state,
+        selectedNote: data,
+      };
+    case DISMISS_NOTE_IS_TRASHED_DIALOG_ACTION:
+      return handleDismissNoteIsTrashedDialog();
     default:
       return state;
   }

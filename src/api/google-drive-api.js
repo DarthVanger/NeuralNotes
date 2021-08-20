@@ -180,7 +180,7 @@ function findFoldersByName(name) {
 function getFileById(fileId) {
   const request = gapi.client.drive.files.get({
     fileId,
-    fields: FILE_FIELDS,
+    fields: `${FILE_FIELDS}, trashed`,
   });
   return new Promise(resolve => {
     request.execute(function(resp) {

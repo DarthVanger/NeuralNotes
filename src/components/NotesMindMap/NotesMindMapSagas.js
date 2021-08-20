@@ -24,15 +24,20 @@ import {
   NOTE_FETCH_SUCCESS_ACTION,
   fetchNoteAction,
   noteFetchSuccessAction,
+  FETCHED_NOTE_IS_TRASHED,
+  fetchedNoteIsTrashed,
+  selectNoteAction,
+  SELECT_NOTE_ACTION,
 } from 'components/NotesMindMap/NotesMindMapActions';
 import { NOTES_GRAPH_LOADED_FROM_LOCAL_STORAGE_ACTION } from 'components/NotesPage/NotesPageActions';
-import { doesNodeHasParent } from 'helpers/graph';
+import { doesNodeHasParent, getRootNode } from 'helpers/graph';
 import {
   attemptToCallApiWithExpiredTokenAction,
   SESSION_REFRESH_SUCCESS_ACTION,
   ATTEMPT_TO_CALL_API_WITH_EXPIRED_TOKEN_ACTION,
   sesssionRefreshSuccessAction,
 } from 'components/LoginPage/LoginPageActions';
+import { DISMISS_NOTE_IS_TRASHED_DIALOG_ACTION } from 'components/NotesMindMap/NoteIsTrashedDialog/NoteIsTrashedDialogActions';
 
 function* handleInitialNoteLoad({ data: initialNote }) {
   yield put(noteFetchSuccessAction(initialNote));
@@ -97,7 +102,7 @@ function* handleChangeParentRequestSuccess({ data: { note, newParent } }) {
 }
 
 function* handleNotesGraphLoadedFromLocalStorage({ data: { selectedNote } }) {
-  yield put(fetchNoteAction(selectedNote));
+  yield put(selectNoteAction(selectedNote));
 }
 
 function* fetchNote({ data: note }) {
@@ -118,11 +123,20 @@ function* handleMindMapNodeClick({
       }),
     );
   } else {
-    yield put(fetchNoteAction(targetNode));
+    yield put(selectNoteAction(targetNode));
   }
 }
 
+function* handleSelectNote({ data: note }) {
+  yield put(fetchNoteAction(note));
+}
+
 function* handleFetchNoteSuccess({ data: fetchedNote }) {
+  if (fetchedNote.trashed) {
+    yield put(fetchedNoteIsTrashed(fetchedNote));
+    return;
+  }
+
   const children = yield fetchChildNotes(fetchedNote);
 
   let parentNote;
@@ -137,6 +151,15 @@ function* handleFetchNoteSuccess({ data: fetchedNote }) {
       parentNote,
     }),
   );
+}
+
+function* handleTrashedNoteFetch({ data: fetchedNote }) {
+  console.log('fetched trashed note: ', fetchedNote);
+}
+
+function* handleNoteIsTrashedDialogDismiss({ data: { graph } }) {
+  const rootNote = getRootNode(graph);
+  yield put(selectNoteAction(rootNote));
 }
 
 export function* noteMindMapInit() {
@@ -155,5 +178,11 @@ export function* noteMindMapInit() {
     takeEvery(MIND_MAP_NODE_CLICKED_ACTION, handleMindMapNodeClick),
     takeEvery(FETCH_NOTE_ACTION, fetchNote),
     takeEvery(NOTE_FETCH_SUCCESS_ACTION, handleFetchNoteSuccess),
+    takeEvery(FETCHED_NOTE_IS_TRASHED, handleTrashedNoteFetch),
+    takeEvery(
+      DISMISS_NOTE_IS_TRASHED_DIALOG_ACTION,
+      handleNoteIsTrashedDialogDismiss,
+    ),
+    takeEvery(SELECT_NOTE_ACTION, handleSelectNote),
   ]);
 }

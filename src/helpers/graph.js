@@ -6,7 +6,7 @@ export function doesNodeHasParent(node, edges) {
   return edges.find(edge => edge.to === node.id);
 }
 
-export function removeNodeFromGraph(nodes, edges, nodeToDelete) {
+export function removeNodeFromGraph({ nodes, edges }, nodeToDelete) {
   let newNodes = [...nodes];
   let newEdges = [...edges];
 

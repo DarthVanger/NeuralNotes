@@ -9,6 +9,7 @@ import { uploadsReducer } from 'components/Uploads/UploadsReducer';
 import { mindMapLoadedFromMemoryNotficationReducer } from 'components/NotesMindMap/MindMapLoadedFromMemoryNotification/MindMapLoadedFromMemoryNotificationReducer';
 import { bottomBarReducer } from 'components/BottomBar/BottomBarReducer';
 import { sessionExpiredDialogReducer } from 'components/SessionExpiredDialog/SessionExpiredDialogReducer';
+import { noteIsTrashedDialogReducer } from 'components/NotesMindMap/NoteIsTrashedDialog/NoteIsTrashedDialogReducer.js';
 
 export const createRootReducer = history =>
   combineReducers({
@@ -21,4 +22,5 @@ export const createRootReducer = history =>
     mindMapLoadedFromMemoryNotfication: mindMapLoadedFromMemoryNotficationReducer,
     bottomBar: bottomBarReducer,
     sessionExpiredDialog: sessionExpiredDialogReducer,
+    noteIsTrashedDialog: noteIsTrashedDialogReducer,
   });

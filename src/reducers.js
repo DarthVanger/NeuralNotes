@@ -10,6 +10,7 @@ import { mindMapLoadedFromMemoryNotficationReducer } from 'components/NotesMindM
 import { bottomBarReducer } from 'components/BottomBar/BottomBarReducer';
 import { sessionExpiredDialogReducer } from 'components/SessionExpiredDialog/SessionExpiredDialogReducer';
 import { noteIsTrashedDialogReducer } from 'components/NotesMindMap/NoteIsTrashedDialog/NoteIsTrashedDialogReducer.js';
+import { noteIsPermanentlyDeletedReducer } from 'components/NotesMindMap/NoteIsPermanentlyDeletedDialog/NoteIsPermanentlyDeletedDialogReducer';
 
 export const createRootReducer = history =>
   combineReducers({
@@ -23,4 +24,5 @@ export const createRootReducer = history =>
     bottomBar: bottomBarReducer,
     sessionExpiredDialog: sessionExpiredDialogReducer,
     noteIsTrashedDialog: noteIsTrashedDialogReducer,
+    noteIsPermanentlyDeleted: noteIsPermanentlyDeletedReducer,
   });

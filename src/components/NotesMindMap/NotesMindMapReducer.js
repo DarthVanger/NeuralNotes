@@ -9,6 +9,7 @@ import {
   NOTE_WITH_CHILDREN_AND_PARENT_FETCH_SUCCESS_ACTION,
   FETCH_NOTE_ACTION,
   SELECT_NOTE_ACTION,
+  FETCHED_NOTE_NOT_FOUND_ACTION,
 } from 'components/NotesMindMap/NotesMindMapActions';
 
 import { UploadsActions } from 'components/Uploads/UploadsActions';
@@ -31,6 +32,7 @@ import {
 import { NOTES_GRAPH_LOADED_FROM_LOCAL_STORAGE_ACTION } from 'components/NotesPage/NotesPageActions';
 
 import { DISMISS_NOTE_IS_TRASHED_DIALOG_ACTION } from 'components/NotesMindMap/NoteIsTrashedDialog/NoteIsTrashedDialogActions';
+import { NOTE_IS_PERMANENTLY_DELETED_DIALOG_CLOSED } from 'components/NotesMindMap/NoteIsPermanentlyDeletedDialog/NoteIsPermanentlyDeletedDialogActions';
 
 import {
   removeNodeFromGraph,
@@ -302,7 +304,7 @@ export const notesMindMapReducer = (
     };
   };
 
-  const handleDismissNoteIsTrashedDialog = () => {
+  const removeSelectedNote = () => {
     const { nodes, edges, selectedNote } = state;
     const graph = { nodes, edges };
 
@@ -367,7 +369,9 @@ export const notesMindMapReducer = (
         selectedNote: data,
       };
     case DISMISS_NOTE_IS_TRASHED_DIALOG_ACTION:
-      return handleDismissNoteIsTrashedDialog();
+      return removeSelectedNote();
+    case NOTE_IS_PERMANENTLY_DELETED_DIALOG_CLOSED:
+      return removeSelectedNote();
     default:
       return state;
   }

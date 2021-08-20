@@ -24,6 +24,12 @@ export const NOTE_WITH_CHILDREN_AND_PARENT_FETCH_SUCCESS_ACTION =
 export const FETCHED_NOTE_IS_TRASHED = 'FETCHED_NOTE_IS_TRASHED';
 
 export const SELECT_NOTE_ACTION = 'SELECT_NOTE_ACTION';
+export const FETCHED_NOTE_NOT_FOUND_ACTION = 'FETCHED_NOTE_NOT_FOUND_ACTION';
+
+export const fetchedNoteNotFoundAction = data => ({
+  type: FETCHED_NOTE_NOT_FOUND_ACTION,
+  data,
+});
 
 export const selectNoteAction = data => ({
   type: SELECT_NOTE_ACTION,

@@ -5,6 +5,7 @@ import MindMap from './MindMap/MindMap.js';
 import { StyledNotesMindMap } from 'components/NotesMindMap/NotesMindMapStyles';
 import MindMapLoadedFromMemoryNotification from './MindMapLoadedFromMemoryNotification/MindMapLoadedFromMemoryNotification';
 import NoteIsTrashedDialog from './NoteIsTrashedDialog/NoteIsTrashedDialog';
+import NoteIsPermanentlyDeletedDialog from './NoteIsPermanentlyDeletedDialog/NoteIsPermanentlyDeletedDialog';
 
 export class NotesMindMapComponent extends Component {
   constructor(props) {
@@ -38,6 +39,7 @@ export class NotesMindMapComponent extends Component {
         </StyledNotesMindMap>
         <MindMapLoadedFromMemoryNotification />
         <NoteIsTrashedDialog />
+        <NoteIsPermanentlyDeletedDialog />
       </>
     );
   }

@@ -182,8 +182,11 @@ function getFileById(fileId) {
     fileId,
     fields: `${FILE_FIELDS}, trashed`,
   });
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     request.execute(function(resp) {
+      if (resp.error) {
+        reject(resp.error);
+      }
       resolve(resp);
     });
   });

@@ -21,7 +21,7 @@ export function* handleAuth() {
 
   yield call(siteGlobalLoadingBar.show, spinnerName);
   try {
-    yield gapiAuthorize();
+    yield call(gapiAuthorize);
     yield put(authSuccessAction());
   } catch (e) {
     console.error('googleLogin.gapiAuthorize(): authError: ', e);

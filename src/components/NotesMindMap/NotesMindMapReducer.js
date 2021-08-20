@@ -120,8 +120,13 @@ export const notesMindMapReducer = (
 
     // add children that were fetched, but are not in the graph
     children.forEach(child => {
-      // if the child is already on the mind map, do nothing
-      if (nodes.find(n => n.id === child.id)) return;
+      // if the child is already on the mind map, replace it
+      // with the freshly fetched one, as it might have been renamed
+      const existingChild = nodes.find(n => n.id === child.id);
+      if (existingChild) {
+        nodes[nodes.indexOf(existingChild)] = { ...child };
+        return;
+      }
 
       nodes = addNodeToGraph(nodes, child);
       edges.push({

@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import NotesMindMapSnackbar from 'components/NotesMindMap/NotesMindMapSnackbar';
 import Button from '@material-ui/core/Button';
-import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { colors } from 'colors';

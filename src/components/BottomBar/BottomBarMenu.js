@@ -7,6 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { useSelector, useDispatch } from 'react-redux';
+import Link from '@material-ui/core/Link';
 
 import { colors } from 'colors';
 
@@ -69,12 +70,7 @@ export const BottomBarMenu = () => {
         anchorEl={menuAnchorEl.current}
         keepMounted
         open={isMenuOpened}
-        onClose={closeMenu}
-        PaperProps={{
-          style: {
-            width: '168px',
-          },
-        }}>
+        onClose={closeMenu}>
         {!selectedNote.isUploadedFile && (
           <MenuItem onClick={handleEditButtonClick}>
             <Typography variant="subtitle1">Edit</Typography>
@@ -89,6 +85,13 @@ export const BottomBarMenu = () => {
             closeMenu();
           }}>
           <Typography variant="subtitle1">Delete</Typography>
+        </MenuItem>
+        <MenuItem
+          component={Link}
+          href={`https://drive.google.com/drive/folders/${selectedNote.id}`}
+          target="_blank"
+          onClick={closeMenu}>
+          Open in Google Drive
         </MenuItem>
       </Menu>
       <DialogDeleteNote

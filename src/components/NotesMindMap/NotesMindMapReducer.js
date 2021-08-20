@@ -40,6 +40,7 @@ import {
   addEdge,
   getParentNode,
   getRootNode,
+  getNodeChildren,
 } from '../../helpers/graph';
 
 import noteStorage from 'storage/noteStorage';
@@ -102,6 +103,22 @@ export const notesMindMapReducer = (
     let nodes = [...state.nodes];
     let edges = [...state.edges];
 
+    const graph = { nodes, edges };
+
+    const currentNoteChildren = getNodeChildren(graph, note);
+
+    // remove any children that are currently in the graph,
+    // but are not in the fetched children
+    const newChildrenIds = children.map(c => c.id);
+    currentNoteChildren.forEach(currentChild => {
+      if (!newChildrenIds.includes(currentChild.id)) {
+        const updatedGraph = removeNodeFromGraph(graph, currentChild);
+        nodes = updatedGraph.nodes;
+        edges = updatedGraph.edges;
+      }
+    });
+
+    // add children that were fetched, but are not in the graph
     children.forEach(child => {
       // if the child is already on the mind map, do nothing
       if (nodes.find(n => n.id === child.id)) return;

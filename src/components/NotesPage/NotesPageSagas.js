@@ -36,7 +36,8 @@ function* loadInitialNotesGraph() {
 }
 
 function* loadRootNote() {
-  return apiCall(noteStorage.scanDrive);
+  const rootNote = yield apiCall(noteStorage.scanDrive);
+  return rootNote;
 }
 
 function* resetMindMapToRootNode() {

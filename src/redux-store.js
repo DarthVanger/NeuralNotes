@@ -4,6 +4,7 @@ import { createRootReducer } from 'reducers';
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddleware from 'redux-saga';
+import reduxCatch from 'redux-catch';
 
 import { rootSaga } from './sagas.js';
 import { saveNotesMindMapToLocalStorageOnReduxStoreChange } from 'storage/notesMindMapLocalStorage';
@@ -25,6 +26,10 @@ const composeEnhancers = composeWithDevTools({
   },
 });
 
+const reduxErrorHandler = (error, getState, lastAction, dispatch) => {
+  dispatch(unexpectedErrorAction(error));
+};
+
 const sagaMiddleware = createSagaMiddleware({
   onError: error => {
     store.dispatch(unexpectedErrorAction(error));
@@ -38,6 +43,7 @@ const configureStore = preloadedState => {
     createRootReducer(history),
     preloadedState,
     composeEnhancers(
+      applyMiddleware(reduxCatch(reduxErrorHandler)),
       applyMiddleware(sagaMiddleware),
       applyMiddleware(routerMiddleware(history)),
     ),

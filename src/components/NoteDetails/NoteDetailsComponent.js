@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useDebounce } from 'use-debounce';
+import React, { useState, useEffect, useRef } from 'react';
 import SavingStatus from './SavingStatus';
+import debounce from 'lodash.debounce';
 
 import {
   StyledNoteNameEditor,
@@ -11,10 +11,32 @@ import {
 export const NoteDetailsComponent = props => {
   const [noteName, setNoteName] = useState(props.noteName);
   const [noteContent, setNoteContent] = useState(props.noteContent);
-  const [debouncedNoteName] = useDebounce(noteName, 1000);
-  const [debouncedNoteContent] = useDebounce(noteContent, 1000);
   const [areChangesSaved, setAreChangesSaved] = useState(true);
 
+  const updateNoteName = (newNoteName, note, editorState) => {
+    props.editorNoteNameChangedAction({
+      newNoteName,
+      note,
+      editorState,
+    });
+  };
+
+  const updateNoteContent = (noteContent, note, editorState) => {
+    props.editorNoteContentChangedAction({
+      noteContent,
+      note,
+      editorState,
+    });
+  };
+
+  const debouncedUpdateNoteNameRef = useRef(
+    debounce((...args) => updateNoteName(...args), 500),
+  );
+  const debouncedUpdateNoteContentRef = useRef(
+    debounce((...args) => updateNoteContent(...args), 500),
+  );
+
+  // note content is fetched when the editor is opened, update state on fetch success
   useEffect(() => {
     setNoteContent(props.noteContent);
   }, [props.noteContent]);
@@ -23,32 +45,24 @@ export const NoteDetailsComponent = props => {
     setAreChangesSaved(props.editorState.areChangesSaved);
   }, [props.editorState.areChangesSaved]);
 
-  useEffect(() => {
-    if (debouncedNoteName === props.noteName) return;
-    props.editorNoteNameChangedAction({
-      newNoteName: debouncedNoteName,
-      note: props.selectedNote,
-      editorState: props.editorState,
-    });
-  }, [debouncedNoteName]);
-
-  useEffect(() => {
-    if (debouncedNoteContent === props.noteContent) return;
-    props.editorNoteContentChangedAction({
-      noteContent: debouncedNoteContent,
-      note: props.selectedNote,
-      editorState: props.editorState,
-    });
-  }, [debouncedNoteContent]);
-
   const handleNoteNameChange = e => {
     setNoteName(e.target.value);
     setAreChangesSaved(false);
+    debouncedUpdateNoteNameRef.current(
+      e.target.value,
+      props.selectedNote,
+      props.editorState,
+    );
   };
 
   const handleNoteContentChange = e => {
     setNoteContent(e.target.value);
     setAreChangesSaved(false);
+    debouncedUpdateNoteContentRef.current(
+      e.target.value,
+      props.selectedNote,
+      props.editorState,
+    );
   };
 
   return (

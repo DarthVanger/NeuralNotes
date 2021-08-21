@@ -40,7 +40,9 @@ export const noteDetailsReducer = (state = defaultState, { type, data }) => {
         noteContent: '',
         editorState: {
           ...state.editorState,
+          areChangesSaved: true,
           isExistingNote: false,
+          isNoteCreationInProgress: false,
         },
       };
     case EDITOR_NOTE_CONTENT_CHANGED_ACTION:

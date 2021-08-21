@@ -14,11 +14,14 @@ import { UploadsActions } from 'components/Uploads/UploadsActions';
 import {
   CHANGE_PARENT_BUTTON_CLICKED_ACTION,
   DELETE_NOTE_REQUEST_SUCCESS_ACTION,
+  ADD_NOTE_BUTTON_CLICKED_ACTION,
 } from 'components/BottomBar/BottomBarActions';
 
 import {
   CREATE_NOTE_SUCCESS_ACTION,
   NOTE_NAME_UPDATE_REQUEST_SUCCESS_ACTION,
+  EDITOR_NOTE_NAME_CHANGED_ACTION,
+  NEW_NOTE_DISCARDED_ACTION,
 } from 'components/NoteDetails/NoteDetailsActions';
 
 import {
@@ -37,6 +40,7 @@ import {
   addEdge,
   getParentNode,
   getNodeChildren,
+  replaceNode,
 } from '../../helpers/graph';
 
 import noteStorage from 'storage/noteStorage';
@@ -201,21 +205,37 @@ export const notesMindMapReducer = (
     return {
       ...state,
       nodes: updatedNodes,
-      selectedNote: updatedNote,
     };
   };
 
   const handleCreateNoteSuccessAction = () => {
-    const newNote = data;
+    const { newNote: createdFolder, unsavedNoteInGraph } = data;
+    const newNote = convertGoogleDriveFileToNote(createdFolder);
+
     let nodes = [...state.nodes];
     let edges = [...state.edges];
-    edges.push({ from: newNote.parent.id, to: newNote.id });
-    nodes = addNodeToGraph(nodes, { ...newNote });
+
+    nodes.forEach(node => {
+      if (node.id === unsavedNoteInGraph.id) {
+        nodes[nodes.indexOf(node)] = {
+          ...newNote,
+        };
+        const parentNode = getParentNode({ nodes, edges }, node);
+        const edge = edges.find(e => e.to === node.id);
+        edges[edges.indexOf(edge)].to = newNote.id;
+      }
+    });
+
+    const updatedSelectedNote =
+      state.selectedNote.id === unsavedNoteInGraph.id
+        ? newNote
+        : state.selectedNote;
+
     return {
       ...state,
       nodes,
       edges,
-      selectedNote: newNote,
+      selectedNote: updatedSelectedNote,
     };
   };
 
@@ -265,14 +285,18 @@ export const notesMindMapReducer = (
     };
   };
 
+  const convertGoogleDriveFileToNote = file => {
+    return {
+      id: file.id,
+      name: file.name,
+      isUploadedFile: noteStorage.isUploadedFile(file),
+      parent: file.parent,
+    };
+  };
+
   const addNodeToGraph = (nodes, newNote) => {
     let newNodes = [...nodes];
-    newNodes.push({
-      id: newNote.id,
-      name: newNote.name,
-      isUploadedFile: noteStorage.isUploadedFile(newNote),
-      parent: newNote.parent,
-    });
+    newNodes.push(convertGoogleDriveFileToNote(newNote));
     return newNodes;
   };
 
@@ -340,6 +364,61 @@ export const notesMindMapReducer = (
     };
   };
 
+  const handleAddNoteButtonClicked = () => {
+    const parentNote = data.parent;
+    const graph = { nodes: state.nodes, edges: state.edges };
+    const newNote = {
+      id: `new-note-${Math.floor(Math.random() * 1000000)}`,
+      name: 'New note',
+      parent: { id: parentNote.id },
+    };
+
+    const updatedNodes = addNodeToGraph(graph.nodes, newNote);
+    const updatedEdges = addEdge(graph, {
+      from: parentNote,
+      to: newNote,
+    });
+
+    return {
+      ...state,
+      nodes: updatedNodes,
+      edges: updatedEdges,
+      selectedNote: newNote,
+    };
+  };
+
+  const handleEditorNoteNameChanged = () => {
+    const graph = { nodes: state.nodes, edges: state.edges };
+    const { note, newNoteName } = data;
+    const updatedNote = { ...note, name: data.newNoteName };
+    const updatedNodes = replaceNode(graph, note, updatedNote);
+
+    const updatedSelectedNote =
+      state.selectedNote.id === note.id ? updatedNote : state.selectedNote;
+
+    return {
+      ...state,
+      nodes: updatedNodes,
+      selectedNote: updatedSelectedNote,
+    };
+  };
+
+  const handleNewNoteDiscarded = () => {
+    const discardedNewNote = data;
+    const { nodes, edges, selectedNote } = state;
+    const graph = { nodes, edges };
+
+    const updatedGraph = removeNodeFromGraph(graph, discardedNewNote);
+    const discardedNewNoteParent = getParentNode(graph, discardedNewNote);
+
+    return {
+      ...state,
+      nodes: updatedGraph.nodes,
+      edges: updatedGraph.edges,
+      selectedNote: discardedNewNoteParent,
+    };
+  };
+
   switch (type) {
     case INITIAL_NOTE_FETCHED_ACTION:
       return addInitialNoteToGraph();
@@ -395,6 +474,12 @@ export const notesMindMapReducer = (
       return removeSelectedNote();
     case NOTE_IS_PERMANENTLY_DELETED_DIALOG_CLOSED:
       return removeSelectedNote();
+    case ADD_NOTE_BUTTON_CLICKED_ACTION:
+      return handleAddNoteButtonClicked();
+    case EDITOR_NOTE_NAME_CHANGED_ACTION:
+      return handleEditorNoteNameChanged();
+    case NEW_NOTE_DISCARDED_ACTION:
+      return handleNewNoteDiscarded();
     default:
       return state;
   }

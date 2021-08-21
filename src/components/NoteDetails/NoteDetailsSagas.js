@@ -57,9 +57,12 @@ function* handleNoteNameChange({ data: { note, newNoteName, editorState } }) {
   function createNote() {
     return put(
       createNoteRequestAction({
-        name: newNoteName,
-        content: '',
-        parent: note,
+        note: {
+          name: newNoteName,
+          content: '',
+          parent: note.parent,
+        },
+        unsavedNoteInGraph: note,
       }),
     );
   }
@@ -88,9 +91,12 @@ function* handleNoteContentChange({
   function createNote() {
     return put(
       createNoteRequestAction({
-        name: 'Untitled note',
-        content: noteContent,
-        parent: note,
+        note: {
+          name: 'Untitled note',
+          content: noteContent,
+          parent: note.parent,
+        },
+        unsavedNoteInGraph: note,
       }),
     );
   }
@@ -165,10 +171,10 @@ function* requestNoteContentUpdate({ data: { note } }) {
   }
 }
 
-function* createNoteRequest({ data: { note } }) {
+function* createNoteRequest({ data: { note, unsavedNoteInGraph } }) {
   const newNote = yield apiCall(noteStorage.create, note);
   newNote.parent = note.parent;
-  yield put(createNoteSuccessAction(newNote));
+  yield put(createNoteSuccessAction({ newNote, unsavedNoteInGraph }));
 }
 
 function* handleEditNoteButtonClick({ data: { note } }) {
@@ -182,9 +188,9 @@ function* handleEditNoteButtonClick({ data: { note } }) {
   }
 }
 
-function* handleCreateNoteSuccess({ data: note }) {
+function* handleCreateNoteSuccess({ data: { newNote } }) {
   if (queuedChanges.noteName !== null || queuedChanges.noteContent !== null) {
-    yield put(applyQueuedNoteUpdateAction({ note, queuedChanges }));
+    yield put(applyQueuedNoteUpdateAction({ note: newNote, queuedChanges }));
   }
 }
 

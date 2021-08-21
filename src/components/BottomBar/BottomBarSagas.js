@@ -15,7 +15,6 @@ import {
 } from './BottomBarActions';
 
 function* handleAddNoteButtonClick() {
-  console.log('handleAddNoteButtonClick');
   yield put(push('/note/new'));
 }
 

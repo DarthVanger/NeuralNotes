@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import SavingStatus from './SavingStatus';
 import debounce from 'lodash.debounce';
+import { useDispatch } from 'react-redux';
 
 import {
   StyledNoteNameEditor,
@@ -8,10 +9,15 @@ import {
   StyledNoteContentEditor,
 } from 'components/NoteDetails/NoteDetailsStyles';
 
+import { newNoteDiscardedAction } from './NoteDetailsActions';
+
 export const NoteDetailsComponent = props => {
+  const dispatch = useDispatch();
   const [noteName, setNoteName] = useState(props.noteName);
   const [noteContent, setNoteContent] = useState(props.noteContent);
   const [areChangesSaved, setAreChangesSaved] = useState(true);
+
+  const wasNoteEditedRef = useRef(false);
 
   const updateNoteName = (newNoteName, note, editorState) => {
     props.editorNoteNameChangedAction({
@@ -45,6 +51,19 @@ export const NoteDetailsComponent = props => {
     setAreChangesSaved(props.editorState.areChangesSaved);
   }, [props.editorState.areChangesSaved]);
 
+  useEffect(() => {
+    return () => {
+      if (!wasNoteEditedRef.current && !props.editorState.isExistingNote) {
+        dispatch(newNoteDiscardedAction(props.selectedNote));
+      }
+
+      // apply the debounced changes immediately if user hits "back" before
+      // the debounce wait interval passed
+      debouncedUpdateNoteNameRef.current.flush();
+      debouncedUpdateNoteContentRef.current.flush();
+    };
+  }, []);
+
   const handleNoteNameChange = e => {
     setNoteName(e.target.value);
     setAreChangesSaved(false);
@@ -53,6 +72,7 @@ export const NoteDetailsComponent = props => {
       props.selectedNote,
       props.editorState,
     );
+    wasNoteEditedRef.current = true;
   };
 
   const handleNoteContentChange = e => {
@@ -63,6 +83,7 @@ export const NoteDetailsComponent = props => {
       props.selectedNote,
       props.editorState,
     );
+    wasNoteEditedRef.current = true;
   };
 
   return (

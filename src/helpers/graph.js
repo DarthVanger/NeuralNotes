@@ -188,3 +188,13 @@ export const addEdge = (graph, { from, to }) => {
   updatedEdges.push({ from: from.id, to: to.id });
   return updatedEdges;
 };
+
+export const replaceNode = (graph, nodeToReplace, newNode) => {
+  const { nodes } = graph;
+  const updatedNodes = [...nodes];
+  const nodeToReplaceIndex = nodes.indexOf(
+    nodes.find(n => n.id === nodeToReplace.id),
+  );
+  updatedNodes[nodeToReplaceIndex] = newNode;
+  return updatedNodes;
+};

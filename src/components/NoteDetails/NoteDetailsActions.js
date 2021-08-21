@@ -26,14 +26,21 @@ export const QUEUE_NOTE_UPDATE_ACTION = 'QUEUE_NOTE_UPDATE_ACTION';
 export const APPLY_QUEUED_NOTE_UPDATE_ACTION =
   'APPLY_QUEUED_NOTE_UPDATE_ACTION';
 
+export const NEW_NOTE_DISCARDED_ACTION = 'NEW_NOTE_DISCARDED_ACTION';
+
+export const newNoteDiscardedAction = data => ({
+  type: NEW_NOTE_DISCARDED_ACTION,
+  data,
+});
+
 export const createNoteSuccessAction = data => ({
   type: CREATE_NOTE_SUCCESS_ACTION,
   data,
 });
 
-export const createNoteRequestAction = note => ({
+export const createNoteRequestAction = data => ({
   type: CREATE_NOTE_REQUEST_ACTION,
-  data: { note },
+  data,
 });
 
 export const noteNameUpdateRequestAction = note => ({

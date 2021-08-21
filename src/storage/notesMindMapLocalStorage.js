@@ -61,3 +61,8 @@ export const getCachedSelectedNote = () => {
 
   return JSON.parse(cachedSelectedNoteString);
 };
+
+export const clearNotesMindMapLocalStorage = () => {
+  localStorage.removeItem(notesGraphLocalStorageKey);
+  localStorage.removeItem(selectedNoteLocalStorageKey);
+};

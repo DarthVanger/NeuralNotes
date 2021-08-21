@@ -1,6 +1,7 @@
 import { connectRouter } from 'connected-react-router';
 import { combineReducers } from 'redux';
 
+import { appReducer } from 'components/App/AppReducer';
 import { loginPageReducer } from 'components/LoginPage/LoginPageReducer';
 import { noteDetailsReducer } from 'components/NoteDetails/NoteDetailsReducer';
 import { notesMindMapReducer } from 'components/NotesMindMap/NotesMindMapReducer';
@@ -15,6 +16,7 @@ import { noteIsPermanentlyDeletedReducer } from 'components/NotesMindMap/notific
 export const createRootReducer = history =>
   combineReducers({
     router: connectRouter(history),
+    app: appReducer,
     login: loginPageReducer,
     noteDetails: noteDetailsReducer,
     notesMindMap: notesMindMapReducer,

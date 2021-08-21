@@ -46,7 +46,7 @@ function getToken() {
   return window.localStorage.getItem('gapiAccessToken');
 }
 
-function logout() {
+export function logout() {
   window.localStorage.removeItem('gapiAccessToken');
   window.localStorage.removeItem('gapiAccessTokenExpirationDate');
   window.location.assign('/');

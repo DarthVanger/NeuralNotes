@@ -1,4 +1,3 @@
-import createSagaMiddleware from 'redux-saga';
 import { all } from 'redux-saga/effects';
 
 import { appInit } from 'components/App/AppSagas';
@@ -12,16 +11,6 @@ import { uploadsInit } from 'components/Uploads/UploadsSagas';
 import { bottomBarInit } from 'components/BottomBar/BottomBarSagas';
 import { notesPageInit } from 'components/NotesPage/NotesPageSagas';
 import { sessionExpiredDialogInit } from 'components/SessionExpiredDialog/SessionExpiredDialogSagas';
-
-export const sagaMiddleware = createSagaMiddleware({
-  onError: e => {
-    console.log('saga erore', e);
-  },
-});
-
-export const runSaga = () => {
-  sagaMiddleware.run(rootSaga);
-};
 
 export function* rootSaga() {
   yield all([

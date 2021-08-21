@@ -3,9 +3,11 @@ import { createBrowserHistory } from 'history';
 import { createRootReducer } from 'reducers';
 import { applyMiddleware, createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import createSagaMiddleware from 'redux-saga';
 
-import { sagaMiddleware, runSaga } from './sagas.js';
+import { rootSaga } from './sagas.js';
 import { saveNotesMindMapToLocalStorageOnReduxStoreChange } from 'storage/notesMindMapLocalStorage';
+import { unexpectedErrorAction } from 'components/App/AppActions';
 
 const composeEnhancers = composeWithDevTools({
   serialize: {
@@ -20,6 +22,12 @@ const composeEnhancers = composeWithDevTools({
 
       return value;
     },
+  },
+});
+
+const sagaMiddleware = createSagaMiddleware({
+  onError: error => {
+    store.dispatch(unexpectedErrorAction(error));
   },
 });
 
@@ -40,7 +48,7 @@ const configureStore = preloadedState => {
 
 export const store = configureStore();
 
-runSaga();
+sagaMiddleware.run(rootSaga);
 
 store.subscribe(() => saveNotesMindMapToLocalStorageOnReduxStoreChange(store));
 

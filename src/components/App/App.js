@@ -12,6 +12,7 @@ import { UploadsPage } from 'components/Uploads/UploadsPage';
 import { isUserSignedInSelector } from 'components/LoginPage/LoginPageSelectors';
 import { colors } from 'colors';
 import SessionExpiredDialog from 'components/SessionExpiredDialog/SessionExpiredDialog';
+import UnexpectedErrorDialog from './UnexpectedErrorDialog';
 
 const AppWrapper = styled.div`
   background: ${colors.surface};
@@ -50,6 +51,7 @@ export const App = () => {
         </Route>
       </Switch>
       <SessionExpiredDialog />
+      <UnexpectedErrorDialog />
     </AppWrapper>
   );
 };

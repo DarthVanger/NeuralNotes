@@ -13,45 +13,51 @@ import { isUserSignedInSelector } from 'components/LoginPage/LoginPageSelectors'
 import { colors } from 'colors';
 import SessionExpiredDialog from 'components/SessionExpiredDialog/SessionExpiredDialog';
 import UnexpectedErrorDialog from './UnexpectedErrorDialog';
+import UnexpectedErrorDialogErrorBoundary from './UnexpectedErrorDialogErrorBoundary';
+import AppErrorBoundary from './AppErrorBoundary';
 
-const AppWrapper = styled.div`
+const StyledApp = styled.div`
   background: ${colors.surface};
 `;
 
 export const App = () => {
   const isUserSignedIn = useSelector(isUserSignedInSelector);
   return (
-    <AppWrapper>
-      <Switch>
-        <Route exact path="/">
-          {isUserSignedIn && <Redirect to="/notes" />}
-          {!isUserSignedIn && <LoginPageContainer />}
-        </Route>
+    <StyledApp>
+      <AppErrorBoundary>
+        <Switch>
+          <Route exact path="/">
+            {isUserSignedIn && <Redirect to="/notes" />}
+            {!isUserSignedIn && <LoginPageContainer />}
+          </Route>
 
-        {!isUserSignedIn && <Redirect to="/" />}
+          {!isUserSignedIn && <Redirect to="/" />}
 
-        <Route path="/notes">
-          <NotesPageComponent />
-        </Route>
-        <Route exact path="/note/:id">
-          <NoteDetailsPage />
-        </Route>
-        <Route path="/uploads">
-          <UploadsPage />
-        </Route>
-        <Route path="/search">
-          <SearchPageComponent />
-        </Route>
-        <Route path="*">
-          <div style={{ height: '100vh', padding: '1em' }}>
-            <Typography variant="h4">
-              Whoops, this page doesn&apos;t exist.
-            </Typography>
-          </div>
-        </Route>
-      </Switch>
-      <SessionExpiredDialog />
-      <UnexpectedErrorDialog />
-    </AppWrapper>
+          <Route path="/notes">
+            <NotesPageComponent />
+          </Route>
+          <Route exact path="/note/:id">
+            <NoteDetailsPage />
+          </Route>
+          <Route path="/uploads">
+            <UploadsPage />
+          </Route>
+          <Route path="/search">
+            <SearchPageComponent />
+          </Route>
+          <Route path="*">
+            <div style={{ height: '100vh', padding: '1em' }}>
+              <Typography variant="h4">
+                Whoops, this page doesn&apos;t exist.
+              </Typography>
+            </div>
+          </Route>
+        </Switch>
+        <SessionExpiredDialog />
+      </AppErrorBoundary>
+      <UnexpectedErrorDialogErrorBoundary>
+        <UnexpectedErrorDialog />
+      </UnexpectedErrorDialogErrorBoundary>
+    </StyledApp>
   );
 };

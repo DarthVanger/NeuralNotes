@@ -1,8 +1,8 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 
 import { colors, snackbarBackground } from 'colors';
 
-export const theme = createMuiTheme({
+export const theme = createTheme({
   palette: {
     type: 'dark',
     primary: {

@@ -79,14 +79,14 @@ function findFileByName(options) {
 
   const request = gapi.client.drive.files.list(params);
 
-  const promise = new Promise(resolve => {
+  const promise = new Promise((resolve, reject) => {
     request.execute(function(resp) {
       console.debug(
         'googleDriveApi.findByname(): Files found by query "' + query + '": ',
         resp,
       );
       if (resp.error) {
-        throw new Error('File named "' + options.name + '" not found');
+        reject(resp.error);
       }
 
       resolve(resp.files);

@@ -173,8 +173,13 @@ function* createNoteRequest({ data: { note } }) {
 
 function* handleEditNoteButtonClick({ data: { note } }) {
   yield put(push(`/note/${note.id}`));
-  const noteContent = yield apiCall(noteStorage.getNoteContent, note);
-  yield put(noteContentFetchSuccessAction(noteContent));
+  try {
+    const noteContent = yield apiCall(noteStorage.getNoteContent, note);
+    yield put(noteContentFetchSuccessAction(noteContent));
+  } catch (error) {
+    toast.error('Failed to load note content');
+    console.error(error);
+  }
 }
 
 function* handleCreateNoteSuccess({ data: note }) {

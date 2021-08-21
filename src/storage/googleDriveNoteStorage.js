@@ -204,13 +204,14 @@ function getNoteContent(note) {
 }
 
 function findNoteContentFile(note) {
+  const noteContentFileName = note.name + '.txt';
   return googleDriveApi
     .findFileByName({
-      name: note.name + '.txt',
+      name: noteContentFileName,
       folderId: note.id,
     })
     .then(function(foundFiles) {
-      if (!foundFiles) {
+      if (!foundFiles?.length) {
         throw new Error(
           'noteStorage.getNoteContent(): no note content file found for note: "' +
             note.name +

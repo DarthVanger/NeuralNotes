@@ -58,6 +58,7 @@ export const NoteDetailsComponent = props => {
         editorState={props.editorState}
       />
       <StyledNoteNameEditor
+        type="text"
         onChange={handleNoteNameChange}
         value={noteName}
         placeholder="Title"

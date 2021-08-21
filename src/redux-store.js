@@ -27,11 +27,13 @@ const composeEnhancers = composeWithDevTools({
 });
 
 const reduxErrorHandler = (error, getState, lastAction, dispatch) => {
+  console.error(error);
   dispatch(unexpectedErrorAction(error));
 };
 
 const sagaMiddleware = createSagaMiddleware({
   onError: error => {
+    console.error(error);
     store.dispatch(unexpectedErrorAction(error));
   },
 });

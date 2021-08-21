@@ -13,7 +13,6 @@ import {
   noteWithChildrenAndParentFetchSuccessAction,
   NOTE_CHANGE_PARENT_ACTION,
   noteChildrenFetchedAction,
-  selectedNoteParentFetchedAction,
   changeParentRequestSuccessAction,
   changeParentRequestFailAction,
   SEARCH_RESULT_CLICKED,
@@ -28,15 +27,10 @@ import {
   selectNoteAction,
   SELECT_NOTE_ACTION,
   fetchedNoteNotFoundAction,
+  changeParentNoteAction,
 } from 'components/NotesMindMap/NotesMindMapActions';
 import { NOTES_GRAPH_LOADED_FROM_LOCAL_STORAGE_ACTION } from 'components/NotesPage/NotesPageActions';
-import { doesNodeHasParent, getRootNode } from 'helpers/graph';
-import {
-  attemptToCallApiWithExpiredTokenAction,
-  SESSION_REFRESH_SUCCESS_ACTION,
-  ATTEMPT_TO_CALL_API_WITH_EXPIRED_TOKEN_ACTION,
-  sesssionRefreshSuccessAction,
-} from 'components/LoginPage/LoginPageActions';
+import { getRootNode } from 'helpers/graph';
 import { DISMISS_NOTE_IS_TRASHED_DIALOG_ACTION } from 'components/NotesMindMap/notifications/NoteIsTrashedDialog/NoteIsTrashedDialogActions';
 import { NOTE_IS_PERMANENTLY_DELETED_DIALOG_CLOSED } from 'components/NotesMindMap/notifications/NoteIsPermanentlyDeletedDialog/NoteIsPermanentlyDeletedDialogActions';
 
@@ -45,8 +39,7 @@ function* handleInitialNoteLoad({ data: initialNote }) {
 }
 
 function* handleSearchResultClick({ data: { note } }) {
-  const targetNote = note;
-  const childNotes = yield fetchChildNotes(targetNote);
+  const children = yield fetchChildNotes(note);
   yield put(push('/notes'));
   yield put(noteChildrenFetchedAction({ note, children }));
 }
@@ -118,7 +111,7 @@ function* fetchNote({ data: note }) {
 }
 
 function* handleMindMapNodeClick({
-  data: { targetNode, graph, selectedNote, isChangeParentModeActive },
+  data: { targetNode, selectedNote, isChangeParentModeActive },
 }) {
   if (targetNode.id === selectedNote.id) return;
 
@@ -126,7 +119,7 @@ function* handleMindMapNodeClick({
     yield put(
       changeParentNoteAction({
         note: selectedNote,
-        newParent: targetNote,
+        newParent: targetNode,
       }),
     );
   } else {

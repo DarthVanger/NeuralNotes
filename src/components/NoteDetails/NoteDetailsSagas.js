@@ -1,5 +1,5 @@
 import { toast } from 'react-toastify';
-import { all, takeEvery, put, call } from 'redux-saga/effects';
+import { all, takeEvery, put } from 'redux-saga/effects';
 import noteStorage from 'storage/noteStorage';
 import { EDIT_NOTE_BUTTON_CLICKED_ACTION } from 'components/BottomBar/BottomBarActions';
 import {

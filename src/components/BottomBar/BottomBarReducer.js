@@ -7,7 +7,7 @@ const defaultState = {
   showNoteDeletedNotification: false,
 };
 
-export const bottomBarReducer = (state = defaultState, { type, data }) => {
+export const bottomBarReducer = (state = defaultState, { type }) => {
   switch (type) {
     case DELETE_NOTE_REQUEST_SUCCESS_ACTION:
       return {

@@ -1,5 +1,3 @@
-import React from 'react';
-
 const defaultState = {
   sessionExpired: false,
 };
@@ -9,10 +7,7 @@ import {
   SESSION_REFRESH_SUCCESS_ACTION,
 } from 'api/apiActions';
 
-export const sessionExpiredDialogReducer = (
-  state = defaultState,
-  { type, data },
-) => {
+export const sessionExpiredDialogReducer = (state = defaultState, { type }) => {
   switch (type) {
     case ATTEMPT_TO_CALL_API_WITH_EXPIRED_TOKEN_ACTION:
       return {

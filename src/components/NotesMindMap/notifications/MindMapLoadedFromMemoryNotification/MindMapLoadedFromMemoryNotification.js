@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Snackbar from '@material-ui/core/Snackbar';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import { colors } from 'colors';
@@ -42,7 +41,7 @@ export const MindMapLoadedFromMemoryNotification = () => {
         style={{ color: colors.onPrimaryHighEmphasis }}
         size="medium"
         onClick={handleDontShowAgainClick}>
-        Don't show again
+        Don&apos;t show again
       </Button>
       <Button color="secondary" size="medium" onClick={handleClose}>
         OK

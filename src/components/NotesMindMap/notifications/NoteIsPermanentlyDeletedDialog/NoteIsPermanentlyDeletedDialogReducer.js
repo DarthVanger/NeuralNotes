@@ -7,7 +7,7 @@ const defaultState = {
 
 export const noteIsPermanentlyDeletedReducer = (
   state = defaultState,
-  { type, data },
+  { type },
 ) => {
   switch (type) {
     case FETCHED_NOTE_NOT_FOUND_ACTION:

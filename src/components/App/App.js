@@ -45,7 +45,7 @@ export const App = () => {
         <Route path="*">
           <div style={{ height: '100vh', padding: '1em' }}>
             <Typography variant="h4">
-              Whoops, this page doesn't exist.
+              Whoops, this page doesn&apos;t exist.
             </Typography>
           </div>
         </Route>

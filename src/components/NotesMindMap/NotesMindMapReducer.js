@@ -1,6 +1,4 @@
 import {
-  NOTE_CHILDREN_FETCHED_ACTION,
-  SELECTED_NOTE_PARENT_FETCHED_ACTION,
   CHANGE_PARENT_REQUEST_SUCCESS_ACTION,
   CHANGE_PARENT_REQUEST_FAIL_ACTION,
   SEARCH_RESULT_CLICKED,
@@ -9,7 +7,6 @@ import {
   NOTE_WITH_CHILDREN_AND_PARENT_FETCH_SUCCESS_ACTION,
   FETCH_NOTE_ACTION,
   SELECT_NOTE_ACTION,
-  FETCHED_NOTE_NOT_FOUND_ACTION,
 } from 'components/NotesMindMap/NotesMindMapActions';
 
 import { UploadsActions } from 'components/Uploads/UploadsActions';
@@ -39,7 +36,6 @@ import {
   removeEdge,
   addEdge,
   getParentNode,
-  getRootNode,
   getNodeChildren,
 } from '../../helpers/graph';
 
@@ -61,7 +57,7 @@ export const notesMindMapReducer = (
   const handleNotesGraphLoadedFromLocalStorage = () => {
     const { graph, selectedNote } = data;
     const { nodes, edges } = graph;
-    const updatedNodes = graph.nodes.map(node => ({
+    const updatedNodes = nodes.map(node => ({
       ...node,
       wereChildrenFetched: false,
     }));

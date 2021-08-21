@@ -13,7 +13,6 @@ import {
   DELETE_NOTE_ACTION,
   deleteNoteRequestSuccessAction,
 } from './BottomBarActions';
-import { toast } from 'react-toastify';
 
 function* handleAddNoteButtonClick() {
   console.log('handleAddNoteButtonClick');

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -12,7 +12,6 @@ import { clearNotesMindMapLocalStorage } from 'storage/notesMindMapLocalStorage'
 import { logout } from 'auth';
 
 const UnexpectedErrorDialog = () => {
-  const dispatch = useDispatch();
   const unexpectedError = useSelector(unexpectedErrorSelector);
 
   const handleRestartAppClick = () => {

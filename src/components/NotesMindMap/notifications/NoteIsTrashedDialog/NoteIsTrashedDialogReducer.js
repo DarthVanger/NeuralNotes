@@ -5,10 +5,7 @@ const defaultState = {
   showDialog: false,
 };
 
-export const noteIsTrashedDialogReducer = (
-  state = defaultState,
-  { type, data },
-) => {
+export const noteIsTrashedDialogReducer = (state = defaultState, { type }) => {
   switch (type) {
     case FETCHED_NOTE_IS_TRASHED:
       return {

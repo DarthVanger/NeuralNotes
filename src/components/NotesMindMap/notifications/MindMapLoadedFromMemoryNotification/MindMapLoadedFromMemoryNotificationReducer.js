@@ -6,7 +6,7 @@ const defaultState = {
 
 export const mindMapLoadedFromMemoryNotficationReducer = (
   state = defaultState,
-  { type, data },
+  { type },
 ) => {
   switch (type) {
     case MIND_MAP_LOADED_FROM_MEMORY_NOTIFICATION_CLOSED:

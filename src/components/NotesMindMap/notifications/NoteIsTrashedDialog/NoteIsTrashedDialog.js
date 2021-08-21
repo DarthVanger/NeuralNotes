@@ -32,8 +32,8 @@ const NoteIsTrashedDialog = () => {
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="note-is-trashed-dialog-description">
-          The selected note "{selectedNote.name}" was moved to trash from
-          another device.
+          The selected note &quot;{selectedNote.name}&quot; was moved to trash
+          from another device.
           <br />
           You can restore it from Google Drive Trash.
         </DialogContentText>

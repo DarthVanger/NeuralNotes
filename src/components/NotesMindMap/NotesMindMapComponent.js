@@ -24,10 +24,6 @@ export class NotesMindMapComponent extends Component {
       onClick: () => this.handleNodeClick(n),
     }));
 
-    const handleMindMapRestoredFromLocalStorageNotificationClose = () => {
-      this.props.mindMapRestoredFromLocalStorageNotificationClosed();
-    };
-
     return (
       <>
         <StyledNotesMindMap>

@@ -11,7 +11,10 @@ import {
   StyledNoteContentEditor,
 } from 'components/NoteDetails/NoteDetailsStyles';
 
-import { newNoteDiscardedAction } from './NoteDetailsActions';
+import {
+  newNoteDiscardedAction,
+  noteEditorOpenedAction,
+} from './NoteDetailsActions';
 
 export const NoteDetailsComponent = props => {
   const dispatch = useDispatch();
@@ -55,6 +58,8 @@ export const NoteDetailsComponent = props => {
   }, [props.editorState.areChangesSaved]);
 
   useEffect(() => {
+    dispatch(noteEditorOpenedAction(props.selectedNote));
+
     return () => {
       if (!wasNoteEditedRef.current && !props.editorState.isExistingNote) {
         dispatch(newNoteDiscardedAction(props.selectedNote));

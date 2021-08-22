@@ -28,6 +28,13 @@ export const APPLY_QUEUED_NOTE_UPDATE_ACTION =
 
 export const NEW_NOTE_DISCARDED_ACTION = 'NEW_NOTE_DISCARDED_ACTION';
 
+export const NOTE_EDITOR_OPENED_ACTION = 'NOTE_EDITOR_OPENED_ACTION';
+
+export const noteEditorOpenedAction = data => ({
+  type: NOTE_EDITOR_OPENED_ACTION,
+  data,
+});
+
 export const newNoteDiscardedAction = data => ({
   type: NEW_NOTE_DISCARDED_ACTION,
   data,

@@ -6,10 +6,12 @@ import {
   NOTE_CONTENT_UPDATE_REQUEST_SUCCESS_ACTION,
   CREATE_NOTE_REQUEST_ACTION,
   CREATE_NOTE_SUCCESS_ACTION,
+  NOTE_EDITOR_OPENED_ACTION,
 } from 'components/NoteDetails/NoteDetailsActions';
 import { ADD_NOTE_BUTTON_CLICKED_ACTION } from 'components/BottomBar/BottomBarActions';
 
 const defaultState = {
+  noteId: null,
   noteName: '',
   noteContent: 'Loading note content...',
   editorState: {
@@ -84,6 +86,18 @@ export const noteDetailsReducer = (state = defaultState, { type, data }) => {
         },
       };
     case CREATE_NOTE_SUCCESS_ACTION:
+      const { newNote, unsavedNoteInGraph } = data;
+
+      // Ignore action if it's for another note.
+      // This can happen if user quickly creates multiple notes,
+      // opening new note editor before the previous note was saved.
+      if (unsavedNoteInGraph.id !== state.noteId) {
+        console.info(
+          'Ignoring create note success in note editor, as this action is for another note',
+        );
+        return state;
+      }
+
       return {
         ...state,
         editorState: {
@@ -92,6 +106,11 @@ export const noteDetailsReducer = (state = defaultState, { type, data }) => {
           areChangesSaved: true,
           isExistingNote: true,
         },
+      };
+    case NOTE_EDITOR_OPENED_ACTION:
+      return {
+        ...state,
+        noteId: data.id,
       };
     default:
       return state;

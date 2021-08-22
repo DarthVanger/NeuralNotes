@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import SavingStatus from './SavingStatus';
 import debounce from 'lodash.debounce';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+
+import SavingStatus from './SavingStatus';
 
 import {
   StyledNoteNameEditor,
@@ -13,6 +15,7 @@ import { newNoteDiscardedAction } from './NoteDetailsActions';
 
 export const NoteDetailsComponent = props => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [noteName, setNoteName] = useState(props.noteName);
   const [noteContent, setNoteContent] = useState(props.noteContent);
   const [areChangesSaved, setAreChangesSaved] = useState(true);
@@ -86,6 +89,12 @@ export const NoteDetailsComponent = props => {
     wasNoteEditedRef.current = true;
   };
 
+  const handleNoteNameKeyDown = e => {
+    if (e.key === 'Enter') {
+      history.push('/notes');
+    }
+  };
+
   return (
     <StyledNoteDetailsScreen>
       <SavingStatus
@@ -95,6 +104,7 @@ export const NoteDetailsComponent = props => {
       <StyledNoteNameEditor
         type="text"
         onChange={handleNoteNameChange}
+        onKeyDown={handleNoteNameKeyDown}
         value={noteName}
         placeholder="Title"
         rows="1"

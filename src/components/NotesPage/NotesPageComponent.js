@@ -2,10 +2,8 @@ import React from 'react';
 import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { BottomBar } from 'components/BottomBar/BottomBar';
-import { NotesMindMapContainer } from 'components/NotesMindMap/NotesMindMapContainer';
-import { NotesPageTopBar } from './NotesPageTopBar/NotesPageTopBar';
 import { ChangeNoteParentPage } from './ChangeNoteParentPage/ChangeNoteParentPage';
+import NotesMindMapPage from './NotesMindMapPage/NotesMindMapPage';
 
 const StyledNotesPage = styled.div`
   height: 100vh;
@@ -22,11 +20,7 @@ export const NotesPageComponent = () => {
     <StyledNotesPage>
       <Switch>
         <Route exact path={path}>
-          <>
-            <NotesPageTopBar />
-            <NotesMindMapContainer />
-            <BottomBar />
-          </>
+          <NotesMindMapPage />
         </Route>
         <Route path={`${path}/change-parent/:noteId`}>
           <ChangeNoteParentPage />

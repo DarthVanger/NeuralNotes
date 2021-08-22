@@ -25,6 +25,7 @@ function* loadGoogleDriveApi() {
 
 function* loadInitialNotesGraph() {
   const notesMindMapFromLocalStorage = getMindMapFromLocalStorage();
+
   if (notesMindMapFromLocalStorage) {
     yield put(
       notesGraphLoadedFromLocalStorageAction(notesMindMapFromLocalStorage),

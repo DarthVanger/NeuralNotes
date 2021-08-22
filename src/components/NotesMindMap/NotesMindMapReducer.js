@@ -62,11 +62,16 @@ export const notesMindMapReducer = (
       wereChildrenFetched: false,
     }));
 
+    const updatedSelectedNote = {
+      ...selectedNote,
+      wereChildrenFetched: false,
+    };
+
     return {
       ...state,
       nodes: updatedNodes,
       edges,
-      selectedNote,
+      selectedNote: updatedSelectedNote,
       mindMapLoadedFromMemory: true,
     };
   };

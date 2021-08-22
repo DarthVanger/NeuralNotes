@@ -96,7 +96,12 @@ function* handleChangeParentRequestSuccess({ data: { note, newParent } }) {
 }
 
 function* handleNotesGraphLoadedFromLocalStorage({ data: { selectedNote } }) {
-  yield put(selectNoteAction(selectedNote));
+  yield put(
+    selectNoteAction({
+      ...selectedNote,
+      wereChildrenFetched: false,
+    }),
+  );
 }
 
 function* fetchNote({ data: note }) {
@@ -128,6 +133,12 @@ function* handleMindMapNodeClick({
 }
 
 function* handleSelectNote({ data: note }) {
+  if (note.wereChildrenFetched) {
+    console.info(
+      `Not fetching selected note "${note.name}", as it was already fetched during this session`,
+    );
+    return;
+  }
   yield put(fetchNoteAction(note));
 }
 

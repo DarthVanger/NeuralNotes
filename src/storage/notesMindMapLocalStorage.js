@@ -2,6 +2,7 @@ import {
   graphSelector,
   getSelectedNote,
 } from 'components/NotesMindMap/NotesMindMapSelectors';
+import { unexpectedErrorAction } from 'components/App/AppActions';
 
 const notesGraphLocalStorageKey = 'notesGraph';
 const selectedNoteLocalStorageKey = 'selectedNote';
@@ -22,13 +23,13 @@ export const saveNotesMindMapToLocalStorageOnReduxStoreChange = store => {
   const selectedNote = getSelectedNote(state);
 
   if (graph !== previousGraphState && graph.nodes.length > 0) {
-    saveGraph(graph);
     previousGraphState = graph;
+    saveGraph(graph);
   }
 
-  if (selectedNote !== previousSelectedNoteState && selectedNote.id) {
-    saveSelectedNote(selectedNote);
+  if (selectedNote !== previousSelectedNoteState && selectedNote?.id) {
     previousSelectedNoteState = selectedNote;
+    saveSelectedNote(selectedNote);
   }
 };
 

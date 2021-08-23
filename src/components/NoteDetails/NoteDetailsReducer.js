@@ -24,6 +24,30 @@ const defaultState = {
   },
 };
 
+const handleCreateNoteSuccess = ({ state, data }) => {
+  const { unsavedNoteInGraph } = data;
+
+  // Ignore action if it's for another note.
+  // This can happen if user quickly creates multiple notes,
+  // opening new note editor before the previous note was saved.
+  if (unsavedNoteInGraph.id !== state.noteId) {
+    console.info(
+      'Ignoring create note success in note editor, as this action is for another note',
+    );
+    return state;
+  }
+
+  return {
+    ...state,
+    editorState: {
+      ...state.editorState,
+      isNoteCreationInProgress: false,
+      areChangesSaved: true,
+      isExistingNote: true,
+    },
+  };
+};
+
 export const noteDetailsReducer = (state = defaultState, { type, data }) => {
   switch (type) {
     case EDITOR_NOTE_NAME_CHANGED_ACTION:
@@ -86,27 +110,7 @@ export const noteDetailsReducer = (state = defaultState, { type, data }) => {
         },
       };
     case CREATE_NOTE_SUCCESS_ACTION:
-      const { newNote, unsavedNoteInGraph } = data;
-
-      // Ignore action if it's for another note.
-      // This can happen if user quickly creates multiple notes,
-      // opening new note editor before the previous note was saved.
-      if (unsavedNoteInGraph.id !== state.noteId) {
-        console.info(
-          'Ignoring create note success in note editor, as this action is for another note',
-        );
-        return state;
-      }
-
-      return {
-        ...state,
-        editorState: {
-          ...state.editorState,
-          isNoteCreationInProgress: false,
-          areChangesSaved: true,
-          isExistingNote: true,
-        },
-      };
+      return handleCreateNoteSuccess({ state, data });
     case NOTE_EDITOR_OPENED_ACTION:
       return {
         ...state,

@@ -220,7 +220,6 @@ export const notesMindMapReducer = (
         nodes[nodes.indexOf(node)] = {
           ...newNote,
         };
-        const parentNode = getParentNode({ nodes, edges }, node);
         const edge = edges.find(e => e.to === node.id);
         edges[edges.indexOf(edge)].to = newNote.id;
       }
@@ -389,7 +388,7 @@ export const notesMindMapReducer = (
 
   const handleEditorNoteNameChanged = () => {
     const graph = { nodes: state.nodes, edges: state.edges };
-    const { note, newNoteName } = data;
+    const { note } = data;
     const updatedNote = { ...note, name: data.newNoteName };
     const updatedNodes = replaceNode(graph, note, updatedNote);
 
@@ -405,7 +404,7 @@ export const notesMindMapReducer = (
 
   const handleNewNoteDiscarded = () => {
     const discardedNewNote = data;
-    const { nodes, edges, selectedNote } = state;
+    const { nodes, edges } = state;
     const graph = { nodes, edges };
 
     const updatedGraph = removeNodeFromGraph(graph, discardedNewNote);

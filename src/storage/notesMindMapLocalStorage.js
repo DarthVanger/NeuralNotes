@@ -2,7 +2,6 @@ import {
   graphSelector,
   getSelectedNote,
 } from 'components/NotesMindMap/NotesMindMapSelectors';
-import { unexpectedErrorAction } from 'components/App/AppActions';
 
 const notesGraphLocalStorageKey = 'notesGraph';
 const selectedNoteLocalStorageKey = 'selectedNote';

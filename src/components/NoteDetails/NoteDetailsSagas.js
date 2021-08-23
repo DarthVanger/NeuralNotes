@@ -152,12 +152,17 @@ function* applyQueuedNoteUpdate({ data: { note, queuedChanges: changes } }) {
 }
 
 function* requestNoteNameUpdate({ data: { note } }) {
-  const newNote = yield apiCall(noteStorage.updateNoteName, {
-    note,
-    newName: note.name,
-  });
-  yield put(noteNameUpdateRequestSuccessAction(newNote));
-  queuedChanges.noteName = null;
+  try {
+    const newNote = yield apiCall(noteStorage.updateNoteName, {
+      note,
+      newName: note.name,
+    });
+    yield put(noteNameUpdateRequestSuccessAction(newNote));
+    queuedChanges.noteName = null;
+  } catch (error) {
+    toast.error('Failed to update note name');
+    console.error(error);
+  }
 }
 
 function* requestNoteContentUpdate({ data: { note } }) {

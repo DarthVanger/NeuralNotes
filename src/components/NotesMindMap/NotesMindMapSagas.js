@@ -67,9 +67,6 @@ function* fetchParentNote(note) {
 
 function* changeParentNote({ data: { note, newParent } }) {
   try {
-    if (newParent.wereChildrenFetched) {
-      yield* fetchChildNotes(newParent);
-    }
     yield apiCall(noteStorage.move, {
       noteId: note.id,
       newParentId: newParent.id,
@@ -86,10 +83,13 @@ function* handleChangeParentRequestSuccess({ data: { note, newParent } }) {
   yield put(push('/notes'));
 
   if (!newParent.wereChildrenFetched) {
-    const children = yield fetchChildNotes(newParent);
-    yield put(noteChildrenFetchedAction({ note, children }));
+    // fetch new parent together with its children to make sure the new note
+    // is shown together with all the other children of its new parent
+    yield put(fetchNoteAction(newParent));
   } else {
-    console.log('not fetching child notes for new parent');
+    console.log(
+      'Not fetching new parent, as it was already fetched in this session',
+    );
   }
 }
 

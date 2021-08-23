@@ -209,8 +209,7 @@ export const notesMindMapReducer = (
   };
 
   const handleCreateNoteSuccessAction = () => {
-    const { newNote: createdFolder, unsavedNoteInGraph } = data;
-    const newNote = convertGoogleDriveFileToNote(createdFolder);
+    const { newNote, unsavedNoteInGraph } = data;
 
     let nodes = [...state.nodes];
     let edges = [...state.edges];

@@ -250,8 +250,7 @@ function getTextFileContents(options) {
 }
 
 /**
- * Create a note: a directory and a file with note
- * contents inside.
+ * Create a note: a directory and a file with note contents inside.
  */
 function create(note) {
   console.debug('creating a new note: ', note, 'with parent: ', note.parent);

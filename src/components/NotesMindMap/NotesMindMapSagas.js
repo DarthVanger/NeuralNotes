@@ -29,6 +29,7 @@ import {
   fetchedNoteNotFoundAction,
   changeParentNoteAction,
   fetchNoteChildrenAndParentReqestFailAction,
+  noteFetchFailAction,
 } from 'components/NotesMindMap/NotesMindMapActions';
 import { NOTES_GRAPH_LOADED_FROM_LOCAL_STORAGE_ACTION } from 'components/NotesPage/NotesPageActions';
 import { getRootNode } from 'helpers/graph';
@@ -108,6 +109,10 @@ function* fetchNote({ data: note }) {
   } catch (error) {
     if (error.code === 404) {
       yield put(fetchedNoteNotFoundAction(note));
+    } else {
+      console.error(error);
+      yield call(toast.error, 'Failed to load selected note');
+      yield put(noteFetchFailAction(note));
     }
   }
 }

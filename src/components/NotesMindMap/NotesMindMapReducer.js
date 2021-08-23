@@ -8,6 +8,7 @@ import {
   FETCH_NOTE_ACTION,
   SELECT_NOTE_ACTION,
   FETCH_NOTE_CHILDREN_AND_PARENT_REQUEST_FAIL_ACTION,
+  NOTE_FETCH_FAIL_ACTION,
 } from 'components/NotesMindMap/NotesMindMapActions';
 
 import { UploadsActions } from 'components/Uploads/UploadsActions';
@@ -491,6 +492,8 @@ export const notesMindMapReducer = (
     case NEW_NOTE_DISCARDED_ACTION:
       return handleNewNoteDiscarded();
     case FETCH_NOTE_CHILDREN_AND_PARENT_REQUEST_FAIL_ACTION:
+      return updateNote(data, { isLoading: false });
+    case NOTE_FETCH_FAIL_ACTION:
       return updateNote(data, { isLoading: false });
     default:
       return state;

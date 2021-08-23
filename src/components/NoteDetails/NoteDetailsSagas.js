@@ -172,9 +172,14 @@ function* requestNoteContentUpdate({ data: { note } }) {
 }
 
 function* createNoteRequest({ data: { note, unsavedNoteInGraph } }) {
-  const newNote = yield apiCall(noteStorage.create, note);
-  newNote.parent = note.parent;
-  yield put(createNoteSuccessAction({ newNote, unsavedNoteInGraph }));
+  try {
+    const newNote = yield apiCall(noteStorage.create, note);
+    newNote.parent = note.parent;
+    yield put(createNoteSuccessAction({ newNote, unsavedNoteInGraph }));
+  } catch (error) {
+    console.error(error);
+    toast.error(`Failed to save new note "${note.name}"`);
+  }
 }
 
 function* handleEditNoteButtonClick({ data: { note } }) {

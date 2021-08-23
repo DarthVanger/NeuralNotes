@@ -44,11 +44,6 @@ function* handleSearchResultClick({ data: { note } }) {
   yield put(push('/notes'));
 }
 
-function* fetchChildNotes(note) {
-  const childNotes = yield apiCall(noteStorage.fetchChildNotes, note);
-  return childNotes;
-}
-
 function* fetchParentNote(note) {
   console.info(`Loading parent note for "${note.name}"...`);
   try {
@@ -149,7 +144,7 @@ function* handleFetchNoteSuccess({ data: fetchedNote }) {
   }
 
   try {
-    const children = yield fetchChildNotes(fetchedNote);
+    const children = yield apiCall(noteStorage.fetchChildNotes, fetchedNote);
 
     let parentNote;
     if (!noteStorage.isAppFolder(fetchedNote)) {

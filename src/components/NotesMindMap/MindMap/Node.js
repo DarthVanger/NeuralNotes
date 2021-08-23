@@ -18,7 +18,17 @@ export const Node = node => {
   const selectedNote = useSelectedNote();
   const graph = useGraph();
 
-  const { x, y, name, width, height, padding, isLoading, debug } = node;
+  const {
+    x,
+    y,
+    name,
+    width,
+    height,
+    padding,
+    isLoading,
+    didNoteSaveFail,
+    debug,
+  } = node;
 
   const isSelectedNote = node.id === selectedNote.id;
 
@@ -56,6 +66,7 @@ export const Node = node => {
         debug={debug}
         isSelected={isSelectedNote || isPartOfSelectedTree}
         isLoading={isLoading}
+        didNoteSaveFail={didNoteSaveFail}
       />
       <g transform={`translate(${padding}, -${padding})`}>
         <text

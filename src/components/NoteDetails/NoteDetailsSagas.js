@@ -20,6 +20,7 @@ import {
   noteNameUpdateRequestAction,
   noteContentUpdateRequestAction,
   createNoteSuccessAction,
+  createNoteRequestFailAction,
 } from './NoteDetailsActions';
 import { push } from 'connected-react-router';
 import { apiCall } from 'api/api';
@@ -184,6 +185,7 @@ function* createNoteRequest({ data: { note, unsavedNoteInGraph } }) {
   } catch (error) {
     console.error(error);
     toast.error(`Failed to save new note "${note.name}"`);
+    yield put(createNoteRequestFailAction({ note, unsavedNoteInGraph }));
   }
 }
 

@@ -7,7 +7,18 @@ import {
   selectedNodeShadow,
 } from 'colors';
 
-const NodeBackground = ({ height, width, isSelected, isLoading, debug }) => {
+import { useTheme } from '@material-ui/core/styles';
+
+const NodeBackground = ({
+  height,
+  width,
+  isSelected,
+  isLoading,
+  didNoteSaveFail,
+  debug,
+}) => {
+  const theme = useTheme();
+
   const borderPath = `
     M 0 ${(height * 2) / 3}
     v -${(height * 2) / 3 - height / 6}
@@ -63,6 +74,11 @@ const NodeBackground = ({ height, width, isSelected, isLoading, debug }) => {
     filter: selectedNodeShadow,
   };
 
+  const failedSaveNodeStyle = {
+    ...nodeStyle,
+    stroke: theme.palette.error.main,
+  };
+
   const backgroundStyle = {
     stroke: 'none',
     fill: mindMapBackground,
@@ -83,6 +99,10 @@ const NodeBackground = ({ height, width, isSelected, isLoading, debug }) => {
       `;
 
       return <LoadingPath d={borderPath} style={selectedNodeStyle} />;
+    }
+
+    if (didNoteSaveFail) {
+      return <path d={borderPath} style={failedSaveNodeStyle} />;
     }
 
     return (

@@ -24,6 +24,7 @@ import {
   NOTE_NAME_UPDATE_REQUEST_SUCCESS_ACTION,
   EDITOR_NOTE_NAME_CHANGED_ACTION,
   NEW_NOTE_DISCARDED_ACTION,
+  CREATE_NOTE_REQUEST_FAIL_ACTION,
 } from 'components/NoteDetails/NoteDetailsActions';
 
 import {
@@ -495,6 +496,11 @@ export const notesMindMapReducer = (
       return updateNote(data, { isLoading: false });
     case NOTE_FETCH_FAIL_ACTION:
       return updateNote(data, { isLoading: false });
+    case CREATE_NOTE_REQUEST_FAIL_ACTION:
+      return updateNote(
+        { ...data.note, id: data.unsavedNoteInGraph.id },
+        { didNoteSaveFail: true },
+      );
     default:
       return state;
   }

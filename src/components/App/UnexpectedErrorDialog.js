@@ -15,6 +15,10 @@ const UnexpectedErrorDialog = () => {
   const unexpectedError = useSelector(unexpectedErrorSelector);
 
   const handleRestartAppClick = () => {
+    window.location.assign('/');
+  };
+
+  const handleClearAppDataClick = () => {
     clearNotesMindMapLocalStorage();
     logout();
   };
@@ -25,16 +29,19 @@ const UnexpectedErrorDialog = () => {
       aria-labelledby="unexpected-error-dialog-title"
       aria-describedby="unexpected-error-dialog-description">
       <DialogTitle id="unexpected-error-dialog-title">
-        Unexpected error
+        Something went wrong
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="unexpected-error-dialog-description">
           The app crashed due to an unexpected error! <br />
-          Please report the problem or just restart the app. <br />
+          Try to refresh the page or clear app data. <br />
+          <br />
+          If the problems persists, please let us know. <br />
           <code>Error: {unexpectedError?.message}</code>
         </DialogContentText>
       </DialogContent>
       <DialogActions>
+        <Button onClick={handleClearAppDataClick}>Clear app data</Button>
         <Button onClick={handleRestartAppClick} color="primary">
           Restart app
         </Button>

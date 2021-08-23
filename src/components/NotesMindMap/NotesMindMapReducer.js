@@ -7,6 +7,7 @@ import {
   NOTE_WITH_CHILDREN_AND_PARENT_FETCH_SUCCESS_ACTION,
   FETCH_NOTE_ACTION,
   SELECT_NOTE_ACTION,
+  FETCH_NOTE_CHILDREN_AND_PARENT_REQUEST_FAIL_ACTION,
 } from 'components/NotesMindMap/NotesMindMapActions';
 
 import { UploadsActions } from 'components/Uploads/UploadsActions';
@@ -478,6 +479,11 @@ export const notesMindMapReducer = (
       return handleEditorNoteNameChanged();
     case NEW_NOTE_DISCARDED_ACTION:
       return handleNewNoteDiscarded();
+    case FETCH_NOTE_CHILDREN_AND_PARENT_REQUEST_FAIL_ACTION:
+      return {
+        ...state,
+        isSelectedNoteLoading: false,
+      };
     default:
       return state;
   }

@@ -28,6 +28,7 @@ import {
   SELECT_NOTE_ACTION,
   fetchedNoteNotFoundAction,
   changeParentNoteAction,
+  fetchNoteChildrenAndParentReqestFailAction,
 } from 'components/NotesMindMap/NotesMindMapActions';
 import { NOTES_GRAPH_LOADED_FROM_LOCAL_STORAGE_ACTION } from 'components/NotesPage/NotesPageActions';
 import { getRootNode } from 'helpers/graph';
@@ -45,12 +46,8 @@ function* handleSearchResultClick({ data: { note } }) {
 }
 
 function* fetchChildNotes(note) {
-  try {
-    const childNotes = yield apiCall(noteStorage.fetchChildNotes, note);
-    return childNotes;
-  } catch (e) {
-    yield call([toast, toast.error], e);
-  }
+  const childNotes = yield apiCall(noteStorage.fetchChildNotes, note);
+  return childNotes;
 }
 
 function* fetchParentNote(note) {
@@ -148,20 +145,26 @@ function* handleFetchNoteSuccess({ data: fetchedNote }) {
     return;
   }
 
-  const children = yield fetchChildNotes(fetchedNote);
+  try {
+    const children = yield fetchChildNotes(fetchedNote);
 
-  let parentNote;
-  if (!noteStorage.isAppFolder(fetchedNote)) {
-    parentNote = yield fetchParentNote(fetchedNote);
+    let parentNote;
+    if (!noteStorage.isAppFolder(fetchedNote)) {
+      parentNote = yield fetchParentNote(fetchedNote);
+    }
+
+    yield put(
+      noteWithChildrenAndParentFetchSuccessAction({
+        note: fetchedNote,
+        children,
+        parentNote,
+      }),
+    );
+  } catch (error) {
+    console.error(error);
+    yield put(fetchNoteChildrenAndParentReqestFailAction());
+    yield call(toast.error, 'Failed to load note children');
   }
-
-  yield put(
-    noteWithChildrenAndParentFetchSuccessAction({
-      note: fetchedNote,
-      children,
-      parentNote,
-    }),
-  );
 }
 
 function* handleNoteIsTrashedDialogDismiss({ data: { graph } }) {

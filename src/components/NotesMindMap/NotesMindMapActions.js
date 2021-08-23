@@ -26,6 +26,14 @@ export const FETCHED_NOTE_IS_TRASHED = 'FETCHED_NOTE_IS_TRASHED';
 export const SELECT_NOTE_ACTION = 'SELECT_NOTE_ACTION';
 export const FETCHED_NOTE_NOT_FOUND_ACTION = 'FETCHED_NOTE_NOT_FOUND_ACTION';
 
+export const FETCH_NOTE_CHILDREN_AND_PARENT_REQUEST_FAIL_ACTION =
+  'FETCH_NOTE_CHILDREN_AND_PARENT_REQUEST_FAIL_ACTION';
+
+export const fetchNoteChildrenAndParentReqestFailAction = data => ({
+  type: FETCH_NOTE_CHILDREN_AND_PARENT_REQUEST_FAIL_ACTION,
+  data,
+});
+
 export const fetchedNoteNotFoundAction = data => ({
   type: FETCHED_NOTE_NOT_FOUND_ACTION,
   data,

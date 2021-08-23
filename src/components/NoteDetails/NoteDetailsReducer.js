@@ -8,12 +8,15 @@ import {
   CREATE_NOTE_SUCCESS_ACTION,
   NOTE_EDITOR_OPENED_ACTION,
 } from 'components/NoteDetails/NoteDetailsActions';
-import { ADD_NOTE_BUTTON_CLICKED_ACTION } from 'components/BottomBar/BottomBarActions';
+import {
+  ADD_NOTE_BUTTON_CLICKED_ACTION,
+  EDIT_NOTE_BUTTON_CLICKED_ACTION,
+} from 'components/BottomBar/BottomBarActions';
 
 const defaultState = {
   noteId: null,
   noteName: '',
-  noteContent: 'Loading note content...',
+  noteContent: '',
   editorState: {
     // If all changes made to the note were saved to Google Drive
     areChangesSaved: true,
@@ -68,6 +71,18 @@ export const noteDetailsReducer = (state = defaultState, { type, data }) => {
           ...state.editorState,
           areChangesSaved: true,
           isExistingNote: false,
+          isNoteCreationInProgress: false,
+        },
+      };
+    case EDIT_NOTE_BUTTON_CLICKED_ACTION:
+      return {
+        ...state,
+        noteName: data.note.name,
+        noteContent: 'Loading note content...',
+        editorState: {
+          ...state.editorState,
+          areChangesSaved: true,
+          isExistingNote: true,
           isNoteCreationInProgress: false,
         },
       };

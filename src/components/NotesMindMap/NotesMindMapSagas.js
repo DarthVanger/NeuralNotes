@@ -44,20 +44,6 @@ function* handleSearchResultClick({ data: { note } }) {
   yield put(push('/notes'));
 }
 
-function* fetchParentNote(note) {
-  console.info(`Loading parent note for "${note.name}"...`);
-  try {
-    const parentNote = yield apiCall(noteStorage.fetchParentNote, note);
-    console.info(
-      `[Loaded] Parent note for "${note.name}": "${parentNote.name}"`,
-    );
-    return parentNote;
-  } catch (e) {
-    yield call([toast, toast.error], 'Someting went wrong :(');
-    throw e;
-  }
-}
-
 function* changeParentNote({ data: { note, newParent } }) {
   try {
     yield apiCall(noteStorage.move, {
@@ -148,7 +134,7 @@ function* handleFetchNoteSuccess({ data: fetchedNote }) {
 
     let parentNote;
     if (!noteStorage.isAppFolder(fetchedNote)) {
-      parentNote = yield fetchParentNote(fetchedNote);
+      parentNote = yield apiCall(noteStorage.fetchParentNote, fetchedNote);
     }
 
     yield put(
@@ -161,7 +147,7 @@ function* handleFetchNoteSuccess({ data: fetchedNote }) {
   } catch (error) {
     console.error(error);
     yield put(fetchNoteChildrenAndParentReqestFailAction(fetchedNote));
-    yield call(toast.error, 'Failed to load note children');
+    yield call(toast.error, 'Failed to load note children and parent');
   }
 }
 

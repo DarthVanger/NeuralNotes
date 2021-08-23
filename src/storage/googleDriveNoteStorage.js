@@ -352,8 +352,6 @@ function move({ noteId, newParentId }) {
         reject(responseRaw);
       }
     });
-  }).catch(e => {
-    throw new Error(e);
   });
 }
 

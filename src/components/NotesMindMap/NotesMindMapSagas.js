@@ -74,10 +74,10 @@ function* changeParentNote({ data: { note, newParent } }) {
       newParentId: newParent.id,
     });
     yield put(changeParentRequestSuccessAction({ note, newParent }));
-  } catch (e) {
-    yield put(changeParentRequestFailAction({ note, newParent, error: e }));
-    yield call([toast, toast.error], 'Changing note has parent failed');
-    throw Error(e);
+  } catch (error) {
+    console.error(error);
+    yield put(changeParentRequestFailAction({ note, newParent, error }));
+    yield call(toast.error, 'Changing note parent has failed');
   }
 }
 

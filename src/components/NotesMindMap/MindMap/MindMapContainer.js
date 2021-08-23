@@ -43,6 +43,14 @@ const MindMapContainer = ({ children, focusPosition, ...attrs }) => {
     h: 0,
   });
 
+  // If viewBox has a NaN value the app breaks, but no error is thrown
+  // for some reason. So do it manually.
+  Object.values(viewBox).forEach(value => {
+    if (isNaN(value)) {
+      throw new Error('MindMap svg viewBox has a NaN value');
+    }
+  });
+
   const svgSizeRef = useRef(null);
   const svgElementRef = useRef(null);
   const isPanningRef = useRef(false);

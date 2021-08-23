@@ -43,9 +43,3 @@ export const StyledNoteContentEditor = styled.textarea`
   letter-spacing: 0.25px;
   padding: 2rem;
 `;
-
-export const StyledSavingStatus = styled.div`
-  position: absolute;
-  top: 0.5em;
-  left: 0.5em;
-`;

@@ -3,8 +3,6 @@ import debounce from 'lodash.debounce';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import SavingStatus from './SavingStatus';
-
 import {
   StyledNoteNameEditor,
   StyledNoteDetailsScreen,
@@ -21,7 +19,6 @@ export const NoteDetailsComponent = props => {
   const history = useHistory();
   const [noteName, setNoteName] = useState(props.noteName);
   const [noteContent, setNoteContent] = useState(props.noteContent);
-  const [areChangesSaved, setAreChangesSaved] = useState(true);
 
   const wasNoteEditedRef = useRef(false);
 
@@ -54,10 +51,6 @@ export const NoteDetailsComponent = props => {
   }, [props.noteContent]);
 
   useEffect(() => {
-    setAreChangesSaved(props.editorState.areChangesSaved);
-  }, [props.editorState.areChangesSaved]);
-
-  useEffect(() => {
     dispatch(noteEditorOpenedAction(props.selectedNote));
 
     return () => {
@@ -74,7 +67,6 @@ export const NoteDetailsComponent = props => {
 
   const handleNoteNameChange = e => {
     setNoteName(e.target.value);
-    setAreChangesSaved(false);
     debouncedUpdateNoteNameRef.current(
       e.target.value,
       props.selectedNote,
@@ -85,7 +77,6 @@ export const NoteDetailsComponent = props => {
 
   const handleNoteContentChange = e => {
     setNoteContent(e.target.value);
-    setAreChangesSaved(false);
     debouncedUpdateNoteContentRef.current(
       e.target.value,
       props.selectedNote,
@@ -102,10 +93,6 @@ export const NoteDetailsComponent = props => {
 
   return (
     <StyledNoteDetailsScreen>
-      <SavingStatus
-        areChangesSaved={areChangesSaved}
-        editorState={props.editorState}
-      />
       <StyledNoteNameEditor
         type="text"
         onChange={handleNoteNameChange}

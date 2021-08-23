@@ -5,21 +5,26 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import SearchIcon from '@material-ui/icons/Search';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import Typography from '@material-ui/core/Typography';
 
 import { TopBar } from 'components/TopBar/TopBar';
 import { TopBarLeftButtons } from 'components/TopBar/TopBarLeftButtons';
-import { TopBarPageTitle } from 'components/TopBar/TopBarPageTitle';
 import { TopBarRightButtons } from 'components/TopBar/TopBarRightButtons';
 import { NotesPageTopBarMenu } from './NotesPageTopBarMenu';
 import * as Selectors from 'components/Uploads/UploadsSelectors';
 import { colors } from 'colors';
 import { resetMindMapToRootNode } from 'components/NotesMindMap/NotesMindMapActions';
 import { makeStyles } from '@material-ui/core/styles';
+import SavingStatus from './SavingStatus';
 
 const useStyles = makeStyles({
+  middleBlock: {
+    flexGrow: 1,
+  },
   title: {
     color: colors.primary,
     cursor: 'pointer',
+    display: 'inline-block',
   },
 });
 
@@ -39,9 +44,15 @@ export const NotesPageTopBar = () => {
       <TopBarLeftButtons>
         <NotesPageTopBarMenu />
       </TopBarLeftButtons>
-      <TopBarPageTitle className={classes.title} onClick={handleAppTitleClick}>
-        Neural Notes
-      </TopBarPageTitle>
+      <div className={classes.middleBlock}>
+        <Typography
+          variant="h6"
+          className={classes.title}
+          onClick={handleAppTitleClick}>
+          Neural Notes
+        </Typography>
+        <SavingStatus />
+      </div>
       <TopBarRightButtons>
         {hasUploads && (
           <Link to="/uploads">

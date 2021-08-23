@@ -18,17 +18,6 @@ export class NotesMindMapComponent extends Component {
     this.elementRef.current.focus();
   }
 
-  handleNodeClick(targetNode) {
-    const { nodes, edges, selectedNote, isChangeParentModeActive } = this.props;
-    const graph = { nodes, edges };
-    this.props.mindMapNodeClicked({
-      targetNode,
-      graph,
-      selectedNote,
-      isChangeParentModeActive,
-    });
-  }
-
   /**
    * Hotkeys to create a child or sibling note
    */
@@ -52,13 +41,6 @@ export class NotesMindMapComponent extends Component {
   render() {
     const { selectedNote, nodes, edges } = this.props;
 
-    const mindMapNodes = nodes.map(n => ({
-      id: n.id,
-      key: n.id,
-      label: n.name,
-      onClick: () => this.handleNodeClick(n),
-    }));
-
     return (
       <>
         <StyledNotesMindMap
@@ -67,7 +49,7 @@ export class NotesMindMapComponent extends Component {
           ref={this.elementRef}>
           {nodes?.length > 0 && (
             <MindMap
-              nodes={mindMapNodes}
+              nodes={nodes}
               edges={edges}
               focusNodeId={selectedNote.id}
             />
@@ -87,5 +69,4 @@ NotesMindMapComponent.propTypes = {
   changeParentNote: PropTypes.func.isRequired,
   nodes: PropTypes.array.isRequired,
   edges: PropTypes.array.isRequired,
-  mindMapNodeClicked: PropTypes.func.isRequired,
 };

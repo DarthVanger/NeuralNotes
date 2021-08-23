@@ -49,8 +49,7 @@ export function SearchPageComponent() {
   const dispatch = useDispatch();
 
   const handleClick = searchResult => {
-    const note = { ...searchResult, label: searchResult.name };
-    dispatch(searchResultClickedAction({ note }));
+    dispatch(searchResultClickedAction({ note: searchResult }));
   };
 
   const classes = useStyles();

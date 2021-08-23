@@ -162,7 +162,7 @@ function* handleFetchNoteSuccess({ data: fetchedNote }) {
     );
   } catch (error) {
     console.error(error);
-    yield put(fetchNoteChildrenAndParentReqestFailAction());
+    yield put(fetchNoteChildrenAndParentReqestFailAction(fetchedNote));
     yield call(toast.error, 'Failed to load note children');
   }
 }

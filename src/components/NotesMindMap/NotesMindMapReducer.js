@@ -51,7 +51,6 @@ const defaultState = {
   isChangeParentModeActive: false,
   nodes: [],
   edges: [],
-  isSelectedNoteLoading: false,
   mindMapLoadedFromMemory: false,
 };
 
@@ -83,16 +82,20 @@ export const notesMindMapReducer = (
 
   const handleNoteWithChildrenAndParentFetchSuccess = () => {
     const { note, children, parentNote } = data;
+    const { selectedNote } = state;
 
     const state1 = updateNoteChildren(state, note, children);
     const state2 = updateNoteParent(state1, note, parentNote);
 
+    const updatedNote = {
+      ...note,
+      wereChildrenFetched: true,
+      isLoading: false,
+    };
+
     const nodes = state2.nodes.map(n => {
       if (n.id === note.id) {
-        return {
-          ...note,
-          wereChildrenFetched: true,
-        };
+        return updatedNote;
       } else {
         return n;
       }
@@ -101,7 +104,7 @@ export const notesMindMapReducer = (
     return {
       ...state2,
       nodes,
-      isSelectedNoteLoading: false,
+      selectedNote: selectedNote.id === note.id ? updatedNote : selectedNote,
     };
   };
 
@@ -418,6 +421,17 @@ export const notesMindMapReducer = (
     };
   };
 
+  const updateNote = (node, updates) => {
+    const updatedNode = { ...node, ...updates };
+    const { selectedNote } = state;
+
+    return {
+      ...state,
+      nodes: replaceNode({ nodes: state.nodes }, node, updatedNode),
+      selectedNote: selectedNote.id === node.id ? updatedNode : selectedNote,
+    };
+  };
+
   switch (type) {
     case INITIAL_NOTE_FETCHED_ACTION:
       return addInitialNoteToGraph();
@@ -460,10 +474,7 @@ export const notesMindMapReducer = (
     case NOTE_WITH_CHILDREN_AND_PARENT_FETCH_SUCCESS_ACTION:
       return handleNoteWithChildrenAndParentFetchSuccess();
     case FETCH_NOTE_ACTION:
-      return {
-        ...state,
-        isSelectedNoteLoading: true,
-      };
+      return updateNote(data, { isLoading: true });
     case SELECT_NOTE_ACTION:
       return {
         ...state,
@@ -480,10 +491,7 @@ export const notesMindMapReducer = (
     case NEW_NOTE_DISCARDED_ACTION:
       return handleNewNoteDiscarded();
     case FETCH_NOTE_CHILDREN_AND_PARENT_REQUEST_FAIL_ACTION:
-      return {
-        ...state,
-        isSelectedNoteLoading: false,
-      };
+      return updateNote(data, { isLoading: false });
     default:
       return state;
   }

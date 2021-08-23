@@ -101,6 +101,7 @@ function fetchChildNotes(note) {
         children.push(parseParents(file));
       });
     console.debug('[Loaded] notes for "' + note.id + '":', children);
+
     return children;
   });
 }

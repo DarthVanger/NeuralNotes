@@ -4,7 +4,6 @@ import { makeAction } from 'redux-store';
 import {
   NOTE_CHANGE_PARENT_ACTION,
   UPDATE_NOTE_NAME_ACTION,
-  mindMapNodeClickedAction,
 } from 'components/NotesMindMap/NotesMindMapActions';
 import { NotesMindMapComponent } from 'components/NotesMindMap/NotesMindMapComponent';
 
@@ -22,7 +21,6 @@ const mapStateToProps = ({
 const mapDispatchToProps = dispatch => ({
   changeParentNote: data => makeAction(NOTE_CHANGE_PARENT_ACTION, data),
   updateNoteName: data => makeAction(UPDATE_NOTE_NAME_ACTION, data),
-  mindMapNodeClicked: data => dispatch(mindMapNodeClickedAction(data)),
   addNoteButtonClicked: data => dispatch(addNoteButtonClickedAction(data)),
 });
 

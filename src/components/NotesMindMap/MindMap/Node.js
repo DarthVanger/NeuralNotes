@@ -1,25 +1,24 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import NodeBackground from './NodeBackground';
 import { colors, nodeBorderColor } from 'colors';
-import {
-  isChangeParentModeActiveSelector,
-  isSelectedNoteLoadingSelector,
-} from 'components/NotesMindMap/NotesMindMapSelectors';
+import { isChangeParentModeActiveSelector } from 'components/NotesMindMap/NotesMindMapSelectors';
 import { isNodeDecendantOf } from 'helpers/graph';
 import useSelectedNote from 'components/NotesMindMap/hooks/useSelectedNote';
 import useGraph from 'components/NotesMindMap/hooks/useGraph';
+import { mindMapNodeClickedAction } from 'components/NotesMindMap/NotesMindMapActions';
 
 export const Node = node => {
+  const dispatch = useDispatch();
+
   const isChangeParentModeActive = useSelector(
     isChangeParentModeActiveSelector,
   );
   const selectedNote = useSelectedNote();
   const graph = useGraph();
-  const isSelectedNoteLoading = useSelector(isSelectedNoteLoadingSelector);
 
-  const { x, y, label, width, height, padding, debug, domAttributes } = node;
+  const { x, y, name, width, height, padding, isLoading, debug } = node;
 
   const isSelectedNote = node.id === selectedNote.id;
 
@@ -37,21 +36,32 @@ export const Node = node => {
   const isPartOfSelectedTree =
     isChangeParentModeActive && isDecendantOfSelectedNote;
 
+  const handleClick = () => {
+    dispatch(
+      mindMapNodeClickedAction({
+        targetNode: node,
+        graph,
+        selectedNote,
+        isChangeParentModeActive,
+      }),
+    );
+  };
+
   return (
-    <g {...domAttributes} transform={`translate(${x} ${y})`}>
+    <g transform={`translate(${x} ${y})`} onClick={handleClick} key={node.id}>
       <NodeBackground
         width={width}
         height={height}
         padding={padding}
         debug={debug}
         isSelected={isSelectedNote || isPartOfSelectedTree}
-        isLoading={isSelectedNote && isSelectedNoteLoading}
+        isLoading={isLoading}
       />
       <g transform={`translate(${padding}, -${padding})`}>
         <text
           transform={`translate(${-width / 2}, ${height / 2})`}
           style={textStyle}>
-          {label}
+          {name}
         </text>
       </g>
     </g>

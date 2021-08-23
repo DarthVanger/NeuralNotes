@@ -22,7 +22,7 @@ const fontSize = 16;
 const defaultNodeChildrenRadius = 250;
 
 const calculateNodeWidth = node =>
-  getTextWidth(node.label, fontSize) + nodePadding * 2;
+  getTextWidth(node.name, fontSize) + nodePadding * 2;
 
 const MindMap = ({
   nodes: nodesProp,
@@ -32,15 +32,11 @@ const MindMap = ({
   ...attrs
 }) => {
   const nodes = nodesProp.map(nodeConfig => {
-    const { id, key, label, ...domAttributes } = nodeConfig;
     const width = calculateNodeWidth(nodeConfig);
 
     return {
-      id,
-      key,
-      label,
+      ...nodeConfig,
       width,
-      domAttributes,
     };
   });
 

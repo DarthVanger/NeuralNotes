@@ -25,6 +25,7 @@ import {
   EDITOR_NOTE_NAME_CHANGED_ACTION,
   NEW_NOTE_DISCARDED_ACTION,
   CREATE_NOTE_REQUEST_FAIL_ACTION,
+  CREATE_NOTE_REQUEST_ACTION,
 } from 'components/NoteDetails/NoteDetailsActions';
 
 import {
@@ -224,6 +225,7 @@ export const notesMindMapReducer = (
       if (node.id === unsavedNoteInGraph.id) {
         nodes[nodes.indexOf(node)] = {
           ...newNote,
+          isSaving: false,
         };
         const edge = edges.find(e => e.to === node.id);
         edges[edges.indexOf(edge)].to = newNote.id;
@@ -424,7 +426,8 @@ export const notesMindMapReducer = (
   };
 
   const updateNote = (node, updates) => {
-    const updatedNode = { ...node, ...updates };
+    const nodeInGraph = state.nodes.find(n => n.id === node.id);
+    const updatedNode = { ...nodeInGraph, ...updates };
     const { selectedNote } = state;
 
     return {
@@ -441,8 +444,15 @@ export const notesMindMapReducer = (
       return handleNotesGraphLoadedFromLocalStorage();
     case NOTE_NAME_UPDATE_REQUEST_SUCCESS_ACTION:
       return handleNoteNameUpdateRequestSuccessAction({ state, data });
+    case CREATE_NOTE_REQUEST_ACTION:
+      return updateNote(data.unsavedNoteInGraph, { isSaving: true });
     case CREATE_NOTE_SUCCESS_ACTION:
       return handleCreateNoteSuccessAction({ state, data });
+    case CREATE_NOTE_REQUEST_FAIL_ACTION:
+      return updateNote(data.unsavedNoteInGraph, {
+        didNoteSaveFail: true,
+        isSaving: false,
+      });
     case DELETE_NOTE_REQUEST_SUCCESS_ACTION:
       return handleDeleteNoteRequestSuccessAction({ state, data });
     case CHANGE_PARENT_BUTTON_CLICKED_ACTION:
@@ -496,11 +506,6 @@ export const notesMindMapReducer = (
       return updateNote(data, { isLoading: false });
     case NOTE_FETCH_FAIL_ACTION:
       return updateNote(data, { isLoading: false });
-    case CREATE_NOTE_REQUEST_FAIL_ACTION:
-      return updateNote(
-        { ...data.note, id: data.unsavedNoteInGraph.id },
-        { didNoteSaveFail: true },
-      );
     default:
       return state;
   }

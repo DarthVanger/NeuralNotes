@@ -15,6 +15,7 @@ const NodeBackground = ({
   isSelected,
   isLoading,
   didNoteSaveFail,
+  isSaving,
   debug,
 }) => {
   const theme = useTheme();
@@ -85,7 +86,7 @@ const NodeBackground = ({
   };
 
   const BorderPath = () => {
-    if (isLoading) {
+    if (isLoading || isSaving) {
       const LoadingPath = styled.path`
         @keyframes moving-dash {
           to {

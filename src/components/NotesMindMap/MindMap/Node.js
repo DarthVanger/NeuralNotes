@@ -26,6 +26,7 @@ export const Node = node => {
     height,
     padding,
     isLoading,
+    isSaving,
     didNoteSaveFail,
     debug,
   } = node;
@@ -67,6 +68,7 @@ export const Node = node => {
         isSelected={isSelectedNote || isPartOfSelectedTree}
         isLoading={isLoading}
         didNoteSaveFail={didNoteSaveFail}
+        isSaving={isSaving}
       />
       <g transform={`translate(${padding}, -${padding})`}>
         <text

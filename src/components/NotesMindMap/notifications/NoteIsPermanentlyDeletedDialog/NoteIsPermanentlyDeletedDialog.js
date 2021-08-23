@@ -33,11 +33,10 @@ const NoteIsPermanentlyDeletedDialog = () => {
       <DialogContent>
         <DialogContentText id="note-is-permanently-deleted-dialog-description">
           The selected note &quot;{selectedNote.name}&quot; was not found on
-          Google Drive. It means it was deleted more than 30 days ago from
-          another device.
+          Google Drive.
           <br />
-          You can not restore this note, as Google Drive keeps trash only for 30
-          days.
+          It means either there was an error saving the note, or it was
+          permanently deleted from Google Drive.
         </DialogContentText>
       </DialogContent>
       <DialogActions>

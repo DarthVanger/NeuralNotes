@@ -458,9 +458,9 @@ export const notesMindMapReducer = (
       return { ...state, isChangeParentModeActive: false };
     case SEARCH_RESULT_CLICKED:
       return {
+        ...state,
         nodes: [data.note],
         edges: [],
-        selectedNote: data.note,
       };
     case UploadsActions.list.addedFiles().type:
       return handleFileUploadStart();

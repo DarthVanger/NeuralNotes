@@ -12,7 +12,6 @@ import { apiCall } from 'api/api';
 import {
   noteWithChildrenAndParentFetchSuccessAction,
   NOTE_CHANGE_PARENT_ACTION,
-  noteChildrenFetchedAction,
   changeParentRequestSuccessAction,
   changeParentRequestFailAction,
   SEARCH_RESULT_CLICKED,
@@ -41,9 +40,8 @@ function* handleInitialNoteLoad({ data: initialNote }) {
 }
 
 function* handleSearchResultClick({ data: { note } }) {
-  const children = yield fetchChildNotes(note);
+  yield put(selectNoteAction(note));
   yield put(push('/notes'));
-  yield put(noteChildrenFetchedAction({ note, children }));
 }
 
 function* fetchChildNotes(note) {
@@ -79,7 +77,7 @@ function* changeParentNote({ data: { note, newParent } }) {
   }
 }
 
-function* handleChangeParentRequestSuccess({ data: { note, newParent } }) {
+function* handleChangeParentRequestSuccess({ data: { newParent } }) {
   yield put(push('/notes'));
 
   if (!newParent.wereChildrenFetched) {

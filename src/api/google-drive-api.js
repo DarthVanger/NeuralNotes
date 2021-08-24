@@ -179,11 +179,7 @@ function findFoldersByName(name) {
   const params = { q: query };
   const request = gapi.client.drive.files.list(params);
 
-  return new Promise(resolve => {
-    request.execute(function(resp) {
-      resolve(resp.files);
-    });
-  });
+  return executeGapiRequest(request);
 }
 
 function getFileById(fileId) {

@@ -1,9 +1,12 @@
 import {
   all,
   put,
+  call,
   takeEvery,
 } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
 import { push } from 'connected-react-router';
+import { toast } from 'react-toastify';
+
 import { apiCall } from 'api/api';
 
 import noteStorage from 'storage/noteStorage';
@@ -23,8 +26,12 @@ function* handleChangeParentButtonClick({ data: { note } }) {
 }
 
 function* deleteNote({ data: { note } }) {
-  yield apiCall(noteStorage.remove, note);
-  yield put(deleteNoteRequestSuccessAction(note));
+  try {
+    yield apiCall(noteStorage.remove, note);
+    yield put(deleteNoteRequestSuccessAction(note));
+  } catch (error) {
+    yield call(toast.error, 'Failed to delete note');
+  }
 }
 
 export function* bottomBarInit() {

@@ -176,10 +176,12 @@ function createAppRootTextFile({ id }) {
  * Try to find "APP_FOLDER_NAME" folder in google drive root.
  */
 function findAppFolder() {
-  return googleDriveApi.findFileByName({
-    name: APP_FOLDER_NAME,
-    folderId: 'root',
-  });
+  return googleDriveApi
+    .findFileByName({
+      name: APP_FOLDER_NAME,
+      folderId: 'root',
+    })
+    .then(response => response.files);
 }
 
 function updateFileName(options) {

@@ -108,8 +108,12 @@ function updateTextFileContent({ fileId, text }) {
     body: text,
   });
 
-  const promise = new Promise(resolve => {
+  const promise = new Promise((resolve, reject) => {
     request.execute(function(response) {
+      // response would be false if "params.uploadType" or "method" is invalid
+      if (response.error || response === false) {
+        reject(response.error);
+      }
       resolve(response);
     });
   });

@@ -18,7 +18,7 @@ const NoteIsTrashedDialog = () => {
   const selectedNote = useSelectedNote();
   const graph = useGraph();
 
-  const handleDismissClick = () => {
+  const handleOkButtonClick = () => {
     dispatch(dismissNoteIsTrashedDialogAction({ graph, note: selectedNote }));
   };
 
@@ -45,8 +45,8 @@ const NoteIsTrashedDialog = () => {
           target="_blank">
           Open Trash
         </Button>
-        <Button onClick={handleDismissClick} color="primary">
-          Dismiss
+        <Button onClick={handleOkButtonClick} color="primary">
+          OK
         </Button>
       </DialogActions>
     </Dialog>

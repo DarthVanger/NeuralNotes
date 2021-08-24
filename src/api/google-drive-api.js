@@ -244,9 +244,12 @@ function createEmptyTextFile({ parents, name }) {
     parents,
   });
 
-  return new Promise(resolve => {
-    request.execute(function(newFile) {
-      resolve(newFile);
+  return new Promise((resolve, reject) => {
+    request.execute(function(response) {
+      if (response.error) {
+        reject(response.error);
+      }
+      resolve(response);
     });
   });
 }

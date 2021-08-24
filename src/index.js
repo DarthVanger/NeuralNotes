@@ -12,7 +12,6 @@ import { theme } from 'theme';
 import { App } from 'components/App/App';
 
 import 'abortcontroller-polyfill/dist/polyfill-patch-fetch';
-import 'vis-network/dist/vis-network.css';
 import 'react-toastify/dist/ReactToastify.css';
 import './ReactToastifyOverrides.css';
 

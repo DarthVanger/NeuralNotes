@@ -23,13 +23,4 @@ export const GlobalStyle = createGlobalStyle`
     position: relative;
     height: 100%;
   }
-  
-  .vis-network {
-    background-color: #222;
-    
-    :focus,
-    canvas:focus {
-      outline: none;
-    }
-  }
 `;

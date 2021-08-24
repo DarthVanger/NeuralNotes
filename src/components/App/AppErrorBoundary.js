@@ -17,7 +17,7 @@ class AppErrorBoundary extends React.Component {
     if (this.state.error) {
       this.props.dispatchUnexpectedError(this.state.error);
       return (
-        <h1>
+        <h1 style={{ marginTop: 0, padding: '0.5em' }}>
           Something went wrong. Please report the problem or refresh the browser
           tab.
         </h1>

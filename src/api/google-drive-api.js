@@ -99,21 +99,7 @@ function findFileByName(options) {
 
   const request = gapi.client.drive.files.list(params);
 
-  const promise = new Promise((resolve, reject) => {
-    request.execute(function(resp) {
-      console.debug(
-        'googleDriveApi.findByname(): Files found by query "' + query + '": ',
-        resp,
-      );
-      if (resp.error) {
-        reject(resp.error);
-      }
-
-      resolve(resp.files);
-    });
-  });
-
-  return promise;
+  return executeGapiRequest(request);
 }
 
 function updateTextFileContent({ fileId, text }) {
@@ -164,14 +150,7 @@ function createFolder(options) {
 
   const request = self.client.files.create(requestParams);
 
-  return new Promise((resolve, reject) => {
-    request.execute(function(response) {
-      if (response.error) {
-        reject(response.error);
-      }
-      resolve(response);
-    });
-  });
+  return executeGapiRequest(request);
 }
 
 function findFoldersByName(name) {
@@ -187,14 +166,8 @@ function getFileById(fileId) {
     fileId,
     fields: `${FILE_FIELDS}, trashed`,
   });
-  return new Promise((resolve, reject) => {
-    request.execute(function(resp) {
-      if (resp.error) {
-        reject(resp.error);
-      }
-      resolve(resp);
-    });
-  });
+
+  return executeGapiRequest(request);
 }
 
 function getFolderChildren(folderId) {
@@ -204,16 +177,7 @@ function getFolderChildren(folderId) {
     q: 'trashed = false and "' + folderId + '" in parents',
   });
 
-  return new Promise((resolve, reject) => {
-    request.execute(function(resp) {
-      if (!resp.files) {
-        reject();
-        throw new Error('Remote Storage API: Failed to get files');
-      }
-
-      resolve(resp.files);
-    });
-  });
+  return executeGapiRequest(request).then(response => response.files);
 }
 
 /**
@@ -239,20 +203,13 @@ function createTextFile({ name, parents, content }) {
 
 function createEmptyTextFile({ parents, name }) {
   console.debug('Creating empty file...');
-  let request = gapi.client.drive.files.create({
+  const request = gapi.client.drive.files.create({
     mimeType: 'text/plain',
     name,
     parents,
   });
 
-  return new Promise((resolve, reject) => {
-    request.execute(function(response) {
-      if (response.error) {
-        reject(response.error);
-      }
-      resolve(response);
-    });
-  });
+  return executeGapiRequest(request);
 }
 
 function moveFileToTrash(fileId) {
@@ -263,14 +220,7 @@ function moveFileToTrash(fileId) {
 
   const request = gapi.client.drive.files.update(requestParams);
 
-  return new Promise((resolve, reject) => {
-    request.execute(function(response) {
-      if (response.error) {
-        reject(response.error);
-      }
-      resolve(response);
-    });
-  });
+  return executeGapiRequest(request);
 }
 
 function moveFile(fileId, newParentId) {

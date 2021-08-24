@@ -29,9 +29,11 @@ import {
   changeParentNoteAction,
   fetchNoteChildrenAndParentReqestFailAction,
   noteFetchFailAction,
+  newNoteParentSelectedAction,
+  NEW_NOTE_PARENT_SELECTED_ACTION,
 } from 'components/NotesMindMap/NotesMindMapActions';
 import { NOTES_GRAPH_LOADED_FROM_LOCAL_STORAGE_ACTION } from 'components/NotesPage/NotesPageActions';
-import { getRootNode } from 'helpers/graph';
+import { getRootNode, getParentNode, isNodeDecendantOf } from 'helpers/graph';
 import { DISMISS_NOTE_IS_TRASHED_DIALOG_ACTION } from 'components/NotesMindMap/notifications/NoteIsTrashedDialog/NoteIsTrashedDialogActions';
 import { NOTE_IS_PERMANENTLY_DELETED_DIALOG_CLOSED } from 'components/NotesMindMap/notifications/NoteIsPermanentlyDeletedDialog/NoteIsPermanentlyDeletedDialogActions';
 
@@ -42,6 +44,31 @@ function* handleInitialNoteLoad({ data: initialNote }) {
 function* handleSearchResultClick({ data: { note } }) {
   yield put(selectNoteAction(note));
   yield put(push('/notes'));
+}
+
+function* handleNewNoteParentSelected({ data: { graph, note, newParent } }) {
+  if (note.id === newParent.id) {
+    return;
+  }
+
+  if (getParentNode(graph, note).id === newParent.id) {
+    return;
+  }
+
+  if (isNodeDecendantOf(graph, newParent, note)) {
+    yield call(
+      toast.warn,
+      'New parent can not be a child of the selected note',
+    );
+    return;
+  }
+
+  yield put(
+    changeParentNoteAction({
+      note,
+      newParent,
+    }),
+  );
 }
 
 function* changeParentNote({ data: { note, newParent } }) {
@@ -97,18 +124,18 @@ function* fetchNote({ data: note }) {
 }
 
 function* handleMindMapNodeClick({
-  data: { targetNode, selectedNote, isChangeParentModeActive },
+  data: { graph, targetNode, selectedNote, isChangeParentModeActive },
 }) {
-  if (targetNode.id === selectedNote.id) return;
-
   if (isChangeParentModeActive) {
     yield put(
-      changeParentNoteAction({
+      newNoteParentSelectedAction({
         note: selectedNote,
         newParent: targetNode,
+        graph,
       }),
     );
   } else {
+    if (targetNode.id === selectedNote.id) return;
     yield put(selectNoteAction(targetNode));
   }
 }
@@ -186,5 +213,6 @@ export function* noteMindMapInit() {
       handleNoteIsPermanentlyDeletedDialogDismiss,
     ),
     takeEvery(SELECT_NOTE_ACTION, handleSelectNote),
+    takeEvery(NEW_NOTE_PARENT_SELECTED_ACTION, handleNewNoteParentSelected),
   ]);
 }

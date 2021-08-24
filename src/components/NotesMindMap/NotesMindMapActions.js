@@ -28,6 +28,14 @@ export const FETCHED_NOTE_NOT_FOUND_ACTION = 'FETCHED_NOTE_NOT_FOUND_ACTION';
 export const FETCH_NOTE_CHILDREN_AND_PARENT_REQUEST_FAIL_ACTION =
   'FETCH_NOTE_CHILDREN_AND_PARENT_REQUEST_FAIL_ACTION';
 
+export const NEW_NOTE_PARENT_SELECTED_ACTION =
+  'NEW_NOTE_PARENT_SELECTED_ACTION';
+
+export const newNoteParentSelectedAction = data => ({
+  type: NEW_NOTE_PARENT_SELECTED_ACTION,
+  data,
+});
+
 export const noteFetchFailAction = data => ({
   type: NOTE_FETCH_FAIL_ACTION,
   data,

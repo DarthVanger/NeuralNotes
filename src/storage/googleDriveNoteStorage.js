@@ -322,22 +322,7 @@ function remove(note) {
 }
 
 function move({ noteId, newParentId }) {
-  const request = gapi.client.request({
-    path: '/drive/v2/files/' + noteId,
-    method: 'PUT',
-    params: { uploadType: 'multipart', alt: 'json' },
-    body: { parents: [{ id: newParentId }] },
-  });
-
-  return new Promise((resolve, reject) => {
-    request.execute(function(response, responseRaw) {
-      if (response) {
-        resolve(response);
-      } else {
-        reject(responseRaw);
-      }
-    });
-  });
+  return googleDriveApi.moveFile(noteId, newParentId);
 }
 
 function getNoteById(noteId) {

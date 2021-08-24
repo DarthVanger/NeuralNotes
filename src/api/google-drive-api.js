@@ -42,6 +42,7 @@ const self = {
   createTextFile,
   updateTextFileContent,
   moveFileToTrash,
+  moveFile,
 };
 
 export default self;
@@ -274,4 +275,15 @@ function moveFileToTrash(fileId) {
       resolve(response);
     });
   });
+}
+
+function moveFile(fileId, newParentId) {
+  const request = gapi.client.request({
+    path: '/drive/v2/files/' + fileId,
+    method: 'PUT',
+    params: { uploadType: 'multipart', alt: 'json' },
+    body: { parents: [{ id: newParentId }] },
+  });
+
+  return executeGapiRequest(request);
 }

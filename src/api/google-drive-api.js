@@ -23,6 +23,7 @@ const self = {
   getFolderChildren,
   createTextFile,
   updateTextFileContent,
+  moveFileToTrash,
 };
 
 export default self;
@@ -243,6 +244,24 @@ function createEmptyTextFile({ parents, name }) {
   return new Promise(resolve => {
     request.execute(function(newFile) {
       resolve(newFile);
+    });
+  });
+}
+
+function moveFileToTrash(fileId) {
+  const requestParams = {
+    fileId,
+    trashed: true,
+  };
+
+  const request = gapi.client.drive.files.update(requestParams);
+
+  return new Promise((resolve, reject) => {
+    request.execute(function(response) {
+      if (response.error) {
+        reject(response.error);
+      }
+      resolve(response);
     });
   });
 }

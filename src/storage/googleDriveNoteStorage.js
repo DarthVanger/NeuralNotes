@@ -318,22 +318,7 @@ function updateNoteContentFileName({ note, newName }) {
 }
 
 function remove(note) {
-  const requestParams = {
-    fileId: note.id,
-    mimeType: 'application/vnd.google-apps.folder',
-    trashed: true,
-  };
-
-  const request = googleDriveApi.client.files.update(requestParams);
-
-  return new Promise(resolve => {
-    request.execute(function(response) {
-      if (response.error) {
-        console.error('Failed to delete a note "' + note.name + '"');
-      }
-      resolve(response);
-    });
-  });
+  return googleDriveApi.moveFileToTrash(note.id);
 }
 
 function move({ noteId, newParentId }) {

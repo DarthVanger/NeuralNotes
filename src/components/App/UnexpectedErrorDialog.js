@@ -18,7 +18,7 @@ const UnexpectedErrorDialog = () => {
     window.location.assign('/');
   };
 
-  const handleClearAppDataClick = () => {
+  const handleClearDeviceAppDataClick = () => {
     clearNotesMindMapLocalStorage();
     logout();
   };
@@ -34,14 +34,16 @@ const UnexpectedErrorDialog = () => {
       <DialogContent>
         <DialogContentText id="unexpected-error-dialog-description">
           The app crashed due to an unexpected error! <br />
-          Try to refresh the page or clear app data. <br />
+          Try to refresh the page or clear device app data. <br />
           <br />
           If the problems persists, please let us know. <br />
           <code>Error: {unexpectedError?.message}</code>
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClearAppDataClick}>Clear app data</Button>
+        <Button onClick={handleClearDeviceAppDataClick}>
+          Clear device app data
+        </Button>
         <Button onClick={handleRestartAppClick} color="primary">
           Restart app
         </Button>

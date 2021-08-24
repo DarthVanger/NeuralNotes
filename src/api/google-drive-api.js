@@ -10,6 +10,24 @@ const FILE_FIELDS = 'id, name, mimeType, parents';
  */
 const FILE_LIST_FIELDS = 'nextPageToken, files(' + FILE_FIELDS + ')';
 
+const executeGapiRequest = request => {
+  const promise = new Promise((resolve, reject) => {
+    request.execute(function(response) {
+      // Google client might respond with false, if for example "method" or "params.uploadType" is invalid
+      // (Google API responds with plain text or html in these cases, but here response value would be false).
+      if (response === false) {
+        reject('Google API client responded with false');
+      }
+      if (response.error) {
+        reject(response.error);
+      }
+      resolve(response);
+    });
+  });
+
+  return promise;
+};
+
 const self = {
   FILE_FIELDS: FILE_FIELDS,
   FILE_LIST_FIELDS: FILE_LIST_FIELDS,
@@ -108,17 +126,7 @@ function updateTextFileContent({ fileId, text }) {
     body: text,
   });
 
-  const promise = new Promise((resolve, reject) => {
-    request.execute(function(response) {
-      // response would be false if "params.uploadType" or "method" is invalid
-      if (response.error || response === false) {
-        reject(response.error);
-      }
-      resolve(response);
-    });
-  });
-
-  return promise;
+  return executeGapiRequest(request);
 }
 
 function updateFileName({ id, name }) {

@@ -141,15 +141,7 @@ function updateFileName({ id, name }) {
     }),
   });
 
-  console.info('Updating filename to: ' + fileName + '...');
-  const promise = new Promise(resolve => {
-    request.execute(function(response) {
-      console.info('Updated filename to: ' + fileName);
-      resolve(response);
-    });
-  });
-
-  return promise;
+  return executeGapiRequest(request);
 }
 
 /**

@@ -19,7 +19,7 @@ const NoteIsTrashedDialog = () => {
   const graph = useGraph();
 
   const handleDismissClick = () => {
-    dispatch(dismissNoteIsTrashedDialogAction({ graph }));
+    dispatch(dismissNoteIsTrashedDialogAction({ graph, note: selectedNote }));
   };
 
   return (

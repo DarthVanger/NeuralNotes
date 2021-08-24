@@ -33,7 +33,7 @@ import {
   NEW_NOTE_PARENT_SELECTED_ACTION,
 } from 'components/NotesMindMap/NotesMindMapActions';
 import { NOTES_GRAPH_LOADED_FROM_LOCAL_STORAGE_ACTION } from 'components/NotesPage/NotesPageActions';
-import { getRootNode, getParentNode, isNodeDecendantOf } from 'helpers/graph';
+import { getParentNode, isNodeDecendantOf } from 'helpers/graph';
 import { DISMISS_NOTE_IS_TRASHED_DIALOG_ACTION } from 'components/NotesMindMap/notifications/NoteIsTrashedDialog/NoteIsTrashedDialogActions';
 import { NOTE_IS_PERMANENTLY_DELETED_DIALOG_CLOSED } from 'components/NotesMindMap/notifications/NoteIsPermanentlyDeletedDialog/NoteIsPermanentlyDeletedDialogActions';
 
@@ -178,14 +178,16 @@ function* handleFetchNoteSuccess({ data: fetchedNote }) {
   }
 }
 
-function* handleNoteIsTrashedDialogDismiss({ data: { graph } }) {
-  const rootNote = getRootNode(graph);
-  yield put(selectNoteAction(rootNote));
+function* handleNoteIsTrashedDialogDismiss({ data: { graph, note } }) {
+  const parentNote = getParentNode(graph, note);
+  yield put(selectNoteAction(parentNote));
 }
 
-function* handleNoteIsPermanentlyDeletedDialogDismiss({ data: { graph } }) {
-  const rootNote = getRootNode(graph);
-  yield put(selectNoteAction(rootNote));
+function* handleNoteIsPermanentlyDeletedDialogDismiss({
+  data: { graph, note },
+}) {
+  const parentNote = getParentNode(graph, note);
+  yield put(selectNoteAction(parentNote));
 }
 
 export function* noteMindMapInit() {

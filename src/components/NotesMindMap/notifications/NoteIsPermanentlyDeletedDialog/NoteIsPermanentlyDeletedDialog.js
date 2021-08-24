@@ -19,7 +19,9 @@ const NoteIsPermanentlyDeletedDialog = () => {
   const graph = useGraph();
 
   const handleOkButtonClick = () => {
-    dispatch(noteIsPermanentlyDeletedDialogClosed({ graph }));
+    dispatch(
+      noteIsPermanentlyDeletedDialogClosed({ graph, note: selectedNote }),
+    );
   };
 
   return (

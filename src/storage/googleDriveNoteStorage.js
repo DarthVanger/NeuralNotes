@@ -213,7 +213,9 @@ function findNoteContentFile(note) {
       name: noteContentFileName,
       folderId: note.id,
     })
-    .then(function(foundFiles) {
+    .then(function(response) {
+      const foundFiles = response.files;
+
       if (!foundFiles?.length) {
         throw new Error(
           'noteStorage.getNoteContent(): no note content file found for note: "' +

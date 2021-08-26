@@ -189,20 +189,52 @@ export const getAngleWidthOfNodeTree = (graph, node) => {
   return angleWidthOfTheNodeTree;
 };
 
+/**
+ * Find the radius for a circle to render children along,
+ * such that fits all node children and decendants without overlapping.
+ * Using binary search, as it's hard to define a formula.
+ */
 export const increaseRadiusToFitAllDecendantsIfNeeded = (graph, node) => {
   const maxAllowedAngleWidth = isRootNode(graph, node) ? 2 * Math.PI : Math.PI;
   const currentAngleWidth = getTotalAngleWidthOfDecendants(graph, node);
 
   if (currentAngleWidth < maxAllowedAngleWidth) return;
 
-  let lowerBound = node.childrenRadius;
-  // not sure why this formula for upper bound, but it seems to work :)
-  let upperBound =
-    node.childrenRadius * Math.pow(currentAngleWidth / maxAllowedAngleWidth, 2);
-  let fitRadius;
+  // just in case of a bug, to prevent infinite loop :)
+  const maxIterations = 100;
+  let binarySearchIteration = 0;
 
-  // eslint-disable-next-line no-constant-condition
-  while (true) {
+  let lowerBound = node.childrenRadius;
+
+  // First, find the upper bound for fit radius, as it's hard to define it by a formula.
+  let upperBound =
+    node.childrenRadius * (currentAngleWidth / maxAllowedAngleWidth);
+  while (binarySearchIteration < maxIterations) {
+    binarySearchIteration++;
+    updateChildrenRadiusAndDecendants(graph, node, upperBound);
+    const currentAngleWidth = getTotalAngleWidthOfDecendants(graph, node);
+    if (currentAngleWidth < maxAllowedAngleWidth) {
+      break;
+    }
+
+    // Since this upperBound is still too small, we can use it as a refined lower bound :)
+    lowerBound = upperBound;
+
+    upperBound = upperBound * 2;
+  }
+
+  // Now do the binary search to find the radius that will fit nicely, between lower and upper bound
+  let fitRadius;
+  const fitAllowance = 5 * (Math.PI / 180);
+  while (binarySearchIteration < maxIterations) {
+    binarySearchIteration++;
+
+    if (binarySearchIteration >= maxIterations) {
+      throw new Error(
+        `Failed to find radius to fit all node children on mind map for node "${node.name}" (infinite loop)`,
+      );
+    }
+
     const mid = (lowerBound + upperBound) / 2;
 
     updateChildrenRadiusAndDecendants(graph, node, mid);
@@ -213,7 +245,7 @@ export const increaseRadiusToFitAllDecendantsIfNeeded = (graph, node) => {
       continue;
     }
 
-    if (maxAllowedAngleWidth - currentAngleWidth < Math.PI / 180) {
+    if (maxAllowedAngleWidth - currentAngleWidth < fitAllowance) {
       fitRadius = mid;
       break;
     }

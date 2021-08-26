@@ -1,10 +1,9 @@
 import {
   getNodeChildren,
   getLeftNeighbour,
-  getDeepestFirstChild,
-  getDeepestLastChild,
   isRootNode,
   getParentNode,
+  getTreeLeaves,
 } from 'helpers/graph';
 
 /**
@@ -150,48 +149,36 @@ export const getAngleBetweenNodes = ({ vertex, node1, node2 }) => {
 export const getAngleWidthOfNodeTree = (graph, node) => {
   const parentNode = getParentNode(graph, node);
   const nodeChildren = getNodeChildren(graph, node);
-  const deepestFirstChild = getDeepestFirstChild(graph, node);
-  const deepestLastChild = getDeepestLastChild(graph, node);
-
   const nodeAngleWidth = node.angleWidth;
 
   if (nodeChildren.length === 0) {
     return nodeAngleWidth;
   }
 
-  const angleBetweenNodeAndDeepestFirstChild = getAngleBetweenNodes({
-    vertex: parentNode,
-    node1: node,
-    node2: deepestFirstChild,
+  const treeLeaves = getTreeLeaves(graph, node);
+
+  let maxLeafAngle = 0;
+  let leafWithMaxAngle = treeLeaves[0];
+  treeLeaves.forEach(leaf => {
+    const leafAngle = getAngleBetweenNodes({
+      vertex: parentNode,
+      node1: node,
+      node2: leaf,
+    });
+    if (maxLeafAngle < leafAngle) {
+      maxLeafAngle = leafAngle;
+      leafWithMaxAngle = leaf;
+    }
   });
 
-  const angleWidthOfDeepestFirstChild = getAngleWidth({
-    width: deepestFirstChild.width,
-    radiusAroundParent: getDistanceBetweenNodes(parentNode, deepestFirstChild),
+  const angleWidthOfLeafWithMaxAngle = getAngleWidth({
+    width: leafWithMaxAngle.width,
+    radiusAroundParent: getDistanceBetweenNodes(parentNode, leafWithMaxAngle),
   });
 
-  const angleOfTheDeepestFirstChild =
-    angleBetweenNodeAndDeepestFirstChild + angleWidthOfDeepestFirstChild / 2;
+  const leafAngle = maxLeafAngle + angleWidthOfLeafWithMaxAngle / 2;
 
-  const angleBetweenNodeAndDeepestLastChild = getAngleBetweenNodes({
-    vertex: parentNode,
-    node1: node,
-    node2: deepestLastChild,
-  });
-
-  const angleWidthOfDeepestLastChild = getAngleWidth({
-    width: deepestLastChild.width,
-    radiusAroundParent: getDistanceBetweenNodes(parentNode, deepestLastChild),
-  });
-
-  const angleOfTheDeepestLastChild =
-    angleBetweenNodeAndDeepestLastChild + angleWidthOfDeepestLastChild / 2;
-
-  // Take twice the biggest half, instead of a simple sum, in order to keep it symmetrical.
-  // Otherwise we'd have to deal with left side angle width and right side angle width,
-  // making things more complicated.
-  const decendantsAngleWidth =
-    Math.max(angleOfTheDeepestFirstChild, angleOfTheDeepestLastChild) * 2;
+  const decendantsAngleWidth = leafAngle * 2;
 
   // if the node has only 1 child, its angle width might be smaller than the node's width itself
   const angleWidthOfTheNodeTree = Math.max(

@@ -132,6 +132,26 @@ export const getLeftSideSiblings = ({ nodes, edges }, node) => {
   return leftSiblings;
 };
 
+export const getTreeLeaves = ({ nodes, edges }, node) => {
+  const leaves = [];
+  const findLeavesRecursive = currentNode => {
+    const children = getNodeChildren({ nodes, edges }, currentNode);
+
+    if (children.length === 0) {
+      leaves.push(currentNode);
+      return;
+    }
+
+    children.forEach(child => {
+      findLeavesRecursive(child);
+    });
+  };
+
+  findLeavesRecursive(node);
+
+  return leaves;
+};
+
 export const getDeepestFirstChild = ({ nodes, edges }, node) => {
   const getFirstChildRecursive = firstChild => {
     const children = getNodeChildren({ nodes, edges }, firstChild);

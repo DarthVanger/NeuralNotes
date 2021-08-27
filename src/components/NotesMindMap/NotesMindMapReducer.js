@@ -126,7 +126,10 @@ export const notesMindMapReducer = (
     const newChildrenIds = children.map(c => c.id);
     currentNoteChildren.forEach(currentChild => {
       if (!newChildrenIds.includes(currentChild.id)) {
-        const updatedGraph = removeNodeFromGraph(graph, currentChild);
+        const updatedGraph = removeNodeFromGraph(
+          { nodes, edges },
+          currentChild,
+        );
         nodes = updatedGraph.nodes;
         edges = updatedGraph.edges;
       }

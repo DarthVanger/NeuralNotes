@@ -15,7 +15,9 @@ import { UploadsActions } from 'components/Uploads/UploadsActions';
 
 import {
   CHANGE_PARENT_BUTTON_CLICKED_ACTION,
+  DELETE_NOTE_ACTION,
   DELETE_NOTE_REQUEST_SUCCESS_ACTION,
+  DELETE_NOTE_REQUEST_FAIL_ACTION,
   ADD_NOTE_BUTTON_CLICKED_ACTION,
 } from 'components/BottomBar/BottomBarActions';
 
@@ -453,8 +455,12 @@ export const notesMindMapReducer = (
         didNoteSaveFail: true,
         isSaving: false,
       });
+    case DELETE_NOTE_ACTION:
+      return updateNote(data, { isLoading: true });
     case DELETE_NOTE_REQUEST_SUCCESS_ACTION:
       return handleDeleteNoteRequestSuccessAction({ state, data });
+    case DELETE_NOTE_REQUEST_FAIL_ACTION:
+      return updateNote(data, { isLoading: false });
     case CHANGE_PARENT_BUTTON_CLICKED_ACTION:
       return { ...state, isChangeParentModeActive: true };
     case CHANGE_NOTE_PARENT_PAGE_MOUNTED:

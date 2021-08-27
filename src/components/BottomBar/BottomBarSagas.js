@@ -15,6 +15,7 @@ import {
   CHANGE_PARENT_BUTTON_CLICKED_ACTION,
   DELETE_NOTE_ACTION,
   deleteNoteRequestSuccessAction,
+  deletNoteRequestFailAction,
 } from './BottomBarActions';
 
 function* handleAddNoteButtonClick() {
@@ -25,11 +26,12 @@ function* handleChangeParentButtonClick({ data: { note } }) {
   yield put(push(`/notes/change-parent/${note.id}`));
 }
 
-function* deleteNote({ data: { note } }) {
+function* deleteNote({ data: note }) {
   try {
     yield apiCall(noteStorage.remove, note);
     yield put(deleteNoteRequestSuccessAction(note));
   } catch (error) {
+    yield put(deletNoteRequestFailAction(note));
     yield call(toast.error, 'Failed to delete note');
   }
 }

@@ -18,18 +18,17 @@ import { TopBar } from 'components/TopBar/TopBar';
 import SearchInputComponent from './SearchInput';
 import { BackButton } from 'components/BackButton/BackButton';
 const useStyles = makeStyles(() => ({
-  list: {
-    width: '100%',
-    height: '100vh',
-    paddingLeft: 16,
+  page: {
+    minHeight: '100%',
+    background: colors.elevationOverlay02dp,
   },
   listItem: {
-    padding: 0,
-    height: 64,
+    padding: '1em',
   },
   icon: {
-    paddingLeft: 12,
-    paddingRight: 12,
+    // reset Mui's 56px min-width
+    minWidth: 'initial',
+    marginRight: '12px',
   },
   svgIcon: {
     color: colors.onSurfaceMediumEmphasis,
@@ -57,7 +56,7 @@ export function SearchPageComponent() {
   const noResultsFound = areSearchResultsFetched && searchResults.length === 0;
 
   return (
-    <>
+    <div className={classes.page}>
       <TopBar>
         <TopBarLeftButtons>
           <BackButton to={'notes'} />
@@ -65,7 +64,7 @@ export function SearchPageComponent() {
         <SearchInputComponent />
       </TopBar>
 
-      <List className={classes.list}>
+      <List>
         {searchResults &&
           searchResults.map(searchResult => (
             <React.Fragment key={searchResult.id}>
@@ -91,6 +90,6 @@ export function SearchPageComponent() {
           <ListItem className={classes.listItem}>Searching...</ListItem>
         )}
       </List>
-    </>
+    </div>
   );
 }

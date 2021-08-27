@@ -27,10 +27,11 @@ export default {
   getLinkToNote,
   isUploadedFile,
   isAppFolder,
-  findNotesByName,
+  findNotesAndFilesBySubstring,
 };
 
 const getNoteContentFileName = noteName => noteName + noteContentFileExtension;
+const isNoteContentFile = file => file.name.includes(noteContentFileExtension);
 
 /**
  * We don't want file to have multiple parents
@@ -373,6 +374,12 @@ function isAppFolder(note) {
   return note.name === APP_FOLDER_NAME;
 }
 
-function findNotesByName(query) {
-  return googleDriveApi.findFilesByNameSubstring(query);
+function findNotesAndFilesBySubstring(query) {
+  return googleDriveApi.findFilesByNameSubstring({ query }).then(response => {
+    const files = response.files;
+    const filesWithoutNoteContentFiles = response.files.filter(
+      file => !isNoteContentFile(file),
+    );
+    return filesWithoutNoteContentFiles;
+  });
 }

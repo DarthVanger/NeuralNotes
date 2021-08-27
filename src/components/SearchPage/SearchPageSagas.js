@@ -20,8 +20,10 @@ function* handleSearchQueryChange({ data }) {
   if (query !== '') {
     yield put(searchRequestAction(query));
     try {
-      const response = yield apiCall(noteStorage.findNotesByName, query);
-      const results = response.files;
+      const results = yield apiCall(
+        noteStorage.findNotesAndFilesBySubstring,
+        query,
+      );
       yield put(searchRequestSuccess(results));
     } catch (error) {
       console.error(error);

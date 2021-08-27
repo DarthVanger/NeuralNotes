@@ -2,6 +2,7 @@ import auth from 'auth';
 import throttle from 'lodash/throttle';
 import { eventChannel, END } from 'redux-saga';
 import { all, put, call, take, select, takeEvery } from 'redux-saga/effects';
+import { toast } from 'react-toastify';
 
 import { UploadsActions } from './UploadsActions';
 import { UPLOADS_REDUCER_KEY } from './UploadsConstants';
@@ -141,6 +142,7 @@ function* startFileUploadingSaga(file) {
         yield put(uploadSuccess(file, event.result));
         break;
       case uploadFailure:
+        console.error(event.error);
         yield put(uploadFailure(file, event.error));
         break;
     }
@@ -149,7 +151,7 @@ function* startFileUploadingSaga(file) {
 
 function* uploadFileSaga(file) {
   const state = yield select(state =>
-    state[UPLOADS_REDUCER_KEY].list.find(item => item.file === file),
+    state[UPLOADS_REDUCER_KEY].list.find(item => item.file.id === file.id),
   );
 
   try {
@@ -158,16 +160,29 @@ function* uploadFileSaga(file) {
 
       yield put(sessionRetrieved(file, session));
     }
-
-    yield call(startFileUploadingSaga, file);
   } catch (error) {
+    console.error(error);
     yield put(uploadFailure(file, error));
   }
+
+  yield call(startFileUploadingSaga, file);
 }
 
 function* addedFilesSaga(action) {
   const { files } = action.payload;
 
+  // Can not map and return objects, since file here is a File class instance.
+  files.forEach(file => {
+    file.id = `upload-in-progress-${file.name}-${Math.floor(
+      Math.random() * 1000000,
+    )}`;
+  });
+
+  yield put(UploadsActions.list.startUpload([...files]));
+}
+
+function* startUploadSaga(action) {
+  const { files } = action.payload;
   yield all(files.map(file => call(uploadFileSaga, file)));
 }
 
@@ -204,14 +219,26 @@ function* retryUploadSaga(action) {
 
     yield call(startFileUploadingSaga, file);
   } catch (error) {
+    console.error(error);
     yield put(uploadFailure(file, error));
+  }
+}
+
+function* uploadFailureSaga(action) {
+  const { file, error } = action.payload;
+  if (file?.name) {
+    yield call(toast.error, `File upload failed for "${file.name}"`);
+  } else {
+    yield call(toast.error, 'File upload failed');
   }
 }
 
 export function* uploadsInit() {
   yield all([
     takeEvery(UploadsActions.list.addedFiles, addedFilesSaga),
+    takeEvery(UploadsActions.list.startUpload, startUploadSaga),
     takeEvery(UploadsActions.file.cancelUpload, cancelUploadSaga),
     takeEvery(UploadsActions.file.retryUpload, retryUploadSaga),
+    takeEvery(UploadsActions.file.uploadFailure, uploadFailureSaga),
   ]);
 }

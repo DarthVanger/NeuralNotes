@@ -317,9 +317,9 @@ export const notesMindMapReducer = (
     const edges = [...state.edges];
     files.forEach(file => {
       const newNode = {
-        id: `upload-in-progress-${file.name}`,
+        id: file.id,
         name: file.name,
-        parent: state.selectedNote,
+        parent: { id: file.uploadFolderId },
         isUploadedFile: true,
         isUploading: true,
       };
@@ -335,21 +335,21 @@ export const notesMindMapReducer = (
   };
 
   const handleFileUploadSuccess = () => {
-    const uploadedFile = payload.result;
+    const { file, result } = payload;
     const nodes = [...state.nodes];
     const edges = [...state.edges];
-    // TODO: ideally should be searching by id...
-    const nodeToUpdate = nodes.find(node => node.name === uploadedFile.name);
+    const nodeToUpdate = nodes.find(node => node.id === file.id);
+
     nodes[nodes.indexOf(nodeToUpdate)] = {
       ...nodeToUpdate,
-      id: uploadedFile.id,
-      name: uploadedFile.name,
+      id: result.id,
+      name: result.name,
       isUploading: false,
     };
     const edgeToUpdate = edges.find(edge => edge.to === nodeToUpdate.id);
     edges[edges.indexOf(edgeToUpdate)] = {
       ...edgeToUpdate,
-      to: uploadedFile.id,
+      to: result.id,
     };
     return {
       ...state,
@@ -491,7 +491,7 @@ export const notesMindMapReducer = (
         nodes: [searchResult],
         edges: [],
       };
-    case UploadsActions.list.addedFiles().type:
+    case UploadsActions.list.startUpload().type:
       return handleFileUploadStart();
     case UploadsActions.file.uploadSuccess().type:
       return handleFileUploadSuccess();

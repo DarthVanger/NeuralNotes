@@ -6,6 +6,7 @@ export const UploadsActions = createActions(
   {
     LIST: {
       ADDED_FILES: files => ({ files }),
+      START_UPLOAD: files => ({ files }),
       CLEAR: null,
     },
     FILE: {

@@ -14,6 +14,10 @@ function addFiles(list, { files }) {
   return [...files.map(file => ({ file })), ...list];
 }
 
+function replaceFiles(list, { files }) {
+  return [...files.map(file => ({ file }))];
+}
+
 function updateFileInList(list, { file, ...updates }) {
   return list.map(item => {
     if (item.file !== file) {
@@ -34,6 +38,7 @@ function updateFile() {
 export const uploadsReducer = handleActions(
   {
     [UploadsActions.list.addedFiles]: updateList(addFiles),
+    [UploadsActions.list.startUpload]: updateList(replaceFiles),
     [UploadsActions.list.clear]: updateList([]),
 
     [UploadsActions.file.sessionRetrieved]: updateFile(),

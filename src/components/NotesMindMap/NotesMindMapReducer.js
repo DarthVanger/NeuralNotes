@@ -319,7 +319,7 @@ export const notesMindMapReducer = (
     const edges = [...state.edges];
     files.forEach(file => {
       const newNode = {
-        id: `upload-in-progress-${Date.now()}`,
+        id: `upload-in-progress-${file.name}`,
         name: prependUploadingToFileName(file.name),
         parent: state.selectedNote,
         isUploadedFile: true,

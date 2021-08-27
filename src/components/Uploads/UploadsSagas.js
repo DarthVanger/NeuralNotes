@@ -225,7 +225,7 @@ function* retryUploadSaga(action) {
 }
 
 function* uploadFailureSaga(action) {
-  const { file, error } = action.payload;
+  const { file } = action.payload;
   if (file?.name) {
     yield call(toast.error, `File upload failed for "${file.name}"`);
   } else {

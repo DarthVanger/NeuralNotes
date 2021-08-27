@@ -385,7 +385,7 @@ function updateNoteName({ note, newName }) {
 function findNotesAndFilesBySubstring(query) {
   return googleDriveApi.findFilesByNameSubstring({ query }).then(response => {
     const files = response.files;
-    const filesWithoutNoteContentFiles = response.files.filter(
+    const filesWithoutNoteContentFiles = files.filter(
       file => !isNoteContentFile(file),
     );
     return filesWithoutNoteContentFiles;

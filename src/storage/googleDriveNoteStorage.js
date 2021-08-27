@@ -32,6 +32,26 @@ export default {
 
 const getNoteContentFileName = noteName => noteName + noteContentFileExtension;
 const isNoteContentFile = file => file.name.includes(noteContentFileExtension);
+const isFolder = file => file.mimeType === 'application/vnd.google-apps.folder';
+
+function getLinkToNote({ id }) {
+  return 'https://drive.google.com/open?id=' + id;
+}
+
+/**
+ * Tell if file is a file that was uploaded by user, or it is a note
+ * or note content file created by the app.
+ * In NeuralNotes every folder is a note, and user can only upload files.
+ * So the criterion is easy: if it's a folder it's a note.
+ * If it's not a folder, then it is either note content file, or user uploaded file.
+ */
+function isUploadedFile(file) {
+  return !isFolder(file) && !isNoteContentFile(file);
+}
+
+function isAppFolder(note) {
+  return note.name === APP_FOLDER_NAME;
+}
 
 /**
  * We don't want file to have multiple parents
@@ -360,18 +380,6 @@ function updateNoteName({ note, newName }) {
       return newNote;
     });
   });
-}
-
-function getLinkToNote({ id }) {
-  return 'https://drive.google.com/open?id=' + id;
-}
-
-function isUploadedFile(file) {
-  return file.mimeType !== 'application/vnd.google-apps.folder';
-}
-
-function isAppFolder(note) {
-  return note.name === APP_FOLDER_NAME;
 }
 
 function findNotesAndFilesBySubstring(query) {

@@ -27,6 +27,7 @@ export const Node = node => {
     padding,
     isLoading,
     isSaving,
+    isUploading,
     didNoteSaveFail,
     debug,
   } = node;
@@ -69,6 +70,7 @@ export const Node = node => {
         isLoading={isLoading}
         didNoteSaveFail={didNoteSaveFail}
         isSaving={isSaving}
+        isUploading={isUploading}
       />
       <g transform={`translate(${padding}, -${padding})`}>
         <text

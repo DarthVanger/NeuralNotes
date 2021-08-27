@@ -14,8 +14,9 @@ const NodeBackground = ({
   width,
   isSelected,
   isLoading,
-  didNoteSaveFail,
   isSaving,
+  isUploading,
+  didNoteSaveFail,
   debug,
 }) => {
   const theme = useTheme();
@@ -86,20 +87,24 @@ const NodeBackground = ({
   };
 
   const BorderPath = () => {
-    if (isLoading || isSaving) {
-      const LoadingPath = styled.path`
-        @keyframes moving-dash {
-          to {
-            stroke-dashoffset: 1000;
-          }
+    const LoadingPath = styled.path`
+      @keyframes moving-dash {
+        to {
+          stroke-dashoffset: 1000;
         }
+      }
 
-        animation: moving-dash 15s linear infinite;
-        animation-direction: reverse;
-        stroke-dasharray: 20;
-      `;
+      animation: moving-dash 15s linear infinite;
+      animation-direction: reverse;
+      stroke-dasharray: 20;
+    `;
 
+    if (isLoading || isSaving) {
       return <LoadingPath d={borderPath} style={selectedNodeStyle} />;
+    }
+
+    if (isUploading) {
+      return <LoadingPath d={borderPath} style={nodeStyle} />;
     }
 
     if (didNoteSaveFail) {

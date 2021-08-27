@@ -311,8 +311,6 @@ export const notesMindMapReducer = (
     return newNodes;
   };
 
-  const prependUploadingToFileName = filename => `[Uploading...] ${filename}`;
-
   const handleFileUploadStart = () => {
     const { files } = payload;
     let nodes = state.nodes;
@@ -320,13 +318,13 @@ export const notesMindMapReducer = (
     files.forEach(file => {
       const newNode = {
         id: `upload-in-progress-${file.name}`,
-        name: prependUploadingToFileName(file.name),
+        name: file.name,
         parent: state.selectedNote,
         isUploadedFile: true,
-        isInProgressOfUpload: true,
+        isUploading: true,
       };
 
-      nodes = addNodeToGraph(nodes, newNode);
+      nodes = [...nodes, newNode];
       edges.push({ from: newNode.parent.id, to: newNode.id });
     });
     return {
@@ -341,14 +339,12 @@ export const notesMindMapReducer = (
     const nodes = [...state.nodes];
     const edges = [...state.edges];
     // TODO: ideally should be searching by id...
-    const nodeToUpdate = nodes.find(
-      node => node.name === prependUploadingToFileName(uploadedFile.name),
-    );
+    const nodeToUpdate = nodes.find(node => node.name === uploadedFile.name);
     nodes[nodes.indexOf(nodeToUpdate)] = {
       ...nodeToUpdate,
       id: uploadedFile.id,
       name: uploadedFile.name,
-      isInProgressOfUpload: false,
+      isUploading: false,
     };
     const edgeToUpdate = edges.find(edge => edge.to === nodeToUpdate.id);
     edges[edges.indexOf(edgeToUpdate)] = {

@@ -74,9 +74,12 @@ export function SearchPageComponent() {
         {searchResults &&
           searchResults.map(searchResult => (
             <React.Fragment key={searchResult.id}>
-              <ListItem className={classes.listItem}>
+              <ListItem
+                button
+                className={classes.listItem}
+                onClick={() => handleClick(searchResult)}>
                 {noteStorage.isUploadedFile(searchResult) && <FileIcon />}
-                <ListItemText onClick={() => handleClick(searchResult)}>
+                <ListItemText>
                   <Typography variant="subtitle1">
                     {searchResult.name}
                   </Typography>

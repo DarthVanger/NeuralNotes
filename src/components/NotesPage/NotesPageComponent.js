@@ -6,7 +6,7 @@ import { ChangeNoteParentPage } from './ChangeNoteParentPage/ChangeNoteParentPag
 import NotesMindMapPage from './NotesMindMapPage/NotesMindMapPage';
 
 const StyledNotesPage = styled.div`
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;

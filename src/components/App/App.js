@@ -18,7 +18,7 @@ import AppErrorBoundary from './AppErrorBoundary';
 
 const StyledApp = styled.div`
   background: ${colors.surface};
-  min-height: 100vh;
+  height: 100%;
 `;
 
 export const App = () => {

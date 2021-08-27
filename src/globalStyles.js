@@ -8,19 +8,16 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   html, body {
-    height: 100%;
-    font-size: initial;
     font-family: 'Roboto', sans-serif;
-    color: white;
     margin: 0;
+    height: 100%;
+  }
+
+  #app-root {
+    height: 100%;
   }
 
   input, button, textarea, select {
     font-family: inherit;
-  }
-  
-  #app-root {
-    position: relative;
-    height: 100%;
   }
 `;

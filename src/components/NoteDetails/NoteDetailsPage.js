@@ -6,7 +6,7 @@ import NoteDetailsTopBar from './NoteDetailsTopBar';
 
 const Wrapper = styled.div`
   background: ${colors.elevationOverlay04dp};
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
 `;

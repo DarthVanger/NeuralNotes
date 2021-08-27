@@ -37,7 +37,7 @@ const self = {
   findFileByName,
   updateFileName,
   createFolder,
-  findFoldersByName,
+  findFilesByNameSubstring,
   getFolderChildren,
   createTextFile,
   updateTextFileContent,
@@ -153,9 +153,12 @@ function createFolder(options) {
   return executeGapiRequest(request);
 }
 
-function findFoldersByName(name) {
-  const query = `name contains '${name}' and trashed = false and mimeType = 'application/vnd.google-apps.folder'`;
-  const params = { q: query };
+function findFilesByNameSubstring({ query, folderId }) {
+  let gapiQuery = `name contains '${query}' and trashed = false`;
+  if (folderId) {
+    gapiQuery += ` and  "${folderId}" in parents`;
+  }
+  const params = { q: gapiQuery };
   const request = gapi.client.drive.files.list(params);
 
   return executeGapiRequest(request);

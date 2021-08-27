@@ -2,6 +2,7 @@
 import googleDriveApi from 'api/google-drive-api';
 
 const APP_FOLDER_NAME = 'NeuralNotes';
+const noteContentFileExtension = '.note.txt';
 
 let appRootFolder;
 
@@ -28,6 +29,8 @@ export default {
   isAppFolder,
   findNotesByName,
 };
+
+const getNoteContentFileName = noteName => noteName + noteContentFileExtension;
 
 /**
  * We don't want file to have multiple parents
@@ -95,7 +98,16 @@ function fetchChildNotes(note) {
     const children = [];
     files &&
       files.forEach(function(file) {
-        if (file.name === note.name + '.txt') {
+        if (file.name.includes(noteContentFileExtension)) {
+          return;
+        } else if (file.name === note.name + '.txt') {
+          // 2021-08-27:
+          // Migration for old note file names, which had extension just '.txt' instead of '.note.txt'.
+          // Remove it if you see this in 2022 year :)
+          updateFileName({
+            id: file.id,
+            name: getNoteContentFileName(note.name),
+          });
           return;
         }
         children.push(parseParents(file));
@@ -158,7 +170,7 @@ function createAppRootTextFile({ id }) {
   console.info('Creating app root text file...');
   return googleDriveApi
     .createTextFile({
-      name: APP_FOLDER_NAME + '.txt',
+      name: getNoteContentFileName(APP_FOLDER_NAME),
       content: 'Edit this text...',
       parents: [id],
     })
@@ -207,10 +219,9 @@ function getNoteContent(note) {
 }
 
 function findNoteContentFile(note) {
-  const noteContentFileName = note.name + '.txt';
   return googleDriveApi
-    .findFileByName({
-      name: noteContentFileName,
+    .findFilesByNameSubstring({
+      query: noteContentFileExtension,
       folderId: note.id,
     })
     .then(function(response) {
@@ -274,7 +285,7 @@ function create(note) {
     .then(function(createdDirectory) {
       note.id = createdDirectory.id;
       return googleDriveApi.createTextFile({
-        name: note.name + '.txt',
+        name: getNoteContentFileName(note.name),
         content: note.content,
         parents: [createdDirectory.id],
       });
@@ -308,7 +319,7 @@ function updateNoteContentFileName({ note, newName }) {
     .then(function(noteContentFile) {
       return googleDriveApi.updateFileName({
         id: noteContentFile.id,
-        name: newName + '.txt',
+        name: getNoteContentFileName(newName),
       });
     })
     .catch(error => {
@@ -362,6 +373,6 @@ function isAppFolder(note) {
   return note.name === APP_FOLDER_NAME;
 }
 
-function findNotesByName(name) {
-  return googleDriveApi.findFoldersByName(name);
+function findNotesByName(query) {
+  return googleDriveApi.findFilesByNameSubstring(query);
 }

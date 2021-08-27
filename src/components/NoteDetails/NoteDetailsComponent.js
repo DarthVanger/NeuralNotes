@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import debounce from 'lodash.debounce';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
 
 import {
   StyledNoteNameEditor,
@@ -14,7 +15,19 @@ import {
   noteEditorOpenedAction,
 } from './NoteDetailsActions';
 
+const useStyles = makeStyles(theme => ({
+  noteNameEditor: {
+    ...theme.typography.h6,
+    lineHeight: '56px',
+    textAlign: 'center',
+  },
+  noteContentEditor: {
+    ...theme.typography.body2,
+  },
+}));
+
 export const NoteDetailsComponent = props => {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
   const [noteName, setNoteName] = useState(props.noteName);
@@ -94,6 +107,7 @@ export const NoteDetailsComponent = props => {
   return (
     <StyledNoteDetailsScreen>
       <StyledNoteNameEditor
+        className={classes.noteNameEditor}
         type="text"
         onChange={handleNoteNameChange}
         onKeyDown={handleNoteNameKeyDown}
@@ -110,6 +124,7 @@ export const NoteDetailsComponent = props => {
         }}
       />
       <StyledNoteContentEditor
+        className={classes.noteContentEditor}
         onChange={handleNoteContentChange}
         value={noteContent}
         placeholder="Note"

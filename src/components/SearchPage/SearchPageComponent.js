@@ -8,6 +8,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles } from '@material-ui/core/styles';
 import InsertDriveFileRoundedIcon from '@material-ui/icons/InsertDriveFileRounded';
+import DescriptionIcon from '@material-ui/icons/Description';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { colors } from 'colors';
@@ -61,6 +62,12 @@ export function SearchPageComponent() {
     </ListItemIcon>
   );
 
+  const NoteIcon = () => (
+    <ListItemIcon className={classes.icon}>
+      <DescriptionIcon className={classes.svgIcon} />
+    </ListItemIcon>
+  );
+
   return (
     <div className={classes.page}>
       <TopBar>
@@ -78,7 +85,11 @@ export function SearchPageComponent() {
                 button
                 className={classes.listItem}
                 onClick={() => handleClick(searchResult)}>
-                {noteStorage.isUploadedFile(searchResult) && <FileIcon />}
+                {noteStorage.isUploadedFile(searchResult) ? (
+                  <FileIcon />
+                ) : (
+                  <NoteIcon />
+                )}
                 <ListItemText>
                   <Typography variant="subtitle1">
                     {searchResult.name}

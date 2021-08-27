@@ -8,15 +8,15 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { makeStyles } from '@material-ui/core/styles';
 import InsertDriveFileRoundedIcon from '@material-ui/icons/InsertDriveFileRounded';
-import { colors } from 'colors';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { colors } from 'colors';
 import { searchResultClickedAction } from 'components/NotesMindMap/NotesMindMapActions';
-
 import { TopBarLeftButtons } from 'components/TopBar/TopBarLeftButtons';
 import { TopBar } from 'components/TopBar/TopBar';
 import SearchInputComponent from './SearchInput';
 import { BackButton } from 'components/BackButton/BackButton';
+import noteStorage from 'storage/noteStorage';
 const useStyles = makeStyles(() => ({
   page: {
     minHeight: '100%',
@@ -55,6 +55,12 @@ export function SearchPageComponent() {
 
   const noResultsFound = areSearchResultsFetched && searchResults.length === 0;
 
+  const FileIcon = () => (
+    <ListItemIcon className={classes.icon}>
+      <InsertDriveFileRoundedIcon className={classes.svgIcon} />
+    </ListItemIcon>
+  );
+
   return (
     <div className={classes.page}>
       <TopBar>
@@ -69,9 +75,7 @@ export function SearchPageComponent() {
           searchResults.map(searchResult => (
             <React.Fragment key={searchResult.id}>
               <ListItem className={classes.listItem}>
-                <ListItemIcon className={classes.icon}>
-                  <InsertDriveFileRoundedIcon className={classes.svgIcon} />
-                </ListItemIcon>
+                {noteStorage.isUploadedFile(searchResult) && <FileIcon />}
                 <ListItemText onClick={() => handleClick(searchResult)}>
                   <Typography variant="subtitle1">
                     {searchResult.name}

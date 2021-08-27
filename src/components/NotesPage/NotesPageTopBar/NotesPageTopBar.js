@@ -6,12 +6,13 @@ import SearchIcon from '@material-ui/icons/Search';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
+import Badge from '@material-ui/core/Badge';
 
 import { TopBar } from 'components/TopBar/TopBar';
 import { TopBarLeftButtons } from 'components/TopBar/TopBarLeftButtons';
 import { TopBarRightButtons } from 'components/TopBar/TopBarRightButtons';
 import { NotesPageTopBarMenu } from './NotesPageTopBarMenu';
-import * as Selectors from 'components/Uploads/UploadsSelectors';
+import * as UploadsSelectors from 'components/Uploads/UploadsSelectors';
 import { colors } from 'colors';
 import { resetMindMapToRootNode } from 'components/NotesMindMap/NotesMindMapActions';
 import { makeStyles } from '@material-ui/core/styles';
@@ -29,7 +30,8 @@ const useStyles = makeStyles({
 });
 
 export const NotesPageTopBar = () => {
-  const hasUploads = useSelector(Selectors.hasUploads);
+  const hasUploads = useSelector(UploadsSelectors.hasUploads);
+  const activeUploadsList = useSelector(UploadsSelectors.getActiveUploadsList);
   const dispatch = useDispatch();
   // const hasActiveUploads = useSelector(Selectors.hasActiveUploads);
   //
@@ -57,10 +59,12 @@ export const NotesPageTopBar = () => {
         {hasUploads && (
           <Link to="/uploads">
             <IconButton>
-              <CloudUploadIcon
-                color="primary"
-                style={{ marginRight: '10px' }}
-              />
+              <Badge badgeContent={activeUploadsList.length} color="secondary">
+                <CloudUploadIcon
+                  color="primary"
+                  style={{ marginRight: '10px' }}
+                />
+              </Badge>
             </IconButton>
           </Link>
         )}

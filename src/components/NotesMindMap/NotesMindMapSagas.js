@@ -41,8 +41,8 @@ function* handleInitialNoteLoad({ data: initialNote }) {
   yield put(noteFetchSuccessAction(initialNote));
 }
 
-function* handleSearchResultClick({ data: { note } }) {
-  yield put(selectNoteAction(note));
+function* handleSearchResultClick({ data: file }) {
+  yield put(selectNoteAction(file));
   yield put(push('/notes'));
 }
 

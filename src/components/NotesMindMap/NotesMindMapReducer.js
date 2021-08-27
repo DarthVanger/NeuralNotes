@@ -468,9 +468,22 @@ export const notesMindMapReducer = (
     case CHANGE_PARENT_REQUEST_FAIL_ACTION:
       return { ...state, isChangeParentModeActive: false };
     case SEARCH_RESULT_CLICKED:
+      const searchResult = data;
+      const searchResultInGraph = state.nodes.find(
+        n => n.id === searchResult.id,
+      );
+
+      // If search result is in graph, do nothing: Saga dispatches the select note action,
+      // so the note will be simply selected and that's it.
+      if (searchResultInGraph) {
+        return state;
+      }
+
+      // If search result is not in the graph, clear the graph and show only the search result,
+      // because mind map is currently capable of showing only 1 tree (there should be 1 root).
       return {
         ...state,
-        nodes: [data.note],
+        nodes: [searchResult],
         edges: [],
       };
     case UploadsActions.list.addedFiles().type:

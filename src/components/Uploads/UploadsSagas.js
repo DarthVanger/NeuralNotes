@@ -65,16 +65,32 @@ function createFileUploadingChannel(file, session) {
       });
     }
 
-    function onSuccess(event) {
-      // check response for failure
-      emitter({
-        type: uploadSuccess,
-        result: JSON.parse(event.target.responseText),
-      });
+    function onXHRSuccess(event) {
+      const httpResponse = event.target;
+
+      let responseBody;
+      try {
+        responseBody = JSON.parse(httpResponse.responseText);
+      } catch {
+        responseBody = httpResponse.responseText;
+      }
+
+      if (httpResponse.status === 200) {
+        emitter({
+          type: uploadSuccess,
+          result: responseBody,
+        });
+      } else {
+        emitter({
+          type: uploadFailure,
+          error: responseBody?.error || responseBody,
+        });
+      }
+
       emitter(END);
     }
 
-    function onFailure() {
+    function onXHRFailure() {
       const error = new Error('Network error');
       error.code = 'NETWORK_ERROR';
 
@@ -99,8 +115,8 @@ function createFileUploadingChannel(file, session) {
     }
 
     xhr.upload.onprogress = throttle(onProgress, PROGRESS_UPDATE_INTERVAL);
-    xhr.onload = onSuccess;
-    xhr.onerror = onFailure;
+    xhr.onload = onXHRSuccess;
+    xhr.onerror = onXHRFailure;
 
     file.abortController.signal.addEventListener('abort', () => {
       xhr.abort();
@@ -210,6 +226,7 @@ function* checkFileUploadedRange(file) {
       },
     }),
   );
+
   return response.headers.get('Range').split('-')[1];
 }
 

@@ -65,7 +65,7 @@ const UploadsListItem = ({ item }) => {
     }
 
     if (item.error) {
-      return <Typography variant="body2">{item.error.message}</Typography>;
+      return <Typography variant="body2">Failed to upload file</Typography>;
     }
 
     if (item.progress) {
@@ -98,7 +98,7 @@ const UploadsListItem = ({ item }) => {
   }
 
   function renderProgress() {
-    if (!item.progress || item.result) {
+    if (!item.progress || item.result || item.error) {
       return null;
     }
 

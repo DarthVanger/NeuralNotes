@@ -134,8 +134,15 @@ function* handleMindMapNodeClick({
         graph,
       }),
     );
-  } else {
-    if (targetNode.id === selectedNote.id) return;
+    return;
+  }
+
+  if (targetNode.isUploading) {
+    yield put(push('/uploads'));
+    return;
+  }
+
+  if (targetNode.id !== selectedNote.id) {
     yield put(selectNoteAction(targetNode));
   }
 }

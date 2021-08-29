@@ -24,14 +24,9 @@ export function UploadButton() {
 
   function handleSelectedFiles(event) {
     if (event.target.files.length > 0) {
-      const files = Array.from(event.target.files);
-
-      files.forEach(item => {
-        item.uploadFolderId = uploadFolderId;
-        item.abortController = new window.AbortController();
-      });
-
-      dispatch(UploadsActions.list.addedFiles(files));
+      dispatch(
+        UploadsActions.list.addedFiles(event.target.files, uploadFolderId),
+      );
       fileInputRef.current.value = null;
     }
   }

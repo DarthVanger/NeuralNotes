@@ -5,7 +5,7 @@ import { UPLOADS_REDUCER_KEY } from './UploadsConstants';
 export const UploadsActions = createActions(
   {
     LIST: {
-      ADDED_FILES: files => ({ files }),
+      ADDED_FILES: (files, uploadFolderId) => ({ files, uploadFolderId }),
       START_UPLOAD: files => ({ files }),
       CLEAR: null,
     },

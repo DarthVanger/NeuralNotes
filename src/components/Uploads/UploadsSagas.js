@@ -169,13 +169,18 @@ function* uploadFileSaga(file) {
 }
 
 function* addedFilesSaga(action) {
-  const { files } = action.payload;
+  const { files, uploadFolderId } = action.payload;
 
-  // Can not map and return objects, since file here is a File class instance.
-  files.forEach(file => {
+  // Files from the file input is of type FileList, not a usual array.
+  // And each item is not a JSON object, but a File instance, so we
+  // just add properties in foreach(), instead of doing map().
+  const filesArray = Array.from(files);
+  filesArray.forEach(file => {
     file.id = `upload-in-progress-${file.name}-${Math.floor(
       Math.random() * 1000000,
     )}`;
+    file.uploadFolderId = uploadFolderId;
+    file.abortController = new window.AbortController();
   });
 
   yield put(UploadsActions.list.startUpload([...files]));

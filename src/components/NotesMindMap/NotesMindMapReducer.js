@@ -340,21 +340,30 @@ export const notesMindMapReducer = (
     const edges = [...state.edges];
     const nodeToUpdate = nodes.find(node => node.id === file.id);
 
-    nodes[nodes.indexOf(nodeToUpdate)] = {
+    const updatedNode = {
       ...nodeToUpdate,
       id: result.id,
       name: result.name,
       isUploading: false,
     };
+
+    nodes[nodes.indexOf(nodeToUpdate)] = updatedNode;
+
     const edgeToUpdate = edges.find(edge => edge.to === nodeToUpdate.id);
+
     edges[edges.indexOf(edgeToUpdate)] = {
       ...edgeToUpdate,
       to: result.id,
     };
+
     return {
       ...state,
       nodes,
       edges,
+      selectedNote:
+        state.selectedNote.id === nodeToUpdate.id
+          ? updatedNode
+          : state.selectedNote,
     };
   };
 

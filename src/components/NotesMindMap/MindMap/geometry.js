@@ -157,28 +157,32 @@ export const getAngleWidthOfNodeTree = (graph, node) => {
 
   const treeLeaves = getTreeLeaves(graph, node);
 
-  let maxLeafAngle = 0;
+  let maxLeafEdgeAngle = 0;
   let leafWithMaxAngle = treeLeaves[0];
+
   treeLeaves.forEach(leaf => {
+    // this is angle between the centers of leaf and node
     const leafAngle = getAngleBetweenNodes({
       vertex: parentNode,
       node1: node,
       node2: leaf,
     });
-    if (maxLeafAngle < leafAngle) {
-      maxLeafAngle = leafAngle;
+
+    const leafAngleWidth = getAngleWidth({
+      width: leaf.width,
+      radiusAroundParent: getDistanceBetweenNodes(parentNode, leafWithMaxAngle),
+    });
+
+    // this is angle between the edge of leaf and the center of node
+    const leafEdgeAngle = leafAngle + leafAngleWidth / 2;
+
+    if (maxLeafEdgeAngle < leafEdgeAngle) {
+      maxLeafEdgeAngle = leafEdgeAngle;
       leafWithMaxAngle = leaf;
     }
   });
 
-  const angleWidthOfLeafWithMaxAngle = getAngleWidth({
-    width: leafWithMaxAngle.width,
-    radiusAroundParent: getDistanceBetweenNodes(parentNode, leafWithMaxAngle),
-  });
-
-  const leafAngle = maxLeafAngle + angleWidthOfLeafWithMaxAngle / 2;
-
-  const decendantsAngleWidth = leafAngle * 2;
+  const decendantsAngleWidth = maxLeafEdgeAngle * 2;
 
   // if the node has only 1 child, its angle width might be smaller than the node's width itself
   const angleWidthOfTheNodeTree = Math.max(
@@ -224,15 +228,15 @@ export const increaseRadiusToFitAllDecendantsIfNeeded = (graph, node) => {
   }
 
   // Now do the binary search to find the radius that will fit nicely, between lower and upper bound
-  let fitRadius;
-  const fitAllowance = 5 * (Math.PI / 180);
+  const fitAllowance = 1 * (Math.PI / 180);
   while (binarySearchIteration < maxIterations) {
     binarySearchIteration++;
 
     if (binarySearchIteration >= maxIterations) {
-      throw new Error(
-        `Failed to find radius to fit all node children on mind map for node "${node.name}" (infinite loop)`,
+      console.error(
+        `Failed to find radius to fit all node children on mind map for node "${node.name}" (infinite loop in binary search)`,
       );
+      break;
     }
 
     const mid = (lowerBound + upperBound) / 2;
@@ -240,20 +244,17 @@ export const increaseRadiusToFitAllDecendantsIfNeeded = (graph, node) => {
     updateChildrenRadiusAndDecendants(graph, node, mid);
     const currentAngleWidth = getTotalAngleWidthOfDecendants(graph, node);
 
-    if (currentAngleWidth > maxAllowedAngleWidth) {
+    if (currentAngleWidth >= maxAllowedAngleWidth) {
       lowerBound = mid;
       continue;
     }
 
     if (maxAllowedAngleWidth - currentAngleWidth < fitAllowance) {
-      fitRadius = mid;
       break;
     }
 
     upperBound = mid;
   }
-
-  return fitRadius;
 };
 
 export const getTotalAngleWidthOfDecendants = (graph, node) => {

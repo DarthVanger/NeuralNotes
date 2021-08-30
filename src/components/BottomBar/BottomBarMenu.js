@@ -8,8 +8,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import { useSelector, useDispatch } from 'react-redux';
 import Link from '@material-ui/core/Link';
-
 import { colors } from 'colors';
+import noteStorage from 'storage/noteStorage';
 
 import {
   editNoteButtonClickedAction,
@@ -88,7 +88,7 @@ export const BottomBarMenu = () => {
         </MenuItem>
         <MenuItem
           component={Link}
-          href={`https://drive.google.com/drive/folders/${selectedNote.id}`}
+          href={noteStorage.getLinkToNote(selectedNote)}
           target="_blank"
           onClick={closeMenu}>
           Open in Google Drive

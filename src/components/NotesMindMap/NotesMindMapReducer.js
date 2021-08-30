@@ -86,8 +86,10 @@ export const notesMindMapReducer = (
   };
 
   const handleNoteWithChildrenAndParentFetchSuccess = () => {
-    const { note, children, parentNote } = data;
+    const { note: file, children, parentNote } = data;
     const { selectedNote } = state;
+
+    const note = convertGoogleDriveFileToNote(file);
 
     const state1 = updateNoteChildren(state, note, children);
     const state2 = updateNoteParent(state1, note, parentNote);
@@ -141,7 +143,9 @@ export const notesMindMapReducer = (
       // with the freshly fetched one, as it might have been renamed
       const existingChild = nodes.find(n => n.id === child.id);
       if (existingChild) {
-        nodes[nodes.indexOf(existingChild)] = { ...child };
+        nodes[nodes.indexOf(existingChild)] = {
+          ...convertGoogleDriveFileToNote(child),
+        };
         return;
       }
 
@@ -519,7 +523,7 @@ export const notesMindMapReducer = (
     case SELECT_NOTE_ACTION:
       return {
         ...state,
-        selectedNote: data,
+        selectedNote: state.nodes.find(n => n.id === data.id),
       };
     case DISMISS_NOTE_IS_TRASHED_DIALOG_ACTION:
       return removeSelectedNote();

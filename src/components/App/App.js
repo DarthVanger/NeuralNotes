@@ -15,6 +15,7 @@ import SessionExpiredDialog from 'components/SessionExpiredDialog/SessionExpired
 import UnexpectedErrorDialog from './UnexpectedErrorDialog';
 import UnexpectedErrorDialogErrorBoundary from './UnexpectedErrorDialogErrorBoundary';
 import AppErrorBoundary from './AppErrorBoundary';
+import CloseTabWarning from './CloseTabWarning';
 
 const StyledApp = styled.div`
   background: ${colors.surface};
@@ -55,6 +56,7 @@ export const App = () => {
           </Route>
         </Switch>
         <SessionExpiredDialog />
+        <CloseTabWarning />
       </AppErrorBoundary>
       <UnexpectedErrorDialogErrorBoundary>
         <UnexpectedErrorDialog />

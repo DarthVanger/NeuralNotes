@@ -6,16 +6,12 @@ import styled from 'styled-components';
 import { colors } from 'colors';
 
 import { UploadsList } from './UploadsList';
-import { UploadsPageHeader } from './UploadsPageHeader';
+import { UploadsPageTopBar } from './UploadsPageTopBar';
 import * as Selectors from './UploadsSelectors';
 
 const StyledPageContainer = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
   background: ${colors.elevationOverlay02dp};
+  min-height: 100%;
   display: flex;
   flex-direction: column;
 `;
@@ -25,7 +21,7 @@ const UploadsPage = () => {
 
   return (
     <StyledPageContainer>
-      <UploadsPageHeader />
+      <UploadsPageTopBar />
       <UploadsList list={list} />
     </StyledPageContainer>
   );

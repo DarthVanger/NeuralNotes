@@ -33,8 +33,7 @@ export const NotesPageTopBar = () => {
   const hasUploads = useSelector(UploadsSelectors.hasUploads);
   const activeUploadsList = useSelector(UploadsSelectors.getActiveUploadsList);
   const dispatch = useDispatch();
-  // const hasActiveUploads = useSelector(Selectors.hasActiveUploads);
-  //
+
   const handleAppTitleClick = () => {
     dispatch(resetMindMapToRootNode());
   };

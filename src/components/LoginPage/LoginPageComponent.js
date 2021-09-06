@@ -142,7 +142,6 @@ export const LoginPageComponent = ({
         <Slide2 />
         <Slide3 />
         <Slide4 />
-        <Slide5 />
         <Footer>
           <H3>
             <span>Neural</span>Notes is free to use

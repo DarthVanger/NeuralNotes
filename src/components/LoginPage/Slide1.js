@@ -42,7 +42,6 @@ export default class Slide1 extends Component {
     return (
       <Slide>
         <AppName>
-          <H1>[ The app is still under construction! ]</H1>
           <H1>
             <b>Neural</b>Notes
           </H1>

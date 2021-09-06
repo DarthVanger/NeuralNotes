@@ -145,7 +145,7 @@ export const LoginPageComponent = ({
         <Slide5 />
         <Footer>
           <H3>
-            <span>Neural</span>Notes is open source and free
+            <span>Neural</span>Notes is free to use
           </H3>
           <GoogleSignUp type="button" onClick={authHandler}>
             <img src={iconGoogle} />

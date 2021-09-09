@@ -5,7 +5,7 @@ import {
   put,
   takeEvery,
 } from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
-import siteGlobalLoadingBar from 'ui/spinner/site-global-loading-bar';
+
 import {
   NOT_AUTHORIZED_USER_OPENED_APP,
   loadGoogleApiAction,
@@ -14,15 +14,15 @@ import {
 import {
   REQUEST_AUTHORIZATION_ACTION,
   authSuccessAction,
+  AUTH_SUCCESS_ACTION,
 } from 'components/LoginPage/LoginPageActions';
 
-export function* handleAuth() {
-  const spinnerName = 'Loading google auth';
+import { saveUserLoginEvent } from 'api/eventsApi';
 
-  yield call(siteGlobalLoadingBar.show, spinnerName);
+export function* handleAuth() {
   try {
-    yield call(gapiAuthorize);
-    yield put(authSuccessAction());
+    const user = yield call(gapiAuthorize);
+    yield put(authSuccessAction(user));
   } catch (e) {
     console.error('googleLogin.gapiAuthorize(): authError: ', e);
     yield call(
@@ -30,12 +30,14 @@ export function* handleAuth() {
       'Google Authentification failed: ' + e.error,
     );
   }
-
-  yield call(siteGlobalLoadingBar.hide, spinnerName);
 }
 
 function* handleNotAuthorizedUserOpenedApp() {
   yield put(loadGoogleApiAction());
+}
+
+function* handleAuthSuccess({ data: user }) {
+  saveUserLoginEvent(user);
 }
 
 export function* loginInit() {
@@ -44,4 +46,5 @@ export function* loginInit() {
     handleNotAuthorizedUserOpenedApp,
   );
   yield takeEvery(REQUEST_AUTHORIZATION_ACTION, handleAuth);
+  yield takeEvery(AUTH_SUCCESS_ACTION, handleAuthSuccess);
 }

@@ -2,10 +2,12 @@
 
 const express = require('express');
 const app = express();
-const port = 8080;
+const port = 8081;
 const cors = require('cors');
 const fs = require('fs');
 const os = require('os');
+const http = require('http');
+const https = require('https');
 
 const logsFolder = os.homedir() + '/neural-notes-database';
 
@@ -27,6 +29,16 @@ app.post('/event/login', (req, res) => {
   res.end();
 });
 
-app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`);
-});
+if (process.env.NODE_ENV === 'production') {
+  const sslCertsFolder = os.homedir() + '/ssl-certs';
+  const privateKey = fs.readFileSync(sslCertsFolder + '/neural-notes.key', 'utf8');
+  const certificate = fs.readFileSync(sslCertsFolder + '/neural-notes.crt', 'utf8');
+  const httpsServer = https.createServer({ key: privateKey, cert: certificate }, app);
+  httpsServer.listen(port);
+  console.log(`Server listening at https://localhost:${port}`);
+} else {
+  app.listen(port, () => {
+    console.log(`Server listening at http://localhost:${port}`);
+  });
+}
+

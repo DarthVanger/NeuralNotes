@@ -1,10 +1,17 @@
+#!/usr/bin/env node
+
 const express = require('express');
 const app = express();
 const port = 8080;
 const cors = require('cors');
 const fs = require('fs');
+const os = require('os');
 
-const logsFolder = './';
+const logsFolder = os.homedir() + '/neural-notes-database';
+
+console.log('Events log folder: ', logsFolder);
+
+fs.mkdirSync(logsFolder, { recursive: true });
 
 app.use(express.json());
 app.use(cors());
@@ -21,5 +28,5 @@ app.post('/event/login', (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`Server listening at http://localhost:${port}`);
 });

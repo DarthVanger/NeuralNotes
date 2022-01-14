@@ -48,6 +48,40 @@ export const BottomBarMenu = () => {
   const openDeleteDialog = () => setIsDeleteDialogOpen(true);
   const closeDeleteDialog = () => setIsDeleteDialogOpen(false);
 
+  const editMenuItem = (
+    <MenuItem onClick={handleEditButtonClick}>
+      <Typography variant="subtitle1">Edit</Typography>
+    </MenuItem>
+  );
+
+  const changeParentMenuItem = (
+    <MenuItem onClick={handleChangeParentButtonClick}>
+      <Typography variant="subtitle1">Change parent</Typography>
+    </MenuItem>
+  );
+
+  const deleteNoteMenuItem = (
+    <MenuItem
+      onClick={() => {
+        openDeleteDialog();
+        closeMenu();
+      }}>
+      <Typography variant="subtitle1">Delete</Typography>
+    </MenuItem>
+  );
+
+  const openInGoogleDriveMenuItem = (
+    <MenuItem
+      component={Link}
+      href={noteStorage.getLinkToNote(selectedNote)}
+      target="_blank"
+      onClick={closeMenu}>
+      Open in Google Drive
+    </MenuItem>
+  );
+
+  const isAppFolder = noteStorage.isAppFolder(selectedNote);
+
   return (
     <>
       <IconButton
@@ -71,28 +105,10 @@ export const BottomBarMenu = () => {
         keepMounted
         open={isMenuOpened}
         onClose={closeMenu}>
-        {!selectedNote.isUploadedFile && (
-          <MenuItem onClick={handleEditButtonClick}>
-            <Typography variant="subtitle1">Edit</Typography>
-          </MenuItem>
-        )}
-        <MenuItem onClick={handleChangeParentButtonClick}>
-          <Typography variant="subtitle1">Change parent</Typography>
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            openDeleteDialog();
-            closeMenu();
-          }}>
-          <Typography variant="subtitle1">Delete</Typography>
-        </MenuItem>
-        <MenuItem
-          component={Link}
-          href={noteStorage.getLinkToNote(selectedNote)}
-          target="_blank"
-          onClick={closeMenu}>
-          Open in Google Drive
-        </MenuItem>
+        {!selectedNote.isUploadedFile && !isAppFolder && editMenuItem}
+        {!isAppFolder && changeParentMenuItem}
+        {!isAppFolder && deleteNoteMenuItem}
+        {openInGoogleDriveMenuItem}
       </Menu>
       <DialogDeleteNote
         isDeleteDialogOpen={isDeleteDialogOpen}

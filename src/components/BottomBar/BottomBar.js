@@ -16,6 +16,7 @@ import { UploadButton } from 'components/Uploads/UploadButton';
 import { colors } from 'colors';
 import { BottomBarMenu } from './BottomBarMenu';
 import { NoteDeletedNotification } from './NoteDeletedNotification';
+import noteStorage from 'storage/noteStorage';
 
 import {
   editNoteButtonClickedAction,
@@ -58,37 +59,38 @@ export const BottomBar = () => {
     dispatch(addNoteButtonClickedAction(selectedNote));
   };
 
+  const isAppFolder = noteStorage.isAppFolder(selectedNote);
+
+  const EditNoteButton = () => (
+    <IconButton
+      aria-label="edit"
+      onClick={handleEditButtonClick}
+      className={classes.left}>
+      <EditIcon />
+    </IconButton>
+  );
+
+  const AddNoteButton = () => (
+    <Fab
+      aria-label="add"
+      className={classes.fabButton}
+      color="primary"
+      onClick={handleAddButtonClick}>
+      <AddIcon />
+    </Fab>
+  );
+
   return (
     <>
       <AppBar position="static" className={classes.appBar}>
         <Toolbar>
           <BottomBarMenu />
-          {!selectedNote.isUploadedFile && (
-            <>
-              <IconButton
-                aria-label="edit"
-                onClick={handleEditButtonClick}
-                className={classes.left}>
-                <EditIcon />
-              </IconButton>
-            </>
-          )}
+          {!selectedNote.isUploadedFile && !isAppFolder && <EditNoteButton />}
           <StyledLabel>
             <Typography variant="subtitle2">{selectedNote.name}</Typography>
           </StyledLabel>
-
-          {!selectedNote.isUploadedFile && (
-            <>
-              <Fab
-                aria-label="add"
-                className={classes.fabButton}
-                color="primary"
-                onClick={handleAddButtonClick}>
-                <AddIcon />
-              </Fab>
-              <UploadButton></UploadButton>
-            </>
-          )}
+          {!selectedNote.isUploadedFile && <AddNoteButton />}
+          {!selectedNote.isUploadedFile && <UploadButton />}
           {selectedNote.isUploadedFile && <OpenFileButtonContainer />}
         </Toolbar>
       </AppBar>

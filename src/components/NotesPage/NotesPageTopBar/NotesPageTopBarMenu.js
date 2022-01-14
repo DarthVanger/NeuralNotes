@@ -5,6 +5,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { colors } from 'colors';
+import Link from '@material-ui/core/Link';
 
 import { logoutAction } from './NotesPageTopBarAction';
 import { useDispatch } from 'react-redux';
@@ -51,6 +52,13 @@ export function NotesPageTopBarMenu() {
         }}>
         <MenuItem onClick={logout}>
           <Typography variant="subtitle1">Logout</Typography>
+        </MenuItem>
+        <MenuItem
+          component={Link}
+          target="_blank"
+          href="mailto:feedback@neural-notes.com"
+          onClick={handleMenuClose}>
+          <Typography variant="subtitle1">Feedback</Typography>
         </MenuItem>
       </Menu>
     </>

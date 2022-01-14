@@ -116,6 +116,19 @@ const Footer = styled.footer`
   }
 `;
 
+const ContactsFooter = styled.div`
+  padding: 1em;
+  text-align: right;
+  a,
+  a:hover,
+  a:active,
+  a:link,
+  a:visited {
+    color: #9da0f5;
+    text-decoration: none;
+  }
+`;
+
 export const LoginPageComponent = ({
   isGoogleApiInitialized,
   requestAuthorization,
@@ -151,6 +164,11 @@ export const LoginPageComponent = ({
             <span>Sign up with Google</span>
           </GoogleSignUp>
         </Footer>
+        <ContactsFooter>
+          <a href="mailto:feedback@neural-notes.com" target="_blank">
+            feedback@neural-notes.com
+          </a>
+        </ContactsFooter>
       </Article>
     </Main>
   );

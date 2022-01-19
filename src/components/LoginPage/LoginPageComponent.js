@@ -12,6 +12,7 @@ import Slide4 from 'components/LoginPage/Slide4';
 import Slide5 from 'components/LoginPage/Slide5';
 import { ASPECT_RATIO } from 'components/LoginPage/slideComponents';
 import { FONT_SIZE } from 'components/LoginPage/slideComponents';
+import githubLogo from 'components/LoginPage/images/github-logo.png';
 
 const Main = styled.main`
   width: 100%;
@@ -126,6 +127,11 @@ const ContactsFooter = styled.div`
   a:visited {
     color: #9da0f5;
     text-decoration: none;
+    margin-left: 1em;
+  }
+
+  img {
+    height: 2em;
   }
 `;
 
@@ -167,6 +173,9 @@ export const LoginPageComponent = ({
         <ContactsFooter>
           <a href="mailto:feedback@neural-notes.com" target="_blank">
             feedback@neural-notes.com
+          </a>
+          <a href="https://github.com/DarthVanger/NeuralNotes" target="_blank">
+            <img src={githubLogo} />
           </a>
         </ContactsFooter>
       </Article>

@@ -7,7 +7,7 @@
     "start": "webpack-dev-server --port 3000",
     "test": "jest",
     "lint": "eslint src",
-    "build": "webpack",
+    "build": "webpack --mode=production",
     "pre-commit": "lint-staged",
     "pretty": "prettier --write \"src/**/*.{js,css,html}\""
   },

@@ -22,7 +22,6 @@ module.exports = {
       index: '/index.html',
     },
   },
-  mode: 'development',
   module: {
     rules: [
       {
@@ -64,7 +63,6 @@ module.exports = {
     ],
   },
   devtool: 'source-map',
-  // mode: 'production',
   resolve: {
     modules: [
       path.resolve('./node_modules'),

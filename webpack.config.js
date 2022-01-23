@@ -13,7 +13,7 @@ const ASSET_PATH = process.env.ASSET_PATH || '/';
 module.exports = {
   entry: './src/index.js',
   output: {
-    filename: 'index.js',
+    filename: 'index.[hash].js',
     publicPath: ASSET_PATH,
     path: path.resolve(__dirname, 'dist'),
   },

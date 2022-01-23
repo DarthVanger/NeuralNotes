@@ -37,7 +37,12 @@ function* handleNotAuthorizedUserOpenedApp() {
 }
 
 function* handleAuthSuccess({ data: user }) {
-  saveUserLoginEvent(user);
+  try {
+    yield saveUserLoginEvent(user);
+  } catch (e) {
+    // Don't crash the app if saving an event failed, as it's not critical
+    console.log(e);
+  }
 }
 
 export function* loginInit() {

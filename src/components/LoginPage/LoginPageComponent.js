@@ -9,7 +9,7 @@ import Slide1 from 'components/LoginPage/Slide1';
 import Slide2 from 'components/LoginPage/Slide2';
 import Slide3 from 'components/LoginPage/Slide3';
 import Slide4 from 'components/LoginPage/Slide4';
-import Slide5 from 'components/LoginPage/Slide5';
+//import Slide5 from 'components/LoginPage/Slide5';
 import { ASPECT_RATIO } from 'components/LoginPage/slideComponents';
 import { FONT_SIZE } from 'components/LoginPage/slideComponents';
 import githubLogo from 'components/LoginPage/images/github-logo.png';
@@ -171,10 +171,16 @@ export const LoginPageComponent = ({
           </GoogleSignUp>
         </Footer>
         <ContactsFooter>
-          <a href="mailto:feedback@neural-notes.com" target="_blank">
+          <a
+            href="mailto:feedback@neural-notes.com"
+            target="_blank"
+            rel="noreferrer">
             feedback@neural-notes.com
           </a>
-          <a href="https://github.com/DarthVanger/NeuralNotes" target="_blank">
+          <a
+            href="https://github.com/DarthVanger/NeuralNotes"
+            target="_blank"
+            rel="noreferrer">
             <img src={githubLogo} />
           </a>
         </ContactsFooter>

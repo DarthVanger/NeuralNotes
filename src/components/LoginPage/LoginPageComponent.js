@@ -110,10 +110,9 @@ const Footer = styled.footer`
 
   h3 {
     padding-bottom: 3%;
-
-    span {
-      color: ${COLORS.aqua};
-    }
+  }
+  .aqua {
+    color: ${COLORS.aqua};
   }
 `;
 
@@ -163,7 +162,8 @@ export const LoginPageComponent = ({
         <Slide4 />
         <Footer>
           <H3>
-            <span>Neural</span>Notes is free to use
+            <span className="aqua">Neural</span>Notes is{' '}
+            <span className="aqua">free</span> up to 100 notes
           </H3>
           <GoogleSignUp type="button" onClick={authHandler}>
             <img src={iconGoogle} />

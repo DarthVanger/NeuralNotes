@@ -8,7 +8,7 @@ import { Img } from 'components/LoginPage/slideComponents';
 import { FONT_SIZE } from 'components/LoginPage/slideComponents';
 
 const Slide = styled.section`
-  padding-bottom: 10%;
+  padding-bottom: 2em;
   text-align: center;
 
   img {
@@ -19,7 +19,7 @@ const Slide = styled.section`
 const AppName = styled.header`
   text-align: center;
   color: ${COLORS.white};
-  padding-top: 10%;
+  padding-top: 1em;
   padding-bottom: 7%;
 `;
 

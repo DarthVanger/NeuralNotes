@@ -64,22 +64,18 @@ const H3 = styled.h3`
 // 4% - vertical indention
 // 0.75% - horizontal indention
 const Button = css`
+  cursor: pointer;
   color: ${COLORS.white};
-  background-color: ${COLORS.blue};
-  position: relative;
+  color: black;
+  background-color: white;
   border: none;
-  border-radius: 0.4vmin;
-  padding: 2vmin 4vmin 2vmin calc(9vmin + 2%);
+  border-radius: 0.5em;
+  padding: 1.5em;
 
   img {
-    height: 92%;
-    background-color: ${COLORS.white};
-    position: absolute;
-    padding: 3%;
-    left: 0.75%;
-    top: 4%;
-    border-radius: 0.4vmin;
-    box-sizing: border-box;
+    height: 3em;
+    vertical-align: middle;
+    margin-right: 1em;
   }
 
   span {
@@ -91,6 +87,7 @@ const Button = css`
 
 const GoogleLoginButton = styled.button`
   ${Button}
+  padding: 1em 1.5em;
   position: absolute;
   right: 2rem;
   top: 1rem;

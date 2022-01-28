@@ -54,7 +54,7 @@ const Article = styled.article`
 
 const H3 = styled.h3`
   padding-bottom: 7%;
-  font-size: ${FONT_SIZE.H3};
+  font-size: 2em;
   text-align: center;
   color: ${COLORS.white};
 `;

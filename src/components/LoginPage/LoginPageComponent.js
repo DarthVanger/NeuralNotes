@@ -54,7 +54,7 @@ const Article = styled.article`
 
 const H3 = styled.h3`
   padding-bottom: 7%;
-  font-size: 2em;
+  font-size: ${FONT_SIZE.H2};
   text-align: center;
   color: ${COLORS.white};
 `;
@@ -64,16 +64,17 @@ const H3 = styled.h3`
 // 4% - vertical indention
 // 0.75% - horizontal indention
 const Button = css`
+  font-size: 1rem;
   cursor: pointer;
   color: ${COLORS.white};
   color: black;
   background-color: white;
   border: none;
   border-radius: 0.5em;
-  padding: 1.5em;
+  padding: 0.5em 1em;
 
   img {
-    height: 3em;
+    height: 2em;
     vertical-align: middle;
     margin-right: 1em;
   }
@@ -81,16 +82,22 @@ const Button = css`
   span {
     vertical-align: middle;
     line-height: 100%;
-    font-size: 3vmin;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 1.5rem;
+    padding: 1.5em;
   }
 `;
 
 const GoogleLoginButton = styled.button`
   ${Button}
-  padding: 1em 1.5em;
-  position: absolute;
-  right: 2rem;
-  top: 2rem;
+  float: right;
+  margin: 0.5em;
+  @media (min-width: 1024px) {
+    font-size: 1rem;
+    padding: 1em;
+  }
 `;
 
 const GoogleSignUp = styled.button`
@@ -153,6 +160,7 @@ export const LoginPageComponent = ({
           <img src={iconGoogle} />
           <span>Login</span>
         </GoogleLoginButton>
+        <div style={{ clear: 'both' }}></div>
         <Slide1 />
         <Slide2 />
         <Slide3 />

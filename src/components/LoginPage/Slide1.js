@@ -21,6 +21,12 @@ const AppName = styled.header`
   color: ${COLORS.white};
   padding-top: 1em;
   padding-bottom: 7%;
+
+  .beta {
+    vertical-align: super;
+    font-size: 0.5em;
+    color: #373dc8;
+  }
 `;
 
 const H1 = styled.h1`
@@ -43,7 +49,7 @@ export default class Slide1 extends Component {
       <Slide>
         <AppName>
           <H1>
-            <b>Neural</b>Notes
+            <b>Neural</b>Notes<span className="beta">beta</span>
           </H1>
         </AppName>
         <Figure>

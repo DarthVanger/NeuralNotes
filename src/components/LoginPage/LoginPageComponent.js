@@ -10,6 +10,7 @@ import Slide2 from 'components/LoginPage/Slide2';
 import Slide3 from 'components/LoginPage/Slide3';
 import Slide4 from 'components/LoginPage/Slide4';
 //import Slide5 from 'components/LoginPage/Slide5';
+import Motivation from 'components/LoginPage/Motivation';
 import { ASPECT_RATIO } from 'components/LoginPage/slideComponents';
 import { FONT_SIZE } from 'components/LoginPage/slideComponents';
 import githubLogo from 'components/LoginPage/images/github-logo.png';
@@ -165,6 +166,7 @@ export const LoginPageComponent = ({
         <Slide2 />
         <Slide3 />
         <Slide4 />
+        <Motivation />
         <Footer>
           <H3>
             <span className="aqua">Neural</span>Notes is{' '}

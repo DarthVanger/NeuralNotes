@@ -218,9 +218,16 @@ export const notesMindMapReducer = (
         ? { ...node, name: updatedNote.name }
         : node;
     });
+
+    const updatedSelectedNote =
+      state.selectedNote.id === updatedNote.id
+        ? updatedNote
+        : state.selectedNote;
+
     return {
       ...state,
       nodes: updatedNodes,
+      selectedNote: updatedSelectedNote,
     };
   };
 
@@ -230,12 +237,15 @@ export const notesMindMapReducer = (
     let nodes = [...state.nodes];
     let edges = [...state.edges];
 
+    const updateCreatedNote = node => ({
+      ...node,
+      id: newNote.id,
+      isSaving: false,
+    });
+
     nodes.forEach(node => {
       if (node.id === unsavedNoteInGraph.id) {
-        nodes[nodes.indexOf(node)] = {
-          ...newNote,
-          isSaving: false,
-        };
+        nodes[nodes.indexOf(node)] = updateCreatedNote(node);
         const edge = edges.find(e => e.to === node.id);
         edges[edges.indexOf(edge)].to = newNote.id;
       }
@@ -243,7 +253,7 @@ export const notesMindMapReducer = (
 
     const updatedSelectedNote =
       state.selectedNote.id === unsavedNoteInGraph.id
-        ? newNote
+        ? updateCreatedNote(state.selectedNote)
         : state.selectedNote;
 
     return {

@@ -35,19 +35,27 @@ export const NoteDetailsComponent = props => {
 
   const wasNoteEditedRef = useRef(false);
 
-  const updateNoteName = (newNoteName, note, editorState) => {
+  /**
+   * Use refs because there is debounce:
+   * if we just use props, and the prop is updated during the debounce wait time,
+   * debounce will use the old prop.
+   */
+  const selectedNoteRef = useRef(props.selectedNote);
+  const editorStateRef = useRef(props.editorState);
+
+  const updateNoteName = newNoteName => {
     props.editorNoteNameChangedAction({
       newNoteName,
-      note,
-      editorState,
+      note: selectedNoteRef.current,
+      editorState: editorStateRef.current,
     });
   };
 
-  const updateNoteContent = (noteContent, note, editorState) => {
+  const updateNoteContent = noteContent => {
     props.editorNoteContentChangedAction({
       noteContent,
-      note,
-      editorState,
+      note: selectedNoteRef.current,
+      editorState: editorStateRef.current,
     });
   };
 
@@ -62,6 +70,14 @@ export const NoteDetailsComponent = props => {
   useEffect(() => {
     setNoteContent(props.noteContent);
   }, [props.noteContent]);
+
+  useEffect(() => {
+    selectedNoteRef.current = props.selectedNote;
+  }, [props.selectedNote]);
+
+  useEffect(() => {
+    editorStateRef.current = props.editorState;
+  }, [props.editorState]);
 
   useEffect(() => {
     dispatch(noteEditorOpenedAction(props.selectedNote));
@@ -80,21 +96,13 @@ export const NoteDetailsComponent = props => {
 
   const handleNoteNameChange = e => {
     setNoteName(e.target.value);
-    debouncedUpdateNoteNameRef.current(
-      e.target.value,
-      props.selectedNote,
-      props.editorState,
-    );
+    debouncedUpdateNoteNameRef.current(e.target.value);
     wasNoteEditedRef.current = true;
   };
 
   const handleNoteContentChange = e => {
     setNoteContent(e.target.value);
-    debouncedUpdateNoteContentRef.current(
-      e.target.value,
-      props.selectedNote,
-      props.editorState,
-    );
+    debouncedUpdateNoteContentRef.current(e.target.value);
     wasNoteEditedRef.current = true;
   };
 

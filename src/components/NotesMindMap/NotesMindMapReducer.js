@@ -23,7 +23,6 @@ import {
 
 import {
   CREATE_NOTE_SUCCESS_ACTION,
-  NOTE_NAME_UPDATE_REQUEST_SUCCESS_ACTION,
   EDITOR_NOTE_NAME_CHANGED_ACTION,
   NEW_NOTE_DISCARDED_ACTION,
   CREATE_NOTE_REQUEST_FAIL_ACTION,
@@ -207,27 +206,6 @@ export const notesMindMapReducer = (
       ...state,
       nodes: updatedNodes,
       edges: updatedEdges,
-    };
-  };
-
-  const handleNoteNameUpdateRequestSuccessAction = () => {
-    const updatedNote = data;
-    let updatedNodes = [...state.nodes];
-    updatedNodes = updatedNodes.map(node => {
-      return node.id === updatedNote.id
-        ? { ...node, name: updatedNote.name }
-        : node;
-    });
-
-    const updatedSelectedNote =
-      state.selectedNote.id === updatedNote.id
-        ? updatedNote
-        : state.selectedNote;
-
-    return {
-      ...state,
-      nodes: updatedNodes,
-      selectedNote: updatedSelectedNote,
     };
   };
 
@@ -485,8 +463,6 @@ export const notesMindMapReducer = (
       return addInitialNoteToGraph();
     case NOTES_GRAPH_LOADED_FROM_LOCAL_STORAGE_ACTION:
       return handleNotesGraphLoadedFromLocalStorage();
-    case NOTE_NAME_UPDATE_REQUEST_SUCCESS_ACTION:
-      return handleNoteNameUpdateRequestSuccessAction({ state, data });
     case CREATE_NOTE_REQUEST_ACTION:
       return updateNote(data.unsavedNoteInGraph, { isSaving: true });
     case CREATE_NOTE_SUCCESS_ACTION:

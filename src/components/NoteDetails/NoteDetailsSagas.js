@@ -85,7 +85,7 @@ function* handleNoteNameChange({ data: { note, newNoteName, editorState } }) {
 function* handleNoteContentChange({
   data: { note, noteContent, editorState },
 }) {
-  if (shouldUpdateNote(editorState)) yield updateNoteName();
+  if (shouldUpdateNote(editorState)) yield updateNoteContent();
   if (shouldCreateNote(editorState)) yield createNote();
   if (shouldQueueUpdate(editorState)) yield queueUpdate();
 
@@ -106,7 +106,7 @@ function* handleNoteContentChange({
     return put(queueNoteUpdateAction({ noteContent }));
   }
 
-  function updateNoteName() {
+  function updateNoteContent() {
     return put(
       noteContentUpdateRequestAction({
         ...note,
@@ -128,9 +128,9 @@ function queueNoteUpdate({ data: { noteName, noteContent } }) {
 }
 
 function* applyQueuedNoteUpdate({ data: { note, queuedChanges: changes } }) {
-  if (queuedChanges.noteName !== null) {
+  if (changes.noteName !== null) {
     console.debug(
-      `Applying queued changes for note name: "${queuedChanges.noteName}"`,
+      `Applying queued changes for note name: "${changes.noteName}"`,
     );
     yield put(
       noteNameUpdateRequestAction({
@@ -139,9 +139,9 @@ function* applyQueuedNoteUpdate({ data: { note, queuedChanges: changes } }) {
       }),
     );
   }
-  if (queuedChanges.noteContent !== null) {
+  if (changes.noteContent !== null) {
     console.debug(
-      `Applying queued changes for note content: "${queuedChanges.noteContent}"`,
+      `Applying queued changes for note content: "${changes.noteContent}"`,
     );
     yield put(
       noteContentUpdateRequestAction({

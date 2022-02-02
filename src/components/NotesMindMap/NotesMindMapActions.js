@@ -12,6 +12,8 @@ export const SEARCH_RESULT_CLICKED = 'SEARCH_RESULT_CLICKED';
 export const RESET_MIND_MAP_TO_ROOT_NODE = 'RESET_MIND_MAP_TO_ROOT_NODE';
 
 export const MIND_MAP_NODE_CLICKED_ACTION = 'MIND_MAP_NODE_CLICKED_ACTION';
+export const MIND_MAP_NODE_DOUBLE_CLICKED_ACTION =
+  'MIND_MAP_NODE_DOUBLE_CLICKED_ACTION';
 
 export const FETCH_NOTE_ACTION = 'FETCH_NOTE_ACTION';
 export const NOTE_FETCH_SUCCESS_ACTION = 'NOTE_FETCH_SUCCESS_ACTION';
@@ -82,6 +84,11 @@ export const changeParentNoteAction = data => ({
 
 export const mindMapNodeClickedAction = data => ({
   type: MIND_MAP_NODE_CLICKED_ACTION,
+  data,
+});
+
+export const mindMapNodeDoubleClickedAction = data => ({
+  type: MIND_MAP_NODE_DOUBLE_CLICKED_ACTION,
   data,
 });
 

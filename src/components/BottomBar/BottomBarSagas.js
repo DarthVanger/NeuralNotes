@@ -14,12 +14,19 @@ import {
   ADD_NOTE_BUTTON_CLICKED_ACTION,
   CHANGE_PARENT_BUTTON_CLICKED_ACTION,
   DELETE_NOTE_ACTION,
+  EDIT_NOTE_BUTTON_CLICKED_ACTION,
   deleteNoteRequestSuccessAction,
   deletNoteRequestFailAction,
 } from './BottomBarActions';
 
+import { editNoteAction } from 'components/NoteDetails/NoteDetailsActions';
+
 function* handleAddNoteButtonClick() {
   yield put(push('/note/new'));
+}
+
+function* handleEditNoteButtonClick({ data: { note } }) {
+  yield put(editNoteAction({ note }));
 }
 
 function* handleChangeParentButtonClick({ data: { note } }) {
@@ -44,5 +51,6 @@ export function* bottomBarInit() {
     ),
     takeEvery(DELETE_NOTE_ACTION, deleteNote),
     takeEvery(ADD_NOTE_BUTTON_CLICKED_ACTION, handleAddNoteButtonClick),
+    takeEvery(EDIT_NOTE_BUTTON_CLICKED_ACTION, handleEditNoteButtonClick),
   ]);
 }

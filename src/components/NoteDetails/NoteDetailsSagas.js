@@ -1,7 +1,6 @@
 import { toast } from 'react-toastify';
 import { all, takeEvery, put } from 'redux-saga/effects';
 import noteStorage from 'storage/noteStorage';
-import { EDIT_NOTE_BUTTON_CLICKED_ACTION } from 'components/BottomBar/BottomBarActions';
 import {
   EDITOR_NOTE_NAME_CHANGED_ACTION,
   EDITOR_NOTE_CONTENT_CHANGED_ACTION,
@@ -11,6 +10,7 @@ import {
   QUEUE_NOTE_UPDATE_ACTION,
   APPLY_QUEUED_NOTE_UPDATE_ACTION,
   CREATE_NOTE_SUCCESS_ACTION,
+  EDIT_NOTE_ACTION,
   applyQueuedNoteUpdateAction,
   queueNoteUpdateAction,
   createNoteRequestAction,
@@ -189,7 +189,7 @@ function* createNoteRequest({ data: { note, unsavedNoteInGraph } }) {
   }
 }
 
-function* handleEditNoteButtonClick({ data: { note } }) {
+function* handleEditNoteAction({ data: { note } }) {
   yield put(push(`/note/${note.id}`));
   try {
     const noteContent = yield apiCall(noteStorage.getNoteContent, note);
@@ -213,7 +213,7 @@ export function* noteDetailsInit() {
     takeEvery(NOTE_NAME_UPDATE_REQUEST, requestNoteNameUpdate),
     takeEvery(NOTE_CONTENT_UPDATE_REQUEST, requestNoteContentUpdate),
     takeEvery(CREATE_NOTE_REQUEST_ACTION, createNoteRequest),
-    takeEvery(EDIT_NOTE_BUTTON_CLICKED_ACTION, handleEditNoteButtonClick),
+    takeEvery(EDIT_NOTE_ACTION, handleEditNoteAction),
     takeEvery(QUEUE_NOTE_UPDATE_ACTION, queueNoteUpdate),
     takeEvery(APPLY_QUEUED_NOTE_UPDATE_ACTION, applyQueuedNoteUpdate),
     takeEvery(CREATE_NOTE_SUCCESS_ACTION, handleCreateNoteSuccess),

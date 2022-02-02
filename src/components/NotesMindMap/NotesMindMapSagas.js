@@ -18,6 +18,7 @@ import {
   INITIAL_NOTE_FETCHED_ACTION,
   CHANGE_PARENT_REQUEST_SUCCESS_ACTION,
   MIND_MAP_NODE_CLICKED_ACTION,
+  MIND_MAP_NODE_DOUBLE_CLICKED_ACTION,
   FETCH_NOTE_ACTION,
   NOTE_FETCH_SUCCESS_ACTION,
   fetchNoteAction,
@@ -36,6 +37,7 @@ import { NOTES_GRAPH_LOADED_FROM_LOCAL_STORAGE_ACTION } from 'components/NotesPa
 import { getParentNode, isNodeDecendantOf } from 'helpers/graph';
 import { DISMISS_NOTE_IS_TRASHED_DIALOG_ACTION } from 'components/NotesMindMap/notifications/NoteIsTrashedDialog/NoteIsTrashedDialogActions';
 import { NOTE_IS_PERMANENTLY_DELETED_DIALOG_CLOSED } from 'components/NotesMindMap/notifications/NoteIsPermanentlyDeletedDialog/NoteIsPermanentlyDeletedDialogActions';
+import { editNoteAction } from 'components/NoteDetails/NoteDetailsActions.js';
 
 function* handleInitialNoteLoad({ data: initialNote }) {
   yield put(noteFetchSuccessAction(initialNote));
@@ -147,6 +149,14 @@ function* handleMindMapNodeClick({
   }
 }
 
+function* handleMindMapNodeDoubleClick({
+  data: { targetNode, isChangeParentModeActive },
+}) {
+  if (!isChangeParentModeActive) {
+    yield put(editNoteAction({ note: targetNode }));
+  }
+}
+
 function* handleSelectNote({ data: note }) {
   if (note.wereChildrenFetched) {
     console.info(
@@ -211,6 +221,10 @@ export function* noteMindMapInit() {
       handleNotesGraphLoadedFromLocalStorage,
     ),
     takeEvery(MIND_MAP_NODE_CLICKED_ACTION, handleMindMapNodeClick),
+    takeEvery(
+      MIND_MAP_NODE_DOUBLE_CLICKED_ACTION,
+      handleMindMapNodeDoubleClick,
+    ),
     takeEvery(FETCH_NOTE_ACTION, fetchNote),
     takeEvery(NOTE_FETCH_SUCCESS_ACTION, handleFetchNoteSuccess),
     takeEvery(

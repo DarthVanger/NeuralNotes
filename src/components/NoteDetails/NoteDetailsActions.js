@@ -32,6 +32,8 @@ export const NEW_NOTE_DISCARDED_ACTION = 'NEW_NOTE_DISCARDED_ACTION';
 
 export const NOTE_EDITOR_OPENED_ACTION = 'NOTE_EDITOR_OPENED_ACTION';
 
+export const EDIT_NOTE_ACTION = 'EDIT_NOTE_ACTION';
+
 export const createNoteRequestFailAction = data => ({
   type: CREATE_NOTE_REQUEST_FAIL_ACTION,
   data,
@@ -89,5 +91,10 @@ export const queueNoteUpdateAction = data => ({
 
 export const applyQueuedNoteUpdateAction = data => ({
   type: APPLY_QUEUED_NOTE_UPDATE_ACTION,
+  data,
+});
+
+export const editNoteAction = data => ({
+  type: EDIT_NOTE_ACTION,
   data,
 });

@@ -7,11 +7,9 @@ import {
   CREATE_NOTE_REQUEST_ACTION,
   CREATE_NOTE_SUCCESS_ACTION,
   NOTE_EDITOR_OPENED_ACTION,
+  EDIT_NOTE_ACTION,
 } from 'components/NoteDetails/NoteDetailsActions';
-import {
-  ADD_NOTE_BUTTON_CLICKED_ACTION,
-  EDIT_NOTE_BUTTON_CLICKED_ACTION,
-} from 'components/BottomBar/BottomBarActions';
+import { ADD_NOTE_BUTTON_CLICKED_ACTION } from 'components/BottomBar/BottomBarActions';
 
 const defaultState = {
   noteId: null,
@@ -74,7 +72,7 @@ export const noteDetailsReducer = (state = defaultState, { type, data }) => {
           isNoteCreationInProgress: false,
         },
       };
-    case EDIT_NOTE_BUTTON_CLICKED_ACTION:
+    case EDIT_NOTE_ACTION:
       return {
         ...state,
         noteName: data.note.name,

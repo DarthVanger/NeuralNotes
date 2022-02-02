@@ -7,7 +7,10 @@ import { isChangeParentModeActiveSelector } from 'components/NotesMindMap/NotesM
 import { isNodeDecendantOf } from 'helpers/graph';
 import useSelectedNote from 'components/NotesMindMap/hooks/useSelectedNote';
 import useGraph from 'components/NotesMindMap/hooks/useGraph';
-import { mindMapNodeClickedAction } from 'components/NotesMindMap/NotesMindMapActions';
+import {
+  mindMapNodeClickedAction,
+  mindMapNodeDoubleClickedAction,
+} from 'components/NotesMindMap/NotesMindMapActions';
 
 export const Node = node => {
   const dispatch = useDispatch();
@@ -59,8 +62,21 @@ export const Node = node => {
     );
   };
 
+  const handleDoubleClick = () => {
+    dispatch(
+      mindMapNodeDoubleClickedAction({
+        targetNode: node,
+        isChangeParentModeActive,
+      }),
+    );
+  };
+
   return (
-    <g transform={`translate(${x} ${y})`} onClick={handleClick} key={node.id}>
+    <g
+      transform={`translate(${x} ${y})`}
+      onClick={handleClick}
+      onDoubleClick={handleDoubleClick}
+      key={node.id}>
       <NodeBackground
         width={width}
         height={height}

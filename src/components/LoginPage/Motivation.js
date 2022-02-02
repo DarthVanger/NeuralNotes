@@ -36,7 +36,7 @@ const Li = styled.li`
   }
 `;
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   bullet: {
     backgroundColor: 'white',
     marginRight: '2vmin',
@@ -57,8 +57,6 @@ const MotivationItem = ({ icon, children }) => {
 };
 
 const Motivation = () => {
-  const classes = useStyles();
-
   return (
     <Article>
       <H2>Motivation</H2>

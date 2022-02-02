@@ -76,7 +76,8 @@ export const Node = node => {
       transform={`translate(${x} ${y})`}
       onClick={handleClick}
       onDoubleClick={handleDoubleClick}
-      key={node.id}>
+      key={node.id}
+      style={{ cursor: 'pointer' }}>
       <NodeBackground
         width={width}
         height={height}

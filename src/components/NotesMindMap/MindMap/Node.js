@@ -77,7 +77,7 @@ export const Node = node => {
       onClick={handleClick}
       onDoubleClick={handleDoubleClick}
       key={node.id}
-      style={{ cursor: 'pointer' }}>
+      style={{ cursor: 'pointer', userSelect: 'none' }}>
       <NodeBackground
         width={width}
         height={height}

@@ -24,10 +24,12 @@ import {
 } from './BottomBarActions';
 
 const useStyles = makeStyles(() => ({
-  left: {
-    position: 'absolute',
+  toolbar: {
+    // FAB width + FAB right margin + padding for text
+    paddingRight: 'calc(56px + 12px + 12px)',
+  },
+  editButton: {
     color: colors.onSurfaceMediumEmphasis,
-    left: '46px',
   },
   fabButton: {
     position: 'absolute',
@@ -38,12 +40,14 @@ const useStyles = makeStyles(() => ({
   appBar: {
     backgroundColor: colors.elevationOverlay04dp,
   },
+  noteName: {
+    paddingLeft: '6px',
+    textAlign: 'center',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+  },
 }));
-
-const StyledLabel = styled.div`
-  width: 100%;
-  text-align: center;
-`;
 
 export const BottomBar = () => {
   const classes = useStyles();
@@ -65,7 +69,7 @@ export const BottomBar = () => {
     <IconButton
       aria-label="edit"
       onClick={handleEditButtonClick}
-      className={classes.left}>
+      className={classes.editButton}>
       <EditIcon />
     </IconButton>
   );
@@ -83,12 +87,12 @@ export const BottomBar = () => {
   return (
     <>
       <AppBar position="static" className={classes.appBar}>
-        <Toolbar>
+        <Toolbar classes={{ root: classes.toolbar }}>
           <BottomBarMenu />
           {!selectedNote.isUploadedFile && !isAppFolder && <EditNoteButton />}
-          <StyledLabel>
-            <Typography variant="subtitle2">{selectedNote.name}</Typography>
-          </StyledLabel>
+          <Typography className={classes.noteName} variant="subtitle2">
+            {selectedNote.name}
+          </Typography>
           {!selectedNote.isUploadedFile && <AddNoteButton />}
           {!selectedNote.isUploadedFile && <UploadButton />}
           {selectedNote.isUploadedFile && <OpenFileButtonContainer />}

@@ -19,10 +19,7 @@ import DialogDeleteNote from 'components/Modal/DialogDeleteNote';
 
 const useStyles = makeStyles(() => ({
   moreIcon: {
-    position: 'absolute',
     color: colors.onSurfaceMediumEmphasis,
-    left: 0,
-    padding: '12px',
   },
 }));
 
@@ -87,6 +84,7 @@ export const BottomBarMenu = () => {
       <IconButton
         ref={menuAnchorEl}
         className={classes.moreIcon}
+        edge="start"
         aria-label="more"
         aria-haspopup="true"
         onClick={openMenu}>

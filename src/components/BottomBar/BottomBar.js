@@ -9,8 +9,6 @@ import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
 import { useSelector, useDispatch } from 'react-redux';
-import styled from 'styled-components';
-
 import { OpenFileButtonContainer } from 'components/OpenFileButton/OpenFileButtonContainer';
 import { UploadButton } from 'components/Uploads/UploadButton';
 import { colors } from 'colors';

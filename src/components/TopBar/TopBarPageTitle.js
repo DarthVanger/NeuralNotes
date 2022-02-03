@@ -5,6 +5,8 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(() => ({
   topBarPageTitle: {
     flexGrow: 1,
+    // For Note Details page, because the note name can be too long
+    overflow: 'hidden',
   },
 }));
 

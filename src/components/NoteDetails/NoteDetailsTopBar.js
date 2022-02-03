@@ -20,6 +20,11 @@ import DialogDeleteNote from 'components/Modal/DialogDeleteNote';
 import { isExistingNoteSelector } from './NoteDetailsSelectors';
 
 const useStyles = makeStyles(() => ({
+  noteTitle: {
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+  },
   moreIcon: {
     color: colors.onSurfaceMediumEmphasis,
   },
@@ -54,7 +59,9 @@ const NoteDetailsTopBar = () => {
       <TopBarLeftButtons>
         <BackButton to="/notes" />
       </TopBarLeftButtons>
-      <TopBarPageTitle>{pageTitle}</TopBarPageTitle>
+      <TopBarPageTitle className={classes.noteTitle}>
+        {pageTitle}
+      </TopBarPageTitle>
       <TopBarRightButtons>
         <IconButton
           ref={menuAnchorEl}

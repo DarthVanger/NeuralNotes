@@ -18,7 +18,7 @@ export const StyledNoteNameEditor = styled.input`
   color: ${colors.onSurfaceHighEmphasis};
 
   flex-grow: 0;
-  padding: 0;
+  padding: 1rem;
 `;
 
 export const StyledNoteContentEditor = styled.textarea`
@@ -31,5 +31,5 @@ export const StyledNoteContentEditor = styled.textarea`
   background-color: ${colors.elevationOverlay02dp};
 
   flex-grow: 1;
-  padding: 2rem;
+  padding: 1rem;
 `;

@@ -44,6 +44,7 @@ const useStyles = makeStyles(() => ({
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
     overflow: 'hidden',
+    flexGrow: 1,
   },
 }));
 

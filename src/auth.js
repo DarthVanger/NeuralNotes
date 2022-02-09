@@ -4,6 +4,7 @@ export default {
   getToken: getToken,
   signedIn: signedIn,
   logout: logout,
+  getUser: getUser,
 };
 
 function signedIn() {
@@ -20,15 +21,13 @@ function haveToken() {
   }
 }
 
-function saveToken(tokenObject) {
-  let access_token = tokenObject.access_token;
-  let expires_in = tokenObject.expires_in;
-
+function saveToken({ access_token, expires_in, user }) {
   if (!expires_in) {
     throw new Error('Acess token date is undefined, can not save the token');
   }
 
   window.localStorage.setItem('gapiAccessToken', access_token);
+  window.localStorage.setItem('user', JSON.stringify(user));
   let expDate = new Date();
   expDate.setSeconds(expDate.getSeconds() + parseInt(expires_in));
   window.localStorage.setItem(
@@ -44,6 +43,10 @@ function getTokenExpirationDate() {
 
 function getToken() {
   return window.localStorage.getItem('gapiAccessToken');
+}
+
+function getUser() {
+  return JSON.parse(window.localStorage.getItem('user'));
 }
 
 export function logout() {

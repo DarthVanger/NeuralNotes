@@ -1,32 +1,73 @@
 import React, { useState } from 'react';
 import { Typography } from '@material-ui/core';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { colors } from 'colors';
-import Link from '@material-ui/core/Link';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { makeStyles } from '@material-ui/core/styles';
+import useUser from 'components/LoginPage/useUser';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import ContactIcons from 'components/LoginPage/ContactIcons';
+
+import Drawer from '@material-ui/core/Drawer';
+
+const useStyles = makeStyles(theme => ({
+  list: {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    maxWidth: '250px',
+  },
+  listGutter: {
+    flexGrow: 1,
+  },
+  feedbackListItem: {
+    justifyContent: 'center',
+  },
+  feedbackIsWelcome: {
+    paddingTop: '0',
+    marginTop: '-0.5rem',
+    justifyContent: 'center',
+  },
+  logoutIcon: {
+    transform: 'rotate(180deg)',
+  },
+  accountIcon: {
+    fontSize: '2em',
+    marginRight: '0.25em',
+  },
+  accountListItem: {
+    background: theme.palette.primary.main,
+    color: colors.onPrimaryHighEmphasis,
+  },
+  email: {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+  },
+}));
 
 import { logoutAction } from './NotesPageTopBarAction';
 import { useDispatch } from 'react-redux';
 
 export function NotesPageTopBarMenu() {
+  const user = useUser();
+  const classes = useStyles();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
 
   const logout = () => {
     dispatch(logoutAction());
   };
 
-  const handleMenuIconClick = event => {
+  const handleMenuIconClick = () => {
     setIsMenuOpen(true);
-    setAnchorEl(event.currentTarget);
   };
 
   const handleMenuClose = () => {
     setIsMenuOpen(false);
-    setAnchorEl(null);
   };
 
   return (
@@ -38,29 +79,32 @@ export function NotesPageTopBarMenu() {
         aria-controls="burger-menu">
         <MenuIcon style={{ color: colors.onSurfaceHighEmphasis }} />
       </IconButton>
-      <Menu
-        getContentAnchorEl={null}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: `left` }}
-        anchorEl={anchorEl}
-        open={isMenuOpen}
-        onClose={handleMenuClose}
-        PaperProps={{
-          style: {
-            width: '128px',
-          },
-        }}>
-        <MenuItem onClick={logout}>
-          <Typography variant="subtitle1">Logout</Typography>
-        </MenuItem>
-        <MenuItem
-          component={Link}
-          target="_blank"
-          href="mailto:feedback@neural-notes.com"
-          onClick={handleMenuClose}>
-          <Typography variant="subtitle1">Feedback</Typography>
-        </MenuItem>
-      </Menu>
+      <Drawer open={isMenuOpen} onClose={handleMenuClose}>
+        <List className={classes.list}>
+          <ListItem className={classes.accountListItem}>
+            <AccountCircleIcon className={classes.accountIcon} />
+            <Typography
+              variant="subtitle1"
+              color="inherit"
+              className={classes.email}>
+              {user.email}
+            </Typography>
+          </ListItem>
+          <ListItem button onClick={logout}>
+            <ListItemIcon>
+              <ExitToAppIcon className={classes.logoutIcon} />
+            </ListItemIcon>
+            <Typography variant="subtitle1">Logout</Typography>
+          </ListItem>
+          <ListItem className={classes.listGutter}></ListItem>
+          <ListItem className={classes.feedbackListItem}>
+            <ContactIcons />
+          </ListItem>
+          <ListItem className={classes.feedbackIsWelcome}>
+            <Typography variant="subtitle2">Feedback is welcome</Typography>
+          </ListItem>
+        </List>
+      </Drawer>
     </>
   );
 }

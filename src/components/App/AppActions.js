@@ -3,8 +3,9 @@ export const AUTHORIZED_USER_OPENED_APP = 'AUTHORIZED_USER_OPENED_APP';
 export const LOAD_GOOGLE_API_ACTION = 'LOAD_GOOGLE_API_ACTION';
 export const UNEXPECTED_ERROR_ACTION = 'UNEXPECTED_ERROR_ACTION';
 
-export const authorizedUserOpenedApp = () => ({
+export const authorizedUserOpenedApp = data => ({
   type: AUTHORIZED_USER_OPENED_APP,
+  data,
 });
 
 export const notAuthorizedUserOpenedApp = () => ({

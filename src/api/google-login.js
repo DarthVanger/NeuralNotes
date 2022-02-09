@@ -14,16 +14,17 @@ export function gapiAuthorize() {
         authResult,
       );
 
-      auth.saveToken({
-        access_token: authResult.access_token,
-        expires_in: authResult.expires_in,
-      });
-
       const googleProfile = googleUser.getBasicProfile();
 
       const user = {
         email: googleProfile.getEmail(),
       };
+
+      auth.saveToken({
+        access_token: authResult.access_token,
+        expires_in: authResult.expires_in,
+        user,
+      });
 
       return user;
     });

@@ -50,6 +50,6 @@ export function* appInit() {
   if (!auth.signedIn()) {
     yield put(notAuthorizedUserOpenedApp());
   } else {
-    yield put(authorizedUserOpenedApp());
+    yield put(authorizedUserOpenedApp(auth.getUser()));
   }
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
@@ -14,6 +14,9 @@ import Motivation from 'components/LoginPage/Motivation';
 import { ASPECT_RATIO } from 'components/LoginPage/slideComponents';
 import { FONT_SIZE } from 'components/LoginPage/slideComponents';
 import ContactIcons from './ContactIcons';
+import Button from '@material-ui/core/Button';
+import TermsOfServiceDialog from './TermsOfServiceDialog';
+import PrivacyPolicyDialog from './PrivacyPolicyDialog';
 
 const Main = styled.main`
   width: 100%;
@@ -64,7 +67,7 @@ const H3 = styled.h3`
 // 92% - image height without vertical indention
 // 4% - vertical indention
 // 0.75% - horizontal indention
-const Button = css`
+const LoginButton = css`
   font-size: 1rem;
   cursor: pointer;
   color: ${COLORS.white};
@@ -92,7 +95,7 @@ const Button = css`
 `;
 
 const GoogleLoginButton = styled.button`
-  ${Button}
+  ${LoginButton}
   float: right;
   margin: 0.5em;
   @media (min-width: 1024px) {
@@ -102,7 +105,7 @@ const GoogleLoginButton = styled.button`
 `;
 
 const GoogleSignUp = styled.button`
-  ${Button}
+  ${LoginButton}
   margin: auto;
 `;
 
@@ -126,10 +129,30 @@ const ContactsFooter = styled.div`
   text-align: right;
 `;
 
+const TermsOfServiceFooter = styled.div`
+  text-align: right;
+
+  button {
+    margin: 1em;
+    @media (max-width: 1024px) {
+      font-size: 0.5rem !important;
+      font-size: ${FONT_SIZE.H3}!important;
+      margin: 0.5rem;
+    }
+  }
+`;
+
 export const LoginPageComponent = ({
   isGoogleApiInitialized,
   requestAuthorization,
 }) => {
+  const [isTermsOfServiceDialogOpen, setIsTermsOfServiceDialogOpen] = useState(
+    false,
+  );
+  const [isPrivacyPolicyDialogOpen, setIsPrivacyPolicyDialogOpen] = useState(
+    false,
+  );
+
   const authHandler = () => {
     console.log('isGoogleApiInitialized: ', isGoogleApiInitialized);
     if (isGoogleApiInitialized) {
@@ -167,7 +190,27 @@ export const LoginPageComponent = ({
         <ContactsFooter>
           <ContactIcons />
         </ContactsFooter>
+        <TermsOfServiceFooter>
+          <Button
+            size="small"
+            onClick={() => setIsTermsOfServiceDialogOpen(true)}>
+            Terms of service
+          </Button>
+          <Button
+            size="small"
+            onClick={() => setIsPrivacyPolicyDialogOpen(true)}>
+            Privacy policy
+          </Button>
+        </TermsOfServiceFooter>
       </Article>
+      <TermsOfServiceDialog
+        open={isTermsOfServiceDialogOpen}
+        onClose={() => setIsTermsOfServiceDialogOpen(false)}
+      />
+      <PrivacyPolicyDialog
+        open={isPrivacyPolicyDialogOpen}
+        onClose={() => setIsPrivacyPolicyDialogOpen(false)}
+      />
     </Main>
   );
 };

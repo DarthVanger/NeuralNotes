@@ -13,7 +13,11 @@ import Slide4 from 'components/LoginPage/Slide4';
 import Motivation from 'components/LoginPage/Motivation';
 import { ASPECT_RATIO } from 'components/LoginPage/slideComponents';
 import { FONT_SIZE } from 'components/LoginPage/slideComponents';
-import githubLogo from 'components/LoginPage/images/github-logo.png';
+import MailIcon from '@material-ui/icons/MailOutline';
+import GitHubIcon from '@material-ui/icons/GitHub';
+import discordLogo from 'components/LoginPage/images/discord-logo.svg';
+import TelegramIcon from '@material-ui/icons/Telegram';
+import Icon from '@material-ui/core/Icon';
 
 const Main = styled.main`
   width: 100%;
@@ -122,7 +126,7 @@ const Footer = styled.footer`
 `;
 
 const ContactsFooter = styled.div`
-  padding: 1em;
+  padding: 1em 0;
   text-align: right;
   a,
   a:hover,
@@ -131,11 +135,12 @@ const ContactsFooter = styled.div`
   a:visited {
     color: #9da0f5;
     text-decoration: none;
-    margin-left: 1em;
+
+    margin: 0.5em;
   }
 
   img {
-    height: 2em;
+    height: 1.3rem;
   }
 `;
 
@@ -182,13 +187,24 @@ export const LoginPageComponent = ({
             href="mailto:feedback@neural-notes.com"
             target="_blank"
             rel="noreferrer">
-            feedback@neural-notes.com
+            <MailIcon />
+          </a>
+          <a href="https://t.me/neuralnotes" target="_blank" rel="noreferrer">
+            <TelegramIcon />
+          </a>
+          <a
+            href="https://discord.gg/epQc9Tkg3K"
+            target="_blank"
+            rel="noreferrer">
+            <Icon>
+              <img src={discordLogo} />
+            </Icon>
           </a>
           <a
             href="https://github.com/DarthVanger/NeuralNotes"
             target="_blank"
             rel="noreferrer">
-            <img src={githubLogo} />
+            <GitHubIcon />
           </a>
         </ContactsFooter>
       </Article>

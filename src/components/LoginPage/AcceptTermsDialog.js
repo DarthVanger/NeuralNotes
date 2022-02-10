@@ -20,7 +20,7 @@ const AcceptTermsDialog = ({
       <DialogContent>
         <DialogContentText>
           All notes and files are stored in your Google Drive, so Google will
-          have complete access to them.
+          have full access to your data.
         </DialogContentText>
         <DialogContentText>
           The website uses cookies to integrate with Google Drive.

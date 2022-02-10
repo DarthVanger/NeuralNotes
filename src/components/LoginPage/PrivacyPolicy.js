@@ -58,6 +58,10 @@ const PrivacyPolicy = () => (
       including items such as name, company name, address, email address, and
       telephone number.
     </p>
+    <p>
+      All the notes and files you create using the website are stored on your
+      Google Drive and on your device.
+    </p>
 
     <h2>How we use your information</h2>
 
@@ -77,6 +81,12 @@ const PrivacyPolicy = () => (
       <li>Send you emails</li>
       <li>Find and prevent fraud</li>
     </ul>
+
+    <p>
+      All the notes and files you create using the website are stored on your
+      Google Drive and on your device. So Google has full access to your notes
+      and files.
+    </p>
 
     <h2>Log Files</h2>
 

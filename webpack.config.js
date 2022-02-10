@@ -7,6 +7,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const webpack = require('webpack');
+const Dotenv = require('dotenv-webpack');
 
 const ASSET_PATH = process.env.ASSET_PATH || '/';
 
@@ -90,6 +91,7 @@ module.exports = {
       minRatio: 0.8,
     }),
     new webpack.optimize.AggressiveMergingPlugin(),
+    new Dotenv(),
     //new BundleAnalyzerPlugin() un-comment this to view the dependency map
   ],
 };

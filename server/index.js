@@ -6,8 +6,16 @@ const port = 8081;
 const cors = require('cors');
 const fs = require('fs');
 const os = require('os');
-const http = require('http');
 const https = require('https');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+});
 
 const logsFolder = os.homedir() + '/neural-notes-database';
 
@@ -17,6 +25,8 @@ fs.mkdirSync(logsFolder, { recursive: true });
 
 app.use(express.json());
 app.use(cors());
+app.use(helmet());
+app.use(limiter)
 
 app.post('/event/login', (req, res) => {
   const user = req.body;

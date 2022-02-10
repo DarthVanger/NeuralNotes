@@ -4,6 +4,7 @@ import React from 'react';
  * Generated with:
  * https://www.privacypolicygenerator.info/live.php?token=qiCcZ4Qq3LhiJAyv7zTfsQGCY5vtQaBR
  */
+/* eslint-disable react/no-unescaped-entities */
 const PrivacyPolicy = () => (
   <>
     <h1>Privacy Policy for NeuralNotes</h1>

@@ -4,6 +4,7 @@ import React from 'react';
  * Generated with:
  * https://www.termsofservicegenerator.net/live.php?token=Xeh1y83ay75xf7YnUihwgXMVh86HU5VN
  */
+/* eslint-disable react/no-unescaped-entities */
 const TermsOfService = () => (
   <>
     <h1>Website Terms and Conditions of Use</h1>

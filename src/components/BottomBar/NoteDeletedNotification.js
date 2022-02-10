@@ -43,7 +43,7 @@ export const NoteDeletedNotification = () => {
         size="medium"
         onClick={handleClose}
         style={{ color: colors.onPrimaryHighEmphasis }}>
-        OK
+        Dismiss
       </Button>
     </div>
   );

@@ -7,6 +7,7 @@ import SinglePlaceIcon from '@material-ui/icons/LocationSearching';
 import StructureIcon from '@material-ui/icons/AccountTree';
 import GoogleDriveIcon from '@material-ui/icons/CloudDone';
 import SimpleFormatIcon from '@material-ui/icons/FormatAlignJustify';
+import OwnDataIcon from '@material-ui/icons/VerifiedUser';
 import { makeStyles } from '@material-ui/core/styles';
 
 const Article = styled.article`
@@ -72,6 +73,9 @@ const Motivation = () => {
         </MotivationItem>
         <MotivationItem icon={<SimpleFormatIcon />}>
           Simple format: just folders and files
+        </MotivationItem>
+        <MotivationItem icon={<OwnDataIcon />}>
+          You have your data, even if you opt out
         </MotivationItem>
       </Ul>
     </Article>

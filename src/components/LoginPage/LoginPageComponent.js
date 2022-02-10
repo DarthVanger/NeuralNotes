@@ -17,6 +17,7 @@ import ContactIcons from './ContactIcons';
 import Button from '@material-ui/core/Button';
 import TermsOfServiceDialog from './TermsOfServiceDialog';
 import PrivacyPolicyDialog from './PrivacyPolicyDialog';
+import AcceptTermsDialog from './AcceptTermsDialog';
 
 const Main = styled.main`
   width: 100%;
@@ -152,6 +153,11 @@ export const LoginPageComponent = ({
   const [isPrivacyPolicyDialogOpen, setIsPrivacyPolicyDialogOpen] = useState(
     false,
   );
+  const [isAcceptTermsDialogOpen, setIsAcceptTermsDialogOpen] = useState(false);
+
+  const handleSignUpClick = () => {
+    setIsAcceptTermsDialogOpen(true);
+  };
 
   const authHandler = () => {
     console.log('isGoogleApiInitialized: ', isGoogleApiInitialized);
@@ -182,7 +188,7 @@ export const LoginPageComponent = ({
             <span className="aqua">Neural</span>Notes is{' '}
             <span className="aqua">free</span> up to 100 notes
           </H3>
-          <GoogleSignUp type="button" onClick={authHandler}>
+          <GoogleSignUp type="button" onClick={handleSignUpClick}>
             <img src={iconGoogle} />
             <span>Sign up with Google</span>
           </GoogleSignUp>
@@ -210,6 +216,13 @@ export const LoginPageComponent = ({
       <PrivacyPolicyDialog
         open={isPrivacyPolicyDialogOpen}
         onClose={() => setIsPrivacyPolicyDialogOpen(false)}
+      />
+      <AcceptTermsDialog
+        open={isAcceptTermsDialogOpen}
+        onClose={() => setIsAcceptTermsDialogOpen(false)}
+        onAccept={authHandler}
+        openTermsOfService={() => setIsTermsOfServiceDialogOpen(true)}
+        openPrivacyPolicy={() => setIsPrivacyPolicyDialogOpen(true)}
       />
     </Main>
   );

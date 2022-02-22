@@ -20,4 +20,8 @@ export const GlobalStyle = createGlobalStyle`
   input, button, textarea, select {
     font-family: inherit;
   }
+
+  a, a:link, a:visited, a:active, a:hover {
+    color: #4FC3F7;
+  }
 `;

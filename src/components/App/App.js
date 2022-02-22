@@ -16,10 +16,18 @@ import UnexpectedErrorDialog from './UnexpectedErrorDialog';
 import UnexpectedErrorDialogErrorBoundary from './UnexpectedErrorDialogErrorBoundary';
 import AppErrorBoundary from './AppErrorBoundary';
 import CloseTabWarning from './CloseTabWarning';
+import PrivacyPolicy from 'components/LoginPage/PrivacyPolicy';
+import TermsOfService from 'components/LoginPage/TermsOfService';
 
 const StyledApp = styled.div`
   background: ${colors.surface};
   height: 100%;
+  color: ${colors.onSurfaceMediumEmphasis};
+`;
+
+const StyledTermsOfService = styled.div`
+  padding: 1em;
+  background: ${colors.surface};
 `;
 
 export const App = () => {
@@ -28,6 +36,16 @@ export const App = () => {
     <StyledApp>
       <AppErrorBoundary>
         <Switch>
+          <Route exact path="/terms-of-service">
+            <StyledTermsOfService>
+              <TermsOfService />
+            </StyledTermsOfService>
+          </Route>
+          <Route exact path="/privacy-policy">
+            <StyledTermsOfService>
+              <PrivacyPolicy />
+            </StyledTermsOfService>
+          </Route>
           <Route exact path="/">
             {isUserSignedIn && <Redirect to="/notes" />}
             {!isUserSignedIn && <LoginPageContainer />}

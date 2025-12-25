@@ -39,10 +39,12 @@ app.post('/event/login', (req, res) => {
   res.end();
 });
 
+
+
 if (process.env.NODE_ENV === 'production') {
-  const sslCertsFolder = os.homedir() + '/ssl-certs';
-  const privateKey = fs.readFileSync(sslCertsFolder + '/neural-notes.key', 'utf8');
-  const certificate = fs.readFileSync(sslCertsFolder + '/neural-notes.crt', 'utf8');
+  const sslCertsFolder = '/etc/letsencrypt/live/neural-notes.com'
+  const privateKey = fs.readFileSync(sslCertsFolder + '/privkey.pem', 'utf8');
+  const certificate = fs.readFileSync(sslCertsFolder + '/fullchain.pem', 'utf8');
   const httpsServer = https.createServer({ key: privateKey, cert: certificate }, app);
   httpsServer.listen(port);
   console.log(`Server listening at https://localhost:${port}`);

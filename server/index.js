@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const path = require('path');
 const express = require('express');
 const app = express();
 const port = 443;
@@ -26,7 +27,14 @@ fs.mkdirSync(logsFolder, { recursive: true });
 app.use(express.static('dist'));
 app.use(express.json());
 app.use(cors());
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      "script-src": ["'self'", "https://apis.google.com", ],
+      "frame-src": ["'self'", "https://content.googleapis.com", "https://accounts.google.com"],
+    }
+  }
+}));
 app.use(limiter)
 
 app.post('/event/login', (req, res) => {
@@ -40,7 +48,9 @@ app.post('/event/login', (req, res) => {
   res.end();
 });
 
-
+app.all('*', function(req, res) {
+  res.sendFile(path.resolve('dist/index.html'));
+});
 
 if (process.env.NODE_ENV !== 'development') {
   const sslCertsFolder = '/etc/letsencrypt/live/neural-notes.com'

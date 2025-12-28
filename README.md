@@ -19,7 +19,13 @@ There is no DB, it's just files:
 git clone https://github.com/DarthVanger/NeuralNotes.git
 cd NeuralNotes
 npm install
-npm start # launches a server at localhost:3000
+```
+Copy `.env.template` file to `.env` and fill in Google `client_id` and Google `api_key`.
+
+Launch server (localhost:3000)
+
+```
+npm start
 ```
 
 ## Code style / Architecture
@@ -71,9 +77,13 @@ Short explanation how it works:
 Eslint uses `eslint-config-prettier` which uses `eslint-plugin-prettier` behind the scene as special rule and avoids conflicts with defined eslint rules.
 
 ## Production build
+Copy `.env.template` file to `.env` and fill in Google `client_id` and Google `api_key`.
+
+Run
 ```
 npm install
 npm run build
+npm run start:prod
 ```
 
 Build script puts `index.html` and all the assets into `dist/` folder
@@ -82,14 +92,6 @@ $ ls dist/index*
 dist/index.html         dist/index.js           dist/index.js.map
 ```
 
-### Testing production build locally
+Node.js Express server serves static files and provides one endpoint for saving login events.
 
-To test the production build locally, simply serve files from the `dist/` folder.
-
-For example you can easily launch a [nodejs http-server](https://www.npmjs.com/package/http-server) on port 3000 like this:
-```
-npx http-server -p 3000 ./dist/
-```
-
-Visit <http://localhost:3000> to see the website.
-
+The server is also configured to serve `index.html` for all URLs, this is for React Router.

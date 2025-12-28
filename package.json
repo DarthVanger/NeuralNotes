@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "webpack-dev-server --port 3000",
-    "start:prod": "npx http-server -S -C /etc/letsencrypt/live/neural-notes.com/fullchain.pem -K /etc/letsencrypt/live/neural-notes.com/privkey.pem -p 443 dist/",
+    "start:prod": "node server/index.js",
     "test": "jest",
     "lint": "eslint src",
     "build": "webpack --mode=production",

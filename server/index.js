@@ -2,7 +2,7 @@
 
 const express = require('express');
 const app = express();
-const port = 8081;
+const port = 443;
 const cors = require('cors');
 const fs = require('fs');
 const os = require('os');
@@ -23,6 +23,7 @@ console.log('Events log folder: ', logsFolder);
 
 fs.mkdirSync(logsFolder, { recursive: true });
 
+app.use(express.static('dist'));
 app.use(express.json());
 app.use(cors());
 app.use(helmet());
@@ -41,7 +42,7 @@ app.post('/event/login', (req, res) => {
 
 
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV !== 'development') {
   const sslCertsFolder = '/etc/letsencrypt/live/neural-notes.com'
   const privateKey = fs.readFileSync(sslCertsFolder + '/privkey.pem', 'utf8');
   const certificate = fs.readFileSync(sslCertsFolder + '/fullchain.pem', 'utf8');

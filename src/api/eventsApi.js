@@ -1,4 +1,4 @@
-const apiUrl = `${location.protocol}//${location.hostname}:8081`;
+const apiUrl = `${location.protocol}//${location.hostname}`;
 
 export const saveUserLoginEvent = user => {
   return fetch(`${apiUrl}/event/login`, {

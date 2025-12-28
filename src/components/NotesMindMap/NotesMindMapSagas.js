@@ -1,11 +1,6 @@
 import { push } from 'connected-react-router';
 import { toast } from 'react-toastify';
-import {
-  all,
-  call,
-  put,
-  takeEvery,
-} from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
+import { all, call, put, takeEvery } from 'redux-saga/effects';
 
 import noteStorage from 'storage/noteStorage';
 import { apiCall } from 'api/api';

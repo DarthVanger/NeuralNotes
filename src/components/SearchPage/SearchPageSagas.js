@@ -1,12 +1,7 @@
 import { toast } from 'react-toastify';
 
 import noteStorage from 'storage/noteStorage';
-import {
-  all,
-  put,
-  call,
-  takeEvery,
-} from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
+import { all, put, call, takeEvery } from 'redux-saga/effects';
 import { apiCall } from 'api/api';
 
 import {

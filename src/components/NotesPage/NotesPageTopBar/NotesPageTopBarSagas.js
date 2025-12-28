@@ -1,9 +1,5 @@
 import auth from 'auth';
-import {
-  call,
-  all,
-  takeEvery,
-} from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
+import { call, all, takeEvery } from 'redux-saga/effects';
 
 import { LOGOUT_ACTION } from './NotesPageTopBarAction';
 

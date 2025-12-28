@@ -1,10 +1,6 @@
 import { gapiAuthorize } from 'api/google-login';
 import { toast } from 'react-toastify';
-import {
-  call,
-  put,
-  takeEvery,
-} from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
+import { call, put, takeEvery } from 'redux-saga/effects';
 
 import {
   NOT_AUTHORIZED_USER_OPENED_APP,

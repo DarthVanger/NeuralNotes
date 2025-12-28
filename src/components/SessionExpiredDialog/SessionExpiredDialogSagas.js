@@ -1,9 +1,4 @@
-import {
-  all,
-  call,
-  put,
-  takeEvery,
-} from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
+import { all, call, put, takeEvery } from 'redux-saga/effects';
 
 import { gapiAuthorize } from 'api/google-login';
 import { REFRESH_SESSION_BUTTON_CLICKED_ACTION } from './SessionExpiredDialogActions';

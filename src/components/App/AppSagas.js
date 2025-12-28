@@ -1,10 +1,6 @@
 import { push } from 'connected-react-router';
 import { toast } from 'react-toastify';
-import {
-  put,
-  call,
-  takeEvery,
-} from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
+import { put, call, takeEvery } from 'redux-saga/effects';
 
 import * as googleApi from 'api/googleApi';
 import auth from 'auth';

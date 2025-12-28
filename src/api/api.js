@@ -1,8 +1,4 @@
-import {
-  put,
-  take,
-  call,
-} from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
+import { put, take, call } from 'redux-saga/effects';
 
 import { didSessionExpire } from 'auth';
 import {

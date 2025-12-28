@@ -1,8 +1,4 @@
-import {
-  put,
-  call,
-  takeEvery,
-} from 'redux-saga/dist/redux-saga-effects-npm-proxy.cjs';
+import { put, call, takeEvery } from 'redux-saga/effects';
 
 import googleDriveApi from 'api/google-drive-api';
 import { AUTHORIZED_USER_OPENED_APP } from 'components/App/AppActions';
